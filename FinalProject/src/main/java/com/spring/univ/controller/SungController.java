@@ -46,5 +46,14 @@ import org.springframework.web.servlet.ModelAndView;
 */
 @Controller
 public class SungController {
-	
+	@RequestMapping(value="/test2.univ") // /test1.action의 url은 아래의 메소드가 응답함!
+	public String test1(HttpServletRequest request) {
+		
+		String name = "금팀장 화이팅";
+		request.setAttribute("name", name);
+		
+		return "test1";
+	//	/WEB-INF/views/test1.jsp 페이지를 만들어야 한다.
+		
+	}//end of public String test1(HttpServletRequest request) {------------
 }	
