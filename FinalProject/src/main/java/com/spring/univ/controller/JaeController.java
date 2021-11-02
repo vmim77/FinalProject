@@ -47,4 +47,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class JaeController {
 	
+	@RequestMapping(value="/test2.univ")
+	public String test1(HttpServletRequest request) {
+		
+		String name = "슈퍼짱재성 성공";
+		request.setAttribute("name", name);
+		
+		return "test1";
+		//   /WEB-INF/views/test1.jsp 페이지를 만들어야 한다.
+				
+	}
+	
+	
 }	
