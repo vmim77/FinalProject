@@ -36,21 +36,44 @@
 
   <%-- *** ajax로 파일을 업로드할때 가장 널리 사용하는 방법 ==> ajaxForm *** --%>
   <script type="text/javascript" src="<%= ctxPath%>/resources/js/jquery.form.min.js"></script>
+	
+  <script type="text/javascript">
 
+	$(document).ready(function(){
+		
+		$("div#showSideInfo").hide();
+		
+		$("div#hideSideInfo").click(function(){
+			$("div#mysideinfo").animate({'left':'-160px'}, 'slow');
+			$("div#mycontent").animate({"width":"100%"},'slow');
+			$("div#showSideInfo").fadeIn('slow');
+		});
+		
+		$("div#showSideInfo").click(function(){
+			$("div#mysideinfo").animate({'left':'0px'},'slow');
+			$("div#mycontent").animate({"width":"95%"},'slow');
+			$(this).hide();
+		});
+		
+	});
+	
+  </script>
 </head>
+
+
 <body>
-   <div id="mycontainer">
-      <div id="myheader">
-         <tiles:insertAttribute name="header" />
-      </div>
-      
-      <div id="mycontent">
-         <tiles:insertAttribute name="content" />
-      </div>
-      
-      <div id="myfooter">
-         <tiles:insertAttribute name="footer" />
-      </div>
-   </div>
+	<div id="mycontainer">
+		<div id="mysideinfo">
+			<tiles:insertAttribute name="sideinfo" />
+		</div>
+	      
+		<div id="mycontent">
+			<tiles:insertAttribute name="content" />
+		</div>
+		
+		<div id="showSideInfo" style="position: fixed; top: 50%; left: 4px;">
+			<i class="fas fa-forward fa-2x"></i>
+		</div>
+	</div>
 </body>
 </html>
