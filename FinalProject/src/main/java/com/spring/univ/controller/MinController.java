@@ -45,6 +45,6 @@ import org.springframework.web.servlet.ModelAndView;
 	여기서는 @Controller 를 사용하므로 @Component 기능이 이미 있으므로 @Component를 명기하지 않아도 BoardController 는 bean 으로 등록되어 스프링컨테이너가 자동적으로 관리해준다. 
 */
 @Controller
-public class MinController {
+public class MinController {//
 	
 }	
