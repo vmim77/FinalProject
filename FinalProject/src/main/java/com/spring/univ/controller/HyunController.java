@@ -47,7 +47,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HyunController {
 	
-	@RequestMapping(value="/test1.univ") // /test1.action의 url은 아래의 메소드가 응답함!
+	@RequestMapping(value="/test2.univ") // /test1.action의 url은 아래의 메소드가 응답함!
 	public String test1(HttpServletRequest request) {
 		
 		String name = "금길영내꺼해♥";
