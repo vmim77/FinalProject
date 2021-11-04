@@ -45,6 +45,14 @@ import org.springframework.web.servlet.ModelAndView;
 	여기서는 @Controller 를 사용하므로 @Component 기능이 이미 있으므로 @Component를 명기하지 않아도 BoardController 는 bean 으로 등록되어 스프링컨테이너가 자동적으로 관리해준다. 
 */
 @Controller
-public class MinController {//
+public class MinController {
+	@RequestMapping(value="/mintest.univ")
+	public String test1(HttpServletRequest request) {
+		
+		
+		return "mintest.tiles1";
+	//	/WEB-INF/views/sungtest.jsp 페이지를 만들어야 한다.
+		
+	}//end of public String test1(HttpServletRequest request) {------------
 	
 }	
