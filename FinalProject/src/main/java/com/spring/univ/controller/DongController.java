@@ -51,7 +51,9 @@ public class DongController {
 	@RequestMapping(value="/sideinfo.univ") 
 	public String sideinfo(HttpServletRequest request) {
 		
+		String name = "로그인화면";
+		request.setAttribute("name", name);
 		
-		return "sideinfo";
+		return "sideinfo.tiles1";
 	}
 }	
