@@ -53,7 +53,7 @@
 	<i class="hideicon fas fa-user-circle fa-2x"></i>
 	<div>계정</div>
 </a>
-<a class="menu" href="#">
+<a class="menu" href="<%= ctxPath%>/dashboard.univ">
 	<i class="hideicon fas fa-tachometer-alt fa-2x"></i>
 	<div>대시보드</div>
 </a>
@@ -93,7 +93,7 @@
 	<i class="hideicon fas fa-users-cog fa-2x"></i>
 	<div>관리</div>
 </a>
-<a class="menu" href="#">
+<a class="menu" href="<%= ctxPath%>/information.univ">
 	<i class="hideicon far fa-question-circle fa-2x"></i>
 	<div>도움말</div>
 </a>

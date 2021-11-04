@@ -71,12 +71,11 @@
 		<div id="mysideinfo">
 			<tiles:insertAttribute name="sideinfo" />
 		</div>
-		
-	
 	      
 		<div id="mycontent">
-			<div id="menu"></div>
-			<tiles:insertAttribute name="content" />
+			<div class="m-3">
+				<tiles:insertAttribute name="content" />
+			</div>
 		</div>
 		
 		<div id="showSideInfo" style="position: fixed; top: 50%; left: 10px; z-index: 2">

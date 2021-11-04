@@ -47,22 +47,29 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class SungController {
 	
-	@RequestMapping(value="/sungtest.univ")
+	@RequestMapping(value="/dashboard.univ")
 	public String sungtest(HttpServletRequest request) {
 		
-		
-		return "sungtest.tiles1";
-	//	/WEB-INF/views/sungtest.jsp 페이지를 만들어야 한다.
-		
+		return "Sunghyun/dashboard.tiles1";
+		//	/WEB-INF/views/dashboard.jsp 페이지를 만들어야 한다.
 	}
 	
 	@RequestMapping(value="/homework.univ")
 	public ModelAndView homework(ModelAndView mav) {
 		
-		
-		mav.setViewName("homework.tiles1");
+		mav.setViewName("Sunghyun/homework.tiles1");
 		
 		return mav;
+		//		/WEB-INF/views/homework.jsp 페이지를 만들어야 한다.
+	}
+	
+	@RequestMapping(value="/information.univ")
+	public ModelAndView information(ModelAndView mav) {
+		
+		mav.setViewName("Sunghyun/information.tiles1");
+		
+		return mav;
+		//		/WEB-INF/views/homework.jsp 페이지를 만들어야 한다.	
 	}
 
 	
