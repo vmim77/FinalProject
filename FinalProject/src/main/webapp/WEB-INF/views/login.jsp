@@ -179,7 +179,7 @@ function func_login(){
 	}
 	
 	var frm = document.loginFrm;
-	frm.action = "<%=ctxPath%>/loginEnd.action";
+	frm.action = "<%=ctxPath%>/sideinfo.univ";
 	frm.method = "POST";
 	frm.submit();
 	

@@ -47,4 +47,11 @@ public class DongController {
 		
 		return "login";
 	}
+	
+	@RequestMapping(value="/sideinfo.univ") 
+	public String sideinfo(HttpServletRequest request) {
+		
+		
+		return "sideinfo";
+	}
 }	
