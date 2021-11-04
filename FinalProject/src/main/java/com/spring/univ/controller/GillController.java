@@ -47,7 +47,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class GillController {
 	@RequestMapping(value="/test5.univ") // /test1.action의 url은 아래의 메소드가 응답함!
-	public String test1(HttpServletRequest request) {
+	public String test1(HttpServletRequest request) {//
 		
 		String name = "장현걸사랑해";
 		request.setAttribute("name", name);
