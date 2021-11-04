@@ -50,7 +50,7 @@ public class JaeController {
 	@RequestMapping(value="/test2.univ")
 	public String test1(HttpServletRequest request) {
 		
-		String name = "슈퍼짱재성 성공";
+		String name = "슈퍼짱재성 성공 재성 브랜치 테스트";
 		request.setAttribute("name", name);
 		
 		return "test1";
