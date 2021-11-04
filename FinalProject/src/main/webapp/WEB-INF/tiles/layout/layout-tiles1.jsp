@@ -42,7 +42,7 @@
   </style>
   
   <script type="text/javascript">
-
+  
 	$(document).ready(function(){
 		
 		$("div#showSideInfo").hide();
@@ -71,8 +71,11 @@
 		<div id="mysideinfo">
 			<tiles:insertAttribute name="sideinfo" />
 		</div>
+		
+	
 	      
 		<div id="mycontent">
+			<div id="menu"></div>
 			<tiles:insertAttribute name="content" />
 		</div>
 		
