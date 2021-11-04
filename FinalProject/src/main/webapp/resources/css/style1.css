@@ -6,10 +6,12 @@ body { font-family: Arial, Helvetica, sans-serif, 돋움; }
 
 #mysideinfo { position:absolute; margin-right:auto; width:5%; min-height: 1024px; background-color: #626363; }
 
+#menu { margin-right: auto; width: 5%; }
+
 #mycontent { 
 	margin-left:auto; 
 	width:95%; 
-	max-height: 700px;
+	max-height: 1000px;
 	overflow-y: auto; 
 	scrollbar-width: none;
 	-ms-overflow-style: none; 

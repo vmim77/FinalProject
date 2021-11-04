@@ -48,11 +48,22 @@ import org.springframework.web.servlet.ModelAndView;
 public class SungController {
 	
 	@RequestMapping(value="/sungtest.univ")
-	public String test1(HttpServletRequest request) {
+	public String sungtest(HttpServletRequest request) {
 		
 		
 		return "sungtest.tiles1";
 	//	/WEB-INF/views/sungtest.jsp 페이지를 만들어야 한다.
 		
-	}//end of public String test1(HttpServletRequest request) {------------
+	}
+	
+	@RequestMapping(value="/homework.univ")
+	public ModelAndView homework(ModelAndView mav) {
+		
+		
+		mav.setViewName("homework.tiles1");
+		
+		return mav;
+	}
+
+	
 }	

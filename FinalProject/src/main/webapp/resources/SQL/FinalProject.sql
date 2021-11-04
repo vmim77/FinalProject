@@ -19,6 +19,21 @@ create table tbl_member
 ,constraint CK_tbl_member_authority check(authority between 0 and 2) --0 학생, 1 교수, 2 총 관리자
 );
 
+select * 
+from tbl_member;
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('0000001', '관리자', '19950929', '01', 'qwer1234$', 'vmim88@gmail.com', '길영대학교 용현캠퍼스 대학본부 2층', '1', '없음', '01027973149', '2');
+-- 1 행 이(가) 삽입되었습니다.
+
+commit;
+-- 커밋 완료.
+
+insert into tbl_department(deptCode, deptName, deptLocation)
+values('01', '학사관리과', '대학본부 2층');
+-- 1 행 이(가) 삽입되었습니다.
+commit;
+-- 커밋 완료.
 
 -----------학과테이블----------------
 
