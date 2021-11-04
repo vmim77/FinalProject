@@ -9,12 +9,11 @@
 	.menu  { 
 		display: inline-block;
 		width: 100%; 
-		margin-bottom: 50px; 
 		text-align: center; 
 		font-size: 10pt;  
 		color: #fff; 
 		text-decoration: none;
-		padding: 15px;
+		padding: 10px 5px;
 	}
 	
 	.menu:hover {
@@ -23,44 +22,52 @@
 	}
 	
 	#hideSideInfo {
+		color: #fff; 
 		text-align: center;
-		margin-botton: 10px;
-		padding-top: 10px;
+		padding: 20px 5px;
 	}
 	
 	#hideSideInfo:hover {
 		background-color: #fff;
+		color: orange;	
 	}
 	
 </style>
 
-<div>
-	<a href="#"><img style="max-width: 100%; height: 100%; padding: 50px 0;" src="<%= ctxPath%>/resources/images/logo.png" /></a>
-	<a class="menu" href="#">
-		<i class="fas fa-user-circle fa-2x"></i>
-		<div>계정</div>
-	</a>
-	<a class="menu" href="#">
-		<i class="fas fa-tachometer-alt fa-2x"></i>
-		<div>대시보드</div>
-	</a>
-	<a class="menu" href="#">
-		<i class="fas fa-book fa-2x"></i>
-		<div>과목</div>
-	</a>
-	<a class="menu" href="#">
-		<i class="far fa-calendar fa-2x"></i>
-		<div>캘린더</div>
-	</a>
-	<a class="menu" href="#">
-		<i class="fas fa-envelope-open-text fa-2x"></i>
-		<div>메시지</div>
-	</a>
-	
-	<div id="hideSideInfo">
-		<i class="fas fa-backward fa-1x"></i>
-	</div>
-	
+<a href="#">
+	<img style="max-width:100%; margin: auto; padding: 30px 0;" src="<%= ctxPath%>/resources/images/logo.png" />
+</a>
+<a class="menu" href="#">
+	<i class="hideicon fas fa-user-circle fa-2x"></i>
+	<div>계정</div>
+</a>
+<a class="menu" href="#">
+	<i class="hideicon fas fa-tachometer-alt fa-2x"></i>
+	<div>대시보드</div>
+</a>
+<a class="menu" href="#">
+	<i class="hideicon fas fa-book fa-2x"></i>
+	<div>과목</div>
+</a>
+<a class="menu" href="#">
+	<i class="hideicon far fa-calendar fa-2x"></i>
+	<div>캘린더</div>
+</a>
+<a class="menu" href="#">
+	<i class="hideicon fas fa-envelope-open-text fa-2x"></i>
+	<div>메시지</div>
+</a>
+<a class="menu" href="#">
+	<i class="hideicon fas fa-users-cog fa-2x"></i>
+	<div>관리</div>
+</a>
+<a class="menu" href="#">
+	<i class="hideicon far fa-question-circle fa-2x"></i>
+	<div>도움말</div>
+</a>
+
+<div id="hideSideInfo">
+	<p style="text-align: center; "><i class="fas fa-backward fa-1x center"></i></p>
 </div>
 
 
