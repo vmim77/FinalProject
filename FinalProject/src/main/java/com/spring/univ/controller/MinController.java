@@ -51,8 +51,18 @@ public class MinController {
 		
 		
 		return "mintest.tiles1";
-	//	/WEB-INF/views/sungtest.jsp 페이지를 만들어야 한다.
 		
 	}//end of public String test1(HttpServletRequest request) {------------
+	
+	@RequestMapping(value="/attendance.univ")
+	public String attendance(HttpServletRequest request) {
+		
+		String name = "출결 및 학습현황";
+		request.setAttribute("name", name);
+		
+		return "attendance.tiles1";
+		
+	}//end of public String test1(HttpServletRequest request) {------------
+	
 	
 }	
