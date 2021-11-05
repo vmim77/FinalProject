@@ -49,11 +49,11 @@
 <a href="#">
 	<img style="max-width:100%; margin: auto; padding: 30px 0;" src="<%= ctxPath%>/resources/images/logo.png" />
 </a>
-<a class="menu" href="#">
+<a id="accountMenu" class="menu" href="">
 	<i class="hideicon fas fa-user-circle fa-2x"></i>
 	<div>계정</div>
 </a>
-<a class="menu" href="#">
+<a class="menu" href="<%=ctxPath%>/dashboard.univ">
 	<i class="hideicon fas fa-tachometer-alt fa-2x"></i>
 	<div>대시보드</div>
 </a>
@@ -74,7 +74,7 @@
     <button class="dropdown-item" type="button">토론</button>
     <button class="dropdown-item" type="button">강의콘텐츠</button>
     <button class="dropdown-item" type="button">ClassMix</button>
-    <button class="dropdown-item" type="button">사용자 및 그룹</button>
+    <button class="dropdown-item" type="button" onclick="javascript:location.href='<%=ctxPath%>/user.univ'">사용자 및 그룹</button>
     <button class="dropdown-item" type="button">성적</button>
     <button class="dropdown-item" type="button">출결/학습 현황</button>
   </div>
