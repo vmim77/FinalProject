@@ -62,15 +62,6 @@ public class SungController {
 		return mav;
 		//		/WEB-INF/views/homework.jsp 페이지를 만들어야 한다.
 	}
-	
-	@RequestMapping(value="/information.univ")
-	public ModelAndView information(ModelAndView mav) {
-		
-		mav.setViewName("Sunghyun/information.tiles1");
-		
-		return mav;
-		//		/WEB-INF/views/homework.jsp 페이지를 만들어야 한다.	
-	}
 
 	
 }	

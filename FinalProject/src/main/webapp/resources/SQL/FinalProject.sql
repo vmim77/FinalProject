@@ -78,6 +78,9 @@ create table tbl_FreeBoard
 ,constraint CK_tbl_FreeBoard_status check( status in(0,1) )
 );
 
+
+select *
+from tbl_freeboard;
 -----------자유게시판시퀸스----------------
 create sequence boardSeq
 start with 1

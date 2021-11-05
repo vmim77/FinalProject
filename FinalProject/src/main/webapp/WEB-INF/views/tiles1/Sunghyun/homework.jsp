@@ -53,7 +53,7 @@
 				</h2>
 			</div>
 
-			<div id="collapseOne" class="collapse show"
+			<div id="collapseOne" class="collapse"
 				aria-labelledby="headingOne" data-parent="#accordionExample">
 				<div class="card-body d-flex justify-content-center">
 					<table style="width: 80%;">
@@ -102,7 +102,7 @@
 					</h2>
 				</div>
 
-				<div id="collapseTwo" class="collapse show"
+				<div id="collapseTwo" class="collapse"
 					aria-labelledby="headingOne" data-parent="#accordionExample">
 					<div class="card-body d-flex justify-content-center">
 						<table style="width: 80%;">
@@ -135,6 +135,10 @@
 							<tr>
 								<th>금길영 교수</th>
 								<td>싫어요</td>
+							</tr>
+							<tr>
+								<th>금길영 교수</th>
+								<td>내일 과사로 오세요</td>
 							</tr>
 
 						</table>

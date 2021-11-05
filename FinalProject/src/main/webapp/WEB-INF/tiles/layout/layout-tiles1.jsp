@@ -73,7 +73,7 @@
 		</div>
 	      
 		<div id="mycontent">
-			<div class="m-3">
+			<div class="m-2">
 				<tiles:insertAttribute name="content" />
 			</div>
 		</div>

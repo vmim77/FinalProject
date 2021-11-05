@@ -23,7 +23,7 @@
 		padding: 20px 5px;
 	}
 	
-	.menu:hover, #hideSideInfo:hover, .dropdown-item:hover {
+	.menu:hover, #hideSideInfo:hover, .dropdown-item:hover, .dropright:hover {
 		background-color: orange;
 		color: #fff;
 		text-decoration: none;
@@ -41,7 +41,6 @@
 
 	$(document).ready(function(){
 		
-	
 	});
 
 </script>
@@ -59,11 +58,11 @@
 </a>
 
 <!-- Default dropright button -->
-<div class="menu btn-group dropright">
-  <a class="menu btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+<div class="menu btn-group dropright" style="width: 100%; text-align: center; padding: 10px 5px;">
+  <a class="btn dropdown-toggle p-0 m-0" data-toggle="dropdown" aria-expanded="false" style="color:#fff;">
 	<i class="hideicon fas fa-book fa-2x"></i>
-	<div>과목</div>
   </a>
+  <div data-toggle="dropdown" style="cursor: pointer;">과목</div>
   <div class="dropdown-menu ml-2">
     <button class="dropdown-item" type="button">홈</button>
     <button class="dropdown-item" type="button">수업계획서</button>
@@ -93,7 +92,7 @@
 	<i class="hideicon fas fa-users-cog fa-2x"></i>
 	<div>관리</div>
 </a>
-<a class="menu" href="<%= ctxPath%>/information.univ">
+<a class="menu" href="#">
 	<i class="hideicon far fa-question-circle fa-2x"></i>
 	<div>도움말</div>
 </a>
