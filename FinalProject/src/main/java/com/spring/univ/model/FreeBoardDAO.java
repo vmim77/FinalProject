@@ -61,11 +61,11 @@ public class FreeBoardDAO implements InterFreeBoardDAO {
 	// 원게시물에 있는 댓글들을 조회
 	@Override
 	public List<FreeCommentVO> getFreeCommentList(String parentSeq) {
-		List<FreeCommentVO> freecommentList = sqlsession2.selectList("Gill.getCommentList", parentSeq); 
+		List<FreeCommentVO> freecommentList = sqlsession2.selectList("Gill.getFreeCommentList", parentSeq); 
 		return freecommentList;
 	}//end of public List<CommentVO> getCommentList(String parentSeq) {---------------------------
 //================================================================================================
-	// 검색어 입력시 자동글 완성하기3
+	// 검색어 입력시 자동글 완성하기
 	@Override
 	public List<String> wordSearchShow(Map<String, String> paraMap) {
 		List<String> wordList = sqlsession2.selectList("Gill.wordSearchShow", paraMap);
@@ -100,6 +100,11 @@ public class FreeBoardDAO implements InterFreeBoardDAO {
 		return totalCount;
 	}//end of public int getCommentTotalCount(Map<String, String> paraMap) {
 //================================================================================================
+	@Override
+	public List<String> showdepartment() {
+		List<String> deptList = sqlsession2.selectList("Gill.showdepartment");
+		return deptList;
+	}
 
 	
 	

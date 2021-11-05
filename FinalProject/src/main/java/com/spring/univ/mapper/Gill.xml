@@ -6,5 +6,144 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="Gill">
 	
+	<select id="showdepartment" resultType="String">
+		select deptName 
+		from tbl_department
+	</select>
+	
+	<!-- 글쓰기(파일첨부가 없는 글쓰기) -->
+	<insert id="add" parameterType="com.spring.univ.model.FreeBoardVO">
+       	insert into tbl_FreeBoard(seq, fk_hakbun, name, subject, content, pw, readCount, regDate, status, commentCount, fk_code)
+        values(boardSeq.nextval, #{fk_hakbun}, #{name}, #{subject}, #{content}, #{pw}, default, default, default, default, #{fk_code})
+   </insert>
+
+	<!-- 글1개 조회하기 -->
+	<select id="getView" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO">
+		select previousseq, previoussubject, 
+		       seq, fk_hakbun, name, subject, content, readCount, regDate, nextseq, nextsubject
+		from 
+		(
+		    select   lag(seq, 1) over(order by seq desc) AS previousseq
+		           , lag(subject, 1) over(order by seq desc) AS previoussubject		           
+		           , seq, fk_hakbun, name, subject, content, readCount
+		           , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate		    
+		           , lead(seq, 1) over(order by seq desc) AS nextseq
+		           , lead(subject, 1) over(order by seq desc) AS nextsubject		        
+		    from tbl_FreeBoard
+		    where status = 1
+		) V 
+		where V.seq = #{seq}
+	</select>
+	
+	<!-- 글조회수 1증가 하기 -->
+	<update id="setAddReadCount" parameterType="String">
+		update tbl_FreeBoard set readCount = readCount + 1 
+		where seq = #{seq}
+	</update>
+	
+	<!-- 1개글 수정하기 -->
+    <update id="edit" parameterType="com.spring.univ.model.FreeBoardVO">
+        update tbl_FreeBoard set subject = #{subject}
+                               , content = #{content}
+        where seq = #{seq} and pw = #{pw} 
+    </update>
+
+
+    <!-- 1개글 삭제하기 -->
+    <delete id="del" parameterType="HashMap">
+    	delete from tbl_FreeBoard 
+        where seq = #{seq} and pw = #{pw} 
+    </delete>
+    
+    
+    <!-- 댓글쓰기(tbl_comment 테이블에 insert) -->
+    <insert id="addComment" parameterType="com.spring.univ.model.FreeCommentVO">
+    	insert into tbl_FreeComment(seq, fk_hakbun, name, content, regDate, parentSeq, status, fk_code)
+    	values(commentSeq.nextval, #{fk_userid}, #{name}, #{content}, default, #{parentSeq}, default, 1)
+    </insert>
+
+    <!-- tbl_board 테이블에 commentCount 컬럼의 값을 1증가(update) -->
+    <update id="updateCommentCount" parameterType="String">
+    	update tbl_FreeBoard set commentCount = commentCount + 1 
+    	where seq = #{parentSeq}
+    </update>
+    
+    <!-- 원게시물에 딸린 댓글들을 조회해오는 것  -->
+	<select id="getFreeCommentList" parameterType="String" resultType="com.spring.univ.model.FreeCommentVO">
+		select name, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate
+		from tbl_FreeComment
+		where status = 1 and parentSeq = #{parentSeq}
+		order by seq desc
+	</select>
+    
+    <!-- 검색어 입력시 자동글 완성하기  -->
+	<select id="wordSearchShow" parameterType="HashMap" resultType="String"> 
+	    <choose>
+	        <when test="searchType eq 'name'">
+	    	    select distinct ${searchType}    
+	        </when>
+	        <otherwise>
+	            select ${searchType} 
+	        </otherwise>
+	    </choose>
+	    from tbl_FreeBoard
+	    where status = 1 
+	    and lower( ${searchType} ) like '%'|| lower( #{searchWord} ) ||'%'
+	    <if test="searchType neq 'name'">
+	    	order by seq desc
+	    </if>
+	</select>
+	
+
+    <!-- 총 게시물 건수(totalCount) 구하기 - 검색이 있을때와 검색이 없을때로 나뉜다. -->
+    <select id="getTotalCount" parameterType="HashMap" resultType="int" >
+         select count(*)
+	     from tbl_FreeBoard 
+		 where status = 1
+		 <if test='searchWord != ""'>  
+		 and lower(${searchType}) like '%'||lower(#{searchWord})||'%'
+		 </if> 
+    </select>
+	
+    <!-- 페이징 처리한 글목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함한것) 답글포함 -->
+    <select id="boardListSearchWithPaging" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO"> 
+    select seq, fk_hakbun, name, subject, readCount, regDate, commentCount 
+	from 
+	(
+	    select row_number() over(order by seq desc) AS rno
+	         , seq, fk_hakbun, name, subject
+	         , readCount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+	         , commentCount
+	    from tbl_FreeBoard 
+	    where status = 1
+	    <if test='searchType != "" and searchWord != ""'>
+	    and lower( ${searchType} ) like '%'|| lower( #{searchWord} ) ||'%'
+	    </if>
+	) V
+	where rno between #{startRno} and #{endRno}
+    </select>  
+    
+    
+    <!-- 원게시물에 딸린 댓글들을 페이징처리해서 조회해오기(Ajax 로 처리) -->
+    <select id="getCommentListPaging" parameterType="HashMap" resultType="com.spring.univ.model.FreeCommentVO">
+	    select name, content, regDate
+		from 
+		(
+		    select row_number() over(order by seq desc) AS rno
+		         , name, content
+		         , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate 
+		    from tbl_FreeComment
+		    where status = 1 and parentSeq = #{parentSeq}
+		) V 
+		where rno between #{startRno} and #{endRno}
+    </select>
+     
+     
+    <!-- 원글 글번호(parentSeq)에 해당하는 댓글의 총개수를 알아오기(Ajax 로 처리) -->
+    <select id="getCommentTotalCount" parameterType="HashMap" resultType="int">
+	   select count(*)
+	   from tbl_FreeComment
+	   where status = 1 and parentSeq = #{parentSeq}
+    </select>
 	
 </mapper>

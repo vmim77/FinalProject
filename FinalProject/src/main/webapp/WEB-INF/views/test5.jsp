@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-dddddddddddddddddddddddddddddddddddddddddddddddddddd
-<h1>${requestScope.name}</h1>
+${requestScope.deptList}
 </body>
 </html>

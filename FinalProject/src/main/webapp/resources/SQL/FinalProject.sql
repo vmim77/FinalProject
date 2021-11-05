@@ -45,6 +45,65 @@ create table tbl_subject
 ,constraint CK_tbl_subject_hakjum check(hakjum between 2 and 4)      
 );
 
+
+
+
+------------몇주차 테이블----------------
+create table tbl_week
+(fk_code           varchar2(100)                 --과목코드 
+,week              varchar2(50)                  --몇주차인지
+,startday          varchar2(100) default sysdate --시작날짜
+,constraint PK_tbl_week_week primary key(week)
+,constraint FK_tbl_week_fk_code foreign key(fk_code) references tbl_subject(code) on delete cascade  
+);
+
+-----------몇주차시퀸스----------------
+create sequence weekSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+
+------------몇차시 테이블----------------
+create table tbl_weeklesson
+(fk_week           varchar2(50)  --몇주차인지
+,lesson            varchar2(100) --차시 명 ( 1주차 1차시, 1주차 2차시... )
+,video             varchar2(800) --비디오 명(유투브)
+,savefile          varchar2(300) --저장용
+,uploadfile        varchar2(300) --업로드용 
+,constraint PK_tbl_weeklesson_lesson primary key(lesson)
+,constraint FK_tbl_lesson_fk_week foreign key(fk_week) references tbl_week(week) on delete cascade  
+);
+
+-----------몇차시시퀸스----------------
+create sequence lessonSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+
+------------출석 테이블----------------
+create table tbl_attend
+(fk_lesson           varchar2(100) --차시 명 ( 1주차 1차시, 1주차 2차시... ) 
+,fk_hakbun           varchar2(50)  --학번
+,constraint FK_tbl_attend_fk_lesson foreign key(fk_lesson) references tbl_weeklesson(lesson) on delete cascade  
+);
+
+
+
+
+
+
+
+
 -----------자유게시판테이블----------------
 
 create table tbl_FreeBoard

@@ -21,12 +21,12 @@ public class UnivService implements InterUnivService {
 //==============================================================================================
 	// 글 조회수 증가와 함께 글 1개를 보여주는 것
 	@Override
-	public FreeBoardVO getView(Map<String, String> paraMap, String login_userid) {
+	public FreeBoardVO getView(Map<String, String> paraMap, String login_hakbun) {
 	
 		// 글 1개를 조회해주는 함수 호출
 		FreeBoardVO freeboardvo = dao.getView(paraMap);
 		
-		if(login_userid != null && freeboardvo != null && !(login_userid.equals(freeboardvo.getFk_hakbun()))) {
+		if(login_hakbun != null && freeboardvo != null && !(login_hakbun.equals(freeboardvo.getFk_hakbun()))) {
 			
 			// 글 조회수 1 증가시키는 함수 - 글 번호만 넘겨준다.
 			dao.setAddReadCount(freeboardvo.getSeq()); 
@@ -79,11 +79,11 @@ public class UnivService implements InterUnivService {
 	// 원게시물에 있는 댓글들을 조회
 	@Override
 	public List<FreeCommentVO> getCommentList(String parentSeq) {
-		List<FreeCommentVO> getFreeCommentList = dao.getFreeCommentList(parentSeq);
-		return getFreeCommentList;
+		List<FreeCommentVO> freecommentList = dao.getFreeCommentList(parentSeq);
+		return freecommentList;
 	}//end of public List<CommentVO> getCommentList(String parentSeq) {-------------------------
 //==============================================================================================
-	// 검색어 입력시 자동글 완성하기3
+	// 검색어 입력시 자동글 완성하기
 	@Override
 	public List<String> wordSearchShow(Map<String, String> paraMap) {
 		List<String> wordList =  dao.wordSearchShow(paraMap);
@@ -118,6 +118,12 @@ public class UnivService implements InterUnivService {
 		return totalCount;
 	}//end of public int getCommentTotalCount(Map<String, String> paraMap) {-------------------
 //==============================================================================================
+	@Override
+	public List<String> showdepartment() {
+		List<String> deptList = dao.showdepartment();
+		return deptList;
+	}
+		
 	
 	
 }//end of public class BoardService implements InterBoardService {

@@ -17,13 +17,14 @@ public class FreeBoardVO {
 	private String regDate;   // 글쓴시간
 	private int status;       // 글삭제여부   1:사용가능한 글,  0:삭제된글
 	private int commentCount; // 조회수
-
-	/////////////////////////////////////////////////////////////////////
+	private String fk_code;    // 과목코드
 	
+	/////////////////////////////////////////////////////////////////////
+
 	public FreeBoardVO() {}
 	
 	public FreeBoardVO(String seq, String fk_hakbun, String name, String subject, String content, String pw,
-			String readCount, String regDate, int status, int commentCount) {
+			String readCount, String regDate, int status, int commentCount, String fk_code) {
 		this.seq = seq;
 		this.fk_hakbun = fk_hakbun;
 		this.name = name;
@@ -34,10 +35,18 @@ public class FreeBoardVO {
 		this.regDate = regDate;
 		this.status = status;
 		this.commentCount = commentCount;
+		this.fk_code = fk_code;
 	}
 
 	/////////////////////////////////////////////////////////////////////
 	
+	public String getFk_code() {
+		return fk_code;
+	}
+
+	public void setFk_code(String fk_code) {
+		this.fk_code = fk_code;
+	}
 	public String getSeq() {
 		return seq;
 	}

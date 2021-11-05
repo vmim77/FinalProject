@@ -5,7 +5,7 @@ import java.util.*;
 public interface InterFreeBoardDAO {
 	
 	// 글쓰기(파일첨부가 없는 글쓰기)
-	int add(FreeBoardVO Freeboardvo);
+	int add(FreeBoardVO freeboardvo);
 	
 	// 글 조회수 증가와 함께 글 1개를 보여주는 것
 	FreeBoardVO getView(Map<String, String> paraMap);
@@ -28,7 +28,7 @@ public interface InterFreeBoardDAO {
 	// 원게시물에 있는 댓글들을 조회
 	List<FreeCommentVO> getFreeCommentList(String parentSeq);
 
-	// 검색어 입력시 자동글 완성하기3
+	// 검색어 입력시 자동글 완성하기
 	List<String> wordSearchShow(Map<String, String> paraMap);
 
 	// 총 게시물 건수(totalCount) 구하기 ==> 검색이 있을떄 || 검색이 없을때 로 나뉜다
@@ -42,6 +42,8 @@ public interface InterFreeBoardDAO {
 
 	// 원글 글번호(parentSeq)에 해당하는 댓글의 총개수를 알아오기
 	int getCommentTotalCount(Map<String, String> paraMap);
+	
+	List<String> showdepartment();
 	
 	
 }//end of public interface InterBoardDAO {
