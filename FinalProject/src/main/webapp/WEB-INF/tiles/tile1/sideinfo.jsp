@@ -16,19 +16,17 @@
 		padding: 10px 5px;
 	}
 	
-	
 	#hideSideInfo {
 		color: #fff; 
 		text-align: center;
 		padding: 20px 5px;
 	}
 	
-	.menu:hover, #hideSideInfo:hover, .dropdown-item:hover {
+	.menu:hover, #hideSideInfo:hover, .dropdown-item:hover, .dropright:hover {
 		background-color: orange;
 		color: #fff;
 		text-decoration: none;
 	}
-	
 	
 	.dropright .dropdown-toggle::after {
     	display: none;
@@ -41,29 +39,29 @@
 
 	$(document).ready(function(){
 		
-	
 	});
-	
+
 </script>
 
 <a href="#">
 	<img style="max-width:100%; margin: auto; padding: 30px 0;" src="<%= ctxPath%>/resources/images/logo.png" />
 </a>
-<a class="menu" href="#">
+<a id="accountMenu"class="menu" href="#">
 	<i class="hideicon fas fa-user-circle fa-2x"></i>
 	<div>계정</div>
 </a>
-<a class="menu" href="#">
+<a class="menu" href="<%= ctxPath%>/dashboard.univ">
 	<i class="hideicon fas fa-tachometer-alt fa-2x"></i>
 	<div>대시보드</div>
 </a>
 
+
 <!-- Default dropright button -->
-<div class="menu btn-group dropright">
-  <a class="menu btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+<div id="subjectMenu" class="menu btn-group dropright" style="width: 100%; text-align: center; padding: 10px 5px;">
+  <a class="btn dropdown-toggle p-0 m-0" data-toggle="dropdown" aria-expanded="false" style="color:#fff;">
 	<i class="hideicon fas fa-book fa-2x"></i>
-	<div>과목</div>
   </a>
+  <div data-toggle="dropdown" style="cursor: pointer;">과목</div>
   <div class="dropdown-menu ml-2">
     <button class="dropdown-item" type="button">홈</button>
     <button class="dropdown-item" type="button">수업계획서</button>
@@ -101,4 +99,5 @@
 <div id="hideSideInfo">
 	<p style="text-align: center; "><i class="fas fa-backward fa-1x center"></i></p>
 </div>
+
 

@@ -45,7 +45,7 @@
 
 </script>
 
-<h1>출결/학습 현황</h1>
+<h1>&nbsp;출결/학습 현황</h1>
 <hr style="color: 2px #f2f2f2;">
 
 <div style="display: flex;">
