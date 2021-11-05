@@ -45,7 +45,21 @@
 
 </script>
 
-<h1>&nbsp;출결/학습 현황</h1>
+ <div class="collapse" id="navbarToggleExternalContent">
+  <div class="bg-primary p-4">
+    <h5 class="text-white h4"></h5>
+    <span class="text-muted"></span>
+  </div>
+</div>
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div style="margin-right: 1070px; color: #00aaff;">빅데이터실무_256033_001분반</div>
+  </div>
+</nav>
+
 <hr style="color: 2px #f2f2f2;">
 
 <div style="display: flex;">
