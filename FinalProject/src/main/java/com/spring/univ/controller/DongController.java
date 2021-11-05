@@ -51,13 +51,49 @@ import com.spring.univ.service.InterUnivService;
 @Controller
 public class DongController {
 	
-	@RequestMapping(value="/dashboard.univ") // /test1.action의 url은 아래의 메소드가 응답함!
-	public String test1(HttpServletRequest request) {//
-		
-		
-		return "dashboard.tiles1";
-	//	/WEB-INF/views/test1.jsp 페이지를 만들어야 한다.
+ @Autowired
+   private InterUnivService service;
+   // Type에 따라 알아서 Bean 을 주입해준다.
 	
+	@RequestMapping(value="/dashboard.univ", method= {RequestMethod.GET}) // /test1.action의 url은 아래의 메소드가 응답함!
+	public ModelAndView dashboard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {//
+		
+		String hakbun = request.getParameter("hakbun");
+	     String pwd = request.getParameter("pwd");
+	    
+	      Map<String, String> paraMap = new HashMap<>();
+	      paraMap.put("hakbun", hakbun);
+	      paraMap.put("pwd", pwd);
+	      
+	      MemberVO loginuser = service.getLoginMember(paraMap);
+	      
+	      if(loginuser == null) { // 로그인 실패시
+	        
+	    	  String message = "학번 또는 암호가 틀립니다.";
+	         String loc = "javascript:history.back()";
+	         
+	         mav.addObject("message", message); // request.setAttribute("message", message);
+	         mav.addObject("loc", loc);         // request.setAttribute("loc", loc);
+	      
+	         mav.setViewName("msg");             // return "msg"; 
+	      //  /WEB-INF/views/msg.jsp 파일을 생성한다.
+	    	
+	      }
+	      
+	      else {
+	    	  HttpSession session = request.getSession();
+	    	  
+	    	  session.setAttribute("loginuser", loginuser);
+	    	  
+	    	   mav.addObject("session", session);
+	    	  
+	    	   mav.setViewName("dashboard.tiles1"); 
+	      }
+	     
+	     
+		return mav;
+	//	/WEB-INF/views/test1.jsp 페이지를 만들어야 한다.
+	     
 	}
 	
 	@RequestMapping(value="/user.univ") 
@@ -67,69 +103,24 @@ public class DongController {
 		return "user.tiles1";
 	}
 	
-	@RequestMapping(value="/userss.univ") 
-	public String users(HttpServletRequest request) {//
-		
-		
-		return "users.tiles1";
-	}
+	
 	
 
 	
 //=======================================================================
-  @Autowired
-   private InterUnivService service;
-   // Type에 따라 알아서 Bean 을 주입해준다.
+ 
 	
 // #동준. 로그인 
 
 	@RequestMapping(value="/MemberLogin.univ",method= {RequestMethod.GET}) 
-	public String MemberLogin(HttpServletRequest request) {//
+	public ModelAndView MemberLogin(HttpServletRequest request,ModelAndView mav) {//
 		
 		
-		return "login/MemberLogin.tiles1";
+		mav.setViewName("login/MemberLogin");
+		
+		return mav;
 	}
-//==========================================================================================	
-	 // === 로그인 처리하기 === //
-	   @RequestMapping(value="/users.univ", method= {RequestMethod.GET})
-	//   public String loginEnd(HttpServletRequest request) { 
-	   public ModelAndView users(HttpServletRequest request, ModelAndView mav) {   
-	      
-	      String hakbun = request.getParameter("hakbun");
-	      String pwd = request.getParameter("pwd");
-	      Map<String, String> paraMap = new HashMap<>();
-	      paraMap.put("hakbun", hakbun);
-	      paraMap.put("pwd", pwd);
-	      
-	      MemberVO loginuser = service.getLoginMember(paraMap);
-	      
-	      if(loginuser == null) { // 로그인 실패시
-	         String message = "학번 또는 암호가 틀립니다.";
-	         String loc = "javascript:history.back()";
-	         
-	         mav.addObject("message", message); // request.setAttribute("message", message);
-	         mav.addObject("loc", loc);         // request.setAttribute("loc", loc);
-	      
-	         mav.setViewName("msg");             // return "msg"; 
-	      //  /WEB-INF/views/msg.jsp 파일을 생성한다.
-	      }
-	      
-	      else {
-	    	 
-	    	  String message = "로그인 성공";
-	    	  String loc = request.getContextPath()+"/dashboard.univ";
-	    	  
-	      
-	    	  mav.addObject("message", message);
-	    	  mav.addObject("loc", loc);
-	    	  
-	    	  mav.setViewName("msg");   
-	      }
-	      
-	      return mav;
-	      
-	   }
-	   
+//==========================================================================================		   
 	 //////////////////////////////////////////////////////////////////////////////////
 	   // ===  로그아웃 처리하기 === //
 	   @RequestMapping(value="/logout.univ")
@@ -137,23 +128,14 @@ public class DongController {
 	      
 	      HttpSession session = request.getSession();
 	      
-	      String goBackURL = (String) session.getAttribute("goBackURL");
-	      
 	      session.invalidate();
 	      
 	      String message = "로그아웃 되었습니다.";
-	      
 	      String loc = "";
-	      if(goBackURL != null) {
-	         loc = request.getContextPath()+goBackURL;
-	      }
-	      else {
-	         loc = request.getContextPath()+"/dashboard.univ";
-	      }
 	      
 	      mav.addObject("message", message); 
 	      mav.addObject("loc", loc);         
-	      mav.setViewName("msg");
+	      mav.setViewName("dashboard.tiles1");
 	      
 	      return mav;
 	   }

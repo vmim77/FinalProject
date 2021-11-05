@@ -35,7 +35,7 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		
+		console.log("${requestScope.loginuser.hakbun}")
 	});
 	
 </script>
@@ -48,9 +48,9 @@
 		
 		<hr>
 		
-		  <c:if test="${not empty sessionScope.loginuser.hakbun}">
+		  <c:if test="${not empty sessionScope.loginuser}">
          <div style="float: right;">
-           <span style="color: navy; font-weight: bold;">${sessionScope.loginuser.hakbun}</span> 님 로그인중.. 
+           <span style="color: navy; font-weight: bold;">${sessionScope.loginuser.name}</span> 님 로그인중 
          </div>
       </c:if>
 		

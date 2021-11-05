@@ -134,14 +134,14 @@
             <img src="<%= ctxPath%>/resources/images/personimg.png" style="width: 50%; margin: auto;"/>
          </div>
          <div style="clear:both; text-align:center;">
-            <div style="font-size: 1em;">${requestScope.loginuser.name}<br>${sessionScope.loginuser.hakbun}</div>
-                <c:if test="${empty requestScope.loginuser}">
+            <div style="font-size: 1em;">${sessionScope.loginuser.name}<br>${sessionScope.loginuser.hakbun}</div>
+                <c:if test="${empty sessionScope.loginuser}">
                     <a class="btn btn-secondary btn-sm justify-content-center" href="<%=ctxPath%>/MemberLogin.univ">로그인</a>
                  </c:if>
   	                           
-               <c:if test="${not empty requestScope.loginuser}">
+               <c:if test="${not empty sessionScope.loginuser}">
                   <a class="btn btn-secondary btn-sm justify-content-center" href="#">나의정보</a>
-                  <a class="btn btn-secondary btn-sm justify-content-center" href="<%=ctxPath%>/dashboard.univ">로그아웃</a>
+                  <a class="btn btn-secondary btn-sm justify-content-center" href="<%=ctxPath%>/MemberLogin.univ">로그아웃</a>
                </c:if>
          </div>
          <hr>

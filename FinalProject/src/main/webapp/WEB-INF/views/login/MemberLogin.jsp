@@ -177,9 +177,9 @@ function func_login(){
 		return; // 종료
 		
 	}
-	
+
 	var frm = document.loginFrm;
-	frm.action = "<%=ctxPath%>/dashboard.univ";
+	frm.action = "<%= ctxPath%>/dashboard.univ";
 	frm.method = "GET";
 	frm.submit();
 	
