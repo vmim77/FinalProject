@@ -4,7 +4,7 @@
 <style>
 
  .card {
- 	margin-left: 10px;
+ 	margin: 10px;
  }
  
  .card-text {
@@ -12,11 +12,11 @@
  	font-size: 10pt;
  }
  
- 
  span {
  	color: gray;
- 	font-size: 11pt;
+ 	font-size: 8pt;
  }
+ 
 </style>
 
 <script type="text/javascript">

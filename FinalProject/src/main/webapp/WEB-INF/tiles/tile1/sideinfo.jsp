@@ -16,7 +16,6 @@
 		padding: 10px 5px;
 	}
 	
-	
 	#hideSideInfo {
 		color: #fff; 
 		text-align: center;
@@ -28,7 +27,6 @@
 		color: #fff;
 		text-decoration: none;
 	}
-	
 	
 	.dropright .dropdown-toggle::after {
     	display: none;
