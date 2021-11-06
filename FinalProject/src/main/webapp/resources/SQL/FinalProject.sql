@@ -18,6 +18,10 @@ create table tbl_member
 ,constraint CK_tbl_member_status check(status between 0 and 4)       --0 등록예정, 1 재학, 2 휴학, 3 자퇴, 4 졸업
 ,constraint CK_tbl_member_authority check(authority between 0 and 2) --0 학생, 1 교수, 2 총 관리자
 );
+commit;
+
+select *
+from tbl_member;
 
 
 -----------학과테이블----------------
@@ -30,10 +34,17 @@ create table tbl_department
 );
 commit;
 
+select *
+from tbl_subject;
 
-
-
-insert into tbl_subject(code, subject, teacher, ban, hakjum, classDate, )
+insert into tbl_subject(code, subject, teacher, ban, hakjum, classDate, fk_deptCode)
+values('0501','인간행동과사회환경','김미선','a','3','월','05');
+insert into tbl_subject(code, subject, teacher, ban, hakjum, classDate, fk_deptCode)
+values('0502','자원봉사기초','유진희','b','3','화','05');
+insert into tbl_subject(code, subject, teacher, ban, hakjum, classDate, fk_deptCode)
+values('0503','가족복지론','임준철','c','2','수','05');
+insert into tbl_subject(code, subject, teacher, ban, hakjum, classDate, fk_deptCode)
+values('0504','장애인복지론','김형준','d','3','목','05');
 -----------과목테이블----------------
 
 create table tbl_subject
@@ -174,3 +185,77 @@ alter table tbl_FreeComment add constraint FK_tbl_FreeComment_hakbun foreign key
 alter table tbl_FreeComment add constraint FK_tbl_FreeComment_parentSeq foreign key(parentSeq) references tbl_FreeBoard(seq) on delete cascade;
 alter table tbl_FreeComment add constraint CK_tbl_FreeComment_status check( status in(1,0) ) ;
 ---------------------------------------------------------------------------------
+
+
+
+
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100001','금길영','19970921','01','qwer1234$','gill@naver.com','서울특별시 마포구 월드컵북로 21 2층 풍성빌딩','1','','010-1234-5678','1');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100002','이재성','19940501','01','qwer1234$','gill@naver.com','서울특별시 마포구 월드컵북로 21 2층 풍성빌딩','1','','010-1234-5678','1');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100003','장현걸','19961204','01','qwer1234$','gill@naver.com','서울특별시 마포구 월드컵북로 21 2층 풍성빌딩','1','','010-1234-5678','1');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100004','김민경','19950814','01','qwer1234$','gill@naver.com','서울특별시 마포구 월드컵북로 21 2층 풍성빌딩','1','','010-1234-5678','1');
+
+---------------------------------------------------------------------------------------------------------------------------
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100005','','','','','','','','','','');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100006','','','','','','','','','','');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100007','','','','','','','','','','');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100008','','','','','','','','','','');
+
+---------------------------------------------------------------------------------------------------------------------------
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100009','','','','','','','','','','');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100010','','','','','','','','','','');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100011','','','','','','','','','','');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100012','','','','','','','','','','');
+
+---------------------------------------------------------------------------------------------------------------------------
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100013','','','','','','','','','','');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100014','','','','','','','','','','');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100015','','','','','','','','','','');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100016','','','','','','','','','','');
+
+---------------------------------------------------------------------------------------------------------------------------
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100017','','','','','','','','','','');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100018','','','','','','','','','','');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100019','','','','','','','','','','');
+
+insert into tbl_member(hakbun, name, birth, fk_dept_code, pwd, email, address, status, picture, phone, authority)
+values('2100020','','','','','','','','','','');
+
+---------------------------------------------------------------------------------------------------------------------------
