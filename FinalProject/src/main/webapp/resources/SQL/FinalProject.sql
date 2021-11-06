@@ -28,9 +28,12 @@ create table tbl_department
 ,deptLocation       varchar2(300) not null --학과위치
 ,constraint PK_tbl_department_deptCode primary key(deptCode)
 );
+commit;
 
 
 
+
+insert into tbl_subject(code, subject, teacher, ban, hakjum, classDate, )
 -----------과목테이블----------------
 
 create table tbl_subject
@@ -44,9 +47,10 @@ create table tbl_subject
 ,constraint UQ_tbl_subject_subject unique(subject)
 ,constraint CK_tbl_subject_hakjum check(hakjum between 2 and 4)      
 );
-
-
-
+alter table tbl_subject
+add fk_deptCode varchar2(100);
+alter table tbl_subject add constraint FK_tbl_subject_fk_deptcode foreign key(fk_deptCode) references tbl_department(deptCode) on delete cascade
+commit;
 
 ------------몇주차 테이블----------------
 create table tbl_week
