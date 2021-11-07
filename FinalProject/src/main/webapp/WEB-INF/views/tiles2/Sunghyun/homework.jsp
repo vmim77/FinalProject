@@ -21,12 +21,14 @@
 
 	$(document).ready(function(){
 		
+		$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
+		
 	});
 	
 </script>
 
 
-<h1>과제 및 평가</h1>
+<h3>${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반(${requestScope.subjectMap.teacher}) 강의실 > 과제 및 평가</h3>
 <hr>
 
 <div id="homeworkContainer" style="width: 100%;">

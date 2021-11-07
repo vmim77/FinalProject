@@ -54,7 +54,7 @@ public class SungController {
 	private InterSungService service;
 	
 	@RequestMapping(value="/dashboard.univ")
-	public String sungtest(HttpServletRequest request) {
+	public String dashboard(HttpServletRequest request) {
 		
 		return "Sunghyun/dashboard.tiles1";
 	}
@@ -81,8 +81,10 @@ public class SungController {
 	public ModelAndView lesson(ModelAndView mav, HttpServletRequest request) {
 		
 		String code = request.getParameter("code");
+		Map<String,String> subjectMap = service.getSubjectInfo(code);
 		
 		mav.addObject("code", code);
+		mav.addObject("subjectMap", subjectMap);
 		mav.setViewName("Sunghyun/lesson.tiles2");
 		return mav;
 	}
@@ -91,8 +93,10 @@ public class SungController {
 	public ModelAndView homework(ModelAndView mav, HttpServletRequest request) {
 		
 		String code = request.getParameter("code");
+		Map<String,String> subjectMap = service.getSubjectInfo(code);
 		
 		mav.addObject("code", code);
+		mav.addObject("subjectMap", subjectMap);
 		mav.setViewName("Sunghyun/homework.tiles2");
 		
 		return mav;

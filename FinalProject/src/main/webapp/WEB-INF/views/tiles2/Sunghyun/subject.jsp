@@ -19,6 +19,8 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
+		$("ul#sideMenuList > li:first-child").addClass("hoverdEffect");
+		
 		for(var i=0; i<12; i++){
 			
 			var html = "<div class='card'>";

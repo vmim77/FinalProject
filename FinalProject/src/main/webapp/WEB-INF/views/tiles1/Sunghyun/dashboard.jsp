@@ -42,7 +42,7 @@
 		<hr>
 		
 		<div class="row mx-1">
-			   <div class="card col-3 p-0" style="width: 16rem;">
+			   <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
 				  <div style="width: 100%; height: 200px; background-color: orange;"></div>
 				  <div class="card-body">
 				    <h5 class="card-title">하이테크 마케팅</h5>
@@ -51,7 +51,7 @@
 				  </div>
 			   </div>
 		
-			   <div class="card col-3 p-0" style="width: 16rem;">
+			   <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
 				  <div style="width: 100%; height: 200px; background-color: green;"></div>
 				  <div class="card-body">
 				    <h5 class="card-title">빅데이터 실무</h5>
@@ -60,7 +60,7 @@
 				  </div>
 			   </div>
 		
-			   <div class="card col-3 p-0" style="width: 16rem;">
+			   <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
 				  <div style="width: 100%; height: 200px; background-color: purple;"></div>
 				  <div class="card-body">
 				    <h5 class="card-title">재무관리실무</h5>
@@ -69,7 +69,7 @@
 				  </div>
 			   </div>
 			   
-			   <div class="card col-3 p-0" style="width: 16rem;">
+			   <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
 				  <div style="width: 100%; height: 200px; background-color: gray;"></div>
 				  <div class="card-body">
 				    <h5 class="card-title">IT융합비즈니스 사례연구</h5>
