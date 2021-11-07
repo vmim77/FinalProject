@@ -8,11 +8,14 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.spring.univ.service.InterSungService;
 
 
 /*
@@ -47,20 +50,52 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class SungController {
 	
+	@Autowired
+	private InterSungService service;
+	
 	@RequestMapping(value="/dashboard.univ")
 	public String sungtest(HttpServletRequest request) {
 		
 		return "Sunghyun/dashboard.tiles1";
-		//	/WEB-INF/views/dashboard.jsp 페이지를 만들어야 한다.
+	}
+	
+	@RequestMapping(value="/subject.univ")
+	public ModelAndView subject(ModelAndView mav, HttpServletRequest request) {
+		
+		String code = request.getParameter("code");
+		
+		if(code.trim().isEmpty()) {
+			mav.setViewName("redirect:/dashboard.univ"); 
+		}
+		else {
+			Map<String,String> subjectMap = service.getSubjectInfo(code);
+			mav.addObject("code", code);
+			mav.addObject("subjectMap", subjectMap);
+			mav.setViewName("Sunghyun/subject.tiles2");
+		}
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/lesson.univ")
+	public ModelAndView lesson(ModelAndView mav, HttpServletRequest request) {
+		
+		String code = request.getParameter("code");
+		
+		mav.addObject("code", code);
+		mav.setViewName("Sunghyun/lesson.tiles2");
+		return mav;
 	}
 	
 	@RequestMapping(value="/homework.univ")
-	public ModelAndView homework(ModelAndView mav) {
+	public ModelAndView homework(ModelAndView mav, HttpServletRequest request) {
 		
-		mav.setViewName("Sunghyun/homework.tiles1");
+		String code = request.getParameter("code");
+		
+		mav.addObject("code", code);
+		mav.setViewName("Sunghyun/homework.tiles2");
 		
 		return mav;
-		//		/WEB-INF/views/homework.jsp 페이지를 만들어야 한다.
 	}
 
 	

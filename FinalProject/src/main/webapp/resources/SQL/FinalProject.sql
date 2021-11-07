@@ -60,6 +60,17 @@ create table tbl_subject
 ,constraint CK_tbl_subject_hakjum check(hakjum between 2 and 4)      
 );
 
+select *
+from tbl_subject
+
+-- 과목 페이지 표시용 SQL
+select code, subject, teacher, ban, hakjum, classdate, fk_deptcode AS deptcode, B.deptName AS deptName, B.deptLocation AS deptLocation
+from tbl_subject A
+JOIN tbl_department B
+on A.fk_deptcode = B.deptCode
+where A.code = 0202
+
+
 -----------자유게시판테이블----------------
 
 create table tbl_FreeBoard
