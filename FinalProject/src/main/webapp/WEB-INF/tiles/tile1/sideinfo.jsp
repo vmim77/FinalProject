@@ -16,39 +16,69 @@
 		padding: 10px 5px;
 	}
 	
-	.menu:hover {
-		background-color: #fff;
-		color: orange;
-	}
-	
 	#hideSideInfo {
 		color: #fff; 
 		text-align: center;
 		padding: 20px 5px;
 	}
 	
-	#hideSideInfo:hover {
-		background-color: #fff;
-		color: orange;	
+	.menu:hover, #hideSideInfo:hover, .dropdown-item:hover, .dropright:hover {
+		background-color: orange;
+		color: #fff;
+		text-decoration: none;
 	}
 	
+	.dropright .dropdown-toggle::after {
+    	display: none;
+    }
+	
+	
 </style>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		
+	});
+
+</script>
 
 <a href="#">
 	<img style="max-width:100%; margin: auto; padding: 30px 0;" src="<%= ctxPath%>/resources/images/logo.png" />
 </a>
-<a class="menu" href="#">
+<a id="accountMenu"class="menu" href="#">
 	<i class="hideicon fas fa-user-circle fa-2x"></i>
 	<div>계정</div>
 </a>
-<a class="menu" href="#">
+<a class="menu" href="<%= ctxPath%>/dashboard.univ">
 	<i class="hideicon fas fa-tachometer-alt fa-2x"></i>
 	<div>대시보드</div>
 </a>
-<a class="menu" href="#">
+
+
+<!-- Default dropright button -->
+<div id="subjectMenu" class="menu btn-group dropright" style="width: 100%; text-align: center; padding: 10px 5px;">
+  <a class="btn dropdown-toggle p-0 m-0" data-toggle="dropdown" aria-expanded="false" style="color:#fff;">
 	<i class="hideicon fas fa-book fa-2x"></i>
-	<div>과목</div>
-</a>
+  </a>
+  <div data-toggle="dropdown" style="cursor: pointer;">과목</div>
+  <div class="dropdown-menu ml-2">
+    <button class="dropdown-item" type="button">홈</button>
+    <button class="dropdown-item" type="button">수업계획서</button>
+    <button class="dropdown-item" type="button">강의자료실</button>
+    <button class="dropdown-item" type="button">열린게시판</button>
+    <button class="dropdown-item" type="button">문의게시판</button>
+    <button class="dropdown-item" type="button" onclick="javascript:location.href='<%= ctxPath%>/homework.univ'">과제 및 평가</button>
+    <button class="dropdown-item" type="button">토론</button>
+    <button class="dropdown-item" type="button">강의콘텐츠</button>
+    <button class="dropdown-item" type="button">ClassMix</button>
+    <button class="dropdown-item" type="button" onclick="javascript:location.href='<%= ctxPath%>/user.univ'">사용자 및 그룹</button>
+    <button class="dropdown-item" type="button">성적</button>
+    <button class="dropdown-item" type="button">출결/학습 현황</button>
+  </div>
+</div>
+
+
 <a class="menu" href="#">
 	<i class="hideicon far fa-calendar fa-2x"></i>
 	<div>캘린더</div>

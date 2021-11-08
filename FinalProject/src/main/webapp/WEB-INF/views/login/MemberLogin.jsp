@@ -177,9 +177,9 @@ function func_login(){
 		return; // 종료
 		
 	}
-	
+
 	var frm = document.loginFrm;
-	frm.action = "<%=ctxPath%>/sideinfo.univ";
+	frm.action = "<%= ctxPath%>/dashboard.univ";
 	frm.method = "POST";
 	frm.submit();
 	
@@ -214,7 +214,7 @@ function func_login(){
 	               <button type="button" id="btnSubmit" class="btn btn-dark">로그인</button>
            </div>
           </div>
-			</div>
+		</div>
       </tbody>
     </table>
  </form>

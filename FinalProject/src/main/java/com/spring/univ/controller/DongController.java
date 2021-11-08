@@ -1,9 +1,17 @@
 package com.spring.univ.controller;
 
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import com.spring.univ.model.MemberVO;
+import com.spring.univ.service.InterUnivService;
 
 
 /*
@@ -35,23 +43,109 @@ import org.springframework.web.bind.annotation.RequestMapping;
 	즉, 여기서 bean의 이름은 boardController 이 된다. 
 	여기서는 @Controller 를 사용하므로 @Component 기능이 이미 있으므로 @Component를 명기하지 않아도 BoardController 는 bean 으로 등록되어 스프링컨테이너가 자동적으로 관리해준다. 
 */
-
 @Controller
 public class DongController {
 	
-	@RequestMapping(value="/login.univ") 
-	public String login(HttpServletRequest request) {
+ @Autowired
+   private InterUnivService service;
+   // Type에 따라 알아서 Bean 을 주입해준다.
+
+ 	// 사용자 및 그룹
+	@RequestMapping(value="/user.univ") 
+	public String user(HttpServletRequest request) {
 		
-		String name = "로그인화면";
-		request.setAttribute("name", name);
-		
-		return "login";
+		return "user.tiles1";
 	}
 	
-	@RequestMapping(value="/side.univ") 
-	public String test1(HttpServletRequest request) {
+	
+	
+
+	
+//=======================================================================
+ 
+	
+// # 로그인페이지 처리
+
+	@RequestMapping(value="/MemberLogin.univ",method= {RequestMethod.GET}) 
+	public ModelAndView MemberLogin(HttpServletRequest request,ModelAndView mav) {//
 		
 		
-		return "side.tiles1";
+		mav.setViewName("login/MemberLogin");
+		
+		return mav;
 	}
+//==========================================================================================		   
+	 //////////////////////////////////////////////////////////////////////////////////
+	//# 로그인
+
+	@RequestMapping(value="/dashboard.univ", method= {RequestMethod.POST}) // /test1.action의 url은 아래의 메소드가 응답함!
+	public ModelAndView dashboard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {//
+		
+		 String hakbun = request.getParameter("hakbun");
+	     String pwd = request.getParameter("pwd");
+	    
+	      Map<String, String> paraMap = new HashMap<>();
+	      paraMap.put("hakbun", hakbun);
+	      paraMap.put("pwd", pwd);
+	      
+	      MemberVO loginuser = service.getLoginMember(paraMap);
+	      
+	      if(loginuser == null) { // 로그인 실패시
+	        
+	    	  String message = "학번 또는 암호가 틀립니다.";
+	         String loc = "javascript:history.back()";
+	         
+	         mav.addObject("message", message); // request.setAttribute("message", message);
+	         mav.addObject("loc", loc);         // request.setAttribute("loc", loc);
+	      
+	         mav.setViewName("msg");             // return "msg"; 
+	      //  /WEB-INF/views/msg.jsp 파일을 생성한다.
+	    	
+	      }
+	      
+	      else {
+	    	  
+	    	   HttpSession session = request.getSession();
+	    	  
+	    	   session.setAttribute("loginuser", loginuser);
+	    	  
+	    	   mav.addObject("session", session);
+	    	  
+	    	   mav.setViewName("dashboard.tiles1"); 
+	      }
+	     
+	     
+		return mav;
+
+	     
+	}
+	
+	
+//====================================================================================================================	
+	
+	   // ===  로그아웃 처리하기 === //
+	   @RequestMapping(value="/logout.univ")
+	   public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
+	      
+		   HttpSession  session = request.getSession(); // 세션 불러오기
+			
+		   session.removeAttribute("loginuser");
+	      
+	      String message = "로그아웃 되었습니다.";
+	      String loc = "";
+	      
+	      mav.addObject("message", message); 
+	      mav.addObject("loc", loc);         
+	      mav.setViewName("dashboard.tiles1");
+	      
+	      return mav;
+	   }
+//====================================================================================================================
+	   
+		@RequestMapping(value="/dashboard.univ")
+		public String dashboard(HttpServletRequest request) {
+			
+			return "dashboard.tiles1";
+		}
+	   
 }	
