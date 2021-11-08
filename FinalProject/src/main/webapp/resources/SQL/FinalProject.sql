@@ -140,3 +140,6 @@ alter table tbl_FreeComment add constraint FK_tbl_FreeComment_hakbun foreign key
 alter table tbl_FreeComment add constraint FK_tbl_FreeComment_parentSeq foreign key(parentSeq) references tbl_FreeBoard(seq) on delete cascade;
 alter table tbl_FreeComment add constraint CK_tbl_FreeComment_status check( status in(1,0) ) ;
 ---------------------------------------------------------------------------------
+
+select *
+from tab;

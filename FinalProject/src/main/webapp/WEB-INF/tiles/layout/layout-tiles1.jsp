@@ -115,6 +115,7 @@
 		$("span#closeMyAccount").click(function(){
 			$("div#showMyAccount").fadeOut('fast');
 		});
+		
 		///////////////////////////////////////////////////////
 		
 		

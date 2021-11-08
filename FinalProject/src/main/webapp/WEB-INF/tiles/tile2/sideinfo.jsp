@@ -64,10 +64,6 @@
 	<div>메시지</div>
 </a>
 <a class="menu" href="#">
-	<i class="hideicon fas fa-users-cog fa-2x"></i>
-	<div>관리</div>
-</a>
-<a class="menu" href="#">
 	<i class="hideicon far fa-question-circle fa-2x"></i>
 	<div>도움말</div>
 </a>
