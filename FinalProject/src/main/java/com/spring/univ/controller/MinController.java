@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.univ.model.SubjectVO;
+import com.spring.univ.service.InterUnivService;
+import com.spring.univ.service.UnivService;
+
 
 /*
 	사용자 웹브라우저 요청(View)  ==> DispatcherServlet ==> @Controller 클래스 <==>> Service단(핵심업무로직단, business logic단) <==>> Model단[Repository](DAO, DTO) <==>> myBatis <==>> DB(오라클)           
@@ -44,8 +48,15 @@ import org.springframework.web.servlet.ModelAndView;
 	즉, 여기서 bean의 이름은 boardController 이 된다. 
 	여기서는 @Controller 를 사용하므로 @Component 기능이 이미 있으므로 @Component를 명기하지 않아도 BoardController 는 bean 으로 등록되어 스프링컨테이너가 자동적으로 관리해준다. 
 */
+
+
 @Controller
 public class MinController {
+	
+	@Autowired
+	private InterUnivService UnivService;
+	
+	
 	@RequestMapping(value="/mintest.univ")
 	public String test1(HttpServletRequest request) {
 		
@@ -63,6 +74,26 @@ public class MinController {
 		return "attendance.tiles1";
 		
 	}//end of public String test1(HttpServletRequest request) {------------
+	
+	@RequestMapping(value="/subject2.univ")
+	public String subject(HttpServletRequest request,ModelAndView mav) {
+		
+		String subject = request.getParameter("subject");
+		
+		Map<String,String> paraMap = new HashMap<>();
+		paraMap.put("subject", subject);
+		
+		SubjectVO subject2 = UnivService.getSubject(paraMap);
+		
+		request.setAttribute("subject2", subject2);
+		
+		
+		return "subject2.tiles1";
+		
+	}//end of public String test1(HttpServletRequest request) {------------
+	
+	
+	
 	
 	
 }	

@@ -45,6 +45,9 @@ create table tbl_subject
 ,constraint CK_tbl_subject_hakjum check(hakjum between 2 and 4)      
 );
 
+select *
+from tbl_subject;
+
 -----------자유게시판테이블----------------
 
 create table tbl_FreeBoard
@@ -111,3 +114,10 @@ alter table tbl_FreeComment add constraint FK_tbl_FreeComment_hakbun foreign key
 alter table tbl_FreeComment add constraint FK_tbl_FreeComment_parentSeq foreign key(parentSeq) references tbl_FreeBoard(seq) on delete cascade;
 alter table tbl_FreeComment add constraint CK_tbl_FreeComment_status check( status in(1,0) ) ;
 ---------------------------------------------------------------------------------
+
+select subject
+from tbl_subject
+where teacher ='김민경';
+
+select *
+from tbl_subject;

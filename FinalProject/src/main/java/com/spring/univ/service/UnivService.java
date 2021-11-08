@@ -118,6 +118,15 @@ public class UnivService implements InterUnivService {
 		return totalCount;
 	}//end of public int getCommentTotalCount(Map<String, String> paraMap) {-------------------
 //==============================================================================================
-	
+//==============================================================================================
+//	민경자리
+//==============================================================================================
+	@Override
+	public SubjectVO getSubject(Map<String, String> paraMap) {
+		
+		SubjectVO subject2 = dao.getSubject(paraMap);
+		return subject2;
+	}
+
 	
 }//end of public class BoardService implements InterBoardService {

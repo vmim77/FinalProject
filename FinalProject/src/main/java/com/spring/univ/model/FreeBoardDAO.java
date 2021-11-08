@@ -100,6 +100,12 @@ public class FreeBoardDAO implements InterFreeBoardDAO {
 		return totalCount;
 	}//end of public int getCommentTotalCount(Map<String, String> paraMap) {
 //================================================================================================
+	@Override
+	public SubjectVO getSubject(Map<String, String> paraMap) {
+		
+		SubjectVO subject2 =  sqlsession2.selectOne("Min.getSubject", paraMap);
+		return subject2;
+	}
 
 	
 	
