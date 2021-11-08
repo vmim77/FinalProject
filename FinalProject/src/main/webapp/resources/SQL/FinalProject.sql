@@ -239,6 +239,4 @@ from tbl_lessonboard
 where status = 1;
 
 insert into tbl_lessonboard(seq, fk_hakbun, fk_code, name, subject, content, pw, regdate, status, commentcount, filename, orgfilename, filesize)
-values(lessonBoardSeq.nextval, '2100001', '0204', '금길영', '하이테크마케팅 강의교본', '입니다', '1234', default, default, default, '', '', '')
-
-commit;
+values(lessonBoardSeq.nextval, '2100001', '0204', '김유규', '하이테크마케팅 강의교재에 대한 안내문', '다음주 수업전까지 강의교재 구비하길 바랍니다.', '1234', default, default, default, '', '', '')
