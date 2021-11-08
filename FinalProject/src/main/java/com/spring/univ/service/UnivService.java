@@ -20,6 +20,15 @@ public class UnivService implements InterUnivService {
 			
 			return loginuser;
 		}
+
+	// === 맴버 조회하기 === //
+		@Override
+		public MemberVO getMember(Map<String, String> paraMap) {
+			
+			MemberVO loginuser = dao.getMember(paraMap);
+			
+			return loginuser;
+		}
 	
 	
 }//end of public class BoardService implements InterBoardService {

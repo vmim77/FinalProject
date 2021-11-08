@@ -137,7 +137,7 @@
             <img src="<%= ctxPath%>/resources/images/gill.png" style="width: 50%; margin: auto;"/>
          </div>
          <div style="clear:both; text-align:center;">
-            <div style="font-size: 1em;">${sessionScope.loginuser.name}<br>${sessionScope.loginuser.hakbun}</div>
+            <div style="font-size: 1em;">이름: ${sessionScope.loginuser.name} <br>  학번: ${sessionScope.loginuser.hakbun}</div>
                 <c:if test="${empty sessionScope.loginuser}">
                     <a class="btn btn-secondary btn-sm justify-content-center" href="<%=ctxPath%>/MemberLogin.univ">로그인</a>
                  </c:if>

@@ -54,8 +54,17 @@ public class DongController {
 	@RequestMapping(value="/user.univ") 
 	public String user(HttpServletRequest request) {
 		
+		String name = request.getParameter("name");
+		
+		Map<String,String> paraMap = new HashMap<>();
+		
+		paraMap.put("name", name);
+		
+		MemberVO loginuser = service.getMember(paraMap);
+		
 		return "user.tiles1";
 	}
+	
 	
 	
 	
@@ -71,6 +80,7 @@ public class DongController {
 		
 		
 		mav.setViewName("login/MemberLogin");
+		
 		
 		return mav;
 	}
@@ -142,10 +152,6 @@ public class DongController {
 	   }
 //====================================================================================================================
 	   
-		@RequestMapping(value="/dashboard.univ")
-		public String dashboard(HttpServletRequest request) {
-			
-			return "dashboard.tiles1";
-		}
+		
 	   
 }	

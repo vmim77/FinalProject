@@ -30,6 +30,22 @@
 
 <script type="text/javascript">
 
+$(document).ready(function(){
+
+
+$("input#searchWord").keyup(function(event){
+	if(event.keyCode == 13) {
+		// 엔터를 했을 경우
+		goSearch();
+	}
+});
+
+function goSearch() {
+	var frm = document.searchFrm;
+	frm.method = "GET";
+	frm.action = "<%= request.getContextPath()%>/user.univ";
+	frm.submit();
+}// end of function goSearch() {}---------------------------------
 
 
 </script>
@@ -53,18 +69,17 @@
   </li>
 </ul>
 
-<nav class="navbar navbar-light bg-light">
-  <div class="container-fluid">
-    <form class="d-flex">
-      <input class="form-control me-2" type="search" placeholder="사용자 검색" id="Search">
-    	<select id="">
-		    <option value="" style="padding: 30px;">모든 역할</option>
-		    <option value="교수">교수</option>
-		    <option value="학생">학생</option>
-	   </select>
-    </form>
-  </div>
-</nav>
+<%-- === 글검색 폼 추가하기 : 글제목, 글쓴이로 검색을 하도록 한다. === --%>
+<form name="searchFrm" style="margin-top: 20px;">
+		<select name="searchType" id="searchType" style="height: 26px;">
+			<option value="name">이름</option>
+			<option value="section">섹션</option>
+			<option value="hal">역할</option>
+		</select>
+		<input type="text" name="searchWord" id="searchWord" size="30" autocomplete="off" />
+		<input type="text" style="display: none;"/> <%-- form 태그내에 input 태그가 오로지 1개 뿐일경우에는 엔터를 했을 경우 검색이 되어지므로 이것을 방지하고자 만든것이다. --%>
+		<button type="button" class="btn btn-secondary btn-sm" onclick="goSearch()">검색</button>
+</form>
 
 <table class="tg" style="undefined;table-layout: fixed; width: 1113px">
 <colgroup>

@@ -21,7 +21,15 @@ public class FreeBoardDAO implements InterFreeBoardDAO {
 		return loginuser;
 	}
 //================================================================================================
+	// === 맴버 조회하기 === //
+	@Override
+	public MemberVO getMember(Map<String, String> paraMap) {
 
+		MemberVO loginuser = sqlsession2.selectOne("Dong.getMember", paraMap);
+		
+		return loginuser;
+	}
+//=================================================================================================
 	
 	
 	
