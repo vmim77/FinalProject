@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.univ.service.InterSungService;
+import com.spring.univ.model.*;
+import com.spring.univ.service.*;
 
 
 /*
@@ -83,9 +84,23 @@ public class SungController {
 		String code = request.getParameter("code");
 		Map<String,String> subjectMap = service.getSubjectInfo(code);
 		
+		List<LessonBoardVO> boardList = service.getLessonBoard(code);
+		
 		mav.addObject("code", code);
+		mav.addObject("boardList", boardList);
 		mav.addObject("subjectMap", subjectMap);
+		
 		mav.setViewName("Sunghyun/lesson.tiles2");
+		return mav;
+	}
+	
+	@RequestMapping(value="/lessonDetail.univ")
+	public ModelAndView lessonDetail(ModelAndView mav, HttpServletRequest request) {
+		
+		String code = request.getParameter("code");
+		String seq = request.getParameter("seq");
+		
+		
 		return mav;
 	}
 	

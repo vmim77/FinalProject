@@ -27,4 +27,10 @@
 	</select>
 	
 	
+	<select id="getLessonBoard" parameterType="String" resultType="com.spring.univ.model.LessonBoardVO">
+		select seq, fk_hakbun, fk_code, name, subject, content, pw, to_char(regdate,'yyyy-mm-dd hh24:mi:ss') as regDate, status, commentcount, filename, orgfilename, filesize
+		from tbl_lessonboard
+		where status = 1 and fk_code = #{code}
+	</select>
+	
 </mapper>

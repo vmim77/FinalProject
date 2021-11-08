@@ -7,9 +7,13 @@
  
  .card-text {color: gray; font-size: 10pt;}
  
- table#homework, th, td {border: solid 1px gray;}
-
- th, td{padding: 10px 0 10px 10px;}
+	table#homework, th, td { border: solid 1px black; }
+	
+	table#homework { border: solid 2px black; }
+	
+	th { width: 30%; padding-left: 5px; background-color: #ddd; }
+	
+	td { width: 50%; padding: 10px; }
  
  .title{font-size: 10pt; color:gray;}
  
