@@ -9,7 +9,7 @@ public class MemberVO {
 	private String hakbun;        // 학번
 	private String name;          // 이름
 	private String birth;         // 생년월일     
-	private String fk_dept_code;  // 학과코드
+	private String fk_deptCode ;  // 학과코드
 	private String pwd;           // 비밀번호
 	private String email;         // 이메일
 	private String address;       // 주소
@@ -22,12 +22,12 @@ public class MemberVO {
 	
 	public MemberVO() {}
 	
-	public MemberVO(String hakbun, String name, String birth, String fk_dept_code, String pwd, String email,
+	public MemberVO(String hakbun, String name, String birth, String fk_deptCode , String pwd, String email,
 			String address, int status, String picture, String phone, int authority) {
 		this.hakbun = hakbun;
 		this.name = name;
 		this.birth = birth;
-		this.fk_dept_code = fk_dept_code;
+		this.fk_deptCode  = fk_deptCode;
 		this.pwd = pwd;
 		this.email = email;
 		this.address = address;
@@ -78,12 +78,12 @@ public class MemberVO {
 		this.birth = birth;
 	}
 
-	public String getFk_dept_code() {
-		return fk_dept_code;
+	public String getFk_deptCode() {
+		return fk_deptCode ;
 	}
 
-	public void setFk_dept_code(String fk_dept_code) {
-		this.fk_dept_code = fk_dept_code;
+	public void setFk_deptCode(String fk_deptCode) {
+		this.fk_deptCode  = fk_deptCode;
 	}
 
 	public String getPwd() {

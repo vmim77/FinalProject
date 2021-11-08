@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-
-<%  String ctxPath = request.getContextPath();  %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 
 <style>
 
@@ -35,59 +33,54 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		console.log("${requestScope.loginuser.hakbun}")
+		
 	});
 	
 </script>
 
 <div id="maincontainer" style="display: flex;">
 	<section style="width: 70%; margin-right: auto;">
-		<div>
-		   <h1>대시보드</h1>
-        </div>
-		
+		<h1>대시보드</h1>
 		<hr>
-		
-		  <c:if test="${not empty sessionScope.loginuser}">
-         <div style="float: right;">
+		 <c:if test="${not empty sessionScope.loginuser}">
+         	<div style="float: right;">
            <span style="color: navy; font-weight: bold;">${sessionScope.loginuser.name}</span> 님 로그인중 
          </div>
       </c:if>
-		
 		<div class="row mx-1">
-			   <div class="card col-3 p-0" style="width: 16rem;">
+			   <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
 				  <div style="width: 100%; height: 200px; background-color: orange;"></div>
 				  <div class="card-body">
 				    <h5 class="card-title">하이테크 마케팅</h5>
 				    <p class="card-text">하이테크 마케팅_001분반</p>
-				    <p class="icons"><i class="fas fa-bullhorn fa-2x"></i><i class="fas fa-paste fa-2x"></i><i class="far fa-comments fa-2x"></i></p>
+				    <button type="button" class="btn btn-primary btn-md">강의실 입장</button>
 				  </div>
 			   </div>
 		
-			   <div class="card col-3 p-0" style="width: 16rem;">
+			   <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
 				  <div style="width: 100%; height: 200px; background-color: green;"></div>
 				  <div class="card-body">
 				    <h5 class="card-title">빅데이터 실무</h5>
 				    <p class="card-text">빅데이터 실무_002분반</p>
-				    <p class="icons"><i class="fas fa-bullhorn fa-2x"></i><i class="fas fa-paste fa-2x"></i><i class="far fa-comments fa-2x"></i></p>
+				    <button type="button" class="btn btn-primary btn-md">강의실 입장</button>
 				  </div>
 			   </div>
 		
-			   <div class="card col-3 p-0" style="width: 16rem;">
+			   <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
 				  <div style="width: 100%; height: 200px; background-color: purple;"></div>
 				  <div class="card-body">
 				    <h5 class="card-title">재무관리실무</h5>
 				    <p class="card-text">재무관리실무_003분반</p>
-				    <p class="icons"><i class="fas fa-bullhorn fa-2x"></i><i class="fas fa-paste fa-2x"></i><i class="far fa-comments fa-2x"></i></p>
+				    <button type="button" class="btn btn-primary btn-md">강의실 입장</button>
 				  </div>
 			   </div>
 			   
-			   <div class="card col-3 p-0" style="width: 16rem;">
+			   <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
 				  <div style="width: 100%; height: 200px; background-color: gray;"></div>
 				  <div class="card-body">
 				    <h5 class="card-title">IT융합비즈니스 사례연구</h5>
 				    <p class="card-text">IT융합비즈니스 사례연구_001분반</p>
-				    <p class="icons"><i class="fas fa-bullhorn fa-2x"></i><i class="fas fa-paste fa-2x"></i><i class="far fa-comments fa-2x"></i></p>
+				    <button type="button" class="btn btn-primary btn-md">강의실 입장</button>
 				  </div>
 			   </div>
 		</div>

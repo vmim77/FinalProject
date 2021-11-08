@@ -54,11 +54,39 @@ public class DongController {
  @Autowired
    private InterUnivService service;
    // Type에 따라 알아서 Bean 을 주입해준다.
+
+ 	// 사용자 및 그룹
+	@RequestMapping(value="/user.univ") 
+	public String user(HttpServletRequest request) {
+		
+		return "user.tiles1";
+	}
 	
-	@RequestMapping(value="/dashboard.univ", method= {RequestMethod.GET}) // /test1.action의 url은 아래의 메소드가 응답함!
+	
+	
+
+	
+//=======================================================================
+ 
+	
+// # 로그인페이지 처리
+
+	@RequestMapping(value="/MemberLogin.univ",method= {RequestMethod.GET}) 
+	public ModelAndView MemberLogin(HttpServletRequest request,ModelAndView mav) {//
+		
+		
+		mav.setViewName("login/MemberLogin");
+		
+		return mav;
+	}
+//==========================================================================================		   
+	 //////////////////////////////////////////////////////////////////////////////////
+	//# 로그인
+
+	@RequestMapping(value="/dashboard.univ", method= {RequestMethod.POST}) // /test1.action의 url은 아래의 메소드가 응답함!
 	public ModelAndView dashboard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {//
 		
-		String hakbun = request.getParameter("hakbun");
+		 String hakbun = request.getParameter("hakbun");
 	     String pwd = request.getParameter("pwd");
 	    
 	      Map<String, String> paraMap = new HashMap<>();
@@ -81,9 +109,10 @@ public class DongController {
 	      }
 	      
 	      else {
-	    	  HttpSession session = request.getSession();
 	    	  
-	    	  session.setAttribute("loginuser", loginuser);
+	    	   HttpSession session = request.getSession();
+	    	  
+	    	   session.setAttribute("loginuser", loginuser);
 	    	  
 	    	   mav.addObject("session", session);
 	    	  
@@ -92,43 +121,20 @@ public class DongController {
 	     
 	     
 		return mav;
-	//	/WEB-INF/views/test1.jsp 페이지를 만들어야 한다.
+
 	     
 	}
 	
-	@RequestMapping(value="/user.univ") 
-	public String user(HttpServletRequest request) {//
-		
-		
-		return "user.tiles1";
-	}
 	
+//====================================================================================================================	
 	
-	
-
-	
-//=======================================================================
- 
-	
-// #동준. 로그인 
-
-	@RequestMapping(value="/MemberLogin.univ",method= {RequestMethod.GET}) 
-	public ModelAndView MemberLogin(HttpServletRequest request,ModelAndView mav) {//
-		
-		
-		mav.setViewName("login/MemberLogin");
-		
-		return mav;
-	}
-//==========================================================================================		   
-	 //////////////////////////////////////////////////////////////////////////////////
 	   // ===  로그아웃 처리하기 === //
 	   @RequestMapping(value="/logout.univ")
 	   public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
 	      
-	      HttpSession session = request.getSession();
-	      
-	      session.invalidate();
+		   HttpSession  session = request.getSession(); // 세션 불러오기
+			
+		   session.removeAttribute("loginuser");
 	      
 	      String message = "로그아웃 되었습니다.";
 	      String loc = "";
@@ -139,5 +145,12 @@ public class DongController {
 	      
 	      return mav;
 	   }
+//====================================================================================================================
+	   
+		@RequestMapping(value="/dashboard.univ")
+		public String dashboard(HttpServletRequest request) {
+			
+			return "dashboard.tiles1";
+		}
 	   
 }	

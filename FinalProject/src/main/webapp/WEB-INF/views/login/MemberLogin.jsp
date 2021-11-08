@@ -180,7 +180,7 @@ function func_login(){
 
 	var frm = document.loginFrm;
 	frm.action = "<%= ctxPath%>/dashboard.univ";
-	frm.method = "GET";
+	frm.method = "POST";
 	frm.submit();
 	
 }// end of function func_login()
