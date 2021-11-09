@@ -3,21 +3,13 @@ package com.spring.univ.controller;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.univ.model.SubjectVO;
 import com.spring.univ.model.WeekVO;
-import com.spring.univ.service.InterUnivService;
-import com.spring.univ.service.UnivService;
+import com.spring.univ.service.InterMinService;
 
 
 /*
@@ -55,7 +47,7 @@ import com.spring.univ.service.UnivService;
 public class MinController {
 	
 	@Autowired
-	private InterUnivService UnivService;
+	private InterMinService MinService;
 	
 	
 	@RequestMapping(value="/mintest.univ")
@@ -66,10 +58,12 @@ public class MinController {
 		
 	}//end of public String test1(HttpServletRequest request) {------------
 	
+	
+	
 	@RequestMapping(value="/attendance.univ")
 	public ModelAndView attendance(HttpServletRequest request, ModelAndView mav, HttpServletResponse response) {
 		
-		List<WeekVO> WeekList = UnivService.getWeekList();
+		List<Map<String,String>> WeekList = MinService.getWeekList();
 		
 	
 		mav.addObject("WeekList", WeekList);
@@ -78,19 +72,7 @@ public class MinController {
 		return mav;
 		
 	}//end of public String test1(HttpServletRequest request) {------------
-/*	
-	@RequestMapping(value="/subject2.univ")
-	public ModelAndView subject(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 
-		// 과목 가져오기 ㅋ 
-		List<WeekVO> subList = UnivService.getSubList();
-		mav.addObject("subList", subList);
-		mav.setViewName("attendance.tiles1"); // 이건 만약 login 안에 있으면 login/attendance.tiles1 이런식
-		
-		return mav;
-		
-	}//end of public String test1(HttpServletRequest request) {------------
-*/	
 	
 	
 	
