@@ -25,8 +25,6 @@ import com.spring.univ.service.InterGillService;
 @Controller
 public class GillController {
 	
-<<<<<<< HEAD
-=======
 	@Autowired
 	private InterGillService service;
 	
@@ -301,11 +299,4 @@ public class GillController {
 				
 	}//end of public String readComment(HttpServletRequest request){-------
 //=========================================================================
-	
-	
-	
-	
-	
->>>>>>> refs/heads/main
-	
 }	
