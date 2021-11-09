@@ -41,6 +41,15 @@ commit;
 select *
 from tbl_subject;
 
+select *
+from tbl_department;
+
+alter table tbl_subject
+drop column ban;
+-- Table TBL_SUBJECT이(가) 변경되었습니다.
+
+
+
 insert into tbl_subject(code, subject, teacher, ban, hakjum, classDate, fk_deptCode)
 values('0501','인간행동과사회환경','김미선','a','3','월','05');
 insert into tbl_subject(code, subject, teacher, ban, hakjum, classDate, fk_deptCode)
@@ -56,7 +65,6 @@ create table tbl_subject
 (code           varchar2(100) --과목코드
 ,subject        varchar2(100) --과목명 
 ,teacher        varchar2(50)  --담당교수님
-,ban            varchar2(50)  --반
 ,hakjum         number(1)     --배정학점
 ,classDate      varchar2(100) --수업요일
 ,constraint PK_tbl_subject_code primary key(code)
@@ -240,3 +248,16 @@ where status = 1;
 
 insert into tbl_lessonboard(seq, fk_hakbun, fk_code, name, subject, content, pw, regdate, status, commentcount, filename, orgfilename, filesize)
 values(lessonBoardSeq.nextval, '2100001', '0204', '김유규', '하이테크마케팅 강의교재에 대한 안내문', '다음주 수업전까지 강의교재 구비하길 바랍니다.', '1234', default, default, default, '', '', '')
+
+
+select * 
+from tab;
+
+select *
+from tbl_subject;
+
+select *
+from tbl_member;
+
+select * 
+from TBL_WEEK ;

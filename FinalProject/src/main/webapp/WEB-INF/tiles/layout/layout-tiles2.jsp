@@ -42,6 +42,8 @@
 	  
 	  @media ( max-width:1024px ) { html{font-size:1rem} } 
 	  
+	  html { word-break: break-all; }
+	  
 	  div#showMySubject, div#showMyAccount {
 	  		box-shadow: 0px 1px 3px;
 	  		position: absolute; 

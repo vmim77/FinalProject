@@ -22,7 +22,6 @@
 		$("ul#sideMenuList > li:first-child").addClass("hoverdEffect");
 		
 		for(var i=0; i<12; i++){
-			
 			var html = "<div class='card'>";
 			
 			html+="<div class='card-header' id='heading'"+i+">";
@@ -86,7 +85,10 @@
 	</table>
 </div>
 
-<h2 style="margin-top: 20px; clear: both;">주차별 수업계획</h2>
+<div style="clear: both;"></div>
+<h2 style="margin-top: 50px;">주차별 수업계획</h2>
+<hr>
 <div class="accordion" id="accordionExample" style="width: 80%; margin-top: 20px;">
+
 </div>
 	
