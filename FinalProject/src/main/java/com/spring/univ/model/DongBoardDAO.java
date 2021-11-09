@@ -4,10 +4,9 @@ import java.util.*;
 import javax.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
-import com.spring.univ.model.MemberVO;
 
 @Repository
-public class FreeBoardDAO implements InterFreeBoardDAO {
+public class DongBoardDAO implements InterDongBoardDAO {
 
 	@Resource
 	private SqlSessionTemplate sqlsession2; // 원격DB에 연결
@@ -21,16 +20,15 @@ public class FreeBoardDAO implements InterFreeBoardDAO {
 		return loginuser;
 	}
 //================================================================================================
-	// === 맴버 조회하기 === //
 	@Override
-	public MemberVO getMember(Map<String, String> paraMap) {
+	public List<SubjectVO> getTeacher() {
 
-		MemberVO loginuser = sqlsession2.selectOne("Dong.getMember", paraMap);
+		List<SubjectVO> TeacherList = sqlsession2.selectList("Dong.getTeacher");
 		
-		return loginuser;
+		return TeacherList;
 	}
+
 //=================================================================================================
-	
 	
 	
 	

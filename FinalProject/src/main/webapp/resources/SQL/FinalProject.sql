@@ -18,7 +18,15 @@ create table tbl_member
 ,constraint CK_tbl_member_status check(status between 0 and 4)       --0 등록예정, 1 재학, 2 휴학, 3 자퇴, 4 졸업
 ,constraint CK_tbl_member_authority check(authority between 0 and 2) --0 학생, 1 교수, 2 총 관리자
 );
+commit;
 
+select *
+from tbl_member;
+
+update tbl_member set picture = 'jae.png'
+where picture = '없음'
+
+alter table tbl_member rename column fk_dept_code to fk_deptCode;
 
 -----------학과테이블----------------
 
@@ -28,11 +36,22 @@ create table tbl_department
 ,deptLocation       varchar2(300) not null --학과위치
 ,constraint PK_tbl_department_deptCode primary key(deptCode)
 );
+commit;
 
+select *
+from tbl_subject;
 
-
+insert into tbl_subject(code, subject, teacher, ban, hakjum, classDate, fk_deptCode)
+values('0501','인간행동과사회환경','김미선','a','3','월','05');
+insert into tbl_subject(code, subject, teacher, ban, hakjum, classDate, fk_deptCode)
+values('0502','자원봉사기초','유진희','b','3','화','05');
+insert into tbl_subject(code, subject, teacher, ban, hakjum, classDate, fk_deptCode)
+values('0503','가족복지론','임준철','c','2','수','05');
+insert into tbl_subject(code, subject, teacher, ban, hakjum, classDate, fk_deptCode)
+values('0504','장애인복지론','김형준','d','3','목','05');
 -----------과목테이블----------------
-
+select *
+from tbl_subject
 create table tbl_subject
 (code           varchar2(100) --과목코드
 ,subject        varchar2(100) --과목명 
@@ -44,6 +63,67 @@ create table tbl_subject
 ,constraint UQ_tbl_subject_subject unique(subject)
 ,constraint CK_tbl_subject_hakjum check(hakjum between 2 and 4)      
 );
+alter table tbl_subject
+add fk_deptCode varchar2(100);
+alter table tbl_subject add constraint FK_tbl_subject_fk_deptcode foreign key(fk_deptCode) references tbl_department(deptCode) on delete cascade
+commit;
+
+------------몇주차 테이블----------------
+create table tbl_week
+(fk_code           varchar2(100)                 --과목코드 
+,week              varchar2(50)                  --몇주차인지
+,startday          varchar2(100) default sysdate --시작날짜
+,constraint PK_tbl_week_week primary key(week)
+,constraint FK_tbl_week_fk_code foreign key(fk_code) references tbl_subject(code) on delete cascade  
+);
+
+-----------몇주차시퀸스----------------
+create sequence weekSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+select *
+from tbl_member
+
+------------몇차시 테이블----------------
+create table tbl_weeklesson
+(fk_week           varchar2(50)  --몇주차인지
+,lesson            varchar2(100) --차시 명 ( 1주차 1차시, 1주차 2차시... )
+,video             varchar2(800) --비디오 명(유투브)
+,savefile          varchar2(300) --저장용
+,uploadfile        varchar2(300) --업로드용 
+,constraint PK_tbl_weeklesson_lesson primary key(lesson)
+,constraint FK_tbl_lesson_fk_week foreign key(fk_week) references tbl_week(week) on delete cascade  
+);
+
+-----------몇차시시퀸스----------------
+create sequence lessonSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+
+------------출석 테이블----------------
+create table tbl_attend
+(fk_lesson           varchar2(100) --차시 명 ( 1주차 1차시, 1주차 2차시... ) 
+,fk_hakbun           varchar2(50)  --학번
+,constraint FK_tbl_attend_fk_lesson foreign key(fk_lesson) references tbl_weeklesson(lesson) on delete cascade  
+);
+
+
+
+
+
+
+
 
 -----------자유게시판테이블----------------
 
@@ -96,18 +176,3 @@ nomaxvalue
 nominvalue
 nocycle
 nocache;
-
----------------------------------------------------------------------------------
-select *
-from user_constraints
-
-alter table tbl_department add constraint PK_tbl_department_deptCode primary key(deptCode);
-alter table tbl_member add constraint CK_tbl_member_fk_dept_code foreign key(fk_dept_code) references tbl_department(deptCode);
-alter table tbl_FreeBoard add constraint PK_tbl_FreeBoard_seq primary key(seq);
-alter table tbl_FreeBoard add constraint FK_tbl_FreeBoard_fk_hakbun foreign key(fk_hakbun) references tbl_member(hakbun);
-alter table tbl_FreeBoard add constraint CK_tbl_FreeBoard_status check( status in(0,1) );
-alter table tbl_FreeComment add constraint PK_tbl_FreeComment_seq primary key(seq);
-alter table tbl_FreeComment add constraint FK_tbl_FreeComment_hakbun foreign key(fk_hakbun) references tbl_member(hakbun);
-alter table tbl_FreeComment add constraint FK_tbl_FreeComment_parentSeq foreign key(parentSeq) references tbl_FreeBoard(seq) on delete cascade;
-alter table tbl_FreeComment add constraint CK_tbl_FreeComment_status check( status in(1,0) ) ;
----------------------------------------------------------------------------------

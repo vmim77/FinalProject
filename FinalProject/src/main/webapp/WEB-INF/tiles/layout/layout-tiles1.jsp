@@ -134,7 +134,7 @@
 		  <div id="showMyAccount" class="p-3">
          <span id="closeMyAccount" style="float:right; font-size: 30pt; text-align:center; cursor:pointer;">&times;</span>
          <div style="display:flex; margin-top: 10px; width:100%;">
-            <img src="<%= ctxPath%>/resources/images/gill.png" style="width: 50%; margin: auto;"/>
+            <img src="<%= ctxPath%>/resources/images/min.jpg" style="width: 50%; margin: auto;"/>
          </div>
          <div style="clear:both; text-align:center;">
             <div style="font-size: 1em;">이름: ${sessionScope.loginuser.name} <br>  학번: ${sessionScope.loginuser.hakbun}</div>

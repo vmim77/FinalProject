@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import com.spring.univ.model.*;
 
 @Service
-public class UnivService implements InterUnivService {
+public class DongService implements InterDongService {
 //==============================================================================================
 	@Autowired
-	private InterFreeBoardDAO dao;
+	private InterDongBoardDAO dao;
 //==============================================================================================
 	
 	// === 로그인 처리하기 === //
@@ -20,15 +20,15 @@ public class UnivService implements InterUnivService {
 			
 			return loginuser;
 		}
-
-	// === 맴버 조회하기 === //
+		
+	// === 담당교수 조회하기 === // 
 		@Override
-		public MemberVO getMember(Map<String, String> paraMap) {
+		public List<SubjectVO> getTeacher() {
 			
-			MemberVO loginuser = dao.getMember(paraMap);
+			List<SubjectVO> TeacherList = dao.getTeacher();
 			
-			return loginuser;
+			return TeacherList;
 		}
-	
+
 	
 }//end of public class BoardService implements InterBoardService {

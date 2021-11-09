@@ -12,10 +12,9 @@
 		where status = 1 and hakbun = #{hakbun} and pwd = #{pwd}
 	</select>
 	
-	
-	<select id="getMember" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">
-	
-	
+	<select id="getTeacher" resultType="com.spring.univ.model.SubjectVO">
+		select code,subject,teacher,ban,hakjum,classdate,fk_deptcode
+		from tbl_subject
 	</select>
 	
 <!-- === -->		

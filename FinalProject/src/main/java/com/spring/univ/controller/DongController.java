@@ -10,8 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.spring.univ.model.MemberVO;
-import com.spring.univ.service.InterUnivService;
+import com.spring.univ.model.SubjectVO;
+import com.spring.univ.service.InterDongService;
 
 
 /*
@@ -47,27 +49,19 @@ import com.spring.univ.service.InterUnivService;
 public class DongController {
 	
  @Autowired
-   private InterUnivService service;
+   private InterDongService service;
    // Type에 따라 알아서 Bean 을 주입해준다.
 
  	// 사용자 및 그룹
 	@RequestMapping(value="/user.univ") 
-	public String user(HttpServletRequest request) {
+	public ModelAndView user(HttpServletRequest request,ModelAndView mav) {
 		
-		String name = request.getParameter("name");
+		List<SubjectVO> TeacherList = service.getTeacher();
 		
-		Map<String,String> paraMap = new HashMap<>();
-		
-		paraMap.put("name", name);
-		
-		MemberVO loginuser = service.getMember(paraMap);
-		
-		return "user.tiles1";
+		mav.addObject("TeacherList", TeacherList);
+		mav.setViewName("user.tiles1");
+	    return mav;
 	}
-	
-	
-	
-	
 
 	
 //=======================================================================
