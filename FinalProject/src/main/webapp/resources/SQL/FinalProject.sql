@@ -109,6 +109,7 @@ nominvalue
 nocycle
 nocache;
 
+<<<<<<< HEAD
 select *
 from tbl_weeklesson;
 
@@ -121,6 +122,18 @@ create table tbl_attend
 
 select *
 from tbl_attend;
+=======
+
+
+------------출석 테이블----------------
+create table tbl_attend
+(fk_lesson           varchar2(100) --차시 명 ( 1주차 1차시, 1주차 2차시... ) 
+,fk_hakbun           varchar2(50)  --학번
+,constraint FK_tbl_attend_fk_lesson foreign key(fk_lesson) references tbl_weeklesson(lesson) on delete cascade  
+);
+
+
+>>>>>>> branch 'Minkyung' of https://github.com/vmim77/FinalProject.git
 
 
 
@@ -179,6 +192,7 @@ nominvalue
 nocycle
 nocache;
 
+<<<<<<< HEAD
 ---------------------------------------------------------------------------------
 select *
 from user_constraints
@@ -367,3 +381,7 @@ join tbl_attend D
 on C.lesson = D.fk_lesson_seq;
 
 commit;
+=======
+select fk_week,lesson,video,savefile,uploadfile,seq
+from tbl_weeklesson;
+>>>>>>> branch 'Minkyung' of https://github.com/vmim77/FinalProject.git

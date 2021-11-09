@@ -12,6 +12,7 @@ public class MinService implements InterMinService {
 	@Autowired
 	private InterMinBoardDAO dao;
 //==============================================================================================
+<<<<<<< HEAD
 	
 //==============================================================================================
 //	민경자리
@@ -23,6 +24,17 @@ public class MinService implements InterMinService {
 		List<Map<String,String>> SubList = dao.getSubList();
 		return SubList;
 	}
+=======
+
+	// 과목 가져오기
+	@Override
+	public List<Map<String,String>> getWeekList() {
+		
+		List<Map<String,String>> WeekList = dao.getWeekList();
+		return WeekList;
+	}
+	
+>>>>>>> branch 'Minkyung' of https://github.com/vmim77/FinalProject.git
 
 	
 }//end of public class BoardService implements InterBoardService {

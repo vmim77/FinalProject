@@ -7,36 +7,7 @@
  
  .card-text {color: gray; font-size: 10pt;}
  
-<<<<<<< HEAD
-	table#homework, th, td { border: solid 1px black; }
-	
-	table#homework { border: solid 2px black; }
-	
-	th { width: 30%; padding-left: 5px; background-color: #ddd; }
-	
-	td { width: 50%; padding: 10px; }
- 
- .title{font-size: 10pt; color:gray;}
- 
- .badge{margin-left: 10px;}
- 
-</style>
-
-<script type="text/javascript">
-
-	$(document).ready(function(){
-		
-		$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
-		
-	});
-	
-</script>
-
-<i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
-<h3 style="float:left; color: #0099ff;">${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반(${requestScope.subjectMap.teacher}) 강의실 > 과제및평가</h3>
-<hr style="clear: both;">
-=======
- table#homework, th, td {border: solid 1px gray;}
+ table, th, td {border: solid 1px gray;}
 
  th, td{padding: 10px 0 10px 10px;}
  
@@ -50,18 +21,13 @@
 
 	$(document).ready(function(){
 		
-		$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
-		
 	});
 	
 </script>
 
 
-<h3>${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반(${requestScope.subjectMap.teacher}) 강의실 > 과제 및 평가</h3>
+<h1>과제 및 평가</h1>
 <hr>
->>>>>>> branch 'Minkyung' of https://github.com/vmim77/FinalProject.git
-
-<div id="homeworkContainer" style="width: 100%;">
 
 <div style="display: flex;">
 	<input type="text" placeholder="과제 검색" style="margin-left: 10px;" />
@@ -80,7 +46,7 @@
 					<button class="btn btn-link btn-block text-left" type="button"
 						data-toggle="collapse" data-target="#collapseOne"
 						aria-expanded="false" aria-controls="collapseOne">
-						과제1<span class="badge badge-danger">미열람</span><br>
+						빅데이터실무 01주차 1교시_오리엔테이션 및 수업안내<span class="badge badge-danger">미열람</span><br>
 						<div class="title">열람 종료일: 12월 17일 | 마감일 9월 19일 오후 13:59 |
 							-/1점 | 평가 안 됨</div>
 					</button>
@@ -90,7 +56,7 @@
 			<div id="collapseOne" class="collapse"
 				aria-labelledby="headingOne" data-parent="#accordionExample">
 				<div class="card-body d-flex justify-content-center">
-					<table id="homework" style="width: 80%;">
+					<table style="width: 80%;">
 						<tr>
 							<th>작성자</th>
 							<td>교수 금길영</td>
@@ -129,7 +95,7 @@
 						<button class="btn btn-link btn-block text-left" type="button"
 							data-toggle="collapse" data-target="#collapseTwo"
 							aria-expanded="false" aria-controls="collapseTwo">
-							과제2<span class="badge badge-warning">New</span>
+							빅데이터실무 02주차 1교시_과제 안내<span class="badge badge-warning">New</span>
 							<div class="title">열람 종료일: 12월 17일 | 마감일 9월 19일 오후 13:59 |
 								-/1점 | 평가 안 됨</div>
 						</button>
@@ -182,5 +148,4 @@
 
 		</div>
 	</div>
-</div>
 </div>

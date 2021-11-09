@@ -7,6 +7,7 @@
 <mapper namespace="Min">
 	  <resultMap type="HashMap" id="mapgetclassList">
       <result property="code"  column="code"  javaType="String"/>
+<<<<<<< HEAD
       <result property="subject"  column="subject"  javaType="String"/>     
       <result property="hakjum"  column="hakjum"  javaType="String"/>
       <result property="classdate"  column="classdate"  javaType="String"/>
@@ -29,6 +30,30 @@
 	  on B.week = C.fk_weekseq
 	  join tbl_attend D
 	  on C.lesson = D.fk_lessonseq
+=======
+      <result property="subject"  column="subject"  javaType="String"/>
+      <result property="teacher"  column="teacher"  javaType="String"/>      
+      <result property="hakjum"  column="hakjum"  javaType="String"/>
+      <result property="classdate"  column="classdate"  javaType="String"/>
+      <result property="fk_deptcode"  column="fk_deptcode"  javaType="String"/>
+      <result property="week"  column="week"  javaType="String"/>
+      <result property="startday"  column="startday"  javaType="String"/>
+      <result property="lesson"  column="lesson"  javaType="String"/>
+      <result property="video"  column="video"  javaType="String"/>
+      <result property="savefile"  column="savefile"  javaType="String"/>
+      <result property="uploadfile"  column="uploadfile"  javaType="String"/>
+      <result property="seq"  column="seq"  javaType="String"/>
+      <result property="fk_hakbun"  column="fk_hakbun"  javaType="String"/>
+   </resultMap>
+   <select id="getWeekList" resultMap="mapgetclassList">
+      select code, subject, teacher, hakjum, classdate, fk_deptcode, week, startday, lesson, video, savefile, uploadfile, seq, fk_hakbun
+      from tbl_subject A join tbl_week B
+      on A.code = B.fk_code
+      join tbl_weeklesson C
+      on B.week = C.fk_week
+      join tbl_attend D
+	  on C.lesson = D.fk_lesson_seq
+>>>>>>> branch 'Minkyung' of https://github.com/vmim77/FinalProject.git
    </select>
 	
 	
