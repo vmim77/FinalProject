@@ -258,3 +258,12 @@ fk_code  varchar2(100)
 ,constraint FK_TBL_GRADE_FK_HAKBUN foreign key(fk_hakbun) references tbl_member(hakbun) on delete cascade
 ,constraint CK_TBL_GRADE_GRADE check (grade in('A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'F' ))
 )
+
+
+
+select A.code AS code, A.subject AS subject, A.fk_hakbun AS fk_hakbun, C.name AS name, A.hakjum AS hakjum, A.classdate AS classdate, A.fk_deptcode AS deptcode, B.deptName AS deptName, B.deptLocation AS deptLocation
+from tbl_subject A
+JOIN tbl_department B
+on A.fk_deptcode = B.deptCode
+JOIN tbl_member C
+on A.fk_hakbun = C.hakbun

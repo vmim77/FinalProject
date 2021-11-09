@@ -44,7 +44,7 @@
 </script>
 
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
-<h3 style="float:left; color: #0099ff;">${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반 강의실</h3>
+<h3 style="float:left; color: #0099ff;">${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반 강의실(${requestScope.subjectMap.name})</h3>
 <hr style="clear: both;">
 
 <div style="width: 80%; margin-top: 10px; padding: 10px;">
@@ -64,11 +64,7 @@
 		</tr>
 		<tr>
 			<th>교수명</th>
-			<td>${requestScope.subjectMap.teacher}</td>
-		</tr>
-		<tr>
-			<th>분반</th>
-			<td>${requestScope.subjectMap.ban}반</td>
+			<td>${requestScope.subjectMap.name}</td>
 		</tr>
 		<tr>
 			<th>학점</th>
