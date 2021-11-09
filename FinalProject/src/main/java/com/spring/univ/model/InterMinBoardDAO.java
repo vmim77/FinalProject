@@ -6,7 +6,7 @@ public interface InterMinBoardDAO {
 	
 
 	// 과목 가져오기 
-	List<WeekVO> getWeekList();
+	List<Map<String, String>> getSubList();
 
 
 	

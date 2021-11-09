@@ -109,7 +109,8 @@ nominvalue
 nocycle
 nocache;
 
-
+select *
+from tbl_weeklesson;
 
 ------------출석 테이블----------------
 create table tbl_attend
@@ -118,7 +119,8 @@ create table tbl_attend
 ,constraint FK_tbl_attend_fk_lesson foreign key(fk_lesson) references tbl_weeklesson(lesson) on delete cascade  
 );
 
-
+select *
+from tbl_attend;
 
 
 
@@ -354,3 +356,14 @@ from
 select *
 from tbl_subject;
 
+
+---- 민경 테이블 조인 ----
+select code, subject, teacher, hakjum, classdate, fk_deptcode, fk_week, startday, lesson, video, savefile, uploadfile, seq, fk_hakbun
+from tbl_subject A join tbl_week B
+on A.code = B.fk_code
+join tbl_weeklesson C
+on B.week = C.fk_week
+join tbl_attend D
+on C.lesson = D.fk_lesson_seq;
+
+commit;

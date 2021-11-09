@@ -14,5 +14,5 @@
 	<li class="sideMenu">강의콘텐츠</li>
 	<li class="sideMenu">사용자 및 그룹</li>
 	<li class="sideMenu">성적</li>
-	<li class="sideMenu">출결/학습 현황</li>
+	<li class="sideMenu" onclick="javascript:location.href='<%= ctxPath%>/attendance.univ?code=${requestScope.code}'">출결/학습 현황</li>
 </ul>

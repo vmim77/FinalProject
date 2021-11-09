@@ -7,7 +7,7 @@ import com.spring.univ.model.WeekVO;
 public interface InterMinService {
 		
 	// 과목 가져오기
-	List<WeekVO> getWeekList();
+	List<Map<String, String>> getSubList();
 	
 	
 
