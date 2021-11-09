@@ -267,3 +267,8 @@ JOIN tbl_department B
 on A.fk_deptcode = B.deptCode
 JOIN tbl_member C
 on A.fk_hakbun = C.hakbun
+
+
+
+desc tbl_member;
+

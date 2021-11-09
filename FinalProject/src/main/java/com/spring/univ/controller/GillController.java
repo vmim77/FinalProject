@@ -102,54 +102,54 @@ public class GillController {
 		return jsonarr.toString();
 				
 	}//end of public String readComment(HttpServletRequest request){-------
-//=========================================================================
 	// === 과목목록 조회해오기(Ajax 로 처리) === //
-	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
-	@RequestMapping(value="/subjectList.univ", produces="text/plain;charset=UTF-8", method= {RequestMethod.POST})
-	public String subjectList(HttpServletRequest request){
+	   @ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
+	   @RequestMapping(value="/subjectList.univ", produces="text/plain;charset=UTF-8", method= {RequestMethod.GET})
+	   public String subjectList(HttpServletRequest request){
 
-		// 멤버 리스트 뽑아오기		
-		String classDate = request.getParameter("classDate");		// 요일명
-		String fk_deptCode = request.getParameter("fk_deptCode");	// 학
-		String searchType = request.getParameter("searchType");		// 연락처,이름,학번
-		String searchWord = request.getParameter("searchWord");		// 직접검색어입력
+	      // 멤버 리스트 뽑아오기      
+	      String classDate = request.getParameter("classDate");      // 요일명
+	      String fk_deptCode = request.getParameter("fk_deptCode");   // 학
+	      String searchType = request.getParameter("searchType");      // 연락처,이름,학번
+	      String searchWord = request.getParameter("searchWord");      // 직접검색어입력
 
-		// 검색어를 입력 안했다면
-		if(searchWord == "") {
-			searchWord = "no";
-		}
-		
-		Map<String, String> paraMap = new HashMap<>();
-		
-		paraMap.put("classDate", classDate);
-		paraMap.put("fk_deptCode", fk_deptCode);
-		paraMap.put("searchType", searchType);
-		paraMap.put("searchWord", searchWord);
+	      // 검색어를 입력 안했다면
+	      if(searchWord == "") {
+	         searchWord = "no";
+	      }
+	      
+	      Map<String, String> paraMap = new HashMap<>();
+	      
+	      paraMap.put("classDate", classDate);
+	      paraMap.put("fk_deptCode", fk_deptCode);
+	      paraMap.put("searchType", searchType);
+	      paraMap.put("searchWord", searchWord);
 
-		// 학생 리스트 가져오기
-		List<SubjectVO> subjectList = service.getSubjectList(paraMap);
-		
-		JSONArray jsonarr = new JSONArray();
-		
-		if(subjectList != null) {
-		
-			for(SubjectVO sbvo : subjectList) {
-		
-				JSONObject jsonobj = new JSONObject();
+	      // 학생 리스트 가져오기
+	      List<SubjectVO> subjectList = service.getSubjectList(paraMap);
+	      
+	      JSONArray jsonarr = new JSONArray();
+	      
+	      if(subjectList != null) {
+	      
+	         for(SubjectVO sbvo : subjectList) {
+	      
+	            JSONObject jsonobj = new JSONObject();
 
-				jsonobj.put("subject", sbvo.getSubject());
-				jsonobj.put("teacher", sbvo.getTeacher());
-				jsonobj.put("fk_deptCode", sbvo.getFk_deptCode());
-				jsonobj.put("hakjum", sbvo.getHakjum());
-				jsonobj.put("classDate", sbvo.getClassDate());		
-	
-				jsonarr.put(jsonobj);
-			}
-		}
-		
-		return jsonarr.toString();
-				
-	}//end of public String readComment(HttpServletRequest request){-------
+	            jsonobj.put("subject", sbvo.getSubject());
+	            // 이름만 학번이지 담긴 값은 교수님이름임
+	            jsonobj.put("teacher", sbvo.getFk_hakbun());
+	            jsonobj.put("fk_deptCode", sbvo.getFk_deptCode());
+	            jsonobj.put("hakjum", sbvo.getHakjum());
+	            jsonobj.put("classDate", sbvo.getClassDate());      
+	   
+	            jsonarr.put(jsonobj);
+	         }
+	      }
+	      
+	      return jsonarr.toString();
+	            
+	   }//end of public String readComment(HttpServletRequest request){-------
 //=========================================================================
 	// === 회원목록 입력하기(Ajax 로 처리) === //
 	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
