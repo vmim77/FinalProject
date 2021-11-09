@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.univ.model.SubjectVO;
+import com.spring.univ.model.WeekVO;
 import com.spring.univ.service.InterUnivService;
 import com.spring.univ.service.UnivService;
 
@@ -66,32 +67,30 @@ public class MinController {
 	}//end of public String test1(HttpServletRequest request) {------------
 	
 	@RequestMapping(value="/attendance.univ")
-	public String attendance(HttpServletRequest request) {
+	public ModelAndView attendance(HttpServletRequest request, ModelAndView mav, HttpServletResponse response) {
 		
-		String name = "출결 및 학습현황";
-		request.setAttribute("name", name);
+		List<WeekVO> WeekList = UnivService.getWeekList();
 		
-		return "attendance.tiles1";
+	
+		mav.addObject("WeekList", WeekList);
+		mav.setViewName("attendance.tiles1"); // 이건 만약 login 안에 있으면 login/attendance.tiles1 이런식
+		
+		return mav;
 		
 	}//end of public String test1(HttpServletRequest request) {------------
-	
+/*	
 	@RequestMapping(value="/subject2.univ")
-	public String subject(HttpServletRequest request,ModelAndView mav) {
+	public ModelAndView subject(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+
+		// 과목 가져오기 ㅋ 
+		List<WeekVO> subList = UnivService.getSubList();
+		mav.addObject("subList", subList);
+		mav.setViewName("attendance.tiles1"); // 이건 만약 login 안에 있으면 login/attendance.tiles1 이런식
 		
-		String subject = request.getParameter("subject");
-		
-		Map<String,String> paraMap = new HashMap<>();
-		paraMap.put("subject", subject);
-		
-		SubjectVO subject2 = UnivService.getSubject(paraMap);
-		
-		request.setAttribute("subject2", subject2);
-		
-		
-		return "subject2.tiles1";
+		return mav;
 		
 	}//end of public String test1(HttpServletRequest request) {------------
-	
+*/	
 	
 	
 	

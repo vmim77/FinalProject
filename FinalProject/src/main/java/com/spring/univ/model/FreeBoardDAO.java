@@ -100,14 +100,14 @@ public class FreeBoardDAO implements InterFreeBoardDAO {
 		return totalCount;
 	}//end of public int getCommentTotalCount(Map<String, String> paraMap) {
 //================================================================================================
+	// 과목 가져오기
 	@Override
-	public SubjectVO getSubject(Map<String, String> paraMap) {
-		
-		SubjectVO subject2 =  sqlsession2.selectOne("Min.getSubject", paraMap);
-		return subject2;
+	public List<WeekVO> getWeekList() {
+		List<WeekVO> WeekList = sqlsession2.selectList("Min.getWeekList");
+		return WeekList;
 	}
-
 	
+
 	
 	
 	

@@ -121,12 +121,14 @@ public class UnivService implements InterUnivService {
 //==============================================================================================
 //	민경자리
 //==============================================================================================
+	// 과목 가져오기
 	@Override
-	public SubjectVO getSubject(Map<String, String> paraMap) {
+	public List<WeekVO> getWeekList() {
 		
-		SubjectVO subject2 = dao.getSubject(paraMap);
-		return subject2;
+		List<WeekVO> WeekList = dao.getWeekList();
+		return WeekList;
 	}
+	
 
 	
 }//end of public class BoardService implements InterBoardService {

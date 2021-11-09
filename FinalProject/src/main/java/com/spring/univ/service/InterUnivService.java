@@ -6,6 +6,7 @@ import com.spring.univ.model.FreeBoardVO;
 import com.spring.univ.model.FreeCommentVO;
 import com.spring.univ.model.MemberVO;
 import com.spring.univ.model.SubjectVO;
+import com.spring.univ.model.WeekVO;
 
 public interface InterUnivService {
 		
@@ -44,9 +45,11 @@ public interface InterUnivService {
 
 	// 원글 글번호(parentSeq)에 해당하는 댓글의 총개수를 알아오기
 	int getCommentTotalCount(Map<String, String> paraMap);
+
+	// 과목 가져오기
+	List<WeekVO> getWeekList();
 	
-	// 민경 과목 실험
-	SubjectVO getSubject(Map<String, String> paraMap);
+	
 
 	
 }//end of public interface InterBoardService {
