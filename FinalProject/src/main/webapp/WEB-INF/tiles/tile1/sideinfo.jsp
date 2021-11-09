@@ -22,6 +22,7 @@
 		padding: 20px 5px;
 	}
 	
+<<<<<<< HEAD
 	.menu:hover, #hideSideInfo:hover, .dropdown-item:hover, .dropright:hover {
 		background-color: orange;
 		color: #fff;
@@ -91,6 +92,50 @@
 	<i class="hideicon fas fa-users-cog fa-2x"></i>
 	<div>관리</div>
 </a>
+=======
+	.menu:hover, #hideSideInfo:hover {
+		background-color: orange;
+		color: #fff;
+		text-decoration: none;
+	}
+	
+</style>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		
+	});
+
+</script>
+
+<a href="#">
+	<img style="max-width:100%; margin: auto; padding: 30px 0;" src="<%= ctxPath%>/resources/images/logo.png" />
+</a>
+<a id="accountMenu" class="menu" href="#">
+	<i class="hideicon fas fa-user-circle fa-2x"></i>
+	<div>계정</div>
+</a>
+<a class="menu" href="<%= ctxPath%>/dashboard.univ">
+	<i class="hideicon fas fa-tachometer-alt fa-2x"></i>
+	<div>대시보드</div>
+</a>
+
+<a id="subjectMenu" class="menu" href="#">
+	<i class="hideicon fas fa-book fa-2x"></i>
+	<div>과목</div>
+</a>
+
+<a class="menu" href="#">
+	<i class="hideicon far fa-calendar fa-2x"></i>
+	<div>캘린더</div>
+</a>
+<a class="menu" href="#">
+	<i class="hideicon fas fa-envelope-open-text fa-2x"></i>
+	<div>메시지</div>
+</a>
+
+>>>>>>> refs/heads/main
 <a class="menu" href="#">
 	<i class="hideicon far fa-question-circle fa-2x"></i>
 	<div>도움말</div>

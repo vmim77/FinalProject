@@ -1,86 +1,75 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%-- ======= #28. tile2 중 sideinfo 페이지 만들기  ======= --%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<% String ctxPath = request.getContextPath(); %>
 
+<style type="text/css">
+	.menu  { 
+		display: inline-block;
+		width: 100%; 
+		text-align: center; 
+		font-size: 10pt;  
+		color: #fff; 
+		text-decoration: none;
+		padding: 10px 5px;
+	}
+	
+	#hideSideInfo {
+		color: #fff; 
+		text-align: center;
+		padding: 20px 5px;
+	}
+	
+	.menu:hover, #hideSideInfo:hover {
+		background-color: orange;
+		color: #fff;
+		text-decoration: none;
+	}
+	
+</style>
 
 <script type="text/javascript">
 
-   $(document).ready(function() {
-      loopshowNowTime();
-      
-         
-   }); // end of ready(); ---------------------------------
+	$(document).ready(function(){
+		
+	});
 
-   function showNowTime() {
-      
-      var now = new Date();
-   
-      var month = now.getMonth() + 1;
-      if(month < 10) {
-         month = "0"+month;
-      }
-      
-      var date = now.getDate();
-      if(date < 10) {
-         date = "0"+date;
-      }
-      
-      var strNow = now.getFullYear() + "-" + month + "-" + date;
-      
-      var hour = "";
-       if(now.getHours() < 10) {
-           hour = "0"+now.getHours();
-       } 
-       else {
-          hour = now.getHours();
-       }
-      
-       
-      var minute = "";
-      if(now.getMinutes() < 10) {
-         minute = "0"+now.getMinutes();
-      } else {
-         minute = now.getMinutes();
-      }
-      
-      var second = "";
-      if(now.getSeconds() < 10) {
-         second = "0"+now.getSeconds();
-      } else {
-         second = now.getSeconds();
-      }
-      
-      strNow += " "+hour + ":" + minute + ":" + second;
-      
-      $("span#clock").html(strNow);
-   
-   }// end of function showNowTime() -----------------------------
-
-
-   function loopshowNowTime() {
-      showNowTime();
-      
-      var timejugi = 1000;   // 시간을 1초 마다 자동 갱신하려고.
-      
-      setTimeout(function() {
-                  loopshowNowTime();   
-               }, timejugi);
-      
-   }// end of loopshowNowTime() --------------------------
-
-   
-   // ------ 기상청 날씨정보 공공API XML데이터 호출하기 -------- //
-   
 </script>
 
-<div style="min-height: 1100px; margin-bottom: 50px;">
-   <div style="text-align: center; font-size: 16pt;">
-      현재시각 :&nbsp; <span id="clock" style="color:green; font-weight:bold;"></span>
-   </div>
-   
+<a href="#">
+	<img style="max-width:100%; margin: auto; padding: 30px 0;" src="<%= ctxPath%>/resources/images/logo.png" />
+</a>
+<a id="accountMenu" class="menu" href="#">
+	<i class="hideicon fas fa-user-circle fa-2x"></i>
+	<div>계정</div>
+</a>
+<a class="menu" href="<%= ctxPath%>/dashboard.univ">
+	<i class="hideicon fas fa-tachometer-alt fa-2x"></i>
+	<div>대시보드</div>
+</a>
+
+<a id="subjectMenu" class="menu" href="#">
+	<i class="hideicon fas fa-book fa-2x"></i>
+	<div>과목</div>
+</a>
+
+<a class="menu" href="#">
+	<i class="hideicon far fa-calendar fa-2x"></i>
+	<div>캘린더</div>
+</a>
+<a class="menu" href="#">
+	<i class="hideicon fas fa-envelope-open-text fa-2x"></i>
+	<div>메시지</div>
+</a>
+<a class="menu" href="#">
+	<i class="hideicon far fa-question-circle fa-2x"></i>
+	<div>도움말</div>
+</a>
+
+<div id="hideSideInfo">
+	<p style="text-align: center; "><i class="fas fa-backward fa-1x center"></i></p>
 </div>
-   
+
+

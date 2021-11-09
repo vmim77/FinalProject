@@ -11,15 +11,16 @@ public class FreeCommentVO {
 	private String regDate;    // 작성일자
 	private String parentSeq;     // 원게시물 글번호
 	private int status;        // 글삭제여부 ( 1사용가능한 글,  0 삭제된 글, 댓글은 원글이 삭제되면 자동적으로 삭제되어야 한다) _
-	                                             
+	private String fk_code;   // 과목코드 추가                                             
 	/////////////////////////////////////////////////////////////////////
 	                                               
 	public FreeCommentVO() {}
 	
-	public FreeCommentVO(String seq, String fk_hakbun,String name,String content,String regDate,String parentSeq,int status) {
+	public FreeCommentVO(String seq, String fk_hakbun,String name, String fk_code, String content,String regDate,String parentSeq,int status) {
 		this.seq = seq;
 		this.fk_hakbun = fk_hakbun;
 		this.name = name;
+		this.fk_code = fk_code;
 		this.content = content;
 		this.regDate = regDate;
 		this.parentSeq = parentSeq;
@@ -85,5 +86,13 @@ public class FreeCommentVO {
 	}
 
 	/////////////////////////////////////////////////////////////////////
-	
+	public String getFk_code() {
+		return fk_code;
+	}
+
+	public void setFk_code(String fk_code) {
+		this.fk_code = fk_code;
+	}
+
+
 }

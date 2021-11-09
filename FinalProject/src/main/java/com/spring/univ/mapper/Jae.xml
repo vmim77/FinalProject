@@ -7,4 +7,28 @@
 <mapper namespace="Jae">
 	
 	
+	<resultMap type="HashMap" id="mapgetclassList">
+		<result property="code"  column="code"  javaType="String"/>
+		<result property="subject"  column="subject"  javaType="String"/>
+		<result property="teacher"  column="teacher"  javaType="String"/>
+		<result property="ban"  column="ban"  javaType="String"/>
+		<result property="hakjum"  column="hakjum"  javaType="String"/>
+		<result property="classdate"  column="classdate"  javaType="String"/>
+		<result property="fk_deptcode"  column="fk_deptcode"  javaType="String"/>
+		<result property="week"  column="week"  javaType="String"/>
+		<result property="startday"  column="startday"  javaType="String"/>
+		<result property="lesson"  column="lesson"  javaType="String"/>
+		<result property="video"  column="video"  javaType="String"/>
+		<result property="savefile"  column="savefile"  javaType="String"/>
+		<result property="uploadfile"  column="uploadfile"  javaType="String"/>
+		<result property="seq"  column="seq"  javaType="String"/>
+	</resultMap>
+	<select id="getclassList" resultMap="mapgetclassList">
+		select code, subject, teacher, ban, hakjum, classdate, fk_deptcode, week, startday, lesson, video, savefile, uploadfile, seq
+		from tbl_subject A join tbl_week B
+		on A.code = B.fk_code
+		join tbl_weeklesson C
+		on B.week = C.fk_week
+	</select>
+	
 </mapper>

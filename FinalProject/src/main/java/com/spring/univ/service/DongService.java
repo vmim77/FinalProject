@@ -9,7 +9,11 @@ import com.spring.univ.model.*;
 public class DongService implements InterDongService {
 //==============================================================================================
 	@Autowired
+<<<<<<< HEAD
 	private InterDongBoardDAO dao;
+=======
+	private InterDongDAO dao;
+>>>>>>> refs/heads/main
 //==============================================================================================
 	
 	// === 로그인 처리하기 === //

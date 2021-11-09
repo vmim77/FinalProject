@@ -15,6 +15,10 @@ import com.spring.univ.model.MemberVO;
 import com.spring.univ.model.SubjectVO;
 import com.spring.univ.service.InterDongService;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/heads/main
 
 /*
 	사용자 웹브라우저 요청(View)  ==> DispatcherServlet ==> @Controller 클래스 <==>> Service단(핵심업무로직단, business logic단) <==>> Model단[Repository](DAO, DTO) <==>> myBatis <==>> DB(오라클)           
@@ -115,7 +119,11 @@ public class DongController {
 	    	  
 	    	   mav.addObject("session", session);
 	    	  
+<<<<<<< HEAD
 	    	   mav.setViewName("dashboard.tiles1"); 
+=======
+	    	   mav.setViewName("Sunghyun/dashboard.tiles1"); 
+>>>>>>> refs/heads/main
 	      }
 	     
 	     

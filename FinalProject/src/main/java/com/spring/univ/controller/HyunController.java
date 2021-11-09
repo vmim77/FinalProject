@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.univ.model.FreeBoardVO;
+import com.spring.univ.common.MyUtil;
+import com.spring.univ.model.MemberVO;
+
 
 /*
 	사용자 웹브라우저 요청(View)  ==> DispatcherServlet ==> @Controller 클래스 <==>> Service단(핵심업무로직단, business logic단) <==>> Model단[Repository](DAO, DTO) <==>> myBatis <==>> DB(오라클)           
@@ -47,4 +51,88 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HyunController {
 	
+	@RequestMapping(value="/notice.univ") // /Notice.univ의 url은 아래의 메소드가 응답함!
+	public ModelAndView Notice(ModelAndView mav, HttpServletRequest request) {
+		
+		mav.setViewName("notice/notice.tiles1");
+	//	/WEB-INF/views/tiles1/notice/notice.jsp 페이지를 만들어야 한다.
+		
+		return mav;
+	
+		
+	}//public ModelAndView Notice(ModelAndView mav, HttpServletRequest request)--------	
+	
+//=========================================================================
+	// === #51. 문의게시판(공지사항) 글쓰기 폼페이지 요청 === //
+	@RequestMapping(value="/noticeAdd.univ")
+	public ModelAndView Noticeadd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		// 로그인 또는 로그아웃을 했을 때 현재 보이던 그 페이지로 그대로 돌아가기 위한 메소드 생성
+	//	MyUtil.getCurrentURL(request);
+	
+	/*	
+		// === #142.답변글쓰기가 추가된 경우 시작 === //
+		String fk_seq = request.getParameter("fk_seq");
+		String groupno = request.getParameter("groupno");
+		String depthno = request.getParameter("depthno");
+		
+		if(fk_seq == null) {
+			fk_seq = "";
+		}
+		
+		mav.addObject("fk_seq", fk_seq);
+		mav.addObject("groupno", groupno);
+		mav.addObject("depthno", depthno);
+		
+		// === #142.답변글쓰기가 추가된 경우 끝 === //
+		
+	*/	
+		
+		mav.setViewName("notice/noticeAdd.tiles1");
+	//	/WEB-INF/views/tiles1/add.jsp 페이지를 만들어야 한다.
+		
+		return mav;
+	
+	}
+//=========================================================================
+	
+	
+	//=========================================================================
+		// === #54. 문의게시판 글쓰기 완료 요청 === //
+		@RequestMapping(value="/noticeAddEnd.univ", method= {RequestMethod.POST})
+		public ModelAndView noticeAddEnd(Map<String, String> paraMap, ModelAndView mav, FreeBoardVO freeboardvo) { // <== After Advice 사용하기	
+			
+			/*
+				form 태그의 name 명과  BoardVO 의 필드명이 같다라면 
+				request.getParameter("form 태그의 name명"); 을 사용하지 않더라도
+				자동적으로 BoardVO boardvo 에 set 되어진다.
+			*/
+		
+		/*	
+			System.out.println("~~~ 확인용 fk_userid : " + boardvo.getFk_userid());
+			System.out.println("~~~ 확인용 name : " + boardvo.getName());
+			System.out.println("~~~ 확인용 subject : " + boardvo.getSubject());
+		*/
+		//	int n = service.// <== 파일첨부가 없는 글쓰기
+			
+			mav.setViewName("redirect:/notice.univ");
+			// list.action 페이지로 redirect(페이지이동)하라는 말이다.
+			
+			// === #96. After Advice를 사용하기 === //
+			// == After Advice 를 사용하기 위해 파라미터를 생성하는 것임 ==
+			//	  (글쓰기를 한 이후에 회원의 포인트를 100점 증가)
+			paraMap.put("fk_hakbun", freeboardvo.getFk_hakbun());
+			paraMap.put("point", "100"); // 글쓰기를 하면 포인트 100 증가시키기
+			
+			return mav;
+		}//end of public ModelAndView noticeAddEnd(ModelAndView mav, FreeBoardVO freeboardvo)--------------------
+	//=========================================================================	
+	
 }	
+
+
+
+
+
+
+

@@ -17,16 +17,25 @@ public class FreeBoardVO {
 	private String regDate;   // 글쓴시간
 	private int status;       // 글삭제여부   1:사용가능한 글,  0:삭제된글
 	private int commentCount; // 조회수
-
+	private String fk_code;   // 과목코드
+	
 	/////////////////////////////////////////////////////////////////////
 	
+	// 아래 네가지는 select용이라서 // insert용 **라고 적힌 부분에 파라미터안에 넣지 않아도 됨.
+   
+	private String previousseq;      // 이전글번호 //숫자는 int로 안써도 됨. String써도 다 호환됨.
+	private String previoussubject;  // 이전글제목
+	private String nextseq;          // 다음글번호
+	private String nextsubject;      // 다음글제목
+
 	public FreeBoardVO() {}
 	
-	public FreeBoardVO(String seq, String fk_hakbun, String name, String subject, String content, String pw,
+	public FreeBoardVO(String seq, String fk_hakbun, String name, String fk_code, String subject, String content, String pw,
 			String readCount, String regDate, int status, int commentCount) {
 		this.seq = seq;
 		this.fk_hakbun = fk_hakbun;
 		this.name = name;
+		this.fk_code = fk_code;
 		this.subject = subject;
 		this.content = content;
 		this.pw = pw;
@@ -119,6 +128,52 @@ public class FreeBoardVO {
 	}
 
 	/////////////////////////////////////////////////////////////////////
+
+
+	public String getPreviousseq() {
+	return previousseq;
+	}
 	
+	public void setPreviousseq(String previousseq) {
+	this.previousseq = previousseq;
+	}
 	
+	public String getPrevioussubject() {
+	return previoussubject;
+	}
+	
+	public void setPrevioussubject(String previoussubject) {
+	this.previoussubject = previoussubject;
+	}
+	
+	public String getNextseq() {
+	return nextseq;
+	}
+	
+	public void setNextseq(String nextseq) {
+	this.nextseq = nextseq;
+	}
+	
+	public String getNextsubject() {
+	return nextsubject;
+	}
+	
+	public void setNextsubject(String nextsubject) {
+	this.nextsubject = nextsubject;
+	}
+	
+	//////////////////////////////////////////////////과목코드 추가
+	
+	public String getFk_code() {
+		return fk_code;
+	}
+	
+	public void setFk_code(String fk_code) {
+		this.fk_code = fk_code;
+	}
+	
+
+
+
+
 }
