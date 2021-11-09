@@ -1,0 +1,632 @@
+package com.spring.univ.controller;
+
+import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.spring.univ.common.MyUtil;
+import com.spring.univ.model.FreeBoardVO;
+import com.spring.univ.model.FreeCommentVO;
+import com.spring.univ.model.MemberVO;
+import com.spring.univ.service.InterRuService;
+
+
+/*
+	사용자 웹브라우저 요청(View)  ==> DispatcherServlet ==> @Controller 클래스 <==>> Service단(핵심업무로직단, business logic단) <==>> Model단[Repository](DAO, DTO) <==>> myBatis <==>> DB(오라클)           
+	(http://...  *.action)                                  |                                                                                                                              
+	 ↑                                                View Resolver
+	 |                                                      ↓
+	 |                                                View단(.jsp 또는 Bean명)
+	 -------------------------------------------------------| 
+	
+	사용자(클라이언트)가 웹브라우저에서 http://localhost:9090/board/test_insert.action 을 실행하면
+	배치서술자인 web.xml 에 기술된 대로  org.springframework.web.servlet.DispatcherServlet 이 작동된다.
+	DispatcherServlet 은 bean 으로 등록된 객체중 controller 빈을 찾아서  URL값이 "/test_insert.action" 으로
+	매핑된 메소드를 실행시키게 된다.                                               
+	Service(서비스)단 객체를 업무 로직단(비지니스 로직단)이라고 부른다.
+	Service(서비스)단 객체가 하는 일은 Model단에서 작성된 데이터베이스 관련 여러 메소드들 중 관련있는것들만을 모아 모아서
+	하나의 트랜잭션 처리 작업이 이루어지도록 만들어주는 객체이다.
+	여기서 업무라는 것은 데이터베이스와 관련된 처리 업무를 말하는 것으로 Model 단에서 작성된 메소드를 말하는 것이다.
+	이 서비스 객체는 @Controller 단에서 넘겨받은 어떤 값을 가지고 Model 단에서 작성된 여러 메소드를 호출하여 실행되어지도록 해주는 것이다.
+	실행되어진 결과값을 @Controller 단으로 넘겨준다.
+*/
+
+// ==== #30. 컨트롤러 선언 ====
+// @Component // 이 어노테이션으로 인해 BoardController 클래스는 자동적으로 bean으로 올라간다.
+// --> @Controller에는 @Component 기능이 이미 존재하기 때문에 @Component 생략 가능!!!!!
+/* 
+	XML에서 빈을 만드는 대신에 클래스명 앞에 @Component 어노테이션을 적어주면 해당 클래스는 bean으로 자동 등록된다. 
+	그리고 bean의 이름(첫글자는 소문자)은 해당 클래스명이 된다. 
+	즉, 여기서 bean의 이름은 boardController 이 된다. 
+	여기서는 @Controller 를 사용하므로 @Component 기능이 이미 있으므로 @Component를 명기하지 않아도 BoardController 는 bean 으로 등록되어 스프링컨테이너가 자동적으로 관리해준다. 
+*/
+@Controller
+public class RuController {//
+	@Autowired
+	private InterRuService service;
+	/*
+	@RequestMapping(value="/gill.univ") // /test1.action의 url은 아래의 메소드가 응답함!
+	public String test1(HttpServletRequest request) {//
+		
+		
+		List<String> deptList =  service.showdepartment();
+		
+		request.setAttribute("deptList", deptList);
+		
+	
+		return "test5";
+	//	/WEB-INF/views/test1.jsp 페이지를 만들어야 한다.
+		
+	}//end of public String test1(HttpServletRequest request) {------------
+	*/
+//=========================================================================	
+	// 게시판 글쓰기 폼페이지 띄우기 //
+	@RequestMapping(value="/add.univ")
+	public ModelAndView requiredLogin_add(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		getCurrentURL(request);
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+		
+		String fk_hakbun = loginuser.getHakbun();
+		String name = loginuser.getName();
+		
+		session.setAttribute("fk_hakbun", fk_hakbun);
+		session.setAttribute("name", name);
+
+		mav.setViewName("board/add.tiles2");
+		///WEB-INF/views/tiles2/board/add.jsp 파일을 생성한다.
+		
+		return mav;
+	
+	}
+//=========================================================================
+	// 게시판 글쓰기 완료 요청  //
+	@RequestMapping(value="/addEnd.univ", method= {RequestMethod.POST})			
+	public ModelAndView addEnd(Map<String,String> paraMap, ModelAndView mav, FreeBoardVO freeboardvo) {	
+		
+		// 파일첨부가 없는 글쓰기
+		int n = service.add(freeboardvo); 
+		
+		mav.setViewName("redirect:/list.univ");
+
+		return mav;
+		
+	}//end of public ModelAndView addEnd(ModelAndView mav, BoardVO boardvo)--------------------
+//=========================================================================	
+	// 글목록 보기 페이지 요청 //
+	@RequestMapping(value="/list.univ")
+	public ModelAndView list(ModelAndView mav, HttpServletRequest request) {
+			
+		List<FreeBoardVO> freeboardList = null;
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("readCountPermission", "yes");
+		
+		String searchType = request.getParameter("searchType");
+		String searchWord = request.getParameter("searchWord");
+		String str_currentShowPageNo = request.getParameter("currentShowPageNo");
+		
+		if(searchType == null || (!"subject".equals(searchType) && !"name".equals(searchType))) {
+			searchType = "";
+		}
+		if(searchWord == null || "".equals(searchWord) || searchWord.trim().isEmpty()) {
+			searchWord = "";
+		}
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("searchType", searchType);
+		paraMap.put("searchWord", searchWord);
+		
+		// 먼저 총 게시물 건수(totalCount)를 구해와야 한다.
+		// 총 게시물건수(totalCount) 는 검색조건이 있을 때와 없을 떄로 나뉘어진다
+		
+		int totalCount = 0;        // 1. 총 게시물 건수
+		int sizePerPage = 10;      // 2. 한 페이지당 보여줄 게시물 건수
+		int currentShowPageNo = 0; // 3. 현재 보여주는 페이지 번호로서, 초기치는 1페이지로 설정함
+		int totalPage = 0;         // 4. 총 페이지수(뤱브라우저상에서 보여줄 총 페이지 갯수)
+		int startRno = 0;          // 5. 시작 행번호
+		int endRno = 0;            // 6. 끝 행번호
+		
+		// 1. 총 게시물 건수
+		totalCount = service.getTotalCount(paraMap);
+		totalPage = (int) Math.ceil((double)totalCount/sizePerPage);
+		
+		if(str_currentShowPageNo == null) {
+
+			currentShowPageNo = 1;
+		}
+		else {
+			// get방식으로 들어올 때 번호를 치고 들어오는 것이 아닌 문자로 치고 들어올때 에러 방지
+			try {
+				
+				currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
+				// 보여지는 페이지가 0페이지 이거나 정해진 페이지 수 이상 입력해서 들어올 때
+				if(currentShowPageNo < 1 || currentShowPageNo > totalPage) {
+					currentShowPageNo = 1;
+				}
+				
+			} catch(NumberFormatException e) {
+				currentShowPageNo = 1;
+			}//end of try----------------------------------------------------
+			
+		}//end of if(str_currentShowPageNo == null) {------------------------
+		
+		startRno = ((currentShowPageNo - 1) * sizePerPage) + 1;
+		endRno = startRno + sizePerPage - 1;
+		
+		paraMap.put("startRno", startRno+"");
+		paraMap.put("endRno", endRno+"");
+		
+		// 페이징 처리한 글 목록 가져오기(검색의 유무와 상관 없이 모두 호환 가능하다)
+		freeboardList = service.boardListSearchWithPaging(paraMap);
+		
+		// 아래는 검색대상 컬럼과 검색어를 유지시키기 위한 것
+		if(!"".equals(searchType) && !"".equals(searchWord)) {
+			mav.addObject(paraMap);
+		}
+		
+		int blockSize = 10;
+		
+        // loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[ 지금은 10개(== blockSize) ] 까지만 증가하는 용도이다.
+		int loop = 1;
+		int pageNo = ((currentShowPageNo - 1) / blockSize) * blockSize + 1;
+		
+		String pageBar = "<ul style='list-style:none;'>";
+		String url = "list.univ";
+		
+		////////////////////////////////////////////////////////////////////////////////////////////
+		
+		// === [맨처음][이전] 만들기 === //
+		if(pageNo != 1) {
+			pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo=1'> « </a></li>";
+			pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+(pageNo-1)+"'> ‹ </a></li>";
+		}//end of if(pageNo != 1) {----------------------------------------
+		
+		////////////////////////////////////////////////////////////////////////////////////////////
+		
+		while(!(loop > blockSize || pageNo > totalPage)) {
+			
+			// 내가 보고자 하는 페이지가 현제 페이지라면
+			// ex) 현재 5페이지 인데 5페이지를 보고싶다면
+			if(pageNo == currentShowPageNo) {
+				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; color:red; padding:2px 4px;'>"+pageNo+"</li>";
+			}
+			else {
+				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+			}
+			
+			loop++;
+			pageNo++;
+			
+		}//end of while(!(loop > blockSize || pageNo > totalPage)) {------
+		
+		////////////////////////////////////////////////////////////////////////////////////////////
+		
+		// === [다음][마지막] 만들기 === //
+		if(pageNo <= totalPage) {
+			pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+(pageNo+1)+"'> › </a></li>";
+			pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+totalPage+"'> » </a></li>";
+		}//end of if(pageNo != 1) {----------------------------------------
+		
+		////////////////////////////////////////////////////////////////////////////////////////////
+		
+		pageBar += "</ul>";
+		
+		mav.addObject("pageBar", pageBar);
+		
+	    String gobackURL = MyUtil.getCurrentURL(request);
+
+	    mav.addObject("gobackURL", gobackURL);
+		mav.addObject("freeboardList", freeboardList);
+		mav.setViewName("board/list.tiles2");
+		
+		return mav;
+	}//end of public ModelAndView list(ModelAndView mav)-------------------
+//=========================================================================	
+	// 글 1개를 보여주는 페이지 요청 //
+	@RequestMapping(value="/view.univ", method= {RequestMethod.GET})
+	public ModelAndView view(ModelAndView mav, HttpServletRequest request) {
+
+		// 조회하고자 하는 글번호 받아오기
+		String seq = request.getParameter("seq");
+		
+		// 글목록에서 검색되어진 글내용일 경우 이전글제목, 다음글제목은 검색되어진 결과물내의 이전글과 다음글이 나오도록 하기 위한 것이다.  
+		String searchType = request.getParameter("searchType");
+		String searchWord = request.getParameter("searchWord");
+		
+		if(searchType == null) {
+			searchType = "";
+		}
+		
+		if(searchWord == null) {
+			searchWord = "";
+		}
+				
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("seq", seq);
+		paraMap.put("searchType", searchType);
+		paraMap.put("searchWord", searchWord);
+		
+		mav.addObject("searchType", searchType);
+		mav.addObject("searchWord", searchWord);
+		////////////////////////////////////////////////////////////////////////////////////////
+		
+		// === #125. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후 === //
+		//      사용자가 목록보기 버튼을 클릭했을 떄 돌아갈 페이지를 알려주기위해
+		//			  현재 페이지 주소를 뷰단에 넘겨준다
+		
+		String gobackURL = request.getParameter("gobackURL");
+		
+		// 추가
+		if(gobackURL != null && gobackURL.contains(" ") ) {
+			gobackURL = gobackURL.replaceAll(" ", "&");
+			// 이전글제목, 다음글제목을 클릭했을때 돌아갈 페이지 주소를 올바르게 만들어주기 위해서 한 것임.
+//			System.out.println("~~~~ 확인용 gobackURL =>" + gobackURL);
+			// ~~~~ 확인용 gobackURL =>/list.action?searchType=subject&searchWord=%EC%9E%85%EB%8B%88%EB%8B%A4&currentShowPageNo=15 //입니다로 글제목 검색후 15페이지에 있는 55번 김유신 클릭 했을때 콘솔에 찍힘
+
+		}
+		
+		
+		mav.addObject("gobackURL", gobackURL);
+		
+		////////////////////////////////////////////////////////////////////////////////////////
+		
+		try {
+			Integer.parseInt(seq); // 글번호 형 변환하기
+			
+			// 현재 로그인 되어 있는 사용자의 정보 가져오기 - 조회수를 위해서
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+			
+			String login_hakbun = null;
+			
+			// 로그인 되어져 있다면
+			if(loginuser != null) { 
+				login_hakbun = loginuser.getHakbun();
+			}
+			
+			FreeBoardVO freeboardvo = null;
+			
+			// 위의 글목록보기 #69. 에서 session.setAttribute("readCountPermission", "yes"); 해두었다. 
+			if("yes".equals(session.getAttribute("readCountPermission"))) {
+				// 글 목록보기를 클릭한 다음에 특정글을 조회해온 경우이다
+				
+				// 글 조회수 증가와 함께 글 1개를 조회 해주는 함수
+				freeboardvo = service.getView(paraMap, login_hakbun);
+				
+				session.removeAttribute("readCountPermission");
+				// 중요함!! session 에 저장된 readCountPermission 을 삭제한다.
+			}
+			else {
+				// 웹브라우저에서 새로고침(F5)을 클릭한 경우이다
+				freeboardvo = service.getWithNoAddCount(paraMap);
+			}
+			
+			// view 페이지에 보여주기 위해 request 영역에 담음
+			mav.addObject("freeboardvo", freeboardvo);
+			
+		} catch(NumberFormatException e) {
+			e.printStackTrace();
+		}
+		
+		mav.setViewName("board/view.tiles2");
+		
+		return mav;
+	}//end of public ModelAndView view(ModelAndView mav, HttpServletRequest request){
+//=========================================================================	
+	// 글수정 페이지 요청 //
+	@RequestMapping(value="/edit.univ", method= {RequestMethod.GET})
+	public ModelAndView requiredlogin_edit(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+
+		// 글 수정해야 할 글번호 가져오기
+		String seq = request.getParameter("seq");
+		
+		// 글 수정해야할 글1개 내용 가져오기
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("seq", seq);
+		
+		FreeBoardVO freeboardvo = service.getWithNoAddCount(paraMap);
+		
+		try {
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+			
+			// 글 작성자와 로그인한 유저와 같지 않으면
+			if(!loginuser.getHakbun().equals(freeboardvo.getFk_hakbun())) {
+				
+				String message = "다른 사용자의 글은 수정이 불가합니다.";
+				String loc = "javascript:history.back()";
+				
+				mav.addObject("message", message);
+				mav.addObject("loc", loc);
+				mav.setViewName("msg");
+			}
+			// 자신의 글을 수정할 경우
+			else {
+				mav.addObject("freeboardvo", freeboardvo);
+				mav.setViewName("board/edit.tiles2");
+			}
+			
+		}catch(NullPointerException e) {
+			String message = "로그인 후 이용가능한 서비스입니다.";
+			String loc = request.getContextPath()+"/MemberLogin.univ";
+			
+			mav.addObject("message", message);
+			mav.addObject("loc", loc);
+			mav.setViewName("msg");
+		}
+		
+		return mav;
+		
+	}//end of public public ModelAndView requiredlogin_edit(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
+//=========================================================================	
+	//  === 로그인 또는 로그아웃을 했을 때 현재 보이던 그 페이지로 그대로 돌아가기 위한 메소드 생성 ===    
+	public void getCurrentURL(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		session.setAttribute("goBackURL", MyUtil.getCurrentURL(request));
+	}
+//=========================================================================	
+	// 글수정 페이지 완료하기 //
+	@RequestMapping(value="/editEnd.univ", method= {RequestMethod.POST})
+	public ModelAndView editEnd(ModelAndView mav, FreeBoardVO freeboardvo, HttpServletRequest request) {
+		
+		// 글 수정을 하려면 원본글에 입력했던 암호와 같아야 글 수정이 가능하도록 하게한다.
+		int n = service.edit(freeboardvo);
+		// n이 1이라면 정상적으로 변경됨
+		// n이 0이라면 글수정에 필요한 글암호가 틀린경우
+		
+		if(n==0) {
+			mav.addObject("message", "암호가 일치하지 않아 글 수정이 불가합니다.");
+		}
+		else {
+			mav.addObject("message", "글 수정 성공!!");
+		}
+		
+		mav.addObject("loc", request.getContextPath()+"/view.univ?seq="+freeboardvo.getSeq());
+		
+		mav.setViewName("msg");
+		
+		return mav;
+		
+	}//end of public ModelAndView editEnd(ModelAndView mav, BoardVO boardvo, HttpServletRequest request) {
+//=========================================================================		
+	// 글삭제 페이지 띄우기 //
+	@RequestMapping(value="/del.univ")
+	public ModelAndView del(ModelAndView mav, HttpServletRequest request) {
+	
+		// 로그인 또는 로그아웃을 했을 때 현재 보이던 그 페이지로 그대로 돌아가기 위한 메소드 생성
+	    getCurrentURL(request);
+
+		// 삭제해야 할 글번호 가져오기
+		String seq = request.getParameter("seq");
+		
+		// 글 삭제해야할 글1개 내용 가져오기
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("seq", seq);
+		
+		FreeBoardVO freeboardvo = service.getWithNoAddCount(paraMap);
+		
+		try {
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+			
+			// 글 작성자와 로그인한 유저와 같지 않으면
+			if(!loginuser.getHakbun().equals(freeboardvo.getFk_hakbun())) {
+				
+				String message = "다른 사용자의 삭제는 불가합니다.";
+				String loc = "javascript:history.back()";
+				
+				mav.addObject("message", message);
+				mav.addObject("loc", loc);
+				mav.setViewName("msg");
+			}
+			// 자신의 글을 수정할 경우
+			else {
+				mav.addObject("freeboardvo", freeboardvo);
+				mav.setViewName("board/del.tiles2");
+			}
+			
+		}catch(NullPointerException e) {
+			String message = "로그인 후 이용가능한 서비스입니다.";
+			String loc = request.getContextPath()+"/MemberLogin.univ";
+			
+			mav.addObject("message", message);
+			mav.addObject("loc", loc);
+			mav.setViewName("msg");
+		}
+		
+		return mav;
+		
+	}//end of public ModelAndView del(ModelAndView mav, BoardVO boardvo, HttpServletRequest request) {
+//=========================================================================
+	// 글삭제 페이지 완료하기 //
+	@RequestMapping(value="/delEnd.univ", method= {RequestMethod.POST})
+	public ModelAndView delEnd(ModelAndView mav, FreeBoardVO freeboardvo, HttpServletRequest request) {
+		
+		// 글 수정을 하려면 원본글에 입력했던 암호와 같아야 글 수정이 가능하도록 하게한다.
+		int n = service.del(freeboardvo);
+		// n이 1이라면 정상적으로 변경됨
+		// n이 0이라면 글수정에 필요한 글암호가 틀린경우
+		
+		if(n==0) {
+			mav.addObject("message", "암호가 일치하지 않아 글 삭제가 불가합니다.");
+		}
+		else {
+			mav.addObject("message", "글 삭제 성공!!");
+		}
+		
+		mav.addObject("loc", request.getContextPath()+"/list.univ");
+		
+		mav.setViewName("msg");
+		
+		return mav;
+		
+	}//end of public ModelAndView delEnd(ModelAndView mav, BoardVO boardvo, HttpServletRequest request) {
+//=========================================================================	
+	// 댓글쓰기(Ajax 로 처리) //
+	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
+	@RequestMapping(value="/addComment.univ", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public String addComment(FreeCommentVO freecommentvo){
+		
+		// 댓글쓰기에 첨부파일이 없는 경우
+		int n = 0;
+		
+		try {
+			n = service.addComment(freecommentvo);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		
+		// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
+		JSONObject jsonobj = new JSONObject();
+		jsonobj.put("n", n);
+		jsonobj.put("name", freecommentvo.getName());
+		
+		return jsonobj.toString();
+				
+	}//end of public String addComment(CommentVO commentvo){
+//=========================================================================
+	// 원게시물에 있는 댓글들을 조회해오기(Ajax 로 처리) //
+	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
+	@RequestMapping(value="/readComment.univ", produces="text/plain;charset=UTF-8")
+	public String readComment(HttpServletRequest request){
+		
+		String parentSeq = request.getParameter("parentSeq");
+		
+		List<FreeCommentVO> freecommentList = service.getCommentList(parentSeq);
+		
+		JSONArray jsonarr = new JSONArray();
+		
+		if(freecommentList != null) {
+			
+			for(FreeCommentVO frcmtvo : freecommentList) {
+				
+				JSONObject jsonobj = new JSONObject();
+				
+				jsonobj.put("content", frcmtvo.getContent());
+				jsonobj.put("name", frcmtvo.getName());
+				jsonobj.put("regDate", frcmtvo.getRegDate());
+				
+				jsonarr.put(jsonobj);
+			}
+		}
+		
+		return jsonarr.toString();
+				
+	}//end of public String readComment(HttpServletRequest request){-------
+//=========================================================================
+	// 검색어 입력시 자동글 완성하기 //
+	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
+	@RequestMapping(value="/wordSearchShow.univ", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	public String wordSearchShow(HttpServletRequest request){
+		
+		String searchType = request.getParameter("searchType");
+		String searchWord = request.getParameter("searchWord");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("searchType", searchType);
+		paraMap.put("searchWord", searchWord);
+		
+		List<String> wordList = service.wordSearchShow(paraMap);
+		
+		JSONArray jsonarr = new JSONArray();
+		
+		if(wordList != null) {
+			
+			for(String word : wordList) {
+				
+				JSONObject jsonobj = new JSONObject();
+				
+				jsonobj.put("word", word);
+				
+				jsonarr.put(jsonobj);
+			}
+		}
+		
+		return jsonarr.toString();
+				
+	}//end of public String wordSearchShow(HttpServletRequest request){----
+//=========================================================================
+	// 원게시물에 있는 댓글들을 조회해오기(Ajax 로 처리) //
+	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
+	@RequestMapping(value="/commentList.univ", produces="text/plain;charset=UTF-8")
+	public String commentList(HttpServletRequest request){
+		
+		String parentSeq = request.getParameter("parentSeq");
+		String currentShowPageNo = request.getParameter("currentShowPageNo");
+		
+		if(currentShowPageNo == null) {
+			currentShowPageNo = "1";
+		}
+		
+		int sizePerPage = 5;
+		int startRno = (( Integer.parseInt(currentShowPageNo) - 1 ) * sizePerPage) + 1;
+	    int endRno = startRno + sizePerPage - 1; 
+		
+	    Map<String, String> paraMap = new HashMap<>();
+	    
+	    paraMap.put("parentSeq", parentSeq);
+	    paraMap.put("startRno", startRno+"");
+	    paraMap.put("endRno", endRno+"");
+	    
+		List<FreeCommentVO> freecommentList = service.getCommentListPaging(paraMap);
+		
+		JSONArray jsonarr = new JSONArray();
+		
+		if(freecommentList != null) {
+			
+			for(FreeCommentVO frcmtvo : freecommentList) {
+				
+				JSONObject jsonobj = new JSONObject();
+				
+				jsonobj.put("content", frcmtvo.getContent());
+				jsonobj.put("name", frcmtvo.getName());
+				jsonobj.put("regDate", frcmtvo.getRegDate());
+				
+				jsonarr.put(jsonobj);
+			}
+		}
+		
+		return jsonarr.toString();
+				
+	}//end of public String commentList(HttpServletRequest request){-------
+//=========================================================================
+	// 댓글내용 페이지바 Ajax로 만들기 //
+	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
+	@RequestMapping(value="/getCommentTotalPage.univ", produces="text/plain;charset=UTF-8")
+	public String getCommentTotalPage(HttpServletRequest request){
+		
+		String parentSeq = request.getParameter("parentSeq");
+        String sizePerPage = request.getParameter("sizePerPage");
+        
+        Map<String,String> paraMap = new HashMap<>();
+        paraMap.put("parentSeq", parentSeq);
+        
+        // 원글 글번호(parentSeq)에 해당하는 댓글의 총갯수를 알아오기
+        int totalCount = service.getCommentTotalCount(paraMap);
+        
+        // === 총페이지수(totalPage)구하기 ===
+        // 만약에 총 게시물 건수(totalCount)가 12개 이라면 
+        // 총페이지수(totalPage)는 3개가 되어야 한다.
+        int totalPage = (int) Math.ceil((double)totalCount / Integer.parseInt(sizePerPage)); 
+        // (double)12/5 ==> 2.4 ==> Math.ceil(2.4) ==> 3.0 ==> (int)3.0 ==> 3
+        
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("totalPage", totalPage); // {"totalPage":3}
+        
+        return jsonObj.toString();
+     }//end of public String commentList(HttpServletRequest request){-------
+//=========================================================================
+}	

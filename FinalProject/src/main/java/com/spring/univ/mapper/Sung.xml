@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ==== #29. mapper 기본설정 ==== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
+<mapper namespace="Sung">
+
+	<resultMap type="HashMap" id="subjectMap">
+		<result property="code" column="code" javaType="String" />
+		<result property="subject" column="subject" javaType="String" />
+		<result property="teacher" column="teacher" javaType="String" />
+		<result property="hakjum" column="hakjum" javaType="String" />
+		<result property="classdate" column="classdate" javaType="String" />
+		<result property="deptcode" column="deptcode" javaType="String" />
+		<result property="deptName" column="deptName" javaType="String" />
+		<result property="deptLocation" column="deptLocation" javaType="String" />
+	</resultMap>
+
+	<select id="getSubjectInfo" parameterType="String" resultMap="subjectMap"> 
+		select code, subject, teacher, hakjum, classdate, fk_deptcode AS deptcode, B.deptName AS deptName, B.deptLocation AS deptLocation
+		from tbl_subject A
+		JOIN tbl_department B
+		on A.fk_deptcode = B.deptCode
+		where A.code = #{code}
+	</select>
+	
+	
+	<select id="getLessonBoard" parameterType="String" resultType="com.spring.univ.model.LessonBoardVO">
+		select seq, fk_hakbun, fk_code, name, subject, content, pw, to_char(regdate,'yyyy-mm-dd hh24:mi:ss') as regDate, status, commentcount, filename, orgfilename, filesize
+		from tbl_lessonboard
+		where status = 1 and fk_code = #{code}
+	</select>
+	
+</mapper>
