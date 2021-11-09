@@ -162,10 +162,13 @@
 			<hr style="clear:both;">
 			<%-- loginuser의 정보를 이용하여 추후에는 반복문을 이용하여 출력한다. --%>
 			<ul id="MySubjectList" class="list-group list-group-flush" style="width: 90%; list-style: none; padding: 0;">
-				  <li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=0202">빅데이터실무_256033_001분반</a></li>
-				  <li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=0201">재무관리실무_256023_001분반</a></li>
-				  <li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=0204">하이테크마케팅_256019_001분반</a></li>
-				  <li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=0403">DB/SQL_256022_001분반</a></li>
+							  <li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=0202">빅데이터실무_0202_B분반</a></li>
+				  <li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=0201">재무관리실무_0201_A분반</a></li>
+				  <li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=0204">하이테크마케팅_0204_D분반</a></li>
+				  <li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=0101">다이어트비법_0101_A분반</a></li>
+				  <li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=0102">소녀 미용학개론_0102_B분반</a></li>
+				  <li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=0103">보컬의기초_0103_C분반</a></li>
+				  <li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=0104">실전무술_0104_D분반</a></li>
 			</ul>
 		</div>
 		<%-- 수강과목 메뉴 --%>
