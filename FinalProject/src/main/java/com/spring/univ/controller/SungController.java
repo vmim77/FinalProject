@@ -8,11 +8,15 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.spring.univ.model.*;
+import com.spring.univ.service.*;
 
 
 /*
@@ -46,5 +50,74 @@ import org.springframework.web.servlet.ModelAndView;
 */
 @Controller
 public class SungController {
+	
+	@Autowired
+	private InterSungService service;
+	
+	@RequestMapping(value="/dashboard.univ")
+	public String dashboard(HttpServletRequest request) {
+		
+		return "Sunghyun/dashboard.tiles1";
+	}
+	
+	@RequestMapping(value="/subject.univ")
+	public ModelAndView subject(ModelAndView mav, HttpServletRequest request) {
+		
+		String code = request.getParameter("code");
+		
+		if(code.trim().isEmpty()) {
+			mav.setViewName("redirect:/dashboard.univ"); 
+		}
+		else {
+			Map<String,String> subjectMap = service.getSubjectInfo(code);
+			mav.addObject("code", code);
+			mav.addObject("subjectMap", subjectMap);
+			mav.setViewName("Sunghyun/subject.tiles2");
+		}
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/lesson.univ")
+	public ModelAndView lesson(ModelAndView mav, HttpServletRequest request) {
+		
+		String code = request.getParameter("code");
+		Map<String,String> subjectMap = service.getSubjectInfo(code);
+		
+		List<LessonBoardVO> boardList = service.getLessonBoard(code);
+		
+		mav.addObject("code", code);
+		mav.addObject("boardList", boardList);
+		mav.addObject("subjectMap", subjectMap);
+		
+		mav.setViewName("Sunghyun/lesson.tiles2");
+		return mav;
+	}
+	
+	@RequestMapping(value="/lessonDetail.univ")
+	public ModelAndView lessonDetail(ModelAndView mav, HttpServletRequest request) {
+		
+		String code = request.getParameter("code");
+		String seq = request.getParameter("seq");
+		
+		
+		
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/homework.univ")
+	public ModelAndView homework(ModelAndView mav, HttpServletRequest request) {
+		
+		String code = request.getParameter("code");
+		Map<String,String> subjectMap = service.getSubjectInfo(code);
+		
+		mav.addObject("code", code);
+		mav.addObject("subjectMap", subjectMap);
+		mav.setViewName("Sunghyun/homework.tiles2");
+		
+		return mav;
+	}
+
 	
 }	

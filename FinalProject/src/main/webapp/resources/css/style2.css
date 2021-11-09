@@ -1,16 +1,59 @@
 @charset "UTF-8";
 
-body {font-family: Arial, Helvetica, sans-serif, 돋움; }
+body { font-family: Arial, Helvetica, sans-serif, 돋움; }
 
-#mycontainer   { padding:20px; }
-#myheader      { display: flex; min-height:100px; position: relative; top: 60px; }
-#mycontent      { min-height:1200px; position: relative; top:60px; padding-top: 40px; background-color:#F5F5F5;
-                  float:left; width:65%; }
+#mycontainer { display:flex; } 
 
-#mysideinfo      { min-height:1200px; position: relative; top:60px; padding-top: 40px; background-color:#F0FFFF;
-                  float:right; width:33.5%; }
+#mysideinfo { position:absolute; margin-right:auto; width:5%; min-height: 1024px; background-color: #626363; }
 
-#myfooter      { display: flex; min-height:120px; position: relative; top:60px; background-color:#555555; margin-bottom: 70px; 
-                 clear:both; }
- 
-#myheader a {text-decoration:none;}
+#menu { margin-right: auto; width: 5%; }
+
+#mycontent { 
+	margin-left:auto; 
+	width:95%; 
+	max-height: 1000px;
+	overflow-y: auto; 
+	scrollbar-width: none;
+	-ms-overflow-style: none; 
+}
+
+#maincontainer { width: 100%; height: 100%; display: flex; }
+
+#subjectSideMenu { 
+	width: 10%; 
+	min-height: 1024px; 
+	margin-right:auto; 
+	padding-left: 10px;
+}
+
+#innerContent { 
+	width: 90%; 
+	padding: 20px;
+}
+
+#sideMenuList > li:nth-child(1) {
+	margin-top: 20px;
+}
+
+.sideMenu {
+	padding: 5px 0;
+	width: 70%;
+}
+
+.sideMenu:hover {
+	color: #fff;
+	background-color: orange;
+	cursor: pointer;
+}
+
+.hoverdEffect {
+	color: #fff;
+	background-color: orange;
+}
+    
+#mycontent::-webkit-scrollbar {
+    display: none;
+}
+
+#mysideinfo a { text-decoration:none; }
+

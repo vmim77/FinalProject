@@ -7,7 +7,6 @@ public class SubjectVO {
 	private String code;        // 과목코드
 	private String subject;     // 과목명 
 	private String teacher;     // 담당교수님
-	private String ban;         // 반
 	private int hakjum;         // 배정학점
 	private String classDate;   // 수업요일
 	private String fk_deptCode; // 학과코드
@@ -37,12 +36,6 @@ public class SubjectVO {
 	}
 	public void setTeacher(String teacher) {
 		this.teacher = teacher;
-	}
-	public String getBan() {
-		return ban;
-	}
-	public void setBan(String ban) {
-		this.ban = ban;
 	}
 	public int getHakjum() {
 		return hakjum;
