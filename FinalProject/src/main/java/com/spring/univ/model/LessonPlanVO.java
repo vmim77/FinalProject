@@ -6,7 +6,8 @@ public class LessonPlanVO {
 	// 수업계획서 VO
 	
 	private String lessonplanSeq;		// 수업계획서 시퀀스
-	private String fk_weekseq;			// 주차테이블 시퀀스
+	private String fk_code;				// 과목코드
+	private String week; 				// 주차
 	private String fk_hakbun;			// 멤버테이블 학번
 	private String subject;				// 제목
 	private String content;				// 내용
@@ -21,10 +22,13 @@ public class LessonPlanVO {
 	public LessonPlanVO() {}
 	
 	
-	public LessonPlanVO(String lessonplanSeq, String fk_weekseq, String fk_hakbun, String subject, String content,
-			String regDate, String status, String fileName, String orgFilename, String fileSize) {
+
+
+	public LessonPlanVO(String lessonplanSeq, String fk_code, String week, String fk_hakbun, String subject,
+			String content, String regDate, String status, String fileName, String orgFilename, String fileSize) {
 		this.lessonplanSeq = lessonplanSeq;
-		this.fk_weekseq = fk_weekseq;
+		this.fk_code = fk_code;
+		this.week = week;
 		this.fk_hakbun = fk_hakbun;
 		this.subject = subject;
 		this.content = content;
@@ -36,6 +40,8 @@ public class LessonPlanVO {
 	}
 
 
+
+
 	public String getLessonplanSeq() {
 		return lessonplanSeq;
 	}
@@ -45,15 +51,6 @@ public class LessonPlanVO {
 		this.lessonplanSeq = lessonplanSeq;
 	}
 
-
-	public String getFk_weekseq() {
-		return fk_weekseq;
-	}
-
-
-	public void setFk_weekseq(String fk_weekseq) {
-		this.fk_weekseq = fk_weekseq;
-	}
 
 
 	public String getFk_hakbun() {
@@ -133,6 +130,34 @@ public class LessonPlanVO {
 
 	public void setFileSize(String fileSize) {
 		this.fileSize = fileSize;
+	}
+
+
+
+
+	public String getFk_code() {
+		return fk_code;
+	}
+
+
+
+
+	public void setFk_code(String fk_code) {
+		this.fk_code = fk_code;
+	}
+
+
+
+
+	public String getWeek() {
+		return week;
+	}
+
+
+
+
+	public void setWeek(String week) {
+		this.week = week;
 	}
 	
 	
