@@ -57,9 +57,13 @@ public class MinController {
 	@RequestMapping(value="/attendance.univ")
 	public ModelAndView attendance(HttpServletRequest request, ModelAndView mav, HttpServletResponse response) {
 		
+		String week = "2";
+		
+		List<WeekVO> SubList = MinService.getSubList(week);
 		List<WeekVO> WeekList = MinService.getWeekList();
 		
 	
+		mav.addObject("SubList", SubList);
 		mav.addObject("WeekList", WeekList);
 		mav.setViewName("attendance.tiles1"); // 이건 만약 login 안에 있으면 login/attendance.tiles1 이런식
 		

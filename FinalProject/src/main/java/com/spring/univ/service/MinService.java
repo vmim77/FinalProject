@@ -18,12 +18,19 @@ public class MinService implements InterMinService {
 //==============================================================================================
 	// 과목 가져오기
 	@Override
+	public List<WeekVO> getSubList(String week) {
+		
+		List<WeekVO> SubList = dao.getSubList(week);
+		return SubList;
+	}
+
+	// 주차 가져오기
+	@Override
 	public List<WeekVO> getWeekList() {
 		
 		List<WeekVO> WeekList = dao.getWeekList();
 		return WeekList;
 	}
-	
 
 	
 }//end of public class BoardService implements InterBoardService {

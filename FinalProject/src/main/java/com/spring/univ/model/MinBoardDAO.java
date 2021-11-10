@@ -14,6 +14,13 @@ public class MinBoardDAO implements InterMinBoardDAO {
 //================================================================================================
 	// 과목 가져오기
 	@Override
+	public List<WeekVO> getSubList(String week) {
+		List<WeekVO> SubList = sqlsession2.selectList("Min.getSubList",week);
+		return SubList;
+	}
+
+	// 주차 가져오기
+	@Override
 	public List<WeekVO> getWeekList() {
 		List<WeekVO> WeekList = sqlsession2.selectList("Min.getWeekList");
 		return WeekList;
