@@ -127,6 +127,7 @@
          select count(*)
 	     from tbl_FreeBoard 
 		 where status = 1
+		 and fk_code = #{fk_code}
 		 <if test='searchWord != ""'>  
 		 and lower(${searchType}) like '%'||lower(#{searchWord})||'%'
 		 </if> 
@@ -134,15 +135,17 @@
 	
     <!-- 페이징 처리한 글목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함한것) 답글포함 -->
     <select id="boardListSearchWithPaging" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO"> 
-    select seq, fk_hakbun, name, subject, readCount, regDate, commentCount 
+    select seq, fk_hakbun, name, subject, readCount, regDate, commentCount, fk_code 
 	from 
 	(
 	    select row_number() over(order by seq desc) AS rno
 	         , seq, fk_hakbun, name, subject
 	         , readCount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
 	         , commentCount
+	         , fk_code
 	    from tbl_FreeBoard 
 	    where status = 1
+	    and fk_code = #{fk_code}
 	    <if test='searchType != "" and searchWord != ""'>
 	    and lower( ${searchType} ) like '%'|| lower( #{searchWord} ) ||'%'
 	    </if>

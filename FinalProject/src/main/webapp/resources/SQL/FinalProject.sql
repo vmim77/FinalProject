@@ -354,3 +354,97 @@ from
 select *
 from tbl_subject;
 
+
+
+------------------------------------------------------------------------------------------- 이루리
+
+
+select *
+from tbl_FreeBoard;
+
+--글목록보기 sql 수정하기
+select seq, fk_hakbun, name, subject, readCount, regDate, commentCount, fk_code -- fk_code 추가
+	from 
+	(
+	    select row_number() over(order by seq desc) AS rno
+	         , seq, fk_hakbun, name, subject
+	         , readCount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+	         , commentCount
+             , fk_code -- fk_code 추가
+	    from tbl_FreeBoard 
+	    where status = 1
+	    and fk_code = 0502 -- 추가
+	    and lower( subject ) like '%'|| lower( '즐거운' ) ||'%'
+	    
+	) V
+	where rno between 1 and 10
+    
+    
+    
+    
+select subject
+from tbl_FreeBoard
+where status = 1
+and fk_code = 0502
+and lower( subject ) like '%'|| lower( '즐거운' ) ||'%'
+order by seq desc;
+
+
+-- 총게시물 구하기 list수정하기
+ select count(*)
+	     from tbl_FreeBoard 
+		 where status = 1
+		 and fk_code = 0502
+		 and lower( subject ) like '%'|| lower( '즐거운' ) ||'%'
+		
+
+------------------------------------
+-- 글 1개 조회하기 수정하기 -- 학번 where에 넣기
+select previousseq, previoussubject, 
+		       seq, fk_hakbun, name, subject, content, readCount, regDate, nextseq, nextsubject
+               , fk_code
+		from 
+		(
+		    select   lag(seq, 1) over(order by seq desc) AS previousseq
+		           , lag(subject, 1) over(order by seq desc) AS previoussubject		           
+		           , seq, fk_hakbun, name, subject, content, readCount
+		           , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate		    
+		           , lead(seq, 1) over(order by seq desc) AS nextseq
+		           , lead(subject, 1) over(order by seq desc) AS nextsubject
+                   , fk_code
+		    from tbl_FreeBoard
+		    where status = 1
+            
+            and fk_code = 0502
+		    and lower( subject ) like '%'|| lower( '즐거운' ) ||'%'
+		    
+		) V 
+		where V.seq = 255
+        
+        
+--
+select *
+from tbl_member;
+
+select *
+from tbl_subject;
+
+select *
+from tbl_freeBoard;
+
+
+-- code 0202 빅데이터실무에 데이터 넣기
+insert into tbl_FreeBoard(seq, fk_hakbun, name, subject, content, pw, readCount, regDate, status, commentCount, fk_code)
+values(boardSeq.nextval, '2100021','이루리', '빅데이터실무게시판입니다', '파이팅입니다', '1234', default, default, default, default,'0202');
+rollback;
+
+begin
+   for i in 1..200 loop
+     insert into tbl_FreeBoard(seq, fk_hakbun, name, subject, content, pw, readCount, regDate, status, commentCount, fk_code)
+     values(boardSeq.nextval, '2100021','이루리', '빅데이터실무게시판입니다'||i, '오늘도 좋은 하루 보내세요~'||i, '1234', default, default, default, default,'0202');
+   end loop;
+end;
+
+
+
+commit;

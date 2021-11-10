@@ -7,7 +7,7 @@
 <ul id="sideMenuList" style="list-style: none; padding: 0;">
 	<li class="sideMenu" onclick="javascript:location.href='<%= ctxPath%>/subject.univ?code=${requestScope.code}'">홈</li>
 	<li class="sideMenu" onclick="javascript:location.href='<%= ctxPath%>/lesson.univ?code=${requestScope.code}'">강의자료실</li>
-	<li class="sideMenu">열린게시판</li>
+	<li class="sideMenu" onclick="javascript:location.href='<%= ctxPath%>/list.univ?code=${requestScope.code}'">열린게시판</li>
 	<li class="sideMenu">문의게시판</li>
 	<li class="sideMenu" onclick="javascript:location.href='<%= ctxPath%>/homework.univ?code=${requestScope.code}'">과제 및 평가</li>
 	<li class="sideMenu">토론</li>

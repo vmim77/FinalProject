@@ -117,6 +117,7 @@ public class RuController {//
 		String searchType = request.getParameter("searchType");
 		String searchWord = request.getParameter("searchWord");
 		String str_currentShowPageNo = request.getParameter("currentShowPageNo");
+		String fk_code = request.getParameter("code");//추가 완료
 		
 		if(searchType == null || (!"subject".equals(searchType) && !"name".equals(searchType))) {
 			searchType = "";
@@ -128,6 +129,7 @@ public class RuController {//
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("searchType", searchType);
 		paraMap.put("searchWord", searchWord);
+		paraMap.put("fk_code", fk_code); //추가 완료 //**파라맵에 code넣고 글목록조회boardListSearchWithPaging 쿼리문에 where에 code넣기**
 		
 		// 먼저 총 게시물 건수(totalCount)를 구해와야 한다.
 		// 총 게시물건수(totalCount) 는 검색조건이 있을 때와 없을 떄로 나뉘어진다
@@ -188,10 +190,12 @@ public class RuController {//
 		
 		////////////////////////////////////////////////////////////////////////////////////////////
 		
-		// === [맨처음][이전] 만들기 === //
+		// === [맨처음][이전] 만들기 === // //페이징처리 url에 과목코드 추가 완료
 		if(pageNo != 1) {
-			pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo=1'> « </a></li>";
-			pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+(pageNo-1)+"'> ‹ </a></li>";
+			
+			pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?code="+fk_code+"&searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo=1'> « </a></li>";
+			pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?code="+fk_code+"&searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+(pageNo-1)+"'> ‹ </a></li>";
+			
 		}//end of if(pageNo != 1) {----------------------------------------
 		
 		////////////////////////////////////////////////////////////////////////////////////////////
@@ -204,7 +208,8 @@ public class RuController {//
 				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; color:red; padding:2px 4px;'>"+pageNo+"</li>";
 			}
 			else {
-				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?code="+fk_code+"&searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+				
 			}
 			
 			loop++;
@@ -216,8 +221,9 @@ public class RuController {//
 		
 		// === [다음][마지막] 만들기 === //
 		if(pageNo <= totalPage) {
-			pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+(pageNo+1)+"'> › </a></li>";
-			pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+totalPage+"'> » </a></li>";
+			pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?code="+fk_code+"&searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+(pageNo+1)+"'> › </a></li>";
+			pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?code="+fk_code+"&searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+totalPage+"'> » </a></li>";
+			
 		}//end of if(pageNo != 1) {----------------------------------------
 		
 		////////////////////////////////////////////////////////////////////////////////////////////

@@ -206,6 +206,7 @@ table td {
 					<th style="width: 150px; text-align: center;">글쓴이</th>
 					<th style="width: 150px; text-align: center;">작성일</th>
 					<th style="width: 70px; text-align: center;">조회수</th>
+					<th style="width: 70px; text-align: center;">확인용과목코드</th>
 				</tr>	
 			</thead>
 			<tbody>
@@ -229,6 +230,7 @@ table td {
 						<td align="center">${freeboardvo.name} (${freeboardvo.fk_hakbun})</td>
 						<td align="center">${freeboardvo.regDate}</td>
 						<td align="center">${freeboardvo.readCount}</td>
+						<td align="center">${freeboardvo.fk_code}</td>
 					</tr>
 				</c:forEach>	
 			</tbody>
