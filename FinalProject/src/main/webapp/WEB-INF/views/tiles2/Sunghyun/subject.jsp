@@ -44,7 +44,7 @@
 </script>
 
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
-<h3 style="float:left; color: #0099ff;">${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반 강의실(${requestScope.subjectMap.name})</h3>
+<h3 style="float:left; color: #0099ff;">${requestScope.subjectMap.subject} 강의실(${requestScope.subjectMap.name})</h3>
 <hr style="clear: both;">
 
 <div style="width: 80%; margin-top: 10px; padding: 10px;">

@@ -55,13 +55,21 @@ public class SungController {
 	private InterSungService service;
 	
 	@RequestMapping(value="/dashboard.univ")
-	public String dashboard(HttpServletRequest request) {
+	public String requiredLogin_dashboard(HttpServletRequest request, HttpServletResponse response) {
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		String hakbun = loginuser.getHakbun();
+		List<Map<String, String>> sugangList = service.getSugang(hakbun);
+		
+		request.setAttribute("sugangList", sugangList);
 		
 		return "Sunghyun/dashboard.tiles1";
 	}
 	
 	@RequestMapping(value="/subject.univ")
-	public ModelAndView subject(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView requiredLogin_subject(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
 		String code = request.getParameter("code");
 		
@@ -79,7 +87,7 @@ public class SungController {
 	}
 	
 	@RequestMapping(value="/lesson.univ")
-	public ModelAndView lesson(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView requiredLogin_lesson(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
 		String code = request.getParameter("code");
 		Map<String,String> subjectMap = service.getSubjectInfo(code);
@@ -95,19 +103,15 @@ public class SungController {
 	}
 	
 	@RequestMapping(value="/lessonDetail.univ")
-	public ModelAndView lessonDetail(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView requiredLogin_lessonDetail(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
 		String code = request.getParameter("code");
 		String seq = request.getParameter("seq");
-		
-		
-		
-		
 		return mav;
 	}
 	
 	@RequestMapping(value="/homework.univ")
-	public ModelAndView homework(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView requiredLogin_homework(ModelAndView mav, HttpServletRequest request) {
 		
 		String code = request.getParameter("code");
 		Map<String,String> subjectMap = service.getSubjectInfo(code);

@@ -266,11 +266,39 @@ JOIN tbl_department B
 on A.fk_deptcode = B.deptCode
 JOIN tbl_member C
 on A.fk_hakbun = C.hakbun
-<<<<<<< HEAD
 
 
+insert into tbl_sugang(fk_code, fk_hakbun)
+values('0102', '2100022');
 
-desc tbl_member;
+commit;
 
-=======
->>>>>>> branch 'main' of https://github.com/vmim77/FinalProject.git
+select *
+from tbl_member;
+
+select *
+from tbl_subject;
+
+select * 
+from tbl_sugang;
+
+select hakbun, code, subject, teacher, hakjum, classdate, location
+from
+(
+select B.hakbun AS hakbun ,C.code AS code, C.subject AS subject, D.name AS teacher, C.hakjum AS hakjum, C.classdate AS classdate, E.deptlocation || ' ' || E.deptname AS location
+from tbl_sugang A
+JOIN tbl_member B
+on A.fk_hakbun = B.hakbun
+JOIN tbl_subject C
+on A.fk_code = C.code
+JOIN tbl_member D
+ON C.fk_hakbun = D.hakbun
+JOIN tbl_department E
+ON c.fk_deptcode = E.deptcode
+)
+where hakbun = '2100022'
+
+
+select count(*)
+from tbl_sugang
+where fk_hakbun = '2100022' and fk_code='0103'

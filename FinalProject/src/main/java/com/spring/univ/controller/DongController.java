@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.univ.model.MemberVO;
 import com.spring.univ.model.SubjectVO;
 import com.spring.univ.service.InterDongService;
+import com.spring.univ.service.InterSungService;
 
 
 
@@ -51,6 +52,9 @@ public class DongController {
 	
  @Autowired
    private InterDongService service;
+
+ @Autowired
+ private InterSungService service2;
    // Type에 따라 알아서 Bean 을 주입해준다.
 
  	// 사용자 및 그룹
@@ -113,10 +117,13 @@ public class DongController {
 	    	   HttpSession session = request.getSession();
 	    	  
 	    	   session.setAttribute("loginuser", loginuser);
-	    	  
+		       hakbun = loginuser.getHakbun();
+		       List<Map<String, String>> sugangList = service2.getSugang(hakbun);
+		       session.setAttribute("sugangList", sugangList);
+	    	   
+	    	   
 	    	   mav.addObject("session", session);
-	    	  
-	    	   mav.setViewName("Sunghyun/dashboard.tiles1"); 
+	    	   mav.setViewName("redirect:/dashboard.univ"); 
 	      }
 	     
 	     
@@ -135,6 +142,7 @@ public class DongController {
 		   HttpSession  session = request.getSession(); // 세션 불러오기
 			
 		   session.removeAttribute("loginuser");
+		   session.removeAttribute("sugangList");
 	      
 	      String message = "로그아웃 되었습니다.";
 	      String loc = "";

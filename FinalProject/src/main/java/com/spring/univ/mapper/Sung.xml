@@ -35,4 +35,39 @@
 		where status = 1 and fk_code = #{code}
 	</select>
 	
+	
+	<resultMap type="HashMap" id="sugangMap">
+		<result property="hakbun" column="hakbun" javaType="String" />
+		<result property="code" column="code" javaType="String" />
+		<result property="subject" column="subject" javaType="String" />
+		<result property="teacher" column="teacher" javaType="String" />
+		<result property="hakjum" column="hakjum" javaType="String" />
+		<result property="classdate" column="classdate" javaType="String" />
+		<result property="location" column="location" javaType="String" />
+	</resultMap>
+	
+	<select id="getSugang" parameterType="String" resultMap="sugangMap">
+		select hakbun, code, subject, teacher, hakjum, classdate, location
+		from
+		(
+		select B.hakbun AS hakbun ,C.code AS code, C.subject AS subject, D.name AS teacher, C.hakjum AS hakjum, C.classdate AS classdate, E.deptlocation || ' ' || E.deptname AS location
+		from tbl_sugang A
+		JOIN tbl_member B
+		on A.fk_hakbun = B.hakbun
+		JOIN tbl_subject C
+		on A.fk_code = C.code
+		JOIN tbl_member D
+		ON C.fk_hakbun = D.hakbun
+		JOIN tbl_department E
+		ON c.fk_deptcode = E.deptcode
+		)
+		where hakbun = #{hakbun}
+	</select>
+	
+	<select id="checkSugang" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_sugang
+		where fk_hakbun = #{hakbun} and fk_code= #{code}
+	</select>
+	
 </mapper>
