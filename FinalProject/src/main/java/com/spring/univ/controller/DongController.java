@@ -5,14 +5,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.spring.univ.model.MemberVO;
+import com.spring.univ.model.SubjectVO;
+import com.spring.univ.service.InterDongService;
+
 
 
 /*
@@ -47,4 +49,104 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class DongController {
 	
+ @Autowired
+   private InterDongService service;
+   // Type에 따라 알아서 Bean 을 주입해준다.
+
+ 	// 사용자 및 그룹
+	@RequestMapping(value="/user.univ") 
+	public ModelAndView user(HttpServletRequest request,ModelAndView mav) {
+		
+		List<SubjectVO> TeacherList = service.getTeacher();
+		
+		mav.addObject("TeacherList", TeacherList);
+		mav.setViewName("user.tiles1");
+	    return mav;
+	}
+
+	
+//=======================================================================
+ 
+	
+// # 로그인페이지 처리
+
+	@RequestMapping(value="/MemberLogin.univ",method= {RequestMethod.GET}) 
+	public ModelAndView MemberLogin(HttpServletRequest request,ModelAndView mav) {//
+		
+		
+		mav.setViewName("login/MemberLogin");
+		
+		
+		return mav;
+	}
+//==========================================================================================		   
+	 //////////////////////////////////////////////////////////////////////////////////
+	//# 로그인
+
+	@RequestMapping(value="/dashboard.univ", method= {RequestMethod.POST}) // /test1.action의 url은 아래의 메소드가 응답함!
+	public ModelAndView dashboard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {//
+		
+		 String hakbun = request.getParameter("hakbun");
+	     String pwd = request.getParameter("pwd");
+	    
+	      Map<String, String> paraMap = new HashMap<>();
+	      paraMap.put("hakbun", hakbun);
+	      paraMap.put("pwd", pwd);
+	      
+	      MemberVO loginuser = service.getLoginMember(paraMap);
+	      
+	      if(loginuser == null) { // 로그인 실패시
+	        
+	    	  String message = "학번 또는 암호가 틀립니다.";
+	         String loc = "javascript:history.back()";
+	         
+	         mav.addObject("message", message); // request.setAttribute("message", message);
+	         mav.addObject("loc", loc);         // request.setAttribute("loc", loc);
+	      
+	         mav.setViewName("msg");             // return "msg"; 
+	      //  /WEB-INF/views/msg.jsp 파일을 생성한다.
+	    	
+	      }
+	      
+	      else {
+	    	  
+	    	   HttpSession session = request.getSession();
+	    	  
+	    	   session.setAttribute("loginuser", loginuser);
+	    	  
+	    	   mav.addObject("session", session);
+	    	  
+	    	   mav.setViewName("Sunghyun/dashboard.tiles1"); 
+	      }
+	     
+	     
+		return mav;
+
+	     
+	}
+	
+	
+//====================================================================================================================	
+	
+	   // ===  로그아웃 처리하기 === //
+	   @RequestMapping(value="/logout.univ")
+	   public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
+	      
+		   HttpSession  session = request.getSession(); // 세션 불러오기
+			
+		   session.removeAttribute("loginuser");
+	      
+	      String message = "로그아웃 되었습니다.";
+	      String loc = "";
+	      
+	      mav.addObject("message", message); 
+	      mav.addObject("loc", loc);         
+	      mav.setViewName("dashboard.tiles1");
+	      
+	      return mav;
+	   }
+//====================================================================================================================
+	   
+		
+	   
 }	

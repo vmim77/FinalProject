@@ -3,7 +3,7 @@
 
 <%-- === #24. tiles 를 사용하는 레이아웃1 페이지 만들기 === --%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <%
    String ctxPath = request.getContextPath();
 %>    
@@ -141,23 +141,30 @@
 				<tiles:insertAttribute name="sideinfo" />
 			</div>
 			
-			<%-- 계정 퀵메뉴 --%>
-			<div id="showMyAccount" class="p-3">
-				<span id="closeMyAccount" style="float:right; font-size: 30pt; text-align:center; cursor:pointer;">&times;</span>
-				<div style="display:flex; margin-top: 10px; width:100%;">
-					<img src="<%= ctxPath%>/resources/images/personimg.png" style="width: 50%; margin: auto;"/>
-				</div>
-				<div style="clear:both; text-align:center;">
-					<div style="font-size: 1em;">금길영<br>(18###19)</div>
-					<button class="btn btn-secondary btn-sm justify-content-center">로그아웃</button>
-				</div>
-				<hr>
-				<ul id="MySubjectList" class="list-group list-group-flush" style="width: 90%; list-style: none; padding: 0;">
-					  <li class="list-group-item icons"><span>설정</span></li>
-					  <li class="list-group-item icons"><span>알람</span></li>
-					  <li class="list-group-item icons"><span>파일</span></li>
-				</ul>
-			</div>
+			<!-- 로그인 처리 -->
+		  <div id="showMyAccount" class="p-3">
+         <span id="closeMyAccount" style="float:right; font-size: 30pt; text-align:center; cursor:pointer;">&times;</span>
+         <div style="display:flex; margin-top: 10px; width:100%;">
+            <img src="<%= ctxPath%>/resources/images/min.jpg" style="width: 50%; margin: auto;"/>
+         </div>
+         <div style="clear:both; text-align:center;">
+            <div style="font-size: 1em;">이름: ${sessionScope.loginuser.name} <br>  학번: ${sessionScope.loginuser.hakbun}</div>
+                <c:if test="${empty sessionScope.loginuser}">
+                    <a class="btn btn-secondary btn-sm justify-content-center" href="<%=ctxPath%>/MemberLogin.univ">로그인</a>
+                 </c:if>
+  	                           
+               <c:if test="${not empty sessionScope.loginuser}">
+                  <a class="btn btn-secondary btn-sm justify-content-center" href="#">나의정보</a>
+                  <a class="btn btn-secondary btn-sm justify-content-center" href="<%=ctxPath%>/MemberLogin.univ">로그아웃</a>
+               </c:if>
+         </div>
+			<hr>
+			<ul id="MySubjectList" class="list-group list-group-flush" style="width: 90%; list-style: none; padding: 0;">
+				  <li class="list-group-item icons"><span>설정</span></li>
+				  <li class="list-group-item icons"><span>알람</span></li>
+				  <li class="list-group-item icons"><span>파일</span></li>
+			</ul>
+		</div>
 			<%-- 계정 퀵메뉴 --%>
 			
 			<%-- 수강과목 메뉴 --%>

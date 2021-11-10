@@ -27,14 +27,14 @@
 			html+="<div class='card-header' id='heading'"+i+">";
 			html+="<h2 class='mb-0'>";
 			html+="<button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse"+i+"' aria-expanded='false' aria-controls='collapse"+i+"'>";
-			html+="<i class='fas fa-book'></i>&nbsp;${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반 "+(i+1)+"주차 수업계획";
+			html+="<i class='fas fa-book'></i>&nbsp;${requestScope.subjectMap.subject}"+(i+1)+"주차 수업계획";
 			html+="</button>";
 			html+="</h2>";
 			html+="</div>";
 			
 			html+="<div id='collapse"+i+"' class='collapse' aria-labelledby='heading"+i+"' data-parent='#accordionExample'>";
 			html+="<div class='card-body'>";
-			html+="${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반 "+(i+1)+"주차 수업계획서 입니다. ";
+			html+="${requestScope.subjectMap.subject}"+(i+1)+"주차 수업계획서 입니다. ";
 			html+="</div></div></div>";
 			
 			$("div#accordionExample").append(html);
@@ -44,7 +44,7 @@
 </script>
 
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
-<h3 style="float:left; color: #0099ff;">${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반(${requestScope.subjectMap.teacher}) 강의실</h3>
+<h3 style="float:left; color: #0099ff;">${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반 강의실(${requestScope.subjectMap.name})</h3>
 <hr style="clear: both;">
 
 <div style="width: 80%; margin-top: 10px; padding: 10px;">
@@ -64,11 +64,7 @@
 		</tr>
 		<tr>
 			<th>교수명</th>
-			<td>${requestScope.subjectMap.teacher}</td>
-		</tr>
-		<tr>
-			<th>분반</th>
-			<td>${requestScope.subjectMap.ban}반</td>
+			<td>${requestScope.subjectMap.name}</td>
 		</tr>
 		<tr>
 			<th>학점</th>

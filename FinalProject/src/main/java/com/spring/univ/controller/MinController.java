@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import com.spring.univ.model.WeekVO;
+import com.spring.univ.service.InterMinService;
 
 
 /*
@@ -44,7 +46,29 @@ import org.springframework.web.servlet.ModelAndView;
 	즉, 여기서 bean의 이름은 boardController 이 된다. 
 	여기서는 @Controller 를 사용하므로 @Component 기능이 이미 있으므로 @Component를 명기하지 않아도 BoardController 는 bean 으로 등록되어 스프링컨테이너가 자동적으로 관리해준다. 
 */
+
+
 @Controller
 public class MinController {
+	
+	@Autowired
+	private InterMinService MinService;
+	
+	@RequestMapping(value="/attendance.univ")
+	public ModelAndView attendance(HttpServletRequest request, ModelAndView mav, HttpServletResponse response) {
+		
+		List<WeekVO> WeekList = MinService.getWeekList();
+		
+	
+		mav.addObject("WeekList", WeekList);
+		mav.setViewName("attendance.tiles1"); // 이건 만약 login 안에 있으면 login/attendance.tiles1 이런식
+		
+		return mav;
+		
+	}//end of public String test1(HttpServletRequest request) {------------
+
+	
+	
+	
 	
 }	

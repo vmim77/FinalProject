@@ -32,7 +32,7 @@
 </script>
 
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
-<h3 style="float:left; color: #0099ff;">${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반(${requestScope.subjectMap.teacher}) 강의실 > 과제및평가</h3>
+<h3 style="float:left; color: #0099ff;">${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반 강의실(${requestScope.subjectMap.name}) > 과제및평가</h3>
 <hr style="clear: both;">
 
 <div id="homeworkContainer" style="width: 100%;">

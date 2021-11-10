@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.univ.service.InterJaeService;
+
 
 /*
 	사용자 웹브라우저 요청(View)  ==> DispatcherServlet ==> @Controller 클래스 <==>> Service단(핵심업무로직단, business logic단) <==>> Model단[Repository](DAO, DTO) <==>> myBatis <==>> DB(오라클)           
@@ -46,5 +48,32 @@ import org.springframework.web.servlet.ModelAndView;
 */
 @Controller
 public class JaeController {
+	
+	
+	/* @Autowired
+	  private InterJaeService service; */
+	 
+	
+	@RequestMapping(value="/classContents.univ")
+	public String classContents(HttpServletRequest request, ModelAndView mav) {
+		
+		//List<Map<String,String>> classList = service.getclassList();
+		
+		//mav.addObject("classList", classList);
+		//mav.setViewName("classContents.tiles1");
+		
+		//return mav;
+		return "classContents.tiles1";
+		
+		
+	}
+	
+	@RequestMapping(value="/classContentsView.univ")
+	public String classContentsView(HttpServletRequest request) {
+		
+		return "classContentsView.tiles1";
+		
+	}
+	
 	
 }	

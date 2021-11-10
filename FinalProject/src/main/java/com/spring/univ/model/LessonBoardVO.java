@@ -2,19 +2,23 @@ package com.spring.univ.model;
 
 public class LessonBoardVO {
 	
-	private String seq;			// 글번호
-	private String fk_hakbun;	// 사용자학번
-	private String fk_code;		// 과목코드
-	private String name;		// 글쓴이
-	private String subject;		// 글제목
-	private String content;		// 글내용
-	private String pw;			// 글암호
-	private String regDate;		// 글쓴시간
-	private String status;		// 글삭제여부	1:사용가능한 글, 0:삭제된글
+	/////////////////////////////////////////////////////////////////////
+	
+	private String seq;				// 글번호
+	private String fk_hakbun;		// 사용자학번
+	private String fk_code;			// 과목코드
+	private String name;			// 글쓴이
+	private String subject;			// 글제목
+	private String content;			// 글내용
+	private String pw;				// 글암호
+	private String regDate;			// 글쓴시간
+	private String status;			// 글삭제여부	1:사용가능한 글, 0:삭제된글
 	private String commentCount;	// 조회수
 	private String fileName;		// WAS에 저장될 파일명
 	private String orgFilename;		// 진짜 파일명
 	private String fileSize;		// 파일사이즈
+	
+	/////////////////////////////////////////////////////////////////////
 	
 	public LessonBoardVO() {}
 	

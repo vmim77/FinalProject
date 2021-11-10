@@ -5,6 +5,10 @@
 
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="Min">
+	<select id="getWeekList"  resultType="com.spring.univ.model.WeekVO">
+		select fk_week,lesson,video,savefile,uploadfile,seq
+		from tbl_weeklesson
+	</select>
 	
 	
 </mapper>
