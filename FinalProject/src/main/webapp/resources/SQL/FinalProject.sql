@@ -76,6 +76,8 @@ add fk_deptCode varchar2(100);
 alter table tbl_subject add constraint FK_tbl_subject_fk_deptcode foreign key(fk_deptCode) references tbl_department(deptCode) on delete cascade
 commit;
 
+
+
 ------------몇주차 테이블----------------
 create table tbl_week
 (fk_code           varchar2(100)                 --과목코드 
@@ -260,4 +262,74 @@ select *
 from tbl_member;
 
 select * 
-from TBL_WEEK ;
+from TBL_WEEK;
+
+select *
+from tbl_weeklesson;
+
+select * 
+from tbl_lessonplan;
+
+select *
+from tbl_attend;
+
+select *
+from tbl_weeklesson;
+
+select *
+from user_constraints
+where table_name = 'TBL_LESSONPLAN';
+
+select *
+from USER_TAB_COLS
+where table_name = 'TBL_LESSONPLAN';
+
+alter table tbl_lessonplan
+drop constraint FK_TBL_LESSONPLAN_FK_WEEKSEQ
+-- Table TBL_LESSONPLAN이(가) 변경되었습니다.
+
+alter table tbl_lessonplan
+drop column fk_weekseq;
+-- Table TBL_LESSONPLAN이(가) 변경되었습니다.
+
+alter table tbl_lessonplan
+add fk_code varchar2(100);
+-- Table TBL_LESSONPLAN이(가) 변경되었습니다.
+
+alter table tbl_lessonplan
+add week varchar2(50);
+-- Table TBL_LESSONPLAN이(가) 변경되었습니다.
+
+alter table tbl_lessonplan
+add constraint FK_TBL_LESSONPLAN_FK_CODE foreign key(fk_code) references tbl_subject(code);
+-- Table TBL_LESSONPLAN이(가) 변경되었습니다.
+
+desc TBL_ATTEND;
+desc TBL_DEPARTMENT;
+desc TBL_FREEBOARD;
+desc TBL_FREECOMMENT;
+desc TBL_GRADE;
+desc TBL_LESSONBOARD;
+desc TBL_LESSONPLAN;
+desc TBL_MEMBER; 
+desc TBL_SUBJECT; 
+desc TBL_SUGANG; 
+desc TBL_WEEK; 
+desc TBL_WEEKLESSON; 
+
+select * 
+from tab;
+
+select A.code, A.subject, A.hakjum, A.classdate, A.fk_deptCode AS deptcode, B.deptName AS deptName, B.deptLocation AS deptLocation, C.name
+from tbl_subject A
+JOIN tbl_department B
+on A.fk_deptcode = B.deptCode
+JOIN tbl_member C
+on A.fk_hakbun = C.hakbun
+where 1=1
+
++= and 요일 = 수
+
+if( 요일select 태그 선택하면 ) 
+
+String 조건절에 추가할거 
