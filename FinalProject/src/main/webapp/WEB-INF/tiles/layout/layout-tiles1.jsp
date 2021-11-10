@@ -45,7 +45,7 @@
 	  div#showMySubject, div#showMyAccount {
 	  		box-shadow: 0px 1px 3px;
 	  		position: absolute; 
-	  		z-index: 1; 
+	  		z-index: 7; 
 	  		left: 5%; 
 	  		width: 15%; 
 	  		height: 1024px; 
@@ -131,7 +131,7 @@
 			<tiles:insertAttribute name="sideinfo" />
 		</div>
 		<!-- 로그인 처리 -->
-		  <div id="showMyAccount" class="p-3">
+		 <div id="showMyAccount" class="p-3">
          <span id="closeMyAccount" style="float:right; font-size: 30pt; text-align:center; cursor:pointer;">&times;</span>
          <div style="display:flex; margin-top: 10px; width:100%;">
             <img src="<%= ctxPath%>/resources/images/min.jpg" style="width: 50%; margin: auto;"/>
@@ -144,7 +144,7 @@
   	                           
                <c:if test="${not empty sessionScope.loginuser}">
                   <a class="btn btn-secondary btn-sm justify-content-center" href="#">나의정보</a>
-                  <a class="btn btn-secondary btn-sm justify-content-center" href="<%=ctxPath%>/MemberLogin.univ">로그아웃</a>
+                  <a class="btn btn-secondary btn-sm justify-content-center" href="<%=ctxPath%>/logout.univ">로그아웃</a>
                </c:if>
          </div>
 			<hr>

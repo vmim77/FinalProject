@@ -23,7 +23,7 @@
 		
 		$(".leesonboardRows").click(function(){
 			var seq = $(this).find("td:first-child").text();
-			location.href="<%= request.getContextPath()%>/lessonnDetail.univ?code=${requestScope.code}&seq="+seq;
+			location.href="<%= request.getContextPath()%>/lessonnDetail.univ?code=${sessionScope.code}&seq="+seq;
 		});
 		
 		

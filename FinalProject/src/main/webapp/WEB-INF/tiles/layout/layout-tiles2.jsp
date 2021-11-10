@@ -47,7 +47,7 @@
 	  div#showMySubject, div#showMyAccount {
 	  		box-shadow: 0px 1px 3px;
 	  		position: absolute; 
-	  		z-index: 1; 
+	  		z-index: 7; 
 	  		left: 5%; 
 	  		width: 15%; 
 	  		height: 1024px; 
@@ -155,7 +155,7 @@
   	                           
                <c:if test="${not empty sessionScope.loginuser}">
                   <a class="btn btn-secondary btn-sm justify-content-center" href="#">나의정보</a>
-                  <a class="btn btn-secondary btn-sm justify-content-center" href="<%=ctxPath%>/MemberLogin.univ">로그아웃</a>
+                  <a class="btn btn-secondary btn-sm justify-content-center" href="<%=ctxPath%>/logout.univ">로그아웃</a>
                </c:if>
          </div>
 			<hr>

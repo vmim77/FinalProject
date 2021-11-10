@@ -42,6 +42,13 @@ public class SungDAO implements InterSungDAO {
 		return n;
 	}
 	
+	// 과목코드가 정상적인지 확인한다.
+	@Override
+	public int checkCode(String sessionCode) {
+		int result = sqlsession2.selectOne("Sung.checkCode", sessionCode);
+		return result;
+	}
+	
 	
 
 }

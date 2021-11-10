@@ -16,5 +16,8 @@ public interface InterSungDAO {
 	
 	// 로그인한 학생이 듣는 수업인지 확인을 한다.
 	int checkSugang(Map<String, String> paraMap);
+	
+	// 과목코드가 정상적인지 확인한다.
+	int checkCode(String sessionCode);
 
 }

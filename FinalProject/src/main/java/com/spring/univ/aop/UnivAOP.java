@@ -27,6 +27,8 @@ public class UnivAOP {
 	@Autowired
 	InterSungService service;
 	
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	/// 로그인 유무검사
 	@Pointcut("execution(public * com.spring..*Controller.requiredLogin_*(..))")
 	public void requiredLogin() {}
 	
@@ -39,7 +41,7 @@ public class UnivAOP {
 		HttpSession session = request.getSession();
 		
 		if(session.getAttribute("loginuser") == null) {
-			String message = "AMY대학교 학생만 이용할 수 있는 서비스입니다.";
+			String message = "길영대학교 학생만 이용할 수 있는 서비스입니다.";
 			String loc = request.getContextPath() + "/MemberLogin.univ";
 			
 			request.setAttribute("message", message);
@@ -50,69 +52,116 @@ public class UnivAOP {
 			try {
 				dispatcher.forward(request, response);
 			} catch (ServletException | IOException e) {
-				e.printStackTrace();
+				
 			}
 			
 		}
 		
 	}
-	/////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	/// 로그인 유무검사 & 수강신청한 과목인지 검사
 	@Pointcut("execution(public * com.spring..*Controller.subject_*(..))")
 	public void subject() {}
 	
 	@Before("subject()")
 	public void subjectCheck(JoinPoint joinPoint) {
 		
-		HttpServletRequest  request  = (HttpServletRequest)  joinPoint.getArgs()[0];
-		HttpServletResponse response = (HttpServletResponse) joinPoint.getArgs()[1]; 
 		
-		HttpSession session = request.getSession();
-		
-		if(session.getAttribute("loginuser") == null) {
-			String message = "AMY대학교 학생만 이용할 수 있는 서비스입니다.";
-			String loc = request.getContextPath() + "/MemberLogin.univ";
+		try {
+			HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0]; 
+			HttpServletResponse response = (HttpServletResponse) joinPoint.getArgs()[1]; 
 			
-			request.setAttribute("message", message);
-			request.setAttribute("loc", loc);
+			HttpSession session = request.getSession();
+			String sessionCode = (String) session.getAttribute("code");
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
 			
-			try {
-				dispatcher.forward(request, response);
-			} catch (ServletException | IOException e) {
-				e.printStackTrace();
+			String servletPass = request.getServletPath();
+			
+			if(sessionCode == null || "".equals(sessionCode) || "/subject.univ".equals(servletPass)) { 
+				sessionCode = request.getParameter("code"); // subject를 통해서 맨 처음 들어왔다면 sessionCode는 없다. 그러므로 subject.univ로 보내주는 sessionCode를 받아온다.
+				session.setAttribute("code", request.getParameter("code"));
+				
 			}
 			
-		}
-		
-		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-		String hakbun = loginuser.getHakbun();
-		String code = request.getParameter("code");
-		
-		Map<String, String> paraMap = new HashMap<>();
-		paraMap.put("hakbun", hakbun);
-		paraMap.put("code", code);
-		
-		// 로그인한 학생이 듣는 수업인지 확인을 한다.
-		int n = service.checkSugang(paraMap);
-		
-		if(n!=1) {
-			String message = "수강한 학생들만 접근할 수 있습니다.";
-			String loc = request.getContextPath() + "/MemberLogin.univ";
 			
-			request.setAttribute("message", message);
-			request.setAttribute("loc", loc);
-			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
-			
-			try {
+			//////////////////////////////////////////////////////////////////
+			// 1. 로그인 검사
+			if(session.getAttribute("loginuser") == null) {
+				String message = "길영대학교 학생만 이용할 수 있는 서비스입니다.";
+				String loc = request.getContextPath() + "/MemberLogin.univ";
+				
+				request.setAttribute("message", message);
+				request.setAttribute("loc", loc);
+				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
 				dispatcher.forward(request, response);
-			} catch (ServletException | IOException e) {
-				e.printStackTrace();
+				return;
 			}
-		}
+			//////////////////////////////////////////////////////////////////
 			
+			//////////////////////////////////////////////////////////////////
+			// 1-1. 과목코드가 정상적인지 확인한다.
+			
+			if(sessionCode == null || "".equals(sessionCode)) {
+				sessionCode = "9999";
+			}
+			
+			int result = service.checkCode(sessionCode);
+			
+			if(result==0) {
+				String message = "요청하신 과목은 없는 과목입니다.";
+				String loc = request.getContextPath() + "/dashboard.univ";
+				
+				request.setAttribute("message", message);
+				request.setAttribute("loc", loc);
+				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
+				dispatcher.forward(request, response);
+				
+				return;
+			}
+			//////////////////////////////////////////////////////////////////
+			
+			
+			/////////////////////////////////////////////////////////////////
+			// 2. 수강여부 검사
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			String hakbun = loginuser.getHakbun();
+			
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("hakbun", hakbun);
+			paraMap.put("code", sessionCode);
+			
+			// 로그인한 학생이 듣는 수업인지 확인을 한다.
+			int n = service.checkSugang(paraMap);
+			
+			if(n==0) {
+				String message = "수강한 학생들만 접근할 수 있습니다.";
+				String loc = "javascript:history.back()";
+				
+				request.setAttribute("message", message);
+				request.setAttribute("loc", loc);
+				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
+				
+				dispatcher.forward(request, response);
+				return;
+			}
+			
+			/////////////////////////////////////////////////////////////////
+			// 3. 세션에 저장된 코드를 이용한 수강과목 정보조회해오기
+			
+			if(sessionCode != null && !"".equals(sessionCode)) {
+				Map<String,String> subjectMap = service.getSubjectInfo(sessionCode);
+				request.setAttribute("subjectMap", subjectMap);
+			}
+
+			/////////////////////////////////////////////////////////////////
+			
+		} catch (ServletException | IOException e) {
+			e.printStackTrace();
+		}	
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	

@@ -68,58 +68,42 @@ public class SungController {
 		return "Sunghyun/dashboard.tiles1";
 	}
 	
+	// 과목메뉴로 들어가는 첫페이지이다. 
+	// 과목코드를 추출하려는 이벤트가 된다.
 	@RequestMapping(value="/subject.univ")
-	public ModelAndView requiredLogin_subject(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	public ModelAndView subject_subject(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-		String code = request.getParameter("code");
-		
-		if(code.trim().isEmpty()) {
-			mav.setViewName("redirect:/dashboard.univ"); 
-		}
-		else {
-			Map<String,String> subjectMap = service.getSubjectInfo(code);
-			mav.addObject("code", code);
-			mav.addObject("subjectMap", subjectMap);
-			mav.setViewName("Sunghyun/subject.tiles2");
-		}
-		
+		mav.setViewName("Sunghyun/subject.tiles2");
 		return mav;
 	}
 	
+	
 	@RequestMapping(value="/lesson.univ")
-	public ModelAndView requiredLogin_lesson(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	public ModelAndView subject_lesson(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-		String code = request.getParameter("code");
-		Map<String,String> subjectMap = service.getSubjectInfo(code);
+		HttpSession session = request.getSession();
+		String code = (String) session.getAttribute("code");
 		
-		List<LessonBoardVO> boardList = service.getLessonBoard(code);
+		if(code != null) {
+			List<LessonBoardVO> boardList = service.getLessonBoard(code);
+			mav.addObject("boardList", boardList);
+			mav.setViewName("Sunghyun/lesson.tiles2");
+		}
 		
-		mav.addObject("code", code);
-		mav.addObject("boardList", boardList);
-		mav.addObject("subjectMap", subjectMap);
-		
-		mav.setViewName("Sunghyun/lesson.tiles2");
 		return mav;
 	}
 	
 	@RequestMapping(value="/lessonDetail.univ")
-	public ModelAndView requiredLogin_lessonDetail(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	public ModelAndView subject_lessonDetail(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-		String code = request.getParameter("code");
-		String seq = request.getParameter("seq");
+		// 만들어야 함!!
+		
 		return mav;
 	}
 	
 	@RequestMapping(value="/homework.univ")
-	public ModelAndView requiredLogin_homework(ModelAndView mav, HttpServletRequest request) {
-		
-		String code = request.getParameter("code");
-		Map<String,String> subjectMap = service.getSubjectInfo(code);
-		
-		mav.addObject("code", code);
-		mav.addObject("subjectMap", subjectMap);
+	public ModelAndView subject_homework(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		mav.setViewName("Sunghyun/homework.tiles2");
-		
 		return mav;
 	}
 

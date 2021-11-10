@@ -42,5 +42,12 @@ public class SungService implements InterSungService {
 		int n = dao.checkSugang(paraMap);
 		return n;
 	}
+	
+	// 과목코드가 정상적인지 확인한다.
+	@Override
+	public int checkCode(String sessionCode) {
+		int result = dao.checkCode(sessionCode);
+		return result;
+	}
 
 }

@@ -269,18 +269,19 @@ on A.fk_hakbun = C.hakbun
 
 
 insert into tbl_sugang(fk_code, fk_hakbun)
-values('0102', '2100022');
+values('0528', '2100022');
 
 commit;
 
 select *
-from tbl_member;
+from tbl_member
 
 select *
 from tbl_subject;
 
 select * 
 from tbl_sugang;
+
 
 select hakbun, code, subject, teacher, hakjum, classdate, location
 from
@@ -302,3 +303,6 @@ where hakbun = '2100022'
 select count(*)
 from tbl_sugang
 where fk_hakbun = '2100022' and fk_code='0103'
+
+select * 
+from tbl_member;

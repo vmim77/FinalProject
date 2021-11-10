@@ -70,4 +70,10 @@
 		where fk_hakbun = #{hakbun} and fk_code= #{code}
 	</select>
 	
+	<select id="checkCode" parameterType="String" resultType="int">
+		select count(*)
+		from tbl_subject
+		where code = #{sessionCode}
+	</select>
+	
 </mapper>
