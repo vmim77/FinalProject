@@ -9,7 +9,7 @@ public class MemberVO {
 	private String hakbun;        // 학번
 	private String name;          // 이름
 	private String birth;         // 생년월일     
-	private String fk_deptCode;  // 학과코드
+	private String fk_deptCode;   // 학과코드
 	private String pwd;           // 비밀번호
 	private String email;         // 이메일
 	private String address;       // 주소

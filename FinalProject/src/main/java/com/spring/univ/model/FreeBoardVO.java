@@ -28,6 +28,8 @@ public class FreeBoardVO {
 	private String nextseq;          // 다음글번호
 	private String nextsubject;      // 다음글제목
 
+	/////////////////////////////////////////////////////////////////////
+	
 	public FreeBoardVO() {}
 	
 	public FreeBoardVO(String seq, String fk_hakbun, String name, String fk_code, String subject, String content, String pw,

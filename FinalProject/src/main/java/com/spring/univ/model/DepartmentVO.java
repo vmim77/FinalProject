@@ -2,10 +2,21 @@ package com.spring.univ.model;
 
 public class DepartmentVO {
 
+	/////////////////////////////////////////////////////////////////////
+	
 	private String deptCode;     // 학과코드
 	private String deptName;     // 학과명
 	private String deptLocation; // 학과위치
 	
+	/////////////////////////////////////////////////////////////////////
+	
+	public DepartmentVO() {}
+	
+	public DepartmentVO(String deptCode, String deptName, String deptLocation) {
+		this.deptCode = deptCode;
+		this.deptName = deptName;
+		this.deptLocation = deptLocation;
+	}
 	public String getDeptCode() {
 		return deptCode;
 	}
