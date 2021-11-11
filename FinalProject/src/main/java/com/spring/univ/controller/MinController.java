@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -69,7 +70,9 @@ public class MinController {
 		
 		return mav;
 		
-	}//end of public String test1(HttpServletRequest request) {------------
+	}//end of public String test1(HttpServletRequest request) {}------------
+	
+	
 	
 
 	@RequestMapping(value="/pp.univ")
@@ -77,7 +80,26 @@ public class MinController {
 		
 		return "pp.tiles1";
 		
-	}//end of public String test1(HttpServletRequest request) {------------
+	}//end of public String test1(HttpServletRequest request) {}------------
+	
+	
+    @RequestMapping(value="/servey.univ")
+    public ModelAndView servey(ModelAndView mav, HttpServletRequest request) {
+       
+    
+       mav.setViewName("login/servey");
+       
+       return mav;
+    }// end of public ModelAndView servey(ModelAndView mav, HttpServletRequest request) {}--------------------------
+    
+    
+    @RequestMapping(value="/evaluation.univ")
+    public ModelAndView evaluation(ModelAndView mav, HttpServletRequest request) {
+       
+       mav.setViewName("login/evaluation");
+       
+       return mav;
+    }// end of public ModelAndView servey(ModelAndView mav, HttpServletRequest request) {}--------------------------
 	
 	
 	

@@ -23,20 +23,34 @@
 		
 		$(".leesonboardRows").click(function(){
 			var seq = $(this).find("td:first-child").text();
-			location.href="<%= request.getContextPath()%>/lessonnDetail.univ?code=${requestScope.code}&seq="+seq;
+			location.href="<%= request.getContextPath()%>/lessonnDetail.univ?code=${sessionScope.code}&seq="+seq;
 		});
 		
 		
 	});
+	
+	//Function Declaration
+	function goLessonWrite() {
+		
+		if(${sessionScope.loginuser.authority==0}){
+			alert("교수만 접근이 가능합니다!!");
+			return;
+		}
+		
+		location.href="<%= request.getContextPath()%>/lessonWrite.univ";
+	}// end of goLessonWrite()---------------------------------------
+	
 
 </script>
 
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
-<h3 style="float:left; color: #0099ff;">${requestScope.subjectMap.subject}_${requestScope.subjectMap.ban}반 강의실(${requestScope.subjectMap.name}) > 강의자료실</h3>
+<h3 style="float:left;">${requestScope.subjectMap.subject} 강의실(${requestScope.subjectMap.name}) > <span style="color: #0099ff; text-decoration: underline;">강의자료실</span></h3>
 <hr style="clear: both;">
     
 <c:if test="${empty requestScope.boardList}">
-	<img src="<%= request.getContextPath()%>/resources/images/nolesson.png" style="width: 100%; padding: 10px;" />
+	<div style="display: flex;">
+		<img src="<%= request.getContextPath()%>/resources/images/nolesson.png" style="width: 80%; padding: 10px; margin: auto;" />
+	</div>
 </c:if>
 
 <c:if test="${not empty requestScope.boardList}">
@@ -57,4 +71,11 @@
 			</tr>
 		</c:forEach>
 	</table>
+</c:if>
+<hr>
+<c:if test="${sessionScope.loginuser.authority == 1}">
+	<div class="text-right">
+		<button type="button" class="btn btn-dark btn-md" onclick="goLessonWrite()">글쓰기</button>
+	</div>
+	
 </c:if>

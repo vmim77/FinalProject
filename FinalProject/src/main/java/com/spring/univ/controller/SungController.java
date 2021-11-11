@@ -54,68 +54,66 @@ public class SungController {
 	@Autowired
 	private InterSungService service;
 	
+	// 대쉬보드
 	@RequestMapping(value="/dashboard.univ")
-	public String dashboard(HttpServletRequest request) {
+	public String requiredLogin_dashboard(HttpServletRequest request, HttpServletResponse response) {
 		
 		return "Sunghyun/dashboard.tiles1";
 	}
 	
+	
+	// 과목 index 페이지 ( 어떤 과목에 들어가면 가장 먼저 보게될 페이지 )
 	@RequestMapping(value="/subject.univ")
-	public ModelAndView subject(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView subject_subject(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-		String code = request.getParameter("code");
-		
-		if(code.trim().isEmpty()) {
-			mav.setViewName("redirect:/dashboard.univ"); 
-		}
-		else {
-			Map<String,String> subjectMap = service.getSubjectInfo(code);
-			mav.addObject("code", code);
-			mav.addObject("subjectMap", subjectMap);
-			mav.setViewName("Sunghyun/subject.tiles2");
-		}
-		
+		mav.setViewName("Sunghyun/subject.tiles2");
 		return mav;
 	}
 	
+	// 강의자료실 페이지
 	@RequestMapping(value="/lesson.univ")
-	public ModelAndView lesson(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView subject_lesson(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-		String code = request.getParameter("code");
-		Map<String,String> subjectMap = service.getSubjectInfo(code);
+		HttpSession session = request.getSession();
+		String code = (String) session.getAttribute("code"); // 해당 과목의 강의자료실 게시글을 가져오기 위한 과목코드
 		
-		List<LessonBoardVO> boardList = service.getLessonBoard(code);
+		if(code != null) {
+			List<LessonBoardVO> boardList = service.getLessonBoard(code);
+			mav.addObject("boardList", boardList);
+			mav.setViewName("Sunghyun/lesson.tiles2");
+			return mav;
+		}
 		
-		mav.addObject("code", code);
-		mav.addObject("boardList", boardList);
-		mav.addObject("subjectMap", subjectMap);
+		else { // URL로 접근을 했다면 CODE가 있을 수 없기 때문에 쫓아낸다.
+			mav.addObject("message", "메인페이지로 이동을 합니다.");
+			mav.addObject("loc", request.getContextPath()+"/dashboard.univ");
+			mav.setViewName("msg");
+			return mav;
+		}
 		
-		mav.setViewName("Sunghyun/lesson.tiles2");
+	}
+	
+	// 강의자료실 글쓰기 폼 요청하기
+	@RequestMapping(value="/lessonWrite.univ")
+	public ModelAndView subject_lessonWrite(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		mav.setViewName("Sunghyun/lessonWrite.tiles2");
 		return mav;
 	}
 	
+	
+	// 강의자료실 글 상세보기
 	@RequestMapping(value="/lessonDetail.univ")
-	public ModelAndView lessonDetail(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView subject_lessonDetail(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-		String code = request.getParameter("code");
-		String seq = request.getParameter("seq");
-		
-		
-		
+		// 만들어야 함!!
 		
 		return mav;
 	}
 	
+	// 과제 게시판
 	@RequestMapping(value="/homework.univ")
-	public ModelAndView homework(ModelAndView mav, HttpServletRequest request) {
-		
-		String code = request.getParameter("code");
-		Map<String,String> subjectMap = service.getSubjectInfo(code);
-		
-		mav.addObject("code", code);
-		mav.addObject("subjectMap", subjectMap);
+	public ModelAndView subject_homework(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		mav.setViewName("Sunghyun/homework.tiles2");
-		
 		return mav;
 	}
 

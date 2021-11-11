@@ -27,8 +27,26 @@ public class DongDAO implements InterDongDAO {
 		
 		return TeacherList;
 	}
-
 //=================================================================================================
+	// === 개인정보 수정하기 === //
+	@Override
+	public int MyUpdate(Map<String, String> paraMap) {
+		
+		int n = sqlsession2.update("Dong.MyUpdate", paraMap);
+		
+		return n;
+	}
+	
+	// === 마이페이지 보여주기 === //
+	@Override
+	public List<MemberVO> getMyMember(Map<String, String> paraMap) {
+		
+		List<MemberVO> MemberList = sqlsession2.selectList("Dong.getMyMember", paraMap);
+		
+		return MemberList;
+	}
+
+
 	
 	
 	

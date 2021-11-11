@@ -28,5 +28,41 @@ public class SungService implements InterSungService {
 		List<LessonBoardVO> boardList = dao.getLessonBoard(code);
 		return boardList;
 	}
+	
+	// 로그인한 유저의 수강리스트를 뽑아온다.
+	@Override
+	public List<Map<String, String>> getSugang(String hakbun) {
+		List<Map<String, String>> sugangList = dao.getSugang(hakbun);
+		return sugangList;
+	}
+	
+	// 로그인한 학생이 듣는 수업인지 확인을 한다.
+	@Override
+	public int checkSugang(Map<String, String> paraMap) {
+		int n = dao.checkSugang(paraMap);
+		return n;
+	}
+	
+	// 과목코드가 정상적인지 확인한다.
+	@Override
+	public int checkCode(String sessionCode) {
+		int result = dao.checkCode(sessionCode);
+		return result;
+	}
+	
+	// 교수의 담당과목을 불러온다.
+	@Override
+	public List<Map<String, String>> getsuUp(String hakbun) {
+		List<Map<String, String>> suupList = dao.getsuUp(hakbun);
+		return suupList;
+	}
+	
+	
+	// 교수 본인이 담당하는 과목인지 확인한다.
+	@Override
+	public int checkLesson(Map<String, String> paraMap) {
+		int n = dao.checkLesson(paraMap);
+		return n;
+	}
 
 }

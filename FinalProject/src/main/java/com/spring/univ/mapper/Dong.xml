@@ -5,6 +5,7 @@
 
 <!-- ====  루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="Dong">
+	<!-- 로그인  -->
 	<select id="getLoginMember" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">
 		select hakbun, name, birth, fk_deptCode, pwd, email,
 		address, status,picture,phone,authority
@@ -12,10 +13,24 @@
 		where status = 1 and hakbun = #{hakbun} and pwd = #{pwd}
 	</select>
 	
+	<!-- 교수 보여주기 -->
 	<select id="getTeacher" resultType="com.spring.univ.model.SubjectVO">
-		select code,subject,teacher,ban,hakjum,classdate,fk_deptcode
+		select code,subject,hakjum,classdate,fk_deptcode
 		from tbl_subject
 	</select>
 	
+	<!-- 개인정보 수정하기-->
+	<update id="MyUpdate" parameterType="com.spring.univ.model.MemberVO">
+		update tbl_member set phone= #{phone}, email= #{email}, address= #{address}
+		where hakbun = #{hakbun}
+	</update>
+	
+	
+	<!-- 마이페이지 보여주기 -->
+	<select id="getMyMember" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">
+		select name,hakbun,phone,email,address
+		from tbl_member
+		where hakbun = #{hakbun}
+	</select>
 <!-- === -->		
 </mapper>

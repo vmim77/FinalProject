@@ -5,15 +5,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.univ.common.FileManager;
 import com.spring.univ.model.MemberVO;
 import com.spring.univ.model.SubjectVO;
 import com.spring.univ.service.InterDongService;
+import com.spring.univ.service.InterSungService;
 
 
 
@@ -52,12 +57,39 @@ public class DongController {
  @Autowired
    private InterDongService service;
    // Type에 따라 알아서 Bean 을 주입해준다.
+ 
+ @Autowired
+  private InterSungService service2;
+ 
+	@Autowired
+	private FileManager fileManager;
+ // Type에 따라 알아서 Bean 을 주입해준다.
 
  	// 사용자 및 그룹
 	@RequestMapping(value="/user.univ") 
 	public ModelAndView user(HttpServletRequest request,ModelAndView mav) {
 		
-		List<SubjectVO> TeacherList = service.getTeacher();
+		 String searchType = request.getParameter("searchType");
+	     String searchWord = request.getParameter("searchWord");
+	      
+	      if(searchType == null || (!"subject".equals(searchType) && !"name".equals(searchType)) ) {
+	         searchType = "";
+	      }
+	      
+	      if(searchWord == null || "".equals(searchWord) || searchWord.trim().isEmpty() ) {
+	         searchWord = "";
+	      }
+	      
+	      Map<String,String> paraMap = new HashMap<>();
+	      paraMap.put("searchType", searchType);
+	      paraMap.put("searchWord", searchWord);
+	      
+	      List<SubjectVO> TeacherList = service.getTeacher();
+	      
+	      // 아래는 검색대상 컬럼과 검색어를 유지시키기 위한 것임.
+	      if(!"".equals(searchType) && !"".equals(searchWord)) {
+	         mav.addObject("paraMap", paraMap);
+	      }
 		
 		mav.addObject("TeacherList", TeacherList);
 		mav.setViewName("user.tiles1");
@@ -110,13 +142,24 @@ public class DongController {
 	      
 	      else {
 	    	  
-	    	   HttpSession session = request.getSession();
+	    	  	HttpSession session = request.getSession();
 	    	  
 	    	   session.setAttribute("loginuser", loginuser);
-	    	  
+	    	   
+		       hakbun = loginuser.getHakbun(); // 로그인한 유저의 학번을 가져온다.
+		       int authority = loginuser.getAuthority(); // 로그인한 유저의 권한값을 가져온다.
+		       
+		       if(authority==0) { // 학생
+		    	   List<Map<String, String>> sugangList = service2.getSugang(hakbun); // 학번을 이용하여 해당 학생의 수강목록을 가져온다.
+		    	   session.setAttribute("sugangList", sugangList); // 수강목록을 session에 저장시킨다.
+		       }
+		       else if (authority==1) {
+		    	   List<Map<String, String>> suupList = service2.getsuUp(hakbun); // 학번을 이용하여 해당 교수의 수업목록을 가져온다.
+		    	   session.setAttribute("suupList", suupList); // 수업목록을 세션에 저장시킨다.
+		       }
+	    	   
 	    	   mav.addObject("session", session);
-	    	  
-	    	   mav.setViewName("Sunghyun/dashboard.tiles1"); 
+	    	   mav.setViewName("redirect:/dashboard.univ"); // redirect로 이동을 시킨다.
 	      }
 	     
 	     
@@ -132,9 +175,9 @@ public class DongController {
 	   @RequestMapping(value="/logout.univ")
 	   public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
 	      
-		   HttpSession  session = request.getSession(); // 세션 불러오기
+		  HttpSession  session = request.getSession(); // 세션 불러오기
 			
-		   session.removeAttribute("loginuser");
+		  session.removeAttribute("loginuser");
 	      
 	      String message = "로그아웃 되었습니다.";
 	      String loc = "";
@@ -147,6 +190,65 @@ public class DongController {
 	   }
 //====================================================================================================================
 	   
+	   // === 마이페이지 보여주기
+	   @RequestMapping(value="/Myinfo.univ")
+	   public ModelAndView Myinfo(ModelAndView mav, HttpServletRequest request) {
+		   
+		   HttpSession session = request.getSession();
+		   MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+	    	  
+		   String hakbun = loginuser.getHakbun();
+		   
+		   Map<String,String>paraMap = new HashMap<>();
+		   paraMap.put("hakbun", hakbun);
+		   System.out.println("확인용 hakbun" + hakbun);
+		   List<MemberVO> MemberList = service.getMyMember(paraMap);
+		   
+		   
+		   mav.addObject("MemberList",MemberList);
+		   mav.setViewName("login/Myinfo");
+		      
+		      return mav;
+		   
+	 }
+	   
+	   
+//====================================================================================================================
+	   
+	   // === 내정보 수정하기 === //
+	   @ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
+	   @RequestMapping(value="/myedit.univ", produces="text/plain;charset=UTF-8", method= {RequestMethod.GET})
+	   public String myedit(HttpServletRequest request){
+		   
+		   String hakbun = request.getParameter("hakbun");
+		   String phone = request.getParameter("phone");
+		   String email = request.getParameter("email");
+		   String address = request.getParameter("address");
+		   
+		   Map<String,String>paraMap = new HashMap<>();
+		   
+		   paraMap.put("hakbun", hakbun);
+		   paraMap.put("phone", phone);
+		   paraMap.put("email", email);
+		   paraMap.put("address", address);
+		   
+		   int n = service.MyUpdate(paraMap);
+
+
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("n",n);
+
+		      
+		      return jsonObj.toString();
+
+	   }
+	   
+
+	   
+//====================================================================================================================
+	   
+
 		
 	   
 }	
+
