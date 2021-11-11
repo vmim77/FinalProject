@@ -61,11 +61,7 @@
 </a>
 <a class="menu" href="#">
 	<i class="hideicon fas fa-envelope-open-text fa-2x"></i>
-	<div>메시지</div>
-</a>
-<a class="menu" href="#">
-	<i class="hideicon far fa-question-circle fa-2x"></i>
-	<div>도움말</div>
+	<div>메신저</div>
 </a>
 
 <div id="hideSideInfo">

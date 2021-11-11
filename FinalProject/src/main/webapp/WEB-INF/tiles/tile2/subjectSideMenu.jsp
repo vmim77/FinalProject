@@ -10,7 +10,6 @@
 	<li class="sideMenu">열린게시판</li>
 	<li class="sideMenu">문의게시판</li>
 	<li class="sideMenu" onclick="javascript:location.href='<%= ctxPath%>/homework.univ'">과제 및 평가</li>
-	<li class="sideMenu">토론</li>
 	<li class="sideMenu">강의콘텐츠</li>
 	<li class="sideMenu">사용자 및 그룹</li>
 	<li class="sideMenu">성적</li>
