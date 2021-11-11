@@ -81,7 +81,6 @@ public class UnivAOP {
 			if(sessionCode == null || "".equals(sessionCode) || "/subject.univ".equals(servletPass)) { 
 				sessionCode = request.getParameter("code"); // subject를 통해서 맨 처음 들어왔다면 sessionCode는 없다. 그러므로 subject.univ로 보내주는 sessionCode를 받아온다.
 				session.setAttribute("code", request.getParameter("code"));
-				
 			}
 			
 			
@@ -125,7 +124,9 @@ public class UnivAOP {
 			
 			
 			/////////////////////////////////////////////////////////////////
-			// 2. 수강여부 검사
+			// 2. 수강여부 검사 - 학생
+			
+			
 			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 			String hakbun = loginuser.getHakbun();
 			
@@ -133,24 +134,50 @@ public class UnivAOP {
 			paraMap.put("hakbun", hakbun);
 			paraMap.put("code", sessionCode);
 			
-			// 로그인한 학생이 듣는 수업인지 확인을 한다.
-			int n = service.checkSugang(paraMap);
+			if(loginuser.getAuthority()==0) {
+				
+				// 로그인한 학생이 듣는 수업인지 확인을 한다.
+				int n = service.checkSugang(paraMap);
+				
+				if(n==0) {
+					String message = "수강한 학생들만 접근할 수 있습니다.";
+					String loc = "javascript:history.back()";
+					
+					request.setAttribute("message", message);
+					request.setAttribute("loc", loc);
+					
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
+					
+					dispatcher.forward(request, response);
+					return;
+				}
+				
+			}
 			
-			if(n==0) {
-				String message = "수강한 학생들만 접근할 수 있습니다.";
-				String loc = "javascript:history.back()";
+			////////////////////////////////////////////////////////////////
+			// 2. 교수 본인이 담당하는 과목인지 검사한다.
+			else if(loginuser.getAuthority()==1) {
 				
-				request.setAttribute("message", message);
-				request.setAttribute("loc", loc);
+				// 로그인한 교수가 접근하려는게 본인 수업인지 확인한다.
+				int n = service.checkLesson(paraMap);
 				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
+				if(n==0) {
+					String message = loginuser.getName()+" 교수님의 담당과목이 아닙니다.";
+					String loc = "javascript:history.back()";
+					
+					request.setAttribute("message", message);
+					request.setAttribute("loc", loc);
+					
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
+					
+					dispatcher.forward(request, response);
+					return;
+				}
 				
-				dispatcher.forward(request, response);
-				return;
 			}
 			
 			/////////////////////////////////////////////////////////////////
-			// 3. 세션에 저장된 코드를 이용한 수강과목 정보조회해오기
+			// 3. 세션에 저장된 코드를 이용한 수강과목 정보조회해오기 -- 학생
 			
 			if(sessionCode != null && !"".equals(sessionCode)) {
 				Map<String,String> subjectMap = service.getSubjectInfo(sessionCode);

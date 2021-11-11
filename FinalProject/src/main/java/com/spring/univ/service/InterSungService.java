@@ -21,5 +21,11 @@ public interface InterSungService {
 	
 	// 과목코드가 정상적인지 확인한다.
 	int checkCode(String sessionCode);
+	
+	// 교수의 담당과목을 불러온다.
+	List<Map<String, String>> getsuUp(String hakbun);
+	
+	// 교수 본인이 담당하는 과목인지 확인한다.
+	int checkLesson(Map<String, String> paraMap);
 
 }

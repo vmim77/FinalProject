@@ -44,18 +44,35 @@
 
 <div id="maincontainer" style="display: flex;">
 	<section style="width: 70%; margin-right: auto;">
-		<h1>대시보드</h1>
+		<c:if test="${not empty sessionScope.sugangList}">
+			<h1>대시보드 - 수강과목(학생)</h1>
+		</c:if>
+		<c:if test="${not empty sessionScope.suupList}">
+			<h1>대시보드 - 담당과목(교수)</h1>
+		</c:if>
 		<hr>
 		
 		<div class="row mx-1">
-			<c:if test="${not empty requestScope.sugangList}">
-				<c:forEach var="sugangMap" items="${sugangList}">
+			<c:if test="${not empty sessionScope.sugangList}">
+				<c:forEach var="sugangMap" items="${sessionScope.sugangList}">
 				     <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
 				 	   <div style="width: 100%; height: 200px;"><img style="width: 100%; height: 100%;" src='<%= request.getContextPath()%>/resources/images/${sugangMap.code}.jpg' /></div>
 				 	   <div class="card-body">
 				 	     <h5 class="card-title">${sugangMap.subject}</h5>
 				 	     <p class="card-text" style="font-size: 8pt; color: gray;">담당교수: ${sugangMap.teacher}<br>수업요일: ${sugangMap.classdate}<br>배정학점: ${sugangMap.hakjum}</p>
 				 	     <a href='/univ/subject.univ?code=${sugangMap.code}' class='stretched-link btn btn-primary btn-sm' role='button'>강의실 입장</a>
+				 	   </div>
+				     </div>
+				</c:forEach>
+			</c:if>
+			<c:if test="${not empty sessionScope.suupList}">
+				<c:forEach var="suupMap" items="${suupList}">
+				     <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
+				 	   <div style="width: 100%; height: 200px;"><img style="width: 100%; height: 100%;" src='<%= request.getContextPath()%>/resources/images/${suupMap.code}.jpg' /></div>
+				 	   <div class="card-body">
+				 	     <h5 class="card-title">${suupMap.subject}</h5>
+				 	     <p class="card-text" style="font-size: 8pt; color: gray;">수업요일: ${suupMap.classdate}<br>배정학점: ${suupMap.hakjum}</p>
+				 	     <a href='/univ/subject.univ?code=${suupMap.code}' class='stretched-link btn btn-primary btn-sm' role='button'>강의실 입장</a>
 				 	   </div>
 				     </div>
 				</c:forEach>

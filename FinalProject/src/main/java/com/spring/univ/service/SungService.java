@@ -49,5 +49,20 @@ public class SungService implements InterSungService {
 		int result = dao.checkCode(sessionCode);
 		return result;
 	}
+	
+	// 교수의 담당과목을 불러온다.
+	@Override
+	public List<Map<String, String>> getsuUp(String hakbun) {
+		List<Map<String, String>> suupList = dao.getsuUp(hakbun);
+		return suupList;
+	}
+	
+	
+	// 교수 본인이 담당하는 과목인지 확인한다.
+	@Override
+	public int checkLesson(Map<String, String> paraMap) {
+		int n = dao.checkLesson(paraMap);
+		return n;
+	}
 
 }

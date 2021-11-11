@@ -101,7 +101,7 @@ public class DongController {
 	      
 	      if(loginuser == null) { // 로그인 실패시
 	        
-	    	  String message = "학번 또는 암호가 틀립니다.";
+	    	 String message = "학번 또는 암호가 틀립니다.";
 	         String loc = "javascript:history.back()";
 	         
 	         mav.addObject("message", message); // request.setAttribute("message", message);
@@ -118,14 +118,17 @@ public class DongController {
 	    	  
 	    	   session.setAttribute("loginuser", loginuser);
 	    	   
-	    	   
-	    	   
 		       hakbun = loginuser.getHakbun(); // 로그인한 유저의 학번을 가져온다.
-		       List<Map<String, String>> sugangList = service2.getSugang(hakbun); // 학번을 이용하여 해당 학생의 수강목록을 가져온다.
-		       session.setAttribute("sugangList", sugangList); // 수강목록을 session에 저장시킨다.
+		       int authority = loginuser.getAuthority();
 		       
-		       
-	    	   
+		       if(authority==0) {
+		    	   List<Map<String, String>> sugangList = service2.getSugang(hakbun); // 학번을 이용하여 해당 학생의 수강목록을 가져온다.
+		    	   session.setAttribute("sugangList", sugangList); // 수강목록을 session에 저장시킨다.
+		       }
+		       else if (authority==1) {
+		    	   List<Map<String, String>> suupList = service2.getsuUp(hakbun); // 학번을 이용하여 해당 교수의 수업목록을 가져온다.
+		    	   session.setAttribute("suupList", suupList); // 수강목록을 session에 저장시킨다.
+		       }
 	    	   
 	    	   mav.addObject("session", session);
 	    	   mav.setViewName("redirect:/dashboard.univ"); // redirect로 이동을 시킨다.

@@ -57,14 +57,6 @@ public class SungController {
 	@RequestMapping(value="/dashboard.univ")
 	public String requiredLogin_dashboard(HttpServletRequest request, HttpServletResponse response) {
 		
-		HttpSession session = request.getSession();
-		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-		
-		String hakbun = loginuser.getHakbun();
-		List<Map<String, String>> sugangList = service.getSugang(hakbun);
-		
-		request.setAttribute("sugangList", sugangList);
-		
 		return "Sunghyun/dashboard.tiles1";
 	}
 	
@@ -88,10 +80,27 @@ public class SungController {
 			List<LessonBoardVO> boardList = service.getLessonBoard(code);
 			mav.addObject("boardList", boardList);
 			mav.setViewName("Sunghyun/lesson.tiles2");
+			return mav;
 		}
 		
+		else {
+			mav.addObject("message", "메인페이지로 이동을 합니다.");
+			mav.addObject("loc", request.getContextPath()+"/dashboard.univ");
+			mav.setViewName("msg");
+			return mav;
+		}
+		
+	}
+	
+	// 강의자료실 글쓰기 폼 요청하기
+	@RequestMapping(value="/lessonWrite.univ")
+	public ModelAndView subject_lessonWrite(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		mav.setViewName("Sunghyun/lessonWrite.tiles2");
 		return mav;
 	}
+	
+	
+	
 	
 	@RequestMapping(value="/lessonDetail.univ")
 	public ModelAndView subject_lessonDetail(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {

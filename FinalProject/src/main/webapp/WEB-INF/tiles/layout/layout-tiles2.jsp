@@ -141,14 +141,16 @@
 				<tiles:insertAttribute name="sideinfo" />
 			</div>
 			
-			<!-- 로그인 처리 -->
-		  <div id="showMyAccount" class="p-3">
+		<!-- 로그인 처리 -->
+		 <div id="showMyAccount" class="p-3">
          <span id="closeMyAccount" style="float:right; font-size: 30pt; text-align:center; cursor:pointer;">&times;</span>
          <div style="display:flex; margin-top: 10px; width:100%;">
-            <img src="<%= ctxPath%>/resources/images/min.jpg" style="width: 50%; margin: auto;"/>
+            <img src="<%= ctxPath%>/resources/images/personimg.png" style="width: 50%; margin: auto;"/>
          </div>
          <div style="clear:both; text-align:center;">
-            <div style="font-size: 1em;">이름: ${sessionScope.loginuser.name} <br>  학번: ${sessionScope.loginuser.hakbun}</div>
+            <div style="font-size: 1em;">
+            	이름: ${sessionScope.loginuser.name}<c:if test="${sessionScope.loginuser.authority == 0}">(학생)</c:if><c:if test="${sessionScope.loginuser.authority == 1}">(교수)</c:if>  
+            	<br>  학번: ${sessionScope.loginuser.hakbun}</div>
                 <c:if test="${empty sessionScope.loginuser}">
                     <a class="btn btn-secondary btn-sm justify-content-center" href="<%=ctxPath%>/MemberLogin.univ">로그인</a>
                  </c:if>
@@ -165,25 +167,37 @@
 				  <li class="list-group-item icons"><span>파일</span></li>
 			</ul>
 		</div>
-			<%-- 계정 퀵메뉴 --%>
+		<%-- 계정 퀵메뉴 --%>
+		
+		<%-- 수강과목 메뉴 --%>
+		<div id="showMySubject" class="p-3">
+			<h3 class="mt-3" style="float: left;">과목퀵메뉴</h3><span id="closeMysubject" style="float:right; font-size: 30pt; text-align:center; cursor:pointer;">&times;</span>
+			<hr style="clear:both;">
+			<%-- loginuser의 정보를 이용하여 추후에는 반복문을 이용하여 출력한다. --%>
+			<ul id="MySubjectList" class="list-group list-group-flush" style="width: 90%; list-style: none; padding: 0;">
 			
-			<%-- 수강과목 메뉴 --%>
-			<div id="showMySubject" class="p-3">
-				<h3 class="mt-3" style="float: left;">수강과목</h3><span id="closeMysubject" style="float:right; font-size: 30pt; text-align:center; cursor:pointer;">&times;</span>
-				<hr style="clear:both;">
-				<%-- loginuser의 정보를 이용하여 추후에는 반복문을 이용하여 출력한다. --%>
-				<ul id="MySubjectList" class="list-group list-group-flush" style="width: 90%; list-style: none; padding: 0;">
-				  <c:if test="${not empty sessionScope.sugangList}">
+			
+				  <c:if test="${sessionScope.loginuser.authority == 0 and not empty sessionScope.sugangList}">
 				  	<c:forEach var="sugangMap" items="${sugangList}">
 				  		<li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=${sugangMap.code}">${sugangMap.subject}(${sugangMap.teacher})</a></li>
 				  	</c:forEach>
 				  </c:if>
-				  <c:if test="${empty sessionScope.sugangList}">
-				  		<li class="list-group-item icons">수강중인 과목이 없습니다.</li>
+  				  <c:if test="${sessionScope.loginuser.authority == 0 and empty sessionScope.sugangList}">
+				  		<li style="font-size: 10pt; color:blue;" class="list-group-item icons">수강중인 과목이 없습니다.</li>
 				  </c:if>
-				</ul>
-			</div>
-			<%-- 수강과목 메뉴 --%>
+				  
+				  
+				  <c:if test="${sessionScope.loginuser.authority ==1 and not empty sessionScope.suupList}">
+				  	<c:forEach var="suupMap" items="${suupList}">
+				  		<li class="list-group-item icons"><a href="<%= ctxPath%>/subject.univ?code=${suupMap.code}">${suupMap.subject}</a></li>
+				  	</c:forEach>
+				  </c:if>
+  				  <c:if test="${sessionScope.loginuser.authority == 1 and empty sessionScope.suupList}">
+				  		<li style="font-size: 10pt; color:blue;" class="list-group-item icons">담당중이신 과목이 없으십니다!</li>
+				  </c:if>
+			</ul>
+		</div>
+		<%-- 수강과목 메뉴 --%>
 		      
 			<div id="mycontent">
 				<div id="maincontainer" class="m-2">

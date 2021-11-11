@@ -306,3 +306,26 @@ where fk_hakbun = '2100022' and fk_code='0103'
 
 select * 
 from tbl_member;
+
+select code, subject, hakjum, classdate, deptcode, deptname, deptlocation
+from tbl_subject A
+JOIN tbl_department B
+ON A.fk_deptcode = B.deptcode
+where fk_hakbun = '2100001';
+
+select * 
+from tbl_subject
+where fk_hakbun = '2100001';
+
+select distinct m.hakbun, m.name
+from tbl_member m 
+join tbl_sugang s
+on m.hakbun = s.fk_hakbun
+where m.authority = 0 and m.status = 1 and s.fk_deptCode = #{fk_deptCode}
+
+
+
+
+select count(*)
+from tbl_subject
+where fk_hakbun = '2100001' and code = '0101'
