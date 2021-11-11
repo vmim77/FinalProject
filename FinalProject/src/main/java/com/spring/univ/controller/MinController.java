@@ -70,8 +70,14 @@ public class MinController {
 		return mav;
 		
 	}//end of public String test1(HttpServletRequest request) {------------
-
 	
+
+	@RequestMapping(value="/pp.univ")
+	public String pp(HttpServletRequest request) {
+		
+		return "pp.tiles1";
+		
+	}//end of public String test1(HttpServletRequest request) {------------
 	
 	
 	

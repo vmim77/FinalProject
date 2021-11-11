@@ -266,11 +266,23 @@ JOIN tbl_department B
 on A.fk_deptcode = B.deptCode
 JOIN tbl_member C
 on A.fk_hakbun = C.hakbun
-<<<<<<< HEAD
-
 
 
 desc tbl_member;
 
-=======
->>>>>>> branch 'main' of https://github.com/vmim77/FinalProject.git
+
+select A.code AS code, A.subject AS subject, A.fk_hakbun AS fk_hakbun, A.hakjum AS hakjum
+      , A.classdate AS classdate, A.fk_deptcode AS deptcode
+      , B.week AS week, B.startday AS startday, B.weekseq AS weekseq
+      , C.lessonseq AS lessonseq, C.lesson AS lesson, C.video AS video, C.savefile AS savefile, C.uploadfile AS uploadfile
+      from tbl_subject A
+      JOIN tbl_week B
+      ON A.code = B.fk_code
+      JOIN tbl_weeklesson C
+      ON B.weekseq = C.fk_weekseq
+      where week='2'     
+      order by week, lesson asc
+   
+           
+select week
+from tbl_week;
