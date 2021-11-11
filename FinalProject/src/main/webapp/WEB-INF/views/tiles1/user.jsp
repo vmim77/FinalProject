@@ -34,48 +34,133 @@
 
 $(document).ready(function(){
 
-
-$("input#searchWord").keyup(function(event){
-	if(event.keyCode == 13) {
-		// 엔터를 했을 경우
-		goSearch();
-	}
-});
-
-// 검색시 검색조건 및 검색어 값 유지시키기
-if( ${not empty requestScope.paraMap} ) {
-	$("select#searchType").val("${requestScope.paraMap.searchType}");
-	$("input#searchWord").val("${requestScope.paraMap.searchWord}");
-}
-
-// Function Declaration
-function goView(seq) {
+		
+		$("span.subject").bind("mouseover", function(event){
+			var $target = $(event.target);
+			$target.addClass("subjectStyle");
+		});
+				
+		$("span.subject").bind("mouseout", function(event){
+			var $target = $(event.target);
+			$target.removeClass("subjectStyle");
+		});
+		
+		$("input#searchWord").keyup(function(event){
+			if(event.keyCode == 13) {
+				// 엔터를 했을 경우
+				goSearch();
+			}
+		});
+		
+		
+		// 검색시 검색조건 및 검색어 값 유지시키기
+		if( ${not empty requestScope.paraMap} ) {
+			$("select#searchType").val("${requestScope.paraMap.searchType}");
+			$("input#searchWord").val("${requestScope.paraMap.searchWord}");
+		}
+		
+		
+		<%-- === #107. 검색어 입력시 자동글 완성하기 2 === --%>
+		$("div#displayList").hide();
+		
+		$("input#searchWord").keyup(function(){
+			
+			var wordLength = $(this).val().trim().length;
+			// 검색어의 길이를 알아온다.
+			
+			if(wordLength == 0) {
+				$("div#displayList").hide();
+				// 검색어가 공백이거나 검색어 입력후 백스페이스키를 눌러서 검색어를 모두 지우면 검색된 내용이 안 나오도록 해야 한다. 
+			}
+			else {
+				$.ajax({
+					url:"<%= request.getContextPath()%>/wordSearchShow.action",
+					type:"GET",
+					data:{"searchType":$("select#searchType").val()
+						 ,"searchWord":$("input#searchWord").val()},
+					dataType:"JSON",
+					success:function(json){
+						<%-- === #112. 검색어 입력시 자동글 완성하기 7 === --%>
+						if(json.length > 0) {
+							// 검색된 데이터가 있는 경우
+							
+							var html = "";
+							
+							$.each(json, function(index, item){
+								var word = item.word;
+								// word ==> 프로그램은 jaVA를 공부합니다.
+								
+								var index = word.toLowerCase().indexOf( $("input#searchWord").val().toLowerCase() ); 
+								//              프로그램은 java를 공부합니다.                   java
+								// 검색어(jAvA)가 나오는 index ==> 6
+								
+								var len = $("input#searchWord").val().length;
+								// 검색어(jAvA)의 길이  len ==> 4
+								
+								var result = word.substr(0, index) + "<span style='color:blue;'>"+word.substr(index,len)+"</span>" + word.substr(index+len); 
+								
+								html += "<span style='cursor:pointer' class='result'>"+result+"</span><br>";
+							});
+							
+							var input_width = $("input#searchWord").css("width"); // 검색어 input 태그 width 알아오기
+							
+							$("div#displayList").css({"width":input_width}); // 검색결과 div의 width 크기를 검색어 input 태그 width 와 일치시키기 
+							
+							$("div#displayList").html(html);
+							$("div#displayList").show();
+						}
+					},
+					error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				 	}
+				});
+			}
+			
+		}); // end of $("input#searchWord").keyup()------------------
+		
+		
+		<%-- === #113. 검색어 입력시 자동글 완성하기 8 === --%>
+		$(document).on("click",".result",function(){
+			var word = $(this).text();
+			$("input#searchWord").val(word); // 텍스트박스에 검색된 결과의 문자열을 입력해준다. 
+			$("div#displayList").hide();
+			goSearch();
+		});
+		
+		
+	});// end of $(document).ready(function(){})----------------------
 	
-	<%--
-	 location.href="<%= ctxPath%>/view.action?seq="+seq;
-	--%> 
 	
-	// === #124. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후 
-	//           사용자가 목록보기 버튼을 클릭했을 때 돌아갈 페이지를 알려주기 위해 
-	//           현재 페이지 주소를 뷰단을 넘겨준다. 
-	var frm = document.goViewFrm;   
-	frm.seq.value = seq;
-	frm.gobackURL.value = "${requestScope.gobackURL}";
-	frm.searchType.value = "${requestScope.paraMap.searchType}";
-	frm.searchWord.value = "${requestScope.paraMap.searchWord}";
-	
-	frm.method = "GET";
-	frm.action = "<%= ctxPath%>/user.univ";
-	frm.submit();
-	
-}// end of function goView(seq) {}--------------------------------
+	// Function Declaration
+	function goView(seq) {
+		
+		<%--
+		 location.href="<%= ctxPath%>/view.action?seq="+seq;
+		--%> 
+		
+		// === #124. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후 
+		//           사용자가 목록보기 버튼을 클릭했을 때 돌아갈 페이지를 알려주기 위해 
+		//           현재 페이지 주소를 뷰단을 넘겨준다. 
+		var frm = document.goViewFrm;   
+		frm.seq.value = seq;
+		frm.gobackURL.value = "${requestScope.gobackURL}";
+		frm.searchType.value = "${requestScope.paraMap.searchType}";
+		frm.searchWord.value = "${requestScope.paraMap.searchWord}";
+		
+		frm.method = "GET";
+		frm.action = "<%= ctxPath%>/view.action";
+		frm.submit();
+		
+	}// end of function goView(seq) {}--------------------------------
 
-function goSearch() {
-	var frm = document.searchFrm;
-	frm.method = "GET";
-	frm.action = "<%= request.getContextPath()%>/user.univ";
-	frm.submit();
-}// end of function goSearch() {}---------------------------------
+	
+	function goSearch() {
+		var frm = document.searchFrm;
+		frm.method = "GET";
+		frm.action = "<%= request.getContextPath()%>/user.univ";
+		frm.submit();
+	}// end of function goSearch() {}---------------------------------
+	
 
 
 </script>

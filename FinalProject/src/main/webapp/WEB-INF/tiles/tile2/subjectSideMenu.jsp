@@ -12,7 +12,7 @@
 	<li class="sideMenu" onclick="javascript:location.href='<%= ctxPath%>/homework.univ?code=${requestScope.code}'">과제 및 평가</li>
 	<li class="sideMenu">토론</li>
 	<li class="sideMenu">강의콘텐츠</li>
-	<li class="sideMenu">사용자 및 그룹</li>
+	<li class="sideMenu" onclick="javascript:location.href='<%= ctxPath%>/user.univ?code=${requestScope.code}'">사용자 및 그룹</li>
 	<li class="sideMenu">성적</li>
 	<li class="sideMenu">출결/학습 현황</li>
 </ul>

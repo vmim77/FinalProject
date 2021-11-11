@@ -20,6 +20,7 @@ public class DongService implements InterDongService {
 			
 			return loginuser;
 		}
+//==============================================================================================
 		
 	// === 담당교수 조회하기 === // 
 		@Override
@@ -29,6 +30,28 @@ public class DongService implements InterDongService {
 			
 			return TeacherList;
 		}
+//==============================================================================================
+		// === 개인정보 수정하가 === //
+		@Override
+		public int MyUpdate(Map<String, String> paraMap) {
+			
+			int n  = dao.MyUpdate(paraMap);
+			
+			return n;
+		}
+		
+//==============================================================================================
+		
+		// === 마이페이지 보여주기 === // 
+		@Override
+		public List<MemberVO> getMyMember(Map<String, String> paraMap) {
+			
+			List<MemberVO> MemberList = dao.getMyMember(paraMap);
+			
+			return MemberList;
+		}
 
+
+//==============================================================================================
 	
 }//end of public class BoardService implements InterBoardService {

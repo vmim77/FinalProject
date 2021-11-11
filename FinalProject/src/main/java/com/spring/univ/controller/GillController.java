@@ -3,7 +3,6 @@ package com.spring.univ.controller;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.univ.common.MyUtil;
 import com.spring.univ.model.DepartmentVO;
-import com.spring.univ.model.FreeBoardVO;
-import com.spring.univ.model.FreeCommentVO;
 import com.spring.univ.model.MemberVO;
 import com.spring.univ.model.SubjectVO;
 import com.spring.univ.service.InterGillService;
@@ -138,7 +134,6 @@ public class GillController {
 				JSONObject jsonobj = new JSONObject();
 
 				jsonobj.put("subject", sbvo.getSubject());
-				jsonobj.put("teacher", sbvo.getTeacher());
 				jsonobj.put("fk_deptCode", sbvo.getFk_deptCode());
 				jsonobj.put("hakjum", sbvo.getHakjum());
 				jsonobj.put("classDate", sbvo.getClassDate());		

@@ -45,12 +45,12 @@
 	
 	<!-- 과목 리스트 가져오기 -->
 	<select id="getSubjectList" parameterType="HashMap" resultType="com.spring.univ.model.SubjectVO">
-	     select subject, teacher, ban, (select deptName
+	     select subject, ban, (select deptName
 	     							 from tbl_department
 	     							 where deptCode = fk_deptCode) as fk_deptCode, hakjum, classDate     		
 		 from
 		 (
-		    select subject, teacher, ban, fk_deptCode, hakjum, classDate
+		    select subject, ban, fk_deptCode, hakjum, classDate
 		    from tbl_subject
 		 ) V
         <!-- 검색어 미 입력시 -->

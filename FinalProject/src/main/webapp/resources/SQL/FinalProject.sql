@@ -348,9 +348,40 @@ from
 ) V
 
 
-
-
-
 select *
 from tbl_subject;
 
+select *
+from TBL_FREEBOARD;
+
+select *
+from tab;
+
+select *
+from tbl_subject
+
+select *
+from tbl_member;
+
+select A.code,A.subject,A.teacher,A.hakjum,A.classdate,A.fk_deptcode,B.hakbun
+from tbl_subject A join tbl_member B
+on A.fk_deptcode = b.fk_deptcode
+
+select code ,subject ,teacher ,hakjum ,classdate ,fk_deptcode ,hakbun
+from
+(
+    select code ,subject ,teacher ,hakjum ,classdate ,fk_deptcode
+    from tbl_subject
+)
+
+
+select code, subject, teacher, hakjum, classdate, fk_deptcode, week, startday, lesson, video, savefile, uploadfile, seq, fk_hakbun
+from tbl_subject A join tbl_week B
+on A.code = B.fk_code
+join tbl_weeklesson C
+on B.week = C.fk_week
+join tbl_attend D
+on C.lesson = D.fk_lesson_seq;
+
+select *
+from TBL_SUBJECT;
