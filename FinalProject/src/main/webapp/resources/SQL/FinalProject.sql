@@ -284,5 +284,5 @@ select A.code AS code, A.subject AS subject, A.fk_hakbun AS fk_hakbun, A.hakjum 
       order by week, lesson asc
    
            
-select week
-from tbl_week;
+select *
+from tbl_member;
