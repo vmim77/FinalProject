@@ -6,7 +6,7 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="Gill">
 
-	<!-- 학생 리스트 가져오기 -->
+	<!-- 학생, 교수 리스트 가져오기 -->
 	<select id="getStudentList" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">
 	     select hakbun, name, birth, (select deptName
 	     							 from tbl_department
@@ -32,28 +32,37 @@
         </if>	    
         
         <!-- 검색어 입력시 -->
-		<if test='status != "no" and fk_deptCode == "no" and searchType !="no" and searchWord != "no"'>
+		<if test='status == "no" and fk_deptCode == "no" and searchType != "no" and searchWord != "no"'>
+    	     where authority = #{authority} and ${searchType} = #{searchWord}
+        </if>
+        <if test='status != "no" and fk_deptCode == "no" and searchType != "no" and searchWord != "no"'>
     	     where authority = #{authority} and status = #{status} and ${searchType} = #{searchWord}
         </if>
-        <if test='status == "no" and fk_deptCode != "no" and searchType !="no" and searchWord != "no"'>
+        <if test='status == "no" and fk_deptCode != "no" and searchType != "no" and searchWord != "no"'>
     	     where authority = #{authority} and fk_deptCode = #{fk_deptCode} and ${searchType} = #{searchWord}
         </if>
-        <if test='status != "no" and fk_deptCode != "no" and searchType !="no" and searchWord != "no"'>
+        <if test='status != "no" and fk_deptCode != "no" and searchType != "no" and searchWord != "no"'>
     	     where authority = #{authority} and status = #{status} and fk_deptCode = #{fk_deptCode} and ${searchType} = #{searchWord}
         </if>
 	</select>
 	
 	<!-- 과목 리스트 가져오기 -->
 	<select id="getSubjectList" parameterType="HashMap" resultType="com.spring.univ.model.SubjectVO">
-	     select subject, teacher, ban, (select deptName
-	     							 from tbl_department
-	     							 where deptCode = fk_deptCode) as fk_deptCode, hakjum, classDate     		
+	    select subject, (select name
+	     				  from tbl_member
+	     				  where hakbun = fk_hakbun) as fk_hakbun,
+ 				(select deptName
+                 from tbl_department
+                 where deptCode = fk_deptCode) as fk_deptCode, hakjum, classDate     		
 		 from
 		 (
-		    select subject, teacher, ban, fk_deptCode, hakjum, classDate
+		    select subject, fk_hakbun, fk_deptCode, hakjum, classDate
 		    from tbl_subject
 		 ) V
-        <!-- 검색어 미 입력시 -->
+		 <!-- 검색어 미 입력시 -->
+        <if test='classDate == "no" and fk_deptCode == "no" and searchType == "no" and searchWord == "no"'>
+    	     where 1=1
+        </if>
         <if test='classDate != "no" and fk_deptCode == "no" and searchType == "no" and searchWord == "no"'>
     	     where classDate = #{classDate}
         </if>
@@ -63,18 +72,34 @@
         <if test='classDate != "no" and fk_deptCode != "no" and searchType == "no" and searchWord == "no"'>
     	     where classDate = #{classDate} and fk_deptCode = #{fk_deptCode}
         </if>	    
-        
-        <!-- 검색어 입력시 -->
-		<if test='status != "no" and fk_deptCode == "no" and searchType !="no" and searchWord != "no"'>
+         
+        <!-- 과목명으로 입력시 -->
+		<if test='classDate == "no" and fk_deptCode == "no" and searchType == "subject" and searchWord != "no"'>
+    	     where ${searchType} = #{searchWord}
+        </if>
+        <if test='classDate != "no" and fk_deptCode == "no" and searchType == "subject" and searchWord != "no"'>
     	     where classDate = #{classDate} and ${searchType} = #{searchWord}
         </if>
-        <if test='status == "no" and fk_deptCode != "no" and searchType !="no" and searchWord != "no"'>
+        <if test='classDate == "no" and fk_deptCode != "no" and searchType == "subject" and searchWord != "no"'>
     	     where fk_deptCode = #{fk_deptCode} and ${searchType} = #{searchWord}
         </if>
-        <if test='status != "no" and fk_deptCode != "no" and searchType !="no" and searchWord != "no"'>
+        <if test='classDate != "no" and fk_deptCode != "no" and searchType == "subject" and searchWord != "no"'>
     	     where classDate = #{classDate} and fk_deptCode = #{fk_deptCode} and ${searchType} = #{searchWord}
         </if>
-        order by ban
+        
+        <!-- 담당교수로 입력시 -->
+		<if test='classDate == "no" and fk_deptCode == "no" and searchType == "fk_hakbun" and searchWord != "no"'>
+    	     where ${searchType} = (select hakbun from tbl_member where name = #{searchWord})
+        </if>
+        <if test='classDate != "no" and fk_deptCode == "no" and searchType == "fk_hakbun" and searchWord != "no"'>
+    	     where classDate = #{classDate} and ${searchType} = (select hakbun from tbl_member where name = #{searchWord})
+        </if>
+        <if test='classDate == "no" and fk_deptCode != "no" and searchType == "fk_hakbun" and searchWord != "no"'>
+    	     where fk_deptCode = #{fk_deptCode} and ${searchType} = (select hakbun from tbl_member where name = #{searchWord})
+        </if>
+        <if test='classDate != "no" and fk_deptCode != "no" and searchType == "fk_hakbun" and searchWord != "no"'>
+    	     where classDate = #{classDate} and fk_deptCode = #{fk_deptCode} and ${searchType} = (select hakbun from tbl_member where name = #{searchWord})
+        </if>
 	</select>
 	
 	<!-- 과목 및 과목번호 가져오기 -->
@@ -87,7 +112,7 @@
 	<!-- 새로운 회원 입력하기 -->
 	<insert id="UpdateMember" parameterType="HashMap">
 		insert into tbl_member(hakbun, name, birth, fk_deptCode, pwd, email, address, status, picture, phone, authority)
-		values(#{hakbun}, #{name}, #{non}, #{fk_deptCode}, 'qwer1234$', #{non}, #{non}, '0', #{non}, #{non}, #{authority})
+		values(#{hakbun}, #{name}, #{non}, #{fk_deptCode}, 'qwer1234$', #{email}, #{non}, '0', #{non}, #{non}, #{authority})
 	</insert>
 	
 	<!-- 학번 중복여부 가져오기 -->
@@ -98,15 +123,16 @@
 	</select>
 	
 	<!-- 담당교수 가져오기 -->
-	<select id="getTeacherList" resultType="com.spring.univ.model.SubjectVO">
-    	select teacher, fk_deptCode
-    	from tbl_subject
+	<select id="getTeacherList" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">
+    	select name, hakbun
+		from tbl_member
+		where fk_deptCode = #{deptCode} and authority = '1'
 	</select>
 	
 	<!-- 새로운 전공 입력하기 -->
 	<insert id="UpdateSubject" parameterType="HashMap">
-		insert into tbl_subject(code, subject, teacher, hakjum, classDate, fk_deptCode)
-		values(#{code}, #{subject}, #{teacher}, #{hakjum}, #{classDate}, #{fk_deptCode})
+		insert into tbl_subject(code, subject, fk_hakbun, hakjum, classDate, fk_deptCode)
+		values(#{code}, #{subject}, #{fk_hakbun}, #{hakjum}, #{classDate}, #{fk_deptCode})
 	</insert>
 	
 	<!-- 학과명 중복여부 가져오기 -->
@@ -122,5 +148,66 @@
 		from tbl_subject
 		where code = #{code}
 	</select>
+
+	<!-- 상태 수정하기 -->
+	<update id="UpdateStatus" parameterType="HashMap">
+		update tbl_member set status = #{status}
+		where hakbun = #{hakbun}
+	</update>
+	
+	<!-- 교수님 스케줄 조회해오기 -->
+	<select id="getTeacherScheduleList" parameterType="HashMap" resultType="com.spring.univ.model.SubjectVO">
+	    select classDate, subject 
+		from tbl_subject
+		where fk_hakbun = #{fk_hakbun}
+		order by classDate   
+	</select>
+
+	<!-- 과 선택시 수강 미신청 인원 알아오기 -->
+	<select id="getsugangNoMemberList" parameterType="HashMap" resultMap="noSugangMap">  
+		select distinct m.hakbun, m.name
+		from tbl_member m 
+		join tbl_sugang s
+		on m.hakbun != s.fk_hakbun
+        join tbl_subject t
+        on t.fk_deptCode = m.fk_deptCode
+		where m.authority = 0 and m.status = 1 and t.fk_deptCode = #{fk_deptCode}
+	</select>
+	
+	<!-- 과 선택시 수강 미신청 인원 알아오기 -->
+	<select id="getsugangYesMemberList" parameterType="HashMap" resultMap="yesSugangMap">  
+		select distinct m.hakbun, m.name
+		from tbl_member m 
+		join tbl_sugang s
+		on m.hakbun = s.fk_hakbun
+        join tbl_subject t
+        on t.fk_deptCode = m.fk_deptCode
+		where m.authority = 0 and m.status = 1 and t.fk_deptCode = #{fk_deptCode}
+	</select>
+	
+	<resultMap type="HashMap" id="noSugangMap">
+		<result property="hakbun" column="hakbun" javaType="String" />
+	    <result property="name" column="name" javaType="String" />	
+	</resultMap>
+	
+	<resultMap type="HashMap" id="yesSugangMap">
+		<result property="hakbun" column="hakbun" javaType="String" />
+	    <result property="name" column="name" javaType="String" />	
+	</resultMap>
+	
+	<!-- 과 선택시 해당과 시간표 알아오기 -->
+	<select id="getsugangSubjectList" parameterType="HashMap" resultType="com.spring.univ.model.SubjectVO">  
+		select subject, code
+        from tbl_subject
+        where fk_deptCode = #{fk_deptCode}
+	</select>
+
+	<!-- 과 선택시 해당과 시간표 알아오기 -->
+	<select id="getsubjectClassDate" parameterType="HashMap" resultType="String">  
+		select classDate
+        from tbl_subject
+        where code = #{code}
+	</select>
+	
 	
 </mapper>
