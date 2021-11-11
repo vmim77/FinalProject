@@ -37,11 +37,11 @@
 <div class="pt-4 pb-5">	
 	  <div style="margin: 20px 20px 20px 70px; width: 80%;">
 	    <div class="card-body" style="display: flex; height: 13%;   background-color:#f2f2f2;  border: solid 1px gray; padding: 15px 15px 15px 15px;  ">
-	  		<button type="button" style="height: 36px; margin-left: 2%;"  class="btn btn-secondary" onclick="javascript:location.href='<%= request.getContextPath()%>/list.univ'">전체목록보기</button>
+	  		<button type="button" style="height: 36px; margin-left: 2.5%;"  class="btn btn-secondary" onclick="javascript:location.href='<%= request.getContextPath()%>/list.univ'">전체목록보기</button>
 	  		&nbsp;&nbsp;
 	  		<button type="button" style="height: 36px;"  class="btn btn-secondary" onclick="javascript:location.href='<%= request.getContextPath()%>${requestScope.gobackURL}'">검색된 결과목록보기</button>
 	  		
-	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/edit.univ'" class="btn btn-light" style="height: 36px; margin-left: 50%;font-weight:bold; font-size: 10pt; padding: 7px 12px; text-align: right; "><i class="far fa-edit"></i>&nbsp;수정</button>
+	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/edit.univ'" class="btn btn-light" style="height: 36px; margin-left: 47%;font-weight:bold; font-size: 10pt; padding: 7px 12px; text-align: right; "><i class="far fa-edit"></i>&nbsp;수정</button>
 	  		&nbsp;&nbsp;
 	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/del.univ'" class="btn btn-light" style="height: 36px; font-weight:bold; font-size: 10pt; padding: 7px 12px;"><i class="far fa-trash-alt"></i>&nbsp;삭제</button>&nbsp;	
 	   		
@@ -55,7 +55,7 @@
 		
 		<br>
 	 		<span style="">작성자 :&ensp;이루리 &ensp;|&ensp;작성일 :&ensp;2021-11-10&ensp;</span> 
-	 		<span style="margin-left: 610px;"> 조회수: 0</span>
+	 		<span style="margin-left: 580px;"> 조회수: 0</span>
 	   
 	    <br>
 	    <br>
@@ -76,20 +76,51 @@
 	  <%-- === 댓글쓰기 폼  === --%>
 	  <form name="addWriteFrm" id="addWriteFrm" style="margin-top: 20px;"> 
 				
-			 <div class="card-body" style="display: flex; height: 13%;   background-color:#f2f2f2;  border: solid 1px gray; padding: 15px 15px 15px 15px;  ">
+			 <div class="card-body" style="display: flex; height: 13%;   background-color:#f2f2f2;   padding: 20px 15px 15px 15px;  ">
 			 		   
-					      <input type="hidden" id="fk_hakbun" value="${sessionScope.loginuser.hakbun}" /> <%-- fk_userid => fk_hakbun --%>
-					   	  <input type="hidden" id="name" value="${sessionScope.loginuser.name}" readonly />
-					   	  <textarea id="commentContent" maxlength="400" cols="100" style="width: 850px; height: 40px;"></textarea>
-					   	  <input type="hidden" id="parentSeq" value="${freeboardvo.seq}" readonly />
-					   	  &ensp;
-					   	  <button style="margin-top: 0px; height: 40px;" type="button" class="btn btn-secondary btn-sm mr-3" onclick="goAddWrite()">등록</button>
-					   	  
+			      <input type="hidden" id="fk_hakbun" value="${sessionScope.loginuser.hakbun}" /> <%-- fk_userid => fk_hakbun --%>
+			   	  <input type="hidden" id="name" value="${sessionScope.loginuser.name}" readonly />
+			   	  <textarea id="commentContent" maxlength="400" cols="100" style="width: 870px; height: 43px; margin-left: 18px;"></textarea>
+			   	  <input type="hidden" id="parentSeq" value="${freeboardvo.seq}" readonly />
+			   	  &ensp;&ensp;&ensp;
+			   	  <button style="margin-top: 0px; height: 43px; width: 95px;" type="button" class="btn btn-secondary btn-sm mr-3" onclick="goAddWrite()">등록</button>
+			   	  
 			  </div>		  
-			</form>
+		</form>
 	  
 	  <%-- === 댓글 내용 보여주기  === --%>
 	  
+		<table class="table" style="margin-top: 2%; margin-bottom: 3%;">
+			
+			<tr>
+			   <td style="width: 6%; text-align: center;">1</td>
+			   <td style="text-align: left;">안녕하세요1</td>
+			  
+			   <td style="width: 17%; text-align: center;">이루리(2100021)</td>
+			   <td style="width: 19%; text-align: center;">2021-11-11 18:05:05</td>
+			</tr>
+			
+			<tr>
+			   <td style="width: 6%; text-align: center;">2</td>
+			   <td style="text-align: left;">안녕하세요2</td>
+			   
+			 
+			   
+			   <td style="width: 17%; text-align: center;">이루리(2100021)</td>
+			   <td style="width: 19%; text-align: center;">2021-11-11 19:05:05</td>
+			</tr>
+			
+			<tbody id="commentDisplay"></tbody>
+		</table>
+		
+		<%-- === 댓글 페이지바 === --%>
+		<div style="display: flex; margin-bottom: 50px;">
+			<div id="pageBar" style="margin: auto; text-align: center;"></div>
+		</div>
+		
+	
+		<div style="padding: 50px 0; font-size: 16pt; color: red;"></div>
+
 	  </div>
 	  
 	  
@@ -99,4 +130,4 @@
 	
 	
 	
-	</div>
+	
