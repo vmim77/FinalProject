@@ -635,4 +635,19 @@ public class RuController {//
         return jsonObj.toString();
      }//end of public String commentList(HttpServletRequest request){-------
 //=========================================================================
+
+	//view.jsp수정용. 곧 삭제할 것.
+		@RequestMapping(value="/viewchange.univ")
+		public String test1(HttpServletRequest request) {
+			
+			
+			
+			return "board/viewchange.tiles2";
+			//   /WEB-INF/views/test1.jsp 페이지를 만들어야 한다.
+					
+		}
+		
+
+
+
 }	

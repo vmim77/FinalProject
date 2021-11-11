@@ -187,7 +187,7 @@ table td {
 			&nbsp;
 			<button type="button" class="btn btn-secondary btn-sm" onclick="goSearch()">검색</button>
 			<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/add.univ'" class="btn btn-light float-right" style="font-size: 10pt; padding: 5px 12px; text-align: right;">+ 글쓰기</button>&nbsp;		
-		
+			
 		</form>
 		
 		<%-- === #106. 검색어 입력시 자동글 완성하기 1 === --%>
