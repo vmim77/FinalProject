@@ -44,15 +44,18 @@
 
 <div id="maincontainer" style="display: flex;">
 	<section style="width: 70%; margin-right: auto;">
-		<c:if test="${not empty sessionScope.sugangList}">
-			<h1>대시보드 - 수강과목(학생)</h1>
+	
+		<c:if test="${not empty sessionScope.sugangList}"> <%-- 학생이면 가장 상단에 얘를 보여줍니다. --%>
+			<h2>대시보드 - 수강과목(학생)</h2>
 		</c:if>
-		<c:if test="${not empty sessionScope.suupList}">
-			<h1>대시보드 - 담당과목(교수)</h1>
+		<c:if test="${not empty sessionScope.suupList}"> <%-- 교수이면 가장 상단에 얘를 보여줍니다. --%>
+			<h2>대시보드 - 담당과목(교수)</h2>
 		</c:if>
 		<hr>
 		
 		<div class="row mx-1">
+			
+			<%-- 학생이라면 수강한 과목을 반복문으로 카드로 만들어서 찍어줍니다. --%>
 			<c:if test="${not empty sessionScope.sugangList}">
 				<c:forEach var="sugangMap" items="${sessionScope.sugangList}">
 				     <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
@@ -65,6 +68,8 @@
 				     </div>
 				</c:forEach>
 			</c:if>
+			
+			<%-- 교수이라면 담당 과목을 반복문으로 카드로 만들어서 찍어줍니다. --%>
 			<c:if test="${not empty sessionScope.suupList}">
 				<c:forEach var="suupMap" items="${suupList}">
 				     <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
@@ -77,12 +82,17 @@
 				     </div>
 				</c:forEach>
 			</c:if>
+			
+			<%-- 위의 둘은 공통점이 카드의 어디든 누르면 과목의 인덱스페이지로 과목코드를 가지고 GET으로 간다는 점입니다. --%>
+			
+			<c:if test="${sessionScope.suupList == null and sessionScope.sugangList == null}">
+				<h3 style="color: red;">등록된 수업이 없습니다.</h3>
+			</c:if>
 		</div>
-		
-		
-		
 	</section>
 	
+	
+	<%-- 캘린더를 이용하여 예정학과일정 등이 표시될 곳입니다. --%>
 	<section style="width: 30%; margin-top: 15px; margin-left: 15px;">
 		<h3>To do</h3>
 		<hr>

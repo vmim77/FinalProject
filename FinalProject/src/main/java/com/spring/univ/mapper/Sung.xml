@@ -19,7 +19,9 @@
 	</resultMap>
 
 	<select id="getSubjectInfo" parameterType="String" resultMap="subjectMap"> 
-		select A.code AS code, A.subject AS subject, A.fk_hakbun AS fk_hakbun, C.name AS name, A.hakjum AS hakjum, A.classdate AS classdate, A.fk_deptcode AS deptcode, B.deptName AS deptName, B.deptLocation AS deptLocation
+		select A.code AS code, A.subject AS subject, A.fk_hakbun AS fk_hakbun, C.name AS name, A.hakjum AS hakjum
+		, case A.classdate when '1' then '월' when '2' then '화' when '3' then '수' when '4' then '목' else '금' end  AS classdate
+		, A.fk_deptcode AS deptcode, B.deptName AS deptName, B.deptLocation AS deptLocation
 		from tbl_subject A
 		JOIN tbl_department B
 		on A.fk_deptcode = B.deptCode

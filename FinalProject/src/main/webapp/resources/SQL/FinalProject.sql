@@ -329,3 +329,8 @@ where m.authority = 0 and m.status = 1 and s.fk_deptCode = #{fk_deptCode}
 select count(*)
 from tbl_subject
 where fk_hakbun = '2100001' and code = '0102'
+
+
+
+select * 
+from tbl_subject;

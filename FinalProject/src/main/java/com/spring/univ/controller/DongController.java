@@ -77,9 +77,7 @@ public class DongController {
 	@RequestMapping(value="/MemberLogin.univ",method= {RequestMethod.GET}) 
 	public ModelAndView MemberLogin(HttpServletRequest request,ModelAndView mav) {//
 		
-		
 		mav.setViewName("login/MemberLogin");
-		
 		
 		return mav;
 	}
@@ -119,15 +117,15 @@ public class DongController {
 	    	   session.setAttribute("loginuser", loginuser);
 	    	   
 		       hakbun = loginuser.getHakbun(); // 로그인한 유저의 학번을 가져온다.
-		       int authority = loginuser.getAuthority();
+		       int authority = loginuser.getAuthority(); // 로그인한 유저의 권한값을 가져온다.
 		       
-		       if(authority==0) {
+		       if(authority==0) { // 학생
 		    	   List<Map<String, String>> sugangList = service2.getSugang(hakbun); // 학번을 이용하여 해당 학생의 수강목록을 가져온다.
 		    	   session.setAttribute("sugangList", sugangList); // 수강목록을 session에 저장시킨다.
 		       }
 		       else if (authority==1) {
 		    	   List<Map<String, String>> suupList = service2.getsuUp(hakbun); // 학번을 이용하여 해당 교수의 수업목록을 가져온다.
-		    	   session.setAttribute("suupList", suupList); // 수강목록을 session에 저장시킨다.
+		    	   session.setAttribute("suupList", suupList); // 수업목록을 세션에 저장시킨다.
 		       }
 	    	   
 	    	   mav.addObject("session", session);

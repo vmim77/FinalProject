@@ -29,7 +29,9 @@
 
 <style>
 
-body { background-color: #f5a100; }
+body { background-color: #f5a100;
+	   background-image: url("<%= request.getContextPath()%>/resources/images/background.jpg");
+	    }
 
 * {
 	margin: 0;
@@ -198,7 +200,6 @@ function func_login(){
 </script>
 
 <%-- *** 로그인을 하기 위한 폼을 생성 *** --%>
-
 <p class="h5" style="margin: auto">
 	<marquee> [공지사항] 이번 파이널프로젝트 1등은 2조입니다.</marquee>
 </p>
