@@ -13,6 +13,12 @@
 	.title {
 		text-align: center;
 	}
+	
+	.leesonboardRows {
+		cursor: pointer;
+	}
+	
+	
 
 </style>
 
