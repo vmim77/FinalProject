@@ -11,6 +11,33 @@
 	.moveColor {color: #660029; font-weight: bold; background-color: #ffffe6;}
 
     td.comment {text-align: center;}
+    
+    
+    /* 부트스트랩 버튼 색 변경    */
+
+.btn-light {
+    background-color: #ffffff;
+    border-color: #778899;
+    color:  #616161;}
+.btn-light:hover,
+.btn-light:focus {
+    border-color: #cccccc;
+    background-color: #cccccc;
+    color: #FFF; }
+    
+    
+   .btn-secondary {
+    background-color: #7e7f80;
+    border-color: #7e7f80;
+    color: #FFF; 
+    }    
+    
+	.btn-secondary:hover,
+	.btn-secondary:focus {
+    border-color: #cccccc;
+    background-color: #cccccc;
+    color: #FFF; }   
+    
 </style>
 
 <script type="text/javascript">
@@ -297,13 +324,25 @@
 	
 </script>    
 
-<div style="display: flex;">
-<div style="margin: auto; padding-left: 3%;">
 
-	<h2 style="margin-bottom: 100px;"></h2>
+
+<%-- 게시판 글내용보기 --%>
+<div class="pt-4 pb-5">	
+ <div style="margin: 20px 20px 20px 70px; width: 80%;">
+ 
+ 	<div class="card-body" style="display: flex; height: 13%;   background-color:#f2f2f2;  border: solid 1px gray; padding: 15px 15px 15px 15px;  ">
+	  		<button type="button" style="height: 36px; margin-left: 2.5%;"  class="btn btn-secondary" onclick="javascript:location.href='<%= request.getContextPath()%>/list.univ'">전체목록보기</button>
+	  		&nbsp;&nbsp;
+	  		<button type="button" style="height: 36px;"  class="btn btn-secondary" onclick="javascript:location.href='<%= request.getContextPath()%>${requestScope.gobackURL}'">검색된 결과목록보기</button>
+	  		
+	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/edit.univ?seq=${freeboardvo.seq}'" class="btn btn-light" style="height: 36px; margin-left: 47%;font-weight:bold; font-size: 10pt; padding: 7px 12px; text-align: right; "><i class="far fa-edit"></i>&nbsp;수정</button>
+	  		&nbsp;&nbsp;
+	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/del.univ?seq=${freeboardvo.seq}'" class="btn btn-light" style="height: 36px; font-weight:bold; font-size: 10pt; padding: 7px 12px;"><i class="far fa-trash-alt"></i>&nbsp;삭제</button>&nbsp;	
+	   		
+	</div>
 	
 	<c:if test="${not empty requestScope.freeboardvo}">
-		<table style="width: 1024px" class="table table-bordered">
+		
 			<tr>
 				<th style="width: 15%;">글번호</th>
 				<td>${freeboardvo.seq}</td>
@@ -336,7 +375,7 @@
 				<th>작성일</th>
 				<td>${freeboardvo.regDate}</td>
 			</tr>
-		</table>
+		
 		
 		<br/>
 		
@@ -346,23 +385,20 @@
 		<div style="margin-bottom: 1%;">이전글제목&nbsp;:&nbsp;<span class="move" onclick="javascript:location.href='view.univ?seq=${freeboardvo.previousseq}'">${freeboardvo.previoussubject}</span></div>
 		<div style="margin-bottom: 1%;">다음글제목&nbsp;:&nbsp;<span class="move" onclick="javascript:location.href='view.univ?seq=${freeboardvo.nextseq}'">${freeboardvo.nextsubject}</span></div>
 		 --%>
-		<div style="margin-bottom: 1%;">이전글제목&nbsp;:&nbsp;<span class="move" onclick="javascript:location.href='view.univ?seq=${requestScope.freeboardvo.previousseq}&searchType=${requestScope.searchType}&searchWord=${requestScope.searchWord}&gobackURL=${v_gobackURL}'">${requestScope.freeboardvo.previoussubject}</span></div>
-		<div style="margin-bottom: 1%;">다음글제목&nbsp;:&nbsp;<span class="move" onclick="javascript:location.href='view.univ?seq=${requestScope.freeboardvo.nextseq}&searchType=${requestScope.searchType}&searchWord=${requestScope.searchWord}&gobackURL=${v_gobackURL}'">${requestScope.freeboardvo.nextsubject}</span></div>
 		
 		 
-		<br/>
-		
-		<button type="button" class="btn btn-secondary btn-sm mr-3" onclick="javascript:location.href='<%= request.getContextPath()%>/list.univ'">전체목록보기</button>
-		
-		
-		<%-- === #126. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후 
-		                              사용자가 목록보기 버튼을 클릭했을 때 돌아갈 페이지를 알려주기 위해 
-		                              현재 페이지 주소를 뷰단을 넘겨준다. --%>
-		<button type="button" class="btn btn-secondary btn-sm mr-3" onclick="javascript:location.href='<%= request.getContextPath()%>${requestScope.gobackURL}'">검색된결과목록보기</button>
-		
-		
-		<button type="button" class="btn btn-secondary btn-sm mr-3" onclick="javascript:location.href='<%= request.getContextPath()%>/edit.univ?seq=${freeboardvo.seq}'">글수정하기</button>
-		<button type="button" class="btn btn-secondary btn-sm mr-3" onclick="javascript:location.href='<%= request.getContextPath()%>/del.univ?seq=${freeboardvo.seq}'">글삭제하기</button>
+		<br>    
+	    <br>
+	    <hr>
+	    
+	    <button type="button"  onclick="javascript:location.href='view.univ?seq=${requestScope.freeboardvo.previousseq}&searchType=${requestScope.searchType}&searchWord=${requestScope.searchWord}&gobackURL=${v_gobackURL}'" class="btn btn-light" style="font-weight:bold; font-size: 10pt; padding: 7px 12px; text-align: right; height: 36px;"> ‹ 이전글 </button>&nbsp;
+	    <button type="button"  onclick="javascript:location.href='view.univ?seq=${requestScope.freeboardvo.nextseq}&searchType=${requestScope.searchType}&searchWord=${requestScope.searchWord}&gobackURL=${v_gobackURL}'" class="btn btn-light float-right" style="font-weight:bold; font-size: 10pt; padding: 7px 12px; text-align: right; height: 36px;"> › 다음글 </button>&nbsp;
+	  
+	  <br>
+	  <br>
+<%-- 글내용보기 끝 === --%>	
+
+	
 		
 		<%-- === #83. 댓글쓰기 폼 추가 === --%>
 		
@@ -431,9 +467,8 @@
 	<c:if test="${empty requestScope.freeboardvo}">
 		<div style="padding: 50px 0; font-size: 16pt; color: red;">존재하지 않습니다</div>
 	</c:if>
-	
+
+ </div>
+
+
 </div>
-</div>	
-
-
-

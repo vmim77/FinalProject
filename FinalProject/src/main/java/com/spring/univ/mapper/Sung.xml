@@ -35,4 +35,69 @@
 		where status = 1 and fk_code = #{code}
 	</select>
 	
+	
+	<resultMap type="HashMap" id="sugangMap">
+		<result property="hakbun" column="hakbun" javaType="String" />
+		<result property="code" column="code" javaType="String" />
+		<result property="subject" column="subject" javaType="String" />
+		<result property="teacher" column="teacher" javaType="String" />
+		<result property="hakjum" column="hakjum" javaType="String" />
+		<result property="classdate" column="classdate" javaType="String" />
+		<result property="location" column="location" javaType="String" />
+	</resultMap>
+	
+	<select id="getSugang" parameterType="String" resultMap="sugangMap">
+		select hakbun, code, subject, teacher, hakjum, classdate, location
+		from
+		(
+		select B.hakbun AS hakbun ,C.code AS code, C.subject AS subject, D.name AS teacher, C.hakjum AS hakjum, C.classdate AS classdate, E.deptlocation || ' ' || E.deptname AS location
+		from tbl_sugang A
+		JOIN tbl_member B
+		on A.fk_hakbun = B.hakbun
+		JOIN tbl_subject C
+		on A.fk_code = C.code
+		JOIN tbl_member D
+		ON C.fk_hakbun = D.hakbun
+		JOIN tbl_department E
+		ON c.fk_deptcode = E.deptcode
+		)
+		where hakbun = #{hakbun}
+	</select>
+	
+	<select id="checkSugang" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_sugang
+		where fk_hakbun = #{hakbun} and fk_code= #{code}
+	</select>
+	
+	<select id="checkCode" parameterType="String" resultType="int">
+		select count(*)
+		from tbl_subject
+		where code = #{sessionCode}
+	</select>
+	
+	<resultMap type="HashMap" id="suupMap">
+		<result property="code" column="code" javaType="String" />
+		<result property="subject" column="subject" javaType="String" />
+		<result property="hakjum" column="hakjum" javaType="String" />
+		<result property="classdate" column="classdate" javaType="String" />
+		<result property="deptcode" column="deptcode" javaType="String" />
+		<result property="deptname" column="deptname" javaType="String" />
+		<result property="deptlocation" column="deptlocation" javaType="String" />
+	</resultMap>
+	
+	<select id="getsuUp" parameterType="String" resultMap="suupMap">
+		select code, subject, hakjum, classdate, deptcode, deptname, deptlocation
+		from tbl_subject A
+		JOIN tbl_department B
+		ON A.fk_deptcode = B.deptcode
+		where fk_hakbun = #{hakbun}
+	</select>
+	
+	<select id="checkLesson" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_subject
+		where fk_hakbun = #{hakbun} and code = #{code}
+	</select>
+	
 </mapper>

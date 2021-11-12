@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.univ.model.MemberVO;
 import com.spring.univ.model.SubjectVO;
 import com.spring.univ.service.InterDongService;
+import com.spring.univ.service.InterSungService;
 
 
 
@@ -51,6 +52,9 @@ public class DongController {
 	
  @Autowired
    private InterDongService service;
+
+ @Autowired
+ private InterSungService service2;
    // Type에 따라 알아서 Bean 을 주입해준다.
 
  	// 사용자 및 그룹
@@ -73,9 +77,7 @@ public class DongController {
 	@RequestMapping(value="/MemberLogin.univ",method= {RequestMethod.GET}) 
 	public ModelAndView MemberLogin(HttpServletRequest request,ModelAndView mav) {//
 		
-		
 		mav.setViewName("login/MemberLogin");
-		
 		
 		return mav;
 	}
@@ -83,7 +85,7 @@ public class DongController {
 	 //////////////////////////////////////////////////////////////////////////////////
 	//# 로그인
 
-	@RequestMapping(value="/dashboard.univ", method= {RequestMethod.POST}) // /test1.action의 url은 아래의 메소드가 응답함!
+	@RequestMapping(value="/login.univ", method= {RequestMethod.POST}) // /test1.action의 url은 아래의 메소드가 응답함!
 	public ModelAndView dashboard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {//
 		
 		 String hakbun = request.getParameter("hakbun");
@@ -97,7 +99,7 @@ public class DongController {
 	      
 	      if(loginuser == null) { // 로그인 실패시
 	        
-	    	  String message = "학번 또는 암호가 틀립니다.";
+	    	 String message = "학번 또는 암호가 틀립니다.";
 	         String loc = "javascript:history.back()";
 	         
 	         mav.addObject("message", message); // request.setAttribute("message", message);
@@ -113,10 +115,21 @@ public class DongController {
 	    	   HttpSession session = request.getSession();
 	    	  
 	    	   session.setAttribute("loginuser", loginuser);
-	    	  
+	    	   
+		       hakbun = loginuser.getHakbun(); // 로그인한 유저의 학번을 가져온다.
+		       int authority = loginuser.getAuthority(); // 로그인한 유저의 권한값을 가져온다.
+		       
+		       if(authority==0) { // 학생
+		    	   List<Map<String, String>> sugangList = service2.getSugang(hakbun); // 학번을 이용하여 해당 학생의 수강목록을 가져온다.
+		    	   session.setAttribute("sugangList", sugangList); // 수강목록을 session에 저장시킨다.
+		       }
+		       else if (authority==1) {
+		    	   List<Map<String, String>> suupList = service2.getsuUp(hakbun); // 학번을 이용하여 해당 교수의 수업목록을 가져온다.
+		    	   session.setAttribute("suupList", suupList); // 수업목록을 세션에 저장시킨다.
+		       }
+	    	   
 	    	   mav.addObject("session", session);
-	    	  
-	    	   mav.setViewName("Sunghyun/dashboard.tiles1"); 
+	    	   mav.setViewName("redirect:/dashboard.univ"); // redirect로 이동을 시킨다.
 	      }
 	     
 	     
@@ -132,16 +145,19 @@ public class DongController {
 	   @RequestMapping(value="/logout.univ")
 	   public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
 	      
-		   HttpSession  session = request.getSession(); // 세션 불러오기
+		  HttpSession  session = request.getSession(); // 세션 불러오기
 			
-		   session.removeAttribute("loginuser");
+		  session.removeAttribute("loginuser");
+		  session.removeAttribute("sugangList"); // 로그아웃시 세션에서 수강목록을 삭제시킨다.
+		  
+		  session.invalidate();
 	      
 	      String message = "로그아웃 되었습니다.";
-	      String loc = "";
+	      String loc = request.getContextPath()+"/MemberLogin.univ";
 	      
 	      mav.addObject("message", message); 
 	      mav.addObject("loc", loc);         
-	      mav.setViewName("dashboard.tiles1");
+	      mav.setViewName("msg");
 	      
 	      return mav;
 	   }
