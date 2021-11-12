@@ -62,7 +62,7 @@
 				<td><fmt:formatNumber value="${requestScope.lbvo.fileSize}" pattern="#,###" /></td>
 			</tr>
 		</table>
-		<span class="alert alert-dark" role="alert" style="float:left; text-align:center;"><i class="fas fa-chevron-circle-left"></i>&nbsp;이전글&nbsp;${requestScope.lbvo.previousSubject}</span>
-		<span class="alert alert-dark" role="alert" style="float:right; text-align:center;">${requestScope.lbvo.nextSubject}&nbsp;다음글&nbsp;<i class="fas fa-chevron-circle-right"></i></span>
+		<span class="alert" role="alert" style="float:left; text-align:center; background-color: #f5a100">이전글:&nbsp;${requestScope.lbvo.previousSubject}</span>
+		<span class="alert" role="alert" style="float:right; text-align:center; background-color: #f5a100">다음글:&nbsp;${requestScope.lbvo.nextSubject}</span>
 	</div>
 </div>

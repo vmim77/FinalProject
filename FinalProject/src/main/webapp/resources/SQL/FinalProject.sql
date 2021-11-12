@@ -342,6 +342,10 @@ select lead(seq, 1) over (order by seq desc) AS previousSeq, lead(subject, 1) ov
 from tbl_lessonBoard
 order by seq desc;
 
+delete tbl_lessonBoard;
+
+commit;
+
 desc tbl_lessonBoard;
 
 select seq, fk_hakbun, fk_code, name, subject, content, pw, regDate, status, commentCount
