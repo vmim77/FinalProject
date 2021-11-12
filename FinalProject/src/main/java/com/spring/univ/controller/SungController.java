@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.univ.model.*;
@@ -99,21 +102,25 @@ public class SungController {
 	}
 	
 	// 강의자료실 글쓰기 폼 요청하기
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/lessonWrite.univ")
 	public ModelAndView subject_lessonWrite(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
 		String login_hakbun = loginuser.getHakbun();
 		
-		Map<String, String> subjectMap = (Map) request.getAttribute("subjectMap");
+		Map<String, String> subjectMap = (Map<String, String>) request.getAttribute("subjectMap");
 		String subject_hakbun = subjectMap.get("fk_hakbun");
 		
 		if(login_hakbun != null && !subject_hakbun.equals(login_hakbun)) {
-			mav.setViewName("redirect:/lesson.univ");
+			
+			mav.addObject("message", "해당과목의 교수님만 접근이 가능합니다!");
+			mav.addObject("loc", request.getContextPath()+"/lesson.univ");
+			mav.setViewName("msg");
 			return mav;
 		}
-		
 		
 		mav.setViewName("Sunghyun/lessonWrite.tiles2");
 		return mav;
@@ -124,6 +131,10 @@ public class SungController {
 	public ModelAndView subject_lessonWriteEnd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, LessonBoardVO lbvo) {
 		
 		MultipartFile attach = lbvo.getAttach();
+		
+		String content = lbvo.getContent();
+		content.replaceAll("<", "&lt;");
+		content.replaceAll(">", "&gt;");
 		
 		if(!attach.isEmpty()) {
 			// 파일이 있는 게시글
@@ -161,7 +172,6 @@ public class SungController {
 				fos.flush();
 				fos.close();
 				
-				System.out.println("파일저장 완료");
 				
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -177,8 +187,6 @@ public class SungController {
 		}
 		
 		int n = service.lessonWriteEnd(lbvo);
-		
-		System.out.println("확인용 n값=> " + n);
 		
 		if(n==1) {
 			String message = "강의자료실 글쓰기 성공";
@@ -202,12 +210,88 @@ public class SungController {
 	}
 	
 	
+	// 스마트에디터 다중사진첨부
+	@RequestMapping(value="/image/multiplePhotoUpload.univ", method={RequestMethod.POST})
+	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
+		
+	      HttpSession session = request.getSession();
+	      String root = session.getServletContext().getRealPath("/"); 
+	      String path = root + "resources"+File.separator+"photo_upload";
+	      
+	      File dir = new File(path);
+	      if(!dir.exists()) {
+	    	  dir.mkdirs();
+	      }
+	      
+	      String strURL = "";
+	      
+	      try {
+		      String filename = request.getHeader("file-name");
+		      
+		      InputStream is = request.getInputStream();
+		      
+		      if(filename == null || "".equals(filename)) {
+		    	  return;
+		      } 
+		      
+		      String fileExt = filename.substring(filename.lastIndexOf("."));
+		      if(fileExt == null || fileExt.equals("")) {
+		    	  return;
+		      }
+		      
+		      String newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
+		      newFilename += System.nanoTime();
+		      newFilename += fileExt;
+		      
+		     dir = new File(path);
+		      if(!dir.exists()) {
+		    	  dir.mkdirs();
+		      }
+		      
+		      String pathname = path + File.separator + newFilename;
+		      
+		      byte[] byteArr = new byte[1024];
+		      int size = 0;
+		      FileOutputStream fos = new FileOutputStream(pathname);
+		      
+		      while((size = is.read(byteArr)) != -1) {
+		         fos.write(byteArr, 0, size);
+		         fos.flush();
+		      }
+		      
+		      fos.close();
+		      is.close();
+		      
+		      String ctxPath = request.getContextPath();
+              
+              strURL += "&bNewLine=true&sFileName="+newFilename;
+              strURL += "&sWidth=";
+              strURL += "&sFileURL="+ctxPath+"/resources/photo_upload/"+newFilename;
+              
+              // === 웹브라우저상에 사진 이미지를 쓰기 === //
+              PrintWriter out = response.getWriter();
+              out.print(strURL);
+	      
+	      } catch (Exception e) {
+	    	  e.printStackTrace();
+	      }
+	}
 	
 	// 강의자료실 글 상세보기
 	@RequestMapping(value="/lessonDetail.univ")
 	public ModelAndView subject_lessonDetail(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-		// 만들어야 함!!
+		String code = request.getParameter("code");
+		String seq = request.getParameter("seq");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("code", code);
+		paraMap.put("seq", seq);
+		
+		LessonBoardVO lbvo = service.getLessonBoardDetail(paraMap);
+		
+		mav.addObject("lbvo", lbvo);
+		mav.setViewName("Sunghyun/lessonDetail.tiles2");
 		
 		return mav;
 	}

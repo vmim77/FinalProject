@@ -21,6 +21,12 @@
 		
 		$("ul#sideMenuList > li:first-child").addClass("hoverdEffect");
 		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:first-child").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:first-child").addClass("hoverdEffect");
+		});
+		
 		for(var i=0; i<12; i++){
 			var html = "<div class='card'>";
 			

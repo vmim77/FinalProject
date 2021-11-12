@@ -338,5 +338,24 @@ select *
 from tbl_subject;
 
 
-select * 
-from tbl_lessonBoard;
+select lead(seq, 1) over (order by seq desc) AS previousSeq, lead(subject, 1) over (order by seq desc) AS previousSubject, lag(seq, 1) over (order by seq desc) AS nextSeq, lag(subject, 1) over (order by seq desc) AS nextSubject
+from tbl_lessonBoard
+order by seq desc;
+
+desc tbl_lessonBoard;
+
+select seq, fk_hakbun, fk_code, name, subject, content, pw, regDate, status, commentCount
+     , fileName, orgFilename, fileSize
+     , previousSeq, previousSubject
+     , nextSeq, nextSubject
+from
+(
+    select seq, fk_hakbun, fk_code, name, subject, content, pw, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, status, commentCount
+              , fileName, orgFilename, fileSize
+              , lead(seq, 1) over (order by seq desc) AS previousSeq, lead(subject, 1) over (order by seq desc) AS previousSubject
+              , lag(seq, 1) over (order by seq desc) AS nextSeq, lag(subject, 1) over (order by seq desc) AS nextSubject
+    from tbl_lessonboard
+) A
+where status = 1 and fk_code = '0101' and seq = 15
+order by seq desc
+

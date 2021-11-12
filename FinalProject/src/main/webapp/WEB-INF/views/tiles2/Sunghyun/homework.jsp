@@ -27,6 +27,12 @@
 		
 		$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
 		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(5)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
+		});
+		
 	});
 	
 </script>

@@ -57,7 +57,6 @@ public class SungService implements InterSungService {
 		return suupList;
 	}
 	
-	
 	// 교수 본인이 담당하는 과목인지 확인한다.
 	@Override
 	public int checkLesson(Map<String, String> paraMap) {
@@ -70,6 +69,13 @@ public class SungService implements InterSungService {
 	public int lessonWriteEnd(LessonBoardVO lbvo) {
 		int n = dao.lessonWriteEnd(lbvo);
 		return n;
+	}
+	
+	// 해당 과목 강좌자료실의 특정 글을 가져온다.
+	@Override
+	public LessonBoardVO getLessonBoardDetail(Map<String, String> paraMap) {
+		LessonBoardVO lbvo = dao.getLessonBoardDetail(paraMap);
+		return lbvo;
 	}
 
 }

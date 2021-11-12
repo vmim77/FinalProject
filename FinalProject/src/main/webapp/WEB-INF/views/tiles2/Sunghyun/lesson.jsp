@@ -21,11 +21,16 @@
 		
 		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
 		
-		$(".leesonboardRows").click(function(){
-			var seq = $(this).find("td:first-child").text();
-			location.href="<%= request.getContextPath()%>/lessonnDetail.univ?code=${sessionScope.code}&seq="+seq;
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(2)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
 		});
 		
+		$(".leesonboardRows").click(function(){
+			var seq = $(this).find("td:first-child").text();
+			location.href="<%= request.getContextPath()%>/lessonDetail.univ?code=${sessionScope.code}&seq="+seq;
+		});
 		
 	});
 	
@@ -66,7 +71,7 @@
 				<td style="display: none;">${leesonboardvo.seq}</td>
 				<td class="title">${status.index+1}</td>
 				<td class="title">${leesonboardvo.name}</td>
-				<td>${leesonboardvo.subject}</td>
+				<td>${leesonboardvo.subject}<c:if test="${not empty leesonboardvo.fileName}"><img src='<%= request.getContextPath()%>/resources/images/disk.gif' style="margin-left: 10px;" /></c:if></td>
 				<td class="title">${leesonboardvo.regDate}</td>
 			</tr>
 		</c:forEach>

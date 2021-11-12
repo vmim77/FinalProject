@@ -70,6 +70,13 @@ public class SungDAO implements InterSungDAO {
 		return n;
 	}
 	
+	// 해당 과목 강좌자료실의 특정 글을 가져온다.
+	@Override
+	public LessonBoardVO getLessonBoardDetail(Map<String, String> paraMap) {
+		LessonBoardVO lbvo = sqlsession2.selectOne("Sung.getLessonBoardDetail", paraMap);
+		return lbvo;
+	}
+	
 	
 
 }

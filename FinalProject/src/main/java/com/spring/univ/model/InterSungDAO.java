@@ -28,5 +28,8 @@ public interface InterSungDAO {
 	
 	// [교수] 강의자료실 글쓰기
 	int lessonWriteEnd(LessonBoardVO lbvo);
+	
+	// 해당 과목 강좌자료실의 특정 글을 가져온다.
+	LessonBoardVO getLessonBoardDetail(Map<String, String> paraMap);
 
 }

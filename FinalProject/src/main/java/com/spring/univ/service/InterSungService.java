@@ -10,7 +10,7 @@ public interface InterSungService {
 	// 해당 학생이 수강하고있는 과목의 정보를 가져온다.
 	Map<String,String> getSubjectInfo(String code);
 	
-	// 해당 과목의 강좌자료실 내용을 가져온다.
+	// 해당 과목 강좌자료실의 글들을 가져온다.
 	List<LessonBoardVO> getLessonBoard(String code);
 	
 	// 로그인한 유저의 수강리스트를 뽑아온다.
@@ -30,5 +30,8 @@ public interface InterSungService {
 	
 	// [교수] 강의자료실 글쓰기
 	int lessonWriteEnd(LessonBoardVO lbvo);
+	
+	// 해당 과목 강좌자료실의 특정 글을 가져온다.
+	LessonBoardVO getLessonBoardDetail(Map<String, String> paraMap);
 
 }

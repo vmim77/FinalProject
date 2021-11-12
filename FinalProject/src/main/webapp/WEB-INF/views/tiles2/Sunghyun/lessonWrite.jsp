@@ -5,23 +5,28 @@
     
 <style type="text/css">
 	
-	form[name=lessonWriteFrm] {
-		margin-top: 20px;
-	}
+	form[name=lessonWriteFrm] { margin-top: 50px; display: flex; }
 	
-	#lessonWriteTbl {
-		width: 60%;
-	}
+	#lessonTblFlex { width: 60%; margin: auto; }
 	
-	 td {
-	 	padding: 5px;
-	 }
-
+	#lessonWriteTbl { width: 100%; }
+	
+	#lessonWriteTbl th { background-color: #f5a100; }
+	
+	#btnWrite::after { content: ''; display: block; clear: both;  }
 </style>
 
 <script type="text/javascript">
 
 	$(document).ready(function(){
+		
+		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(2)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+		});
 		
 	    //전역변수
 	    var obj = [];
@@ -43,17 +48,25 @@
 	    
 	    //쓰기버튼
 	    $("#btnWrite").click(function(){
-	        //id가 content인 textarea에 에디터에서 대입
+	    	
+	    	var subject = $("input[name=subject]").val().trim();
+	    	
+	    	if(subject == "") {
+	    		alert("제목을 반드시 입력해야 합니다.");
+	    		return;
+	    	}
+	    	
+			var pw = $("input[name=pw]").val().trim();
+			
+			if(pw == "") {
+				alert("글암호를 반드시 입력해야 합니다.");
+				return;
+			}
+	    	
 	        obj.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
 	        
-            //스마트에디터 사용시 무의미하게 생기는 p태그 제거
 	        var contentval = $("#content").val();
 		        
-	        // === 확인용 ===
-	        // alert(contentval); // content에 내용을 아무것도 입력치 않고 쓰기할 경우 알아보는것.
-	        // "<p>&nbsp;</p>" 이라고 나온다.
-	        
-	        // 스마트에디터 사용시 무의미하게 생기는 p태그 제거하기전에 먼저 유효성 검사를 하도록 한다.
 	        // 글내용 유효성 검사 
 	        if(contentval == "" || contentval == "<p>&nbsp;</p>") {
 	        	alert("글내용을 입력하세요!!");
@@ -85,32 +98,34 @@
 
 
 <form enctype="multipart/form-data" name="lessonWriteFrm">
-	<table id="lessonWriteTbl" class="table table-bordered">
-		<tr>
-			<th>제목</th>
-			<td><input type="text" name="subject" size="95" /></td>
-		</tr>
-		<tr>
-			<th>글쓴이</th>
-			<td><input type="text" name="name" value="${sessionScope.loginuser.name}" /></td>
-		</tr>
-		<tr>
-			<th>내용</th>
-			<td><textarea id="content" name="content" cols="100" rows="20" style="resize: none;"></textarea></td>
-		</tr>
-		<tr>
-			<th>파일첨부</th>
-			<td><input type="file" name="attach" /></td>
-		</tr>
-		<tr>
-			<th>암호</th>
-			<td><input type="password" name="pw" /></td>
-		</tr>
-	</table>
+	<div id="lessonTblFlex">
+		<table id="lessonWriteTbl" class="table table-bordered">
+			<tr>
+				<th>제목</th>
+				<td><input type="text" name="subject" size="95" maxlength="100" /></td>
+			</tr>
+			<tr>
+				<th>글쓴이</th>
+				<td><input type="text" name="name" value="${sessionScope.loginuser.name}" /></td>
+			</tr>
+			<tr>
+				<th>내용</th>
+				<td><textarea id="content" name="content" cols="100" rows="20" style="resize: none;"></textarea></td>
+			</tr>
+			<tr>
+				<th>파일첨부</th>
+				<td><input type="file" name="attach" /></td>
+			</tr>
+			<tr>
+				<th>글암호</th>
+				<td><input type="password" name="pw" /></td>
+			</tr>
+		</table>
+		
+		<button class="btn btn-dark btn-md" type="button" style="float: right;" onclick="javascript:location.href='<%= request.getContextPath()%>/lesson.univ'">취소</button>
+		<button class="btn btn-dark btn-md" type="button" style="float: right; margin-right: 10px;" id="btnWrite">작성</button>
+	</div>
 	
 	<input type="hidden" name="fk_code" value="${sessionScope.code}" />
 	<input type="hidden" name="fk_hakbun" value="${sessionScope.loginuser.hakbun}" />
-	
-	<button class="btn btn-dark btn-md" type="button" id="btnWrite">작성</button>
-	<button class="btn btn-dark btn-md" type="button" onclick="javascript:location.href='<%= request.getContextPath()%>/lesson.univ'">취소</button>
 </form>

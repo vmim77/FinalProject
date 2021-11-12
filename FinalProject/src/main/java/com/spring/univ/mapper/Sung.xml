@@ -32,9 +32,28 @@
 	
 	
 	<select id="getLessonBoard" parameterType="String" resultType="com.spring.univ.model.LessonBoardVO">
-		select seq, fk_hakbun, fk_code, name, subject, content, pw, to_char(regdate,'yyyy-mm-dd hh24:mi:ss') as regDate, status, commentcount, filename, orgfilename, filesize
+		select seq, fk_hakbun, fk_code, name, subject, to_char(regdate,'yyyy-mm-dd hh24:mi:ss') as regDate, status, commentcount, filename
 		from tbl_lessonboard
 		where status = 1 and fk_code = #{code}
+		order by seq desc
+	</select>
+	
+	
+	<select id="getLessonBoardDetail" parameterType="HashMap" resultType="com.spring.univ.model.LessonBoardVO">
+		select seq, fk_hakbun, fk_code, name, subject, content, pw, regDate, status, commentCount
+			 , fileName, orgFilename, fileSize
+			 , previousSeq, previousSubject
+			 , nextSeq, nextSubject
+		from
+		(
+			select seq, fk_hakbun, fk_code, name, subject, content, pw, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, status, commentCount
+					  , fileName, orgFilename, fileSize
+					  , lead(seq, 1) over (order by seq desc) AS previousSeq, lead(subject, 1) over (order by seq desc) AS previousSubject
+					  , lag(seq, 1) over (order by seq desc) AS nextSeq, lag(subject, 1) over (order by seq desc) AS nextSubject
+			from tbl_lessonboard
+		)
+		where status = 1 and fk_code = #{code} and seq = #{seq}
+		order by seq desc
 	</select>
 	
 	

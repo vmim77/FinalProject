@@ -125,6 +125,7 @@
 		//////////////////////////////////////////////////////
 		$("i.hideSubjectMenu").click(function(){
 			$("div#subjectSideMenu").toggle('slow');
+			$("#innerContent").animate({"width":"100%"},'slow');
 		});
 		
 		

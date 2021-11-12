@@ -25,11 +25,18 @@ public class LessonBoardVO {
 	
 	/////////////////////////////////////////////////////////////////////
 	
+	private String previousSeq;
+	private String previousSubject;
+	private String nextSeq;
+	private String nextSubject;
+	
+	////////////////////////////////////////////////////////////////////
+	
 	public LessonBoardVO() {}
 	
 	public LessonBoardVO(String seq, String fk_hakbun, String fk_code, String name, String subject, String content, String pw,
 			String readCount, String regDate, String status, String commentCount, String fileName, String orgFilename,
-			String fileSize) {
+			String fileSize, String previousSeq, String previousSubject, String nextSeq, String nextSubject) {
 		this.seq = seq;
 		this.fk_hakbun = fk_hakbun;
 		this.fk_code = fk_code;
@@ -43,6 +50,10 @@ public class LessonBoardVO {
 		this.fileName = fileName;
 		this.orgFilename = orgFilename;
 		this.fileSize = fileSize;
+		this.previousSeq = previousSeq;
+		this.previousSubject = previousSubject;
+		this.nextSeq = nextSeq;
+		this.nextSubject = nextSubject;
 	}
 
 	public String getSeq() {
@@ -155,6 +166,38 @@ public class LessonBoardVO {
 
 	public void setAttach(MultipartFile attach) {
 		this.attach = attach;
+	}
+
+	public String getPreviousSeq() {
+		return previousSeq;
+	}
+
+	public void setPreviousSeq(String previousSeq) {
+		this.previousSeq = previousSeq;
+	}
+
+	public String getPreviousSubject() {
+		return previousSubject;
+	}
+
+	public void setPreviousSubject(String previousSubject) {
+		this.previousSubject = previousSubject;
+	}
+
+	public String getNextSeq() {
+		return nextSeq;
+	}
+
+	public void setNextSeq(String nextSeq) {
+		this.nextSeq = nextSeq;
+	}
+
+	public String getNextSubject() {
+		return nextSubject;
+	}
+
+	public void setNextSubject(String nextSubject) {
+		this.nextSubject = nextSubject;
 	}
 	
 	
