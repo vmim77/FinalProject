@@ -328,14 +328,13 @@ where m.authority = 0 and m.status = 1 and s.fk_deptCode = #{fk_deptCode}
 
 select *
 from tbl_subject
-where fk_hakbun = '2100022' and code = '0102'
-
+where fk_hakbun = '210달러0022' and code = '0102'
+오라클
 
 select * 
 from tbl_member;
 
-select * 
-from tbl_subject;
+
 
 
 select lead(seq, 1) over (order by seq desc) AS previousSeq, lead(subject, 1) over (order by seq desc) AS previousSubject, lag(seq, 1) over (order by seq desc) AS nextSeq, lag(subject, 1) over (order by seq desc) AS nextSubject
@@ -362,4 +361,31 @@ from
 ) A
 where status = 1 and fk_code = '0101' and seq = 15
 order by seq desc
+
+
+select distinct fk_hakbun
+from tbl_sugang;
+
+select *
+from tbl_sugang;
+
+select *
+
+select B.name
+from
+(
+select hakbun
+from tbl_member
+where authority = 0
+MINUS
+select fk_hakbun
+from tbl_sugang
+) A
+JOIN tbl_member B
+on A.hakbun = B.hakbun
+
+
+select *
+from tbl_subject;
+
 
