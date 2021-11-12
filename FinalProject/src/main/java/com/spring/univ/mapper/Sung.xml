@@ -102,4 +102,15 @@
 		where fk_hakbun = #{hakbun} and code = #{code}
 	</select>
 	
+	<insert id="lessonWriteEnd" parameterType="com.spring.univ.model.LessonBoardVO">
+		<if test='fileName!=""'>
+			insert into tbl_lessonboard(seq, fk_hakbun, fk_code, name, subject, content, pw, regDate, status, commentCount, fileName, orgFilename, fileSize)
+			values(lessonBoardSeq.nextval, #{fk_hakbun}, #{fk_code}, #{name}, #{subject}, #{content}, #{pw},  default, default, default, #{fileName}, #{orgFilename}, #{fileSize})
+		</if>
+		<if test='fileName==""'>
+			insert into tbl_lessonboard(seq, fk_hakbun, fk_code, name, subject, content, pw, regDate, status, commentCount)
+			values(lessonBoardSeq.nextval, #{fk_hakbun}, #{fk_code}, #{name}, #{subject}, #{content}, #{pw},  default, default, default)
+		</if>
+	</insert>
+	
 </mapper>

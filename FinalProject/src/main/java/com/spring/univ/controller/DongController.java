@@ -79,6 +79,9 @@ public class DongController {
 		
 		mav.setViewName("login/MemberLogin");
 		
+		HttpSession session = request.getSession(); // 비정상 종료시 로그아웃을 하지 않아서 세션의 값이 남아있어서 비운다.
+		session.invalidate(); // 비정상 종료시 로그아웃을 하지 않아서 세션의 값이 남아있어서 비운다.
+		
 		return mav;
 	}
 //==========================================================================================		   
@@ -87,6 +90,8 @@ public class DongController {
 
 	@RequestMapping(value="/login.univ", method= {RequestMethod.POST}) // /test1.action의 url은 아래의 메소드가 응답함!
 	public ModelAndView dashboard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {//
+		
+		 
 		
 		 String hakbun = request.getParameter("hakbun");
 	     String pwd = request.getParameter("pwd");

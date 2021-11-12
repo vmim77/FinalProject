@@ -25,5 +25,8 @@ public interface InterSungDAO {
 	
 	// 교수 본인이 듣는 과목인지 확인한다.
 	int checkLesson(Map<String, String> paraMap);
+	
+	// [교수] 강의자료실 글쓰기
+	int lessonWriteEnd(LessonBoardVO lbvo);
 
 }

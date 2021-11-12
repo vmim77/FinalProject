@@ -63,6 +63,13 @@ public class SungDAO implements InterSungDAO {
 		return n;
 	}
 	
+	// [교수] 강의자료실 글쓰기
+	@Override
+	public int lessonWriteEnd(LessonBoardVO lbvo) {
+		int n = sqlsession2.insert("Sung.lessonWriteEnd", lbvo);
+		return n;
+	}
+	
 	
 
 }

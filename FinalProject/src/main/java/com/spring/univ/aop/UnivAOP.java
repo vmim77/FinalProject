@@ -119,7 +119,6 @@ public class UnivAOP {
 				
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
 				dispatcher.forward(request, response);
-				return;
 			}
 			//////////////////////////////////////////////////////////////////
 			
@@ -150,7 +149,6 @@ public class UnivAOP {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
 				dispatcher.forward(request, response);
 				
-				return;
 			}
 			
 			//////////////////////////////////////////////////////////////////
@@ -186,7 +184,6 @@ public class UnivAOP {
 					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
 					
 					dispatcher.forward(request, response);
-					return;
 				}
 				
 			}
@@ -210,7 +207,6 @@ public class UnivAOP {
 					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
 					
 					dispatcher.forward(request, response);
-					return;
 				}
 				
 			}

@@ -1,5 +1,9 @@
 package com.spring.univ.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.univ.model.*;
@@ -96,9 +101,106 @@ public class SungController {
 	// 강의자료실 글쓰기 폼 요청하기
 	@RequestMapping(value="/lessonWrite.univ")
 	public ModelAndView subject_lessonWrite(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		String login_hakbun = loginuser.getHakbun();
+		
+		Map<String, String> subjectMap = (Map) request.getAttribute("subjectMap");
+		String subject_hakbun = subjectMap.get("fk_hakbun");
+		
+		if(login_hakbun != null && !subject_hakbun.equals(login_hakbun)) {
+			mav.setViewName("redirect:/lesson.univ");
+			return mav;
+		}
+		
+		
 		mav.setViewName("Sunghyun/lessonWrite.tiles2");
 		return mav;
 	}
+	
+	// 강의자료실 글 DB에 보내기
+	@RequestMapping(value="/lessonWriteEnd.univ", method= {RequestMethod.POST})
+	public ModelAndView subject_lessonWriteEnd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, LessonBoardVO lbvo) {
+		
+		MultipartFile attach = lbvo.getAttach();
+		
+		if(!attach.isEmpty()) {
+			// 파일이 있는 게시글
+			
+			String path = request.getSession().getServletContext().getRealPath("/");
+			String root = path + "resources" + File.separator + "files"; 
+			
+			try {
+				
+				byte[] bytes = attach.getBytes(); // 실제 파일내용물
+				
+				String newFilename = "";
+				String fileExt = attach.getOriginalFilename().substring(attach.getOriginalFilename().lastIndexOf(".")); 
+				
+				newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
+				newFilename += System.nanoTime();
+				newFilename += fileExt;
+				
+				lbvo.setFileName(newFilename); // WAS DISK에 저장될 파일명
+				lbvo.setOrgFilename(attach.getOriginalFilename()); 	// 실제 파일명
+				lbvo.setFileSize(String.valueOf(attach.getSize())); // 파일사이즈
+				
+				File file = new File(root);
+				
+				if(!file.exists()) { // 폴더가 없으면 만들어준다.
+					file.mkdir();
+				}
+				
+				String pathname = root + File.separator + newFilename;
+				
+				FileOutputStream fos;
+				
+				fos = new FileOutputStream(pathname);
+				fos.write(bytes); 
+				fos.flush();
+				fos.close();
+				
+				System.out.println("파일저장 완료");
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+		else {
+			lbvo.setFileName("");
+		}
+		
+		int n = service.lessonWriteEnd(lbvo);
+		
+		System.out.println("확인용 n값=> " + n);
+		
+		if(n==1) {
+			String message = "강의자료실 글쓰기 성공";
+			String loc = request.getContextPath()+"/lesson.univ";
+			
+			mav.addObject("message", message);
+			mav.addObject("loc", loc);
+			mav.setViewName("msg");
+			
+		}
+		else {
+			String message = "강의자료실 글쓰기 실패";
+			String loc = request.getContextPath()+"/lesson.univ";
+			
+			mav.addObject("message", message);
+			mav.addObject("loc", loc);
+			mav.setViewName("msg");
+		}
+		
+		return mav;
+	}
+	
 	
 	
 	// 강의자료실 글 상세보기

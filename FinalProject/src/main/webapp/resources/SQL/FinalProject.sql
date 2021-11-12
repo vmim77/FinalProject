@@ -326,11 +326,17 @@ where m.authority = 0 and m.status = 1 and s.fk_deptCode = #{fk_deptCode}
 
 
 
-select count(*)
+select *
 from tbl_subject
-where fk_hakbun = '2100001' and code = '0102'
-
+where fk_hakbun = '2100022' and code = '0102'
 
 
 select * 
+from tbl_member;
+
+select * 
 from tbl_subject;
+
+
+select * 
+from tbl_lessonBoard;

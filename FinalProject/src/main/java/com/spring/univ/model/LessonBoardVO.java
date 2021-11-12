@@ -1,5 +1,7 @@
 package com.spring.univ.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class LessonBoardVO {
 	
 	/////////////////////////////////////////////////////////////////////
@@ -14,6 +16,9 @@ public class LessonBoardVO {
 	private String regDate;			// 글쓴시간
 	private String status;			// 글삭제여부	1:사용가능한 글, 0:삭제된글
 	private String commentCount;	// 조회수
+	
+	
+	private MultipartFile attach; 	// 폼태그에서 첨부된 파일
 	private String fileName;		// WAS에 저장될 파일명
 	private String orgFilename;		// 진짜 파일명
 	private String fileSize;		// 파일사이즈
@@ -143,6 +148,15 @@ public class LessonBoardVO {
 	public void setFk_code(String fk_code) {
 		this.fk_code = fk_code;
 	}
+
+	public MultipartFile getAttach() {
+		return attach;
+	}
+
+	public void setAttach(MultipartFile attach) {
+		this.attach = attach;
+	}
+	
 	
 	
 	
