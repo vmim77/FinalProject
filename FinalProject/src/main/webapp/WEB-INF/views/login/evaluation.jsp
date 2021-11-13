@@ -21,7 +21,7 @@
 .tg .tg-m594{background-color:#fbe4e3;border-color:#c0c0c0;font-size:13.5px;text-align:left;vertical-align:top}
 .tg .tg-fzdr{border-color:#c0c0c0;text-align:center;vertical-align:top}
 
-input#btnOK {
+button {
 	width: 60px;
 	height: 30px;
 	float: right;
@@ -49,7 +49,7 @@ input#btnOK {
 		<br><br>
 	<div class="typeWrite ">
 
-<form name="evaluationFrm" action="register.do">
+<form name="evaluationFrm" action="Myinfo.univ">
 
 <table class="tg" style="width: 970px;">
 <thead>
@@ -168,7 +168,8 @@ input#btnOK {
 		<br><br>
 		
 
- 		<input type="button" id="btnOK" value="제출" />
+		<button type="submit">제출</button>
+ 		<!--  input type="button" id="btnOK" value="제출" />-->
 
  
 		</form>

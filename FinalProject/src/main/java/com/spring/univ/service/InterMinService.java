@@ -2,6 +2,7 @@ package com.spring.univ.service;
 
 import java.util.*;
 
+import com.spring.univ.model.SubjectVO;
 import com.spring.univ.model.WeekVO;
 
 public interface InterMinService {

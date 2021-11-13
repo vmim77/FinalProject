@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.spring.univ.model.MemberVO;
+import com.spring.univ.model.SubjectVO;
 import com.spring.univ.model.WeekVO;
 import com.spring.univ.service.InterMinService;
 
@@ -72,8 +75,6 @@ public class MinController {
 		
 	}//end of public String test1(HttpServletRequest request) {}------------
 	
-	
-	
 
 	@RequestMapping(value="/pp.univ")
 	public String pp(HttpServletRequest request) {
@@ -94,12 +95,14 @@ public class MinController {
     
     
     @RequestMapping(value="/evaluation.univ")
-    public ModelAndView evaluation(ModelAndView mav, HttpServletRequest request) {
+    public ModelAndView evaluation(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
        
+
        mav.setViewName("login/evaluation");
        
        return mav;
     }// end of public ModelAndView servey(ModelAndView mav, HttpServletRequest request) {}--------------------------
+
 	
 	
 	

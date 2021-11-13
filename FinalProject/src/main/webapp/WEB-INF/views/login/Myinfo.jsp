@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
    String ctxPath = request.getContextPath();
 %>    
@@ -455,11 +457,13 @@ body {
     <div class="modal" id="evaluation">
         <div class="modal-dialog modal-lg">
             <div class="modal-content ">
-        
+            
+        		
                 <!-- Modal Header -->
                 <div class="modal-header" style="background-color: #ffe6e6;">
                     <h2 class="modal-title" style="font-weight: bold; font-size: 18pt; margin: auto;">2021년도 2학기 강의평가 현황</h2>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    
                 </div>
             
                 <!-- Modal body -->
@@ -481,7 +485,7 @@ body {
 						</thead>
 						<tbody>
 						  <tr>
-						    <td scope="col" class="tg-o40d">과목명</td>
+						    <td scope="col" class="tg-o40d">${sessionScope.subject}</td>
 						    <td class="tg-o40d">교수명</td>
 						    <td class="tg-o40d">날짜</td>
 						    <td class="tg-o40d"><a type="button" id="evaluationbutton" onclick="javascript:location.href='<%= ctxPath%>/evaluation.univ'">평가하기</a></td>

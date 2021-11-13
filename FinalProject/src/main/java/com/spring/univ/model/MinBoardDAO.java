@@ -25,12 +25,10 @@ public class MinBoardDAO implements InterMinBoardDAO {
 		List<WeekVO> WeekList = sqlsession2.selectList("Min.getWeekList");
 		return WeekList;
 	}
-	
 
 	
-	
-	
-	
+
+
 	
 	
 	

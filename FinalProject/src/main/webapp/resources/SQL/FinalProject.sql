@@ -286,3 +286,7 @@ select A.code AS code, A.subject AS subject, A.fk_hakbun AS fk_hakbun, A.hakjum 
            
 select *
 from tbl_member;
+
+select subject, fk_hakbun
+from tbl_subject
+where fk_hakbun = 2100001
