@@ -136,7 +136,7 @@
 			</tr>
 			<tr>
 				<th>첨부파일</th>
-				<td>${requestScope.lbvo.orgFilename}</td>
+				<td><a href="<%= request.getContextPath()%>/downloadLessonFile.univ?code=${sessionScope.code}&seq=${requestScope.lbvo.seq}">${requestScope.lbvo.orgFilename}</a></td>
 			</tr>
 			<tr>
 				<th>파일용량</th>
@@ -153,26 +153,28 @@
 			</div>
 		</div>
 		
-		<form name="lessonBoardCommentFrm" style="margin-top: 30px;">
-			<table class="table">
-				<tr>
-					<th style="width: 10%;">작성자</th>
-					<td><input type="text" name="name" value="${sessionScope.loginuser.name}" readonly /></td>
-					<td><input type="hidden" name="fk_hakbun" value="${sessionScope.loginuser.hakbun}" /></td>
-				</tr>
-				<tr>
-					<th>댓글내용</th>
-					<td><input type="text" name="content" size="100"  /></td>
-					<td><input type="hidden" name="parentSeq" value="${requestScope.lbvo.seq}" /></td>
-				</tr>
-				<tr>
-					<th colspan="3">
-						<button type="button" class="btn" style="background-color:#f5a100; margin-right: 20px;" onclick="goWrite()">댓글쓰기</button>
-						<button type="reset"  class="btn" style="background-color:#f5a100;">댓글쓰기 취소</button>
-					</th>
-				</tr>
-			</table>
-		</form>
+		<c:if test="${sessionScope.loginuser != null}">
+			<form name="lessonBoardCommentFrm" style="margin-top: 30px;">
+				<table class="table">
+					<tr>
+						<th style="width: 10%;">작성자</th>
+						<td><input type="text" name="name" value="${sessionScope.loginuser.name}" readonly /></td>
+						<td><input type="hidden" name="fk_hakbun" value="${sessionScope.loginuser.hakbun}" /></td>
+					</tr>
+					<tr>
+						<th>댓글내용</th>
+						<td><input type="text" name="content" size="100"  /></td>
+						<td><input type="hidden" name="parentSeq" value="${requestScope.lbvo.seq}" /></td>
+					</tr>
+					<tr>
+						<th colspan="3">
+							<button type="button" class="btn" style="background-color:#f5a100; margin-right: 20px;" onclick="goWrite()">댓글쓰기</button>
+							<button type="reset"  class="btn" style="background-color:#f5a100;">댓글쓰기 취소</button>
+						</th>
+					</tr>
+				</table>
+			</form>
+		</c:if>
 		
 		<table id="commentList" class="table" style="margin-top: 30px;">
 		

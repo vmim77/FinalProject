@@ -1,12 +1,16 @@
 package com.spring.univ.controller;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.*;
+
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -344,6 +348,77 @@ public class SungController {
 		
 	}
 	
+	// 강의자료실 파일 다운로드
+	@RequestMapping(value="/downloadLessonFile.univ")
+	public void subject_downloadLessonFile(HttpServletRequest request, HttpServletResponse response) {
+		
+		String seq = request.getParameter("seq");
+		String code = request.getParameter("code");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("code", code);
+		paraMap.put("seq", seq);
+		
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = null; 
+		
+		try {
+			Integer.parseInt(seq);
+			
+			LessonBoardVO lbvo = service.getLessonBoardDetail(paraMap);
+			
+			if(lbvo == null || (lbvo != null && lbvo.getFileName() == null)) {
+				out = response.getWriter();
+				out.println("<script type='text/javascript'> alert('존재하지 않는 글번호 이거나 첨부파일이 없으므로 파일 다운로드가 불가합니다!!'); history.back(); </script>");
+				return;
+			}
+			
+			else {
+				String fileName = lbvo.getFileName();
+				String orgFilename = lbvo.getOrgFilename();
+				
+				HttpSession session = request.getSession();
+				String root = session.getServletContext().getRealPath("/");
+				String pathname = root + "resources" + File.separator + "files" + File.separator + fileName;
+				
+				
+				if(orgFilename == null || "".equals(orgFilename)) {
+					orgFilename = fileName;
+				}
+				
+				orgFilename = new String(orgFilename.getBytes("UTF-8"),"8859_1"); 
+				
+				File file = new File(pathname);
+				
+				if(file.exists()) {
+					
+					response.setContentType("application/octet-stream");
+					
+					response.setHeader("Content-disposition",
+                             "attachment; filename=" + orgFilename);
+					
+					byte[] readByte = new byte[4096];
+					
+					BufferedInputStream bfin = new BufferedInputStream(new FileInputStream(file));
+					
+					ServletOutputStream souts = response.getOutputStream();
+					
+					int length = 0;
+					
+					while( (length = bfin.read(readByte, 0, 4096)) != -1) {
+						souts.write(readByte, 0, length);
+					}
+					souts.flush();
+					souts.close();
+					bfin.close();
+				}
+			}
+			
+		} catch (Exception e) {
+			
+		}
+		
+	}
 	
 	
 	// 과제 게시판
