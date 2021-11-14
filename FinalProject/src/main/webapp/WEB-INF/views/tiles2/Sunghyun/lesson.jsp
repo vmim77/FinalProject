@@ -86,7 +86,6 @@
 <hr>
 <c:if test="${sessionScope.loginuser.authority == 1}">
 	<div class="text-right">
-		<button type="button" class="btn btn-dark btn-md" onclick="goLessonWrite()">글쓰기</button>
+		<button type="button" class="btn btn-md" onclick="goLessonWrite()" style="background-color: #f5a100; border: none;">글쓰기</button>
 	</div>
-	
 </c:if>

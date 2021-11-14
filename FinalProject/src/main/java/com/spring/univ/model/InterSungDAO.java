@@ -31,5 +31,11 @@ public interface InterSungDAO {
 	
 	// 해당 과목 강좌자료실의 특정 글을 가져온다.
 	LessonBoardVO getLessonBoardDetail(Map<String, String> paraMap);
+	
+	// 강의자료실 댓글쓰기
+	int addLessonBoardComment(LessonBoardCommentVO lbcvo);
+	
+	// 강의자료실 댓글목록 가져오기
+	List<LessonBoardCommentVO> getLessonBoardComment(String parentSeq);
 
 }

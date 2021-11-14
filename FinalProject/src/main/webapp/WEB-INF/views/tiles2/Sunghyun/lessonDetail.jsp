@@ -7,13 +7,19 @@
 
 
 <style type="text/css">
+
 	#lessonTbl th { background-color: #f5a100; width: 15%; }
+	
+	.alert{ cursor:pointer; }
+	
 </style>
 
 
 <script>
 
 	$(document).ready(function(){
+		
+		getCommentList();
 		
 		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
 		
@@ -23,12 +29,87 @@
 			$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
 		});
 		
-		$(".leesonboardRows").click(function(){
-			var seq = $(this).find("td:first-child").text();
-			location.href="<%= request.getContextPath()%>/lessonnDetail.univ?code=${sessionScope.code}&seq="+seq;
+		$("#previousSubject").click(function(){
+			location.href="<%= request.getContextPath()%>/lessonDetail.univ?code=${sessionScope.code}&seq=${requestScope.lbvo.previousSeq}";
+		});
+		
+		$("#nextSubject").click(function(){
+			location.href="<%= request.getContextPath()%>/lessonDetail.univ?code=${sessionScope.code}&seq=${requestScope.lbvo.nextSeq}";
+		});
+		
+		$("#goBackList").click(function(){
+			location.href="<%= request.getContextPath()%>/lesson.univ";
 		});
 		
 	});
+	
+	function goWrite() {
+		
+		if($("input[name=content]").val().trim() == ""){
+			alert("댓글내용을 반드시 입력해야 합니다!");
+			return;
+		}
+		
+		
+		var form_data = $("form[name=lessonBoardCommentFrm]").serialize();
+		
+		$.ajax({
+			url:"<%= request.getContextPath()%>/addComment_LessonBoard.univ",
+			data:form_data,
+			type:"POST",
+			dataType:"JSON",
+			success:function(json){
+				if(json.n==0){
+					alert("댓글쓰기 실패!!");
+				}
+				else{
+					alert("댓글쓰기 성공!!");
+					getCommentList();
+				}
+				
+				$("input[name=content]").val("");
+			},
+	        error: function(request, status, error){
+	              alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+		});
+		
+	}
+	
+	function getCommentList(){
+		
+		
+		$.ajax({
+			url:"<%= request.getContextPath()%>/getComment_LessonBoard.univ",
+			data:{"parentSeq":${requestScope.lbvo.seq}},
+			dataType:"JSON",
+			success:function(json){
+				
+				var html = "";
+				if(json.length > 0){
+					
+					$.each(json, function(index, item){
+						
+						html += "<tr>";
+						html += "<td style='width: 10%; text-align: center; font-weight: bold;'><img src='<%= request.getContextPath()%>/resources/images/personimg.png' />"+item.name+"("+item.fk_hakbun+")</td>"
+						html += "<td style='width: 40%;'>"+item.content+"</td>"
+						html += "<td style='width: 10%; text-align: center;'>"+item.regDate+"</td>"
+						html += "</tr>";
+					});
+					
+				}
+				else{
+					html +="<tr><td>댓글이 없습니다.</td></tr>"
+				}
+				
+				$("#commentList").html(html);
+			},
+	        error: function(request, status, error){
+	              alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+		});
+		
+	}
 	
 </script>
 
@@ -58,11 +139,43 @@
 				<td>${requestScope.lbvo.orgFilename}</td>
 			</tr>
 			<tr>
-				<th>파일용량(bytes)</th>
+				<th>파일용량</th>
 				<td><fmt:formatNumber value="${requestScope.lbvo.fileSize}" pattern="#,###" /></td>
 			</tr>
 		</table>
-		<span class="alert" role="alert" style="float:left; text-align:center; background-color: #f5a100">이전글:&nbsp;${requestScope.lbvo.previousSubject}</span>
-		<span class="alert" role="alert" style="float:right; text-align:center; background-color: #f5a100">다음글:&nbsp;${requestScope.lbvo.nextSubject}</span>
+		
+		
+		<div style="display: flex;">
+			<div style="margin-left: auto;">
+				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100">이전글:&nbsp;<span id="previousSubject" style="color: #fff;">${requestScope.lbvo.previousSubject}</span></div>
+				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100; margin: 0 20px;"><span id="goBackList">목록보기</span></div>
+				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100">다음글:&nbsp;<span id="nextSubject" style="color: #fff;">${requestScope.lbvo.nextSubject}</span></div>
+			</div>
+		</div>
+		
+		<form name="lessonBoardCommentFrm" style="margin-top: 30px;">
+			<table class="table">
+				<tr>
+					<th style="width: 10%;">작성자</th>
+					<td><input type="text" name="name" value="${sessionScope.loginuser.name}" readonly /></td>
+					<td><input type="hidden" name="fk_hakbun" value="${sessionScope.loginuser.hakbun}" /></td>
+				</tr>
+				<tr>
+					<th>댓글내용</th>
+					<td><input type="text" name="content" size="100"  /></td>
+					<td><input type="hidden" name="parentSeq" value="${requestScope.lbvo.seq}" /></td>
+				</tr>
+				<tr>
+					<th colspan="3">
+						<button type="button" class="btn" style="background-color:#f5a100; margin-right: 20px;" onclick="goWrite()">댓글쓰기</button>
+						<button type="reset"  class="btn" style="background-color:#f5a100;">댓글쓰기 취소</button>
+					</th>
+				</tr>
+			</table>
+		</form>
+		
+		<table id="commentList" class="table" style="margin-top: 30px;">
+		
+		</table>
 	</div>
 </div>

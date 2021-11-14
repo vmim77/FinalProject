@@ -358,8 +358,9 @@ from
               , lead(seq, 1) over (order by seq desc) AS previousSeq, lead(subject, 1) over (order by seq desc) AS previousSubject
               , lag(seq, 1) over (order by seq desc) AS nextSeq, lag(subject, 1) over (order by seq desc) AS nextSubject
     from tbl_lessonboard
+    where status = 1 and fk_code = '0101'
 ) A
-where status = 1 and fk_code = '0101' and seq = 15
+where seq = 20
 order by seq desc
 
 
@@ -388,4 +389,31 @@ on A.hakbun = B.hakbun
 select *
 from tbl_subject;
 
+create table tbl_lessonBoard_comment(
+seq             number                  not null
+,fk_hakbun       varchar2(50)            not null
+,name            varchar2(50)            not null
+,content         varchar2(1000)          not null
+,parentSeq       number                  not null
+,regDate         date    default sysdate not null
+,constraint PK_TBL_LB_COMMENT_SEQ primary key(seq)
+,constraint FK_TBL_LB_COMMENT_HAKBUN foreign key(fk_hakbun) references tbl_member(hakbun) on delete cascade
+)
+-- Table TBL_LESSONBOARD_COMMENT이(가) 생성되었습니다.
 
+create sequence lessonboard_commentSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+-- Sequence LESSONBOARD_COMMENTSEQ이(가) 생성되었습니다.
+
+
+select A.seq AS seq, A.fk_hakbun AS fk_hakbun, A.name || case B.authority when 0 then ' 학생' when 1 then ' 교수' end AS name, A.content AS content, to_char(A.regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+from tbl_lessonBoard_comment A
+JOIN tbl_member B
+on A.fk_hakbun = B.hakbun
+where parentSeq = 18
+order by seq desc

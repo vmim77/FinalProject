@@ -133,8 +133,10 @@ public class SungController {
 		MultipartFile attach = lbvo.getAttach();
 		
 		String content = lbvo.getContent();
-		content.replaceAll("<", "&lt;");
-		content.replaceAll(">", "&gt;");
+		content = content.replaceAll("<", "&lt;");
+		content = content.replaceAll(">", "&gt;");
+		
+		lbvo.setContent(content);
 		
 		if(!attach.isEmpty()) {
 			// 파일이 있는 게시글
@@ -295,6 +297,54 @@ public class SungController {
 		
 		return mav;
 	}
+	
+	// 강의자료실 댓글쓰기
+	@ResponseBody
+	@RequestMapping(value="/addComment_LessonBoard.univ", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public String subject_addComment_LessonBoard(HttpServletRequest request, HttpServletResponse response, LessonBoardCommentVO lbcvo) {
+		
+		String content = lbcvo.getContent();
+		content = content.replaceAll("<", "&lt;");
+		content = content.replaceAll(">", "&gt;");
+		
+		lbcvo.setContent(content);
+		
+		int n = service.addLessonBoardComment(lbcvo);
+		
+		JSONObject jsObj = new JSONObject();
+		jsObj.put("n", n);
+		
+		return jsObj.toString();
+	}
+	
+	// 강의자료실 댓글목록 가져오기
+	@ResponseBody
+	@RequestMapping(value="/getComment_LessonBoard.univ", produces="text/plain;charset=UTF-8")
+	public String subject_getComment_LessonBoard(HttpServletRequest request, HttpServletResponse response) {
+		
+		String parentSeq = request.getParameter("parentSeq");
+		
+		List<LessonBoardCommentVO> commentList = service.getLessonBoardComment(parentSeq);
+		
+		JSONArray jsonArr = new JSONArray();
+		
+		
+		for(LessonBoardCommentVO lbcvo : commentList) {
+			JSONObject jsObj = new JSONObject();
+			jsObj.put("seq", lbcvo.getSeq());
+			jsObj.put("fk_hakbun", lbcvo.getFk_hakbun());
+			jsObj.put("name", lbcvo.getName());
+			jsObj.put("content", lbcvo.getContent());
+			jsObj.put("regDate", lbcvo.getRegDate());
+			
+			jsonArr.put(jsObj);
+		}
+		
+		return jsonArr.toString();
+		
+	}
+	
+	
 	
 	// 과제 게시판
 	@RequestMapping(value="/homework.univ")

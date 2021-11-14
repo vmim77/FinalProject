@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.univ.model.InterSungDAO;
+import com.spring.univ.model.LessonBoardCommentVO;
 import com.spring.univ.model.LessonBoardVO;
 
 @Service
@@ -76,6 +77,20 @@ public class SungService implements InterSungService {
 	public LessonBoardVO getLessonBoardDetail(Map<String, String> paraMap) {
 		LessonBoardVO lbvo = dao.getLessonBoardDetail(paraMap);
 		return lbvo;
+	}
+	
+	// 강의자료실 댓글쓰기
+	@Override
+	public int addLessonBoardComment(LessonBoardCommentVO lbcvo) {
+		int n = dao.addLessonBoardComment(lbcvo);
+		return n;
+	}
+	
+	// 강의자료실 댓글목록 가져오기
+	@Override
+	public List<LessonBoardCommentVO> getLessonBoardComment(String parentSeq) {
+		List<LessonBoardCommentVO> commentList = dao.getLessonBoardComment(parentSeq);
+		return commentList;
 	}
 
 }

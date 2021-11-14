@@ -41,18 +41,19 @@
 	
 	<select id="getLessonBoardDetail" parameterType="HashMap" resultType="com.spring.univ.model.LessonBoardVO">
 		select seq, fk_hakbun, fk_code, name, subject, content, pw, regDate, status, commentCount
-			 , fileName, orgFilename, fileSize
-			 , previousSeq, previousSubject
-			 , nextSeq, nextSubject
+		     , fileName, orgFilename, fileSize
+		     , previousSeq, previousSubject
+		     , nextSeq, nextSubject
 		from
 		(
-			select seq, fk_hakbun, fk_code, name, subject, content, pw, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, status, commentCount
-					  , fileName, orgFilename, fileSize
-					  , lead(seq, 1) over (order by seq desc) AS previousSeq, lead(subject, 1) over (order by seq desc) AS previousSubject
-					  , lag(seq, 1) over (order by seq desc) AS nextSeq, lag(subject, 1) over (order by seq desc) AS nextSubject
-			from tbl_lessonboard
-		)
-		where status = 1 and fk_code = #{code} and seq = #{seq}
+		    select seq, fk_hakbun, fk_code, name, subject, content, pw, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, status, commentCount
+		              , fileName, orgFilename, fileSize
+		              , lead(seq, 1) over (order by seq desc) AS previousSeq, lead(subject, 1) over (order by seq desc) AS previousSubject
+		              , lag(seq, 1) over (order by seq desc) AS nextSeq, lag(subject, 1) over (order by seq desc) AS nextSubject
+		    from tbl_lessonboard
+		    where status = 1 and fk_code = #{code}
+		) A
+		where seq = #{seq}
 		order by seq desc
 	</select>
 	
@@ -132,4 +133,18 @@
 		</if>
 	</insert>
 	
+	
+	<insert id="addLessonBoardComment" parameterType="com.spring.univ.model.LessonBoardCommentVO">
+		insert into tbl_lessonBoard_comment(seq, fk_hakbun, name, content, parentSeq, regDate)
+		values(lessonboard_commentSeq.nextval, #{fk_hakbun}, #{name}, #{content}, #{parentSeq}, default)
+	</insert>
+	
+	<select id="getLessonBoardComment" parameterType="String" resultType="com.spring.univ.model.LessonBoardCommentVO">
+		select A.seq AS seq, A.fk_hakbun AS fk_hakbun, case B.authority when 0 then '학생 ' when 1 then '교수 ' end || A.name AS name, A.content AS content, to_char(A.regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+		from tbl_lessonBoard_comment A
+		JOIN tbl_member B
+		on A.fk_hakbun = B.hakbun
+		where parentSeq = #{parentSeq}
+		order by seq desc
+	</select>
 </mapper>
