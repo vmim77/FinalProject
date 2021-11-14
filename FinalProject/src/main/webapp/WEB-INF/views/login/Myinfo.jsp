@@ -5,6 +5,7 @@
    String ctxPath = request.getContextPath();
 %>    
 
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -140,6 +141,13 @@ body {
 		border:none;
 	}
 
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
 
 
 
@@ -155,6 +163,8 @@ body {
          <li><a href="<%= ctxPath%>/MemberLogin.univ" >로그아웃</a></li>
       </ul>
 <div class="text-center">
+              
+               	
                      <table class="table">
                	<thead>
                         <tr>
@@ -189,7 +199,7 @@ body {
                            <button class="btn btn-primary" data-target="#layerpop" data-toggle="modal">개인정보수정</button>
                            <button class="btn btn-primary" data-target="#schedule" data-toggle="modal">시간표</button>
                            <button class="btn btn-danger" data-target="#plan" data-toggle="modal">학습안내서/교수계획서</button>
-                           <a type="button" onclick="" class="btn btn-danger">성적표</a>
+                           <button class="btn btn-danger" data-target="#exam" data-toggle="modal">성적표</button>
                            <a type="button" onclick="" class="btn btn-success">설문관리</a>
                            <a type="button" onclick="" class="btn btn-success">강의평가</a>
                            <a type="button" onclick="" class="btn btn-warning">1 : 1 문의</a>
@@ -249,7 +259,7 @@ body {
 
 <!--  시간표 -->                 
 <div class="modal fade" id="schedule" >
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <!-- header -->
       <div class="modal-header">
@@ -260,7 +270,7 @@ body {
       </div>
       <!-- body -->
       <div class="modal-body">
-     <table cellspacing="5" align="center" border="1" bordercolor="#b3e6ff" width="450" height="600">
+     <table cellspacing="5" align="center" border="1" bordercolor="#b3e6ff" width="650" height="600">
 		<caption>
 		<tr align="center"> <td width="50"></td>
 		 <td width="100" bgcolor="#ffe6e6">월</td>
@@ -328,7 +338,7 @@ body {
         <!-- 닫기(x) 버튼 -->
         <button type="button" class="close" data-dismiss="modal">×</button>
         <!-- header title -->
-        <h4 class="modal-title">학습안내서/교수계획서 </h4>
+        <h4 class="modal-title">학습안내서/학사규정</h4>
       </div>
       <!-- body -->
       <div class="modal-body">
@@ -337,7 +347,7 @@ body {
 	<div class="panel-heading-btn">
         <div class="panel-heading-btn"> <a href="javascript:;" onclick="hidePageModal()" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove" data-original-title="" title=""><i class="fa fa-times"></i></a> </div>
     </div>
-    <h4 class="panel-title">교수계획서 및 학습안내서</h4>
+    <h4 class="panel-title">교수계획서 및 학사규정</h4>
 </div>
 <div class="panel-body">
 	<div class="row"> 
@@ -351,16 +361,12 @@ body {
 					<td colspan="2" style="text-align:center !important;font-weight:bold">AMY UNIVERCITY</td>
 				</tr>
 				<tr>
-					<th>교수계획서</th><td align="center" style="text-align:center !important;"></td>
+					<th>교수계획서</th>
+					<td><a href="<%=ctxPath%>/teacherPlan.univ">교수계획서</a></td>
 				</tr>
 				<tr>
-					<th>학습안내서</th><td align="center" style="text-align:center !important;"></td>
-				</tr>
-				<tr>
-					<th>학사규정</th><td align="center" style="text-align:center !important;"></td>
-				</tr>
-				<tr>
-					<th>기타</th><td align="center" style="text-align:center !important;"></td>
+					<th>학사규정</th>
+					<td><a href="<%=ctxPath%>/rule.univ">학사규정</a></td>
 				</tr>
 			</tbody>
 		</table>	
@@ -377,7 +383,78 @@ body {
   </div>
 </div>
         
+   <!--  성적표 -->                 
+<div class="modal fade" id="exam" >
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- header -->
+      <div class="modal-header">
+        <!-- 닫기(x) 버튼 -->
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <!-- header title -->
+        <h4 class="modal-title">성적표 </h4>
+      </div>
+      <!-- body -->
+      <div class="modal-body">
+    <div class="panel panel-inverse">
+<div class="panel-heading">
+	<div class="panel-heading-btn">
+        <div class="panel-heading-btn"> <a href="javascript:;" onclick="hidePageModal()" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove" data-original-title="" title=""><i class="fa fa-times"></i></a> </div>
+    </div>
+    <h4 class="panel-title">성적표</h4>
+</div>
+<div class="panel-body">
+	<div class="row"> 
+		<table class="table table-bordered">
+			<colgroup>
+                <col width="40%">
+				<col width="60%">
+			</colgroup>
+			<tbody>
 
+<table class="tg"">
+<thead>
+  <tr>
+    <th class="tg-0pky" colspan="8">2021년 1학기 중간고사 성적표</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">학번</td>
+    <td class="tg-0lax">이름</td>
+    <td class="tg-0lax">미용학개론</td>
+    <td class="tg-0lax">보컬의기초</td>
+    <td class="tg-0lax">다이어트성공비법</td>
+    <td class="tg-0lax">실전무술</td>
+    <td class="tg-0lax">자바와스프링</td>
+    <td class="tg-0lax">평균</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">2100004</td>
+    <td class="tg-0lax">김민경</td>
+    <td class="tg-0lax">A+</td>
+    <td class="tg-0lax">F</td>
+    <td class="tg-0lax">F</td>
+    <td class="tg-0lax">A+</td>
+    <td class="tg-0lax">F</td>
+    <td class="tg-0lax">2.7</td>
+  </tr>
+</tbody>
+</table>
+			</tbody>
+		</table>	
+	</div>
+    <div class="popbtmbtn_section">
+		<div class="col-md-12" style="width:100%;text-align:center">
+              <a type="button" href="<%=ctxPath %>/Myinfo.univ" class="btn btn-default">취 소</a>
+		</div>
+      		</div>
+ 		</div>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

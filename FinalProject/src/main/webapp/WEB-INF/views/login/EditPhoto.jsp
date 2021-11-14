@@ -3,6 +3,16 @@
     
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
  
+ 
+<script type="text/javascript">
+
+$document.ready(function(){
+	
+})
+ 
+ 
+</script>
+
     
 	<form name="addFrm"  enctype=multipart/form-data>
 		<table style="width: 1024px" class="table table-bordered">

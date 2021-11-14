@@ -1,17 +1,19 @@
 package com.spring.univ.controller;
 
+import java.io.File;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.univ.common.FileManager;
@@ -287,9 +289,38 @@ public class DongController {
 //====================================================================================================================
 	   
 	   // === 마이페이지 사진 추가하기 === //
-	   @RequestMapping(value="/EditPhoto.univ")
-	   public ModelAndView EditPhoto(ModelAndView mav, HttpServletRequest request) {
-		
+	   @RequestMapping(value="/EditPhoto.univ", method= {RequestMethod.GET})
+	   public ModelAndView EditPhoto(ModelAndView mav, HttpServletRequest request,MultipartHttpServletRequest mrequest,MemberVO membervo) {
+
+		   MultipartFile attach = membervo.getAttach();
+		      
+		      if( !attach.isEmpty() ) {
+		    	  
+		         HttpSession session = mrequest.getSession();
+		         String root = session.getServletContext().getRealPath("/");
+		         
+		         String path = root + "resources" + File.separator + "files";
+
+		         String newFileName = "";
+		            
+		            byte[] bytes = null;
+		            
+		            
+		            try {
+		               bytes = attach.getBytes();
+		         
+		               newFileName = fileManager.doFileUpload(bytes, attach.getOriginalFilename(), path);
+
+		               membervo.setPicture(newFileName);
+		               
+		               
+		            } catch (Exception e) {
+		               e.printStackTrace();
+		            }
+		            
+		      
+		      }
+	
 		   
 		   mav.setViewName("login/EditPhoto");
 		   
@@ -301,6 +332,49 @@ public class DongController {
 	   
 //====================================================================================================================
 	   
+	// === 교수계획서 보여주기 === // 
+	   @RequestMapping(value="/teacherPlan.univ")
+	   public ModelAndView teacherPlan(ModelAndView mav, HttpServletRequest request) {
 		
+		   
+		   mav.setViewName("login/teacherPlan");
+		   
+		   return mav;
+	   }
 	   
+//====================================================================================================================
+	   
+	// === 학습계획서 보여주기 === // 
+	   @RequestMapping(value="/studyPlan.univ")
+	   public ModelAndView studyPlan(ModelAndView mav, HttpServletRequest request) {
+		
+		   
+		   mav.setViewName("login/studyPlan");
+		   
+		   return mav;
+	   }   
+//====================================================================================================================
+		// === 학사규정 보여주기 === // 
+	   @RequestMapping(value="/rule.univ")
+	   public ModelAndView rule(ModelAndView mav, HttpServletRequest request) {
+		
+		   
+		   mav.setViewName("login/rule");
+		   
+		   return mav;
+	   }   
+//====================================================================================================================
+	   
+		// === 기타 보여주기 === //
+	   @RequestMapping(value="/info.univ")
+	   public ModelAndView info(ModelAndView mav, HttpServletRequest request) {
+		
+		   
+		   mav.setViewName("login/info");
+		   
+		   return mav;
+	   }   
+//====================================================================================================================
+	   
+
 }	
