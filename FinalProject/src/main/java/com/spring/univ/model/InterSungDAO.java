@@ -37,5 +37,11 @@ public interface InterSungDAO {
 	
 	// 강의자료실 댓글목록 가져오기
 	List<LessonBoardCommentVO> getLessonBoardComment(String parentSeq);
+	
+	// 강의자료실 글 삭제하기
+	int deleteLessonBoard(String seq);
+	
+	// 강의자료실 글 수정하기 완료요청
+	int editLessonBoard(LessonBoardVO lbvo);
 
 }

@@ -147,4 +147,21 @@
 		where parentSeq = #{parentSeq}
 		order by seq desc
 	</select>
+	
+	
+	<delete id="deleteLessonBoard" parameterType="String">
+		delete from tbl_lessonBoard
+		where seq = #{seq}
+	</delete>
+	
+	<update id="editLessonBoard" parameterType="com.spring.univ.model.LessonBoardCommentVO">
+		<if test='fileName!=""'>
+			update tbl_lessonboard set subject = #{subject}, content = #{content}, regDate = sysdate, fileName = #{fileName}, orgFilename = #{orgFilename}, fileSize = #{fileSize}
+			where seq = #{seq}
+		</if>
+		<if test='fileName==""'>
+			update tbl_lessonboard set subject = #{subject}, content = #{content}, regDate = sysdate
+			where seq = #{seq}
+		</if>
+	</update>
 </mapper>

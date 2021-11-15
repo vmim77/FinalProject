@@ -24,9 +24,13 @@
 		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
 		
 		$("ul#sideMenuList").hover(function(){
+			
 			$("ul#sideMenuList > li:nth-child(2)").removeClass("hoverdEffect");
+			
 		}, function(){
+			
 			$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+			
 		});
 		
 		$("#previousSubject").click(function(){
@@ -41,7 +45,7 @@
 			location.href="<%= request.getContextPath()%>/lesson.univ";
 		});
 		
-	});
+	});// end of $(document).ready(function(){}-----------------------------------------
 	
 	function goWrite() {
 		
@@ -49,7 +53,6 @@
 			alert("댓글내용을 반드시 입력해야 합니다!");
 			return;
 		}
-		
 		
 		var form_data = $("form[name=lessonBoardCommentFrm]").serialize();
 		
@@ -74,11 +77,9 @@
 	        }
 		});
 		
-	}
+	}// end of function goWrite() {}---------------------------------------------------
 	
 	function getCommentList(){
-		
-		
 		$.ajax({
 			url:"<%= request.getContextPath()%>/getComment_LessonBoard.univ",
 			data:{"parentSeq":${requestScope.lbvo.seq}},
@@ -109,7 +110,24 @@
 	        }
 		});
 		
-	}
+	}// end of function getCommentList(){}-------------------------------------------
+	
+	function goEdit(seq) {
+		
+		var loginHakbun = '${sessionScope.loginuser.hakbun}';
+		var writeHakbun = '${requestScope.lbvo.fk_hakbun}';
+		
+		if(loginHakbun != writeHakbun) {
+			alert("작성자 본인만 수정이 가능합니다.");
+			return;
+		}
+		
+		else{
+			
+			location.href="<%= request.getContextPath()%>/editLessonBoard.univ?seq="+seq;
+		}
+		
+	}// end of function goEdit(seq){}----------------------------------
 	
 </script>
 
@@ -132,7 +150,7 @@
 				<td colspan="2">작성일: ${requestScope.lbvo.regDate}</td>
 			</tr>
 			<tr>
-				<td colspan="2">${requestScope.lbvo.content}</td>
+				<td colspan="2"><span>${requestScope.lbvo.content}</span></td>
 			</tr>
 			<tr>
 				<th>첨부파일</th>
@@ -146,10 +164,14 @@
 		
 		
 		<div style="display: flex;">
-			<div style="margin-left: auto;">
+			<div style="margin-right: auto;">
 				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100">이전글:&nbsp;<span id="previousSubject" style="color: #fff;">${requestScope.lbvo.previousSubject}</span></div>
 				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100; margin: 0 20px;"><span id="goBackList">목록보기</span></div>
 				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100">다음글:&nbsp;<span id="nextSubject" style="color: #fff;">${requestScope.lbvo.nextSubject}</span></div>
+			</div>
+			<div style="margin-left: auto;">
+				<div class="alert mx-1" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100" onclick="location.href='<%=request.getContextPath()%>/lessonBoardDelete.univ?seq=${requestScope.lbvo.seq}'">글삭제</div>
+				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100" onclick="goEdit('${requestScope.lbvo.seq}')">글수정</div>
 			</div>
 		</div>
 		

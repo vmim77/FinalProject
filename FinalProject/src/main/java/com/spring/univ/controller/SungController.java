@@ -130,9 +130,9 @@ public class SungController {
 		return mav;
 	}
 	
-	// 강의자료실 글 DB에 보내기
+	// 강의자료실 글 마무리 요청
 	@RequestMapping(value="/lessonWriteEnd.univ", method= {RequestMethod.POST})
-	public ModelAndView subject_lessonWriteEnd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, LessonBoardVO lbvo) {
+	public ModelAndView subject_lessonWriteEnd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, LessonBoardVO lbvo, MultipartHttpServletRequest mrequest) {
 		
 		MultipartFile attach = lbvo.getAttach();
 		
@@ -145,7 +145,7 @@ public class SungController {
 		if(!attach.isEmpty()) {
 			// 파일이 있는 게시글
 			
-			String path = request.getSession().getServletContext().getRealPath("/");
+			String path = mrequest.getSession().getServletContext().getRealPath("/");
 			String root = path + "resources" + File.separator + "files"; 
 			
 			try {
@@ -216,7 +216,7 @@ public class SungController {
 	}
 	
 	
-	// 스마트에디터 다중사진첨부
+	// 강의자료실 스마트에디터 다중사진첨부
 	@RequestMapping(value="/image/multiplePhotoUpload.univ", method={RequestMethod.POST})
 	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
 		
@@ -420,6 +420,182 @@ public class SungController {
 		
 	}
 	
+	// 강의자료실 글 삭제 폼페이지 요청
+	@RequestMapping(value="/lessonBoardDelete.univ")
+	public ModelAndView subject_lessonBoardDelete(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		String seq = request.getParameter("seq");
+		String code = (String) session.getAttribute("code");
+		
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("seq", seq);
+		paraMap.put("code", code);
+		
+		LessonBoardVO lbvo = service.getLessonBoardDetail(paraMap);
+		
+		if(loginuser != null && !lbvo.getFk_hakbun().equals(loginuser.getHakbun())) { // 삭제하려는 사람과 글쓴이가 다른 경우이다. 
+			
+			mav.addObject("message", "작성자 본인만 삭제가 가능합니다.");
+			mav.addObject("loc", request.getContextPath()+"/lesson.univ");
+			
+			mav.setViewName("msg");
+		}
+		else { // 작성자와 로그인 유저가 같은 경우 비밀번호 확인 페이지로 보낸다.
+			mav.addObject("seq", seq);
+			mav.addObject("lbvo",lbvo);
+			mav.setViewName("Sunghyun/lessonBoardDeleteEnd.tiles2");
+		}
+		
+		return mav;
+	}
+	
+	
+	// 강의자료실 글 삭제 요청 마무리
+	@RequestMapping(value="/lessonBoardDeleteEnd.univ")
+	public ModelAndView subject_lessonBoardDeleteEnd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		String seq = request.getParameter("seq");
+		String pw = request.getParameter("pw");
+		
+		HttpSession session = request.getSession();
+		String code = (String) session.getAttribute("code");
+		
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("seq", seq);
+		paraMap.put("code", code);
+		
+		LessonBoardVO lbvo = service.getLessonBoardDetail(paraMap);
+		
+		if( lbvo!= null && ! lbvo.getPw().equals(pw) ) {
+			
+			mav.addObject("message", "글암호가 올바르지 않습니다!!");
+			mav.addObject("loc", request.getContextPath()+"/lesson.univ");
+			mav.setViewName("msg");
+		}
+		
+		else {
+			int n = service.deleteLessonBoard(seq);
+			
+			if(n==1) {
+				mav.addObject("message", "글삭제 성공");
+				mav.addObject("loc", request.getContextPath()+"/lesson.univ");
+				mav.setViewName("msg");
+			}
+			
+			else {
+				mav.addObject("message", "글삭제 성공");
+				mav.addObject("loc", request.getContextPath()+"/lesson.univ");
+				mav.setViewName("msg");
+			}
+		}
+		
+		return mav;
+	}
+	
+	// 글 수정하기 폼페이지 요청
+	@RequestMapping(value="/editLessonBoard.univ")
+	public ModelAndView subject_editLessonBoard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		String seq = request.getParameter("seq");
+		String code = (String) request.getSession().getAttribute("code");
+		
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("seq", seq);
+		paraMap.put("code", code);
+		
+		LessonBoardVO lbvo = service.getLessonBoardDetail(paraMap);
+		
+		mav.addObject("lbvo", lbvo);
+		mav.setViewName("Sunghyun/lessonEdit.tiles2");
+		
+		return mav;
+	}
+	
+	// 글 수정하기 완료 요청
+	@RequestMapping(value="/editEndLessonBoard.univ", method= {RequestMethod.POST})
+	public ModelAndView subject_editEndLessonBoard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, LessonBoardVO lbvo) {
+		
+		
+		HttpSession session = request.getSession();
+		String code = (String) session.getAttribute("code");
+		
+		
+		MultipartFile attach = lbvo.getAttach();
+		
+		String content = lbvo.getContent();
+		
+		lbvo.setContent(content);
+		
+		if(!attach.isEmpty()) {
+			// 파일이 있는 게시글
+			
+			String path = request.getSession().getServletContext().getRealPath("/");
+			String root = path + "resources" + File.separator + "files"; 
+			
+			try {
+				
+				byte[] bytes = attach.getBytes(); // 실제 파일내용물
+				
+				String newFilename = "";
+				String fileExt = attach.getOriginalFilename().substring(attach.getOriginalFilename().lastIndexOf(".")); 
+				
+				newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
+				newFilename += System.nanoTime();
+				newFilename += fileExt;
+				
+				lbvo.setFileName(newFilename); // WAS DISK에 저장될 파일명
+				lbvo.setOrgFilename(attach.getOriginalFilename()); 	// 실제 파일명
+				lbvo.setFileSize(String.valueOf(attach.getSize())); // 파일사이즈
+				
+				File file = new File(root);
+				
+				if(!file.exists()) { // 폴더가 없으면 만들어준다.
+					file.mkdir();
+				}
+				
+				String pathname = root + File.separator + newFilename;
+				
+				FileOutputStream fos;
+				
+				fos = new FileOutputStream(pathname);
+				fos.write(bytes); 
+				fos.flush();
+				fos.close();
+				
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+		else {
+			lbvo.setFileName("");
+		}
+		
+		int n = service.editLessonBoard(lbvo);
+		
+		if(n==1) {
+			mav.addObject("message", "강의자료실 글 수정 성공!!");
+			mav.addObject("loc", request.getContextPath()+"/lessonDetail.univ?code="+code+"&seq="+lbvo.getSeq());
+			mav.setViewName("msg");
+		}
+		else {
+			mav.addObject("message", "강의자료실 글 수정 실패..");
+			mav.addObject("loc", "redirect:/lesson.univ");
+			mav.setViewName("msg");
+		}
+		
+		return mav;
+		
+	}
 	
 	// 과제 게시판
 	@RequestMapping(value="/homework.univ")

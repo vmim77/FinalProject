@@ -47,7 +47,7 @@
 	    });
 	    
 	    //쓰기버튼
-	    $("#btnWrite").click(function(){
+	    $("#btnEdit").click(function(){
 	    	
 	    	var subject = $("input[name=subject]").val().trim();
 	    	
@@ -60,6 +60,14 @@
 			
 			if(pw == "") {
 				alert("글암호를 반드시 입력해야 합니다.");
+				return;
+			}
+			
+			var originalPw = "${requestScope.lbvo.pw}";
+			
+			if(pw != originalPw){
+				alert("글작성시 입력한 암호와 같지 않습니다!");
+				$("input[name=pw]").val("");
 				return;
 			}
 	    	
@@ -82,10 +90,10 @@
 	        $("#content").val(contentval);
 	        
 	        //폼 submit
-	        var lessonWriteFrm = document.lessonWriteFrm;
-			lessonWriteFrm.action = "<%= request.getContextPath() %>/lessonWriteEnd.univ";
-			lessonWriteFrm.method = "POST";
-			lessonWriteFrm.submit();
+	        var frm = document.lessonEditFrm;
+			frm.method = "POST";
+			frm.action = "<%= request.getContextPath()%>/editEndLessonBoard.univ";
+			frm.submit();
 	    });
 		
 	}); // end of ready()-------------------------------------------
@@ -93,24 +101,24 @@
 </script>   
  
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
-<h3 style="float:left;">${requestScope.subjectMap.subject} 강의실(${requestScope.subjectMap.name}) > 강의자료실 > <span style="color: #0099ff; text-decoration: underline;">게시글 작성하기</span></h3>
+<h3 style="float:left;">${requestScope.subjectMap.subject} 강의실(${requestScope.subjectMap.name}) > 강의자료실 > <span style="color: #0099ff; text-decoration: underline;">게시글 수정하기</span></h3>
 <hr style="clear: both;">
 
 
-<form enctype="multipart/form-data" name="lessonWriteFrm">
+<form enctype="multipart/form-data" name="lessonEditFrm">
 	<div id="lessonTblFlex">
-		<table id="lessonWriteTbl" class="table table-bordered">
+		<table id="lessonEditTbl" class="table table-bordered">
 			<tr>
 				<th>제목</th>
-				<td><input type="text" name="subject" size="95" maxlength="100" /></td>
+				<td><input type="text" name="subject" size="95" maxlength="100" value="${requestScope.lbvo.subject}" /></td>
 			</tr>
 			<tr>
 				<th>글쓴이</th>
-				<td><input type="text" name="name" value="${sessionScope.loginuser.name}" readonly /></td>
+				<td><input type="text" name="name" value="${sessionScope.loginuser.name}" readonly/></td>
 			</tr>
 			<tr>
 				<th>내용</th>
-				<td><textarea id="content" name="content" cols="100" rows="20" style="resize: none;"></textarea></td>
+				<td><textarea id="content" name="content" cols="100" rows="20" style="resize: none;" >${requestScope.lbvo.content}</textarea></td>
 			</tr>
 			<tr>
 				<th>파일첨부</th>
@@ -123,9 +131,10 @@
 		</table>
 		
 		<button class="btn btn-dark btn-md" type="button" style="float: right;" onclick="javascript:location.href='<%= request.getContextPath()%>/lesson.univ'">취소</button>
-		<button class="btn btn-dark btn-md" type="button" style="float: right; margin-right: 10px;" id="btnWrite">작성</button>
+		<button class="btn btn-dark btn-md" type="button" style="float: right; margin-right: 10px;" id="btnEdit">수정</button>
 	</div>
 	
 	<input type="hidden" name="fk_code" value="${sessionScope.code}" />
 	<input type="hidden" name="fk_hakbun" value="${sessionScope.loginuser.hakbun}" />
+	<input type="hidden" name="seq" value="${requestScope.lbvo.seq}" />
 </form>

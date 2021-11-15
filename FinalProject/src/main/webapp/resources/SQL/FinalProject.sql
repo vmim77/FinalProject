@@ -417,3 +417,7 @@ JOIN tbl_member B
 on A.fk_hakbun = B.hakbun
 where parentSeq = 18
 order by seq desc
+
+select *
+from tbl_lessonboard
+order by seq desc;

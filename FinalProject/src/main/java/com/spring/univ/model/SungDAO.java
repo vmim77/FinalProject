@@ -91,6 +91,20 @@ public class SungDAO implements InterSungDAO {
 		return commentList;
 	}
 	
+	// 강의자료실 글  삭제하기
+	@Override
+	public int deleteLessonBoard(String seq) {
+		int n = sqlsession2.delete("Sung.deleteLessonBoard", seq);
+		return n;
+	}
+	
+	// 강의자료실 글 수정하기 완료요청
+	@Override
+	public int editLessonBoard(LessonBoardVO lbvo) {
+		int n = sqlsession2.update("Sung.editLessonBoard", lbvo);
+		return n;
+	}
+	
 	
 
 }
