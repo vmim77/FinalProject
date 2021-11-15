@@ -43,5 +43,11 @@ public interface InterSungDAO {
 	
 	// 강의자료실 글 수정하기 완료요청
 	int editLessonBoard(LessonBoardVO lbvo);
+	
+	// 강의자료실 댓글 삭제하기
+	int deleteLessonComment(String seq);
+	
+	// 강의자료실 댓글작성 -> 해당 글 댓글 수 1 증가
+	int updateCommentCnt(String parentSeq);
 
 }

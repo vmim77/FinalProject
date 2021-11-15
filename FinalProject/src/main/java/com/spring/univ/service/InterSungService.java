@@ -46,5 +46,8 @@ public interface InterSungService {
 	
 	// 강의자료실 글 수정하기 완료요청
 	int editLessonBoard(LessonBoardVO lbvo);
+	
+	// 강의자료실 댓글 삭제하기
+	int deleteLessonComment(String seq);
 
 }

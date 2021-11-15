@@ -77,7 +77,7 @@
 				<td style="display: none;">${leesonboardvo.seq}</td>
 				<td class="title">${status.index+1}</td>
 				<td class="title">${leesonboardvo.name}</td>
-				<td>${leesonboardvo.subject}<c:if test="${not empty leesonboardvo.fileName}"><img src='<%= request.getContextPath()%>/resources/images/disk.gif' style="margin-left: 10px;" /></c:if></td>
+				<td>${leesonboardvo.subject}<c:if test="${not empty leesonboardvo.fileName}"><img src='<%= request.getContextPath()%>/resources/images/disk.gif' style="margin-left: 10px;" /></c:if><c:if test="${leesonboardvo.commentCount ne 0}"><span style="font-size: 8pt; color:gray; margin-left:10px;">[${leesonboardvo.commentCount}]</span></c:if></td>
 				<td class="title">${leesonboardvo.regDate}</td>
 			</tr>
 		</c:forEach>

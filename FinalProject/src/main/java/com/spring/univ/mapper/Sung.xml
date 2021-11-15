@@ -32,7 +32,7 @@
 	
 	
 	<select id="getLessonBoard" parameterType="String" resultType="com.spring.univ.model.LessonBoardVO">
-		select seq, fk_hakbun, fk_code, name, subject, to_char(regdate,'yyyy-mm-dd hh24:mi:ss') as regDate, status, commentcount, filename
+		select seq, fk_hakbun, fk_code, name, subject, to_char(regdate,'yyyy-mm-dd hh24:mi:ss') as regDate, status, commentCount, filename
 		from tbl_lessonboard
 		where status = 1 and fk_code = #{code}
 		order by seq desc
@@ -163,5 +163,16 @@
 			update tbl_lessonboard set subject = #{subject}, content = #{content}, regDate = sysdate
 			where seq = #{seq}
 		</if>
+	</update>
+	
+	
+	<delete id="deleteLessonComment" parameterType="String">
+		delete from tbl_lessonboard_comment
+		where seq = #{seq}
+	</delete>
+	
+	<update id="updateCommentCnt">
+		update tbl_lessonBoard set commentcount = commentcount + 1
+		where seq = #{parentSeq}
 	</update>
 </mapper>

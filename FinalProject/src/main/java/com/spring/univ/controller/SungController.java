@@ -137,8 +137,6 @@ public class SungController {
 		MultipartFile attach = lbvo.getAttach();
 		
 		String content = lbvo.getContent();
-		content = content.replaceAll("<", "&lt;");
-		content = content.replaceAll(">", "&gt;");
 		
 		lbvo.setContent(content);
 		
@@ -517,12 +515,11 @@ public class SungController {
 	
 	// 글 수정하기 완료 요청
 	@RequestMapping(value="/editEndLessonBoard.univ", method= {RequestMethod.POST})
-	public ModelAndView subject_editEndLessonBoard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, LessonBoardVO lbvo) {
+	public ModelAndView subject_editEndLessonBoard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, LessonBoardVO lbvo, MultipartHttpServletRequest mrequest) {
 		
 		
 		HttpSession session = request.getSession();
 		String code = (String) session.getAttribute("code");
-		
 		
 		MultipartFile attach = lbvo.getAttach();
 		
@@ -595,6 +592,22 @@ public class SungController {
 		
 		return mav;
 		
+	}
+	
+	
+	// 강의자료실 댓글삭제
+	@ResponseBody
+	@RequestMapping(value="/deleteLessonComment.univ", method= {RequestMethod.POST} , produces="text/plain;charset=UTF-8")
+	public String subject_deleteLessonComment(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, LessonBoardVO lbvo) {
+		
+		String seq = request.getParameter("seq");
+		
+		int n = service.deleteLessonComment(seq);
+		
+		JSONObject jsObj = new JSONObject();
+		jsObj.put("n", n);
+		
+		return jsObj.toString();
 	}
 	
 	// 과제 게시판

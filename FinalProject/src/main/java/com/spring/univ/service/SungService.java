@@ -5,6 +5,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.univ.model.InterSungDAO;
 import com.spring.univ.model.LessonBoardCommentVO;
@@ -27,6 +30,7 @@ public class SungService implements InterSungService {
 	@Override
 	public List<LessonBoardVO> getLessonBoard(String code) {
 		List<LessonBoardVO> boardList = dao.getLessonBoard(code);
+		
 		return boardList;
 	}
 	
@@ -81,9 +85,16 @@ public class SungService implements InterSungService {
 	
 	// 강의자료실 댓글쓰기
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
 	public int addLessonBoardComment(LessonBoardCommentVO lbcvo) {
+		int m = 0;
 		int n = dao.addLessonBoardComment(lbcvo);
-		return n;
+		
+		if(n==1) {
+			 m = dao.updateCommentCnt(lbcvo.getParentSeq());
+		}
+		
+		return m;
 	}
 	
 	// 강의자료실 댓글목록 가져오기
@@ -104,6 +115,13 @@ public class SungService implements InterSungService {
 	@Override
 	public int editLessonBoard(LessonBoardVO lbvo) {
 		int n = dao.editLessonBoard(lbvo);
+		return n;
+	}
+	
+	// 강의자료실 댓글 삭제하기
+	@Override
+	public int deleteLessonComment(String seq) {
+		int n = dao.deleteLessonComment(seq);
 		return n;
 	}
 

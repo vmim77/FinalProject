@@ -66,7 +66,6 @@
 					alert("댓글쓰기 실패!!");
 				}
 				else{
-					alert("댓글쓰기 성공!!");
 					getCommentList();
 				}
 				
@@ -91,11 +90,16 @@
 					
 					$.each(json, function(index, item){
 						
+						var hakbun = item.fk_hakbun;
+						
 						html += "<tr>";
-						html += "<td style='width: 10%; text-align: center; font-weight: bold;'><img src='<%= request.getContextPath()%>/resources/images/personimg.png' />"+item.name+"("+item.fk_hakbun+")</td>"
-						html += "<td style='width: 40%;'>"+item.content+"</td>"
-						html += "<td style='width: 10%; text-align: center;'>"+item.regDate+"</td>"
+						html += "<td style='width: 10%; text-align: center; font-weight: bold;'><img src='<%= request.getContextPath()%>/resources/images/personimg.png' />"+item.name+"("+item.fk_hakbun+")</td>";
+						html += "<td style='width: 40%;'>"+item.content+"</td>";
+						html += "<td style='width: 10%; text-align: center;'>"+item.regDate+"</td>";
+						html += "<td style='width: 1%; text-align: right; font-size: 15pt; color: red; cursor: pointer;' onclick='deleteComment("+item.seq+","+item.fk_hakbun+")'>&times;</td>";
 						html += "</tr>";
+						
+						console.log(item.fk_hakbun);
 					});
 					
 				}
@@ -129,6 +133,43 @@
 		
 	}// end of function goEdit(seq){}----------------------------------
 	
+	
+	function deleteComment(seq, fk_hakbun) {
+		
+		var loginuserHakbun = ${sessionScope.loginuser.hakbun};
+		
+		if(loginuserHakbun != fk_hakbun){
+			alert("본인이 작성한 댓글만 삭제가 가능합니다.");
+			return;
+		}
+		
+		
+		$.ajax({
+			url:"<%= request.getContextPath()%>/deleteLessonComment.univ",
+			data:{"seq":seq},
+			type:"POST",
+			dataType:"JSON",
+			success:function(json) {
+				
+				if(json.n==1){
+					alert(seq+" 번 댓글삭제 성공");
+					getCommentList();
+				}
+				else{
+					alert("댓글삭제 실패!!");
+				}
+				
+			},
+	        error: function(request, status, error){
+	              alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+			
+		});
+		
+		
+	}// end of function deleteComment(seq) ---------------------------------------
+	
+	
 </script>
 
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
@@ -157,7 +198,7 @@
 				<td><a href="<%= request.getContextPath()%>/downloadLessonFile.univ?code=${sessionScope.code}&seq=${requestScope.lbvo.seq}">${requestScope.lbvo.orgFilename}</a></td>
 			</tr>
 			<tr>
-				<th>파일용량</th>
+				<th>파일용량(KB)</th>
 				<td><fmt:formatNumber value="${requestScope.lbvo.fileSize}" pattern="#,###" /></td>
 			</tr>
 		</table>

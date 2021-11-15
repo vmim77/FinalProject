@@ -421,3 +421,13 @@ order by seq desc
 select *
 from tbl_lessonboard
 order by seq desc;
+
+select * 
+from tbl_lessonboard_comment;
+
+delete tbl_lessonboard_comment;
+
+commit;
+
+select * 
+from tbl_member;
