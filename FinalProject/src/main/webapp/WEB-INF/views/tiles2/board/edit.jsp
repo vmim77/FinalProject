@@ -120,14 +120,12 @@
 	<hr style="width: 843px; margin-left: 0px;">
 	<form name="editFrm">
 		
-			
+				    <input type="hidden" name="seq" value="${requestScope.freeboardvo.seq}" />
 					<input type="hidden" name="fk_hakbun" value="${requestScope.freeboardvo.fk_hakbun}" readonly/>
 					<input type="hidden" name="name" value="${requestScope.freeboardvo.name}" readonly/>
 					<input type="hidden" name="fk_code" id="fk_code" size="100" value="${requestScope.freeboardvo.fk_code}" readonly/>
 				
 			
-			
-				
 				<div>					
 					<input style="margin-bottom: 13px;" type="text" name="subject"  id="subject" size="100" value="${requestScope.freeboardvo.subject}" />
 				</div>
@@ -154,7 +152,7 @@
 		<div style="margin-left: 736px;">	
 			<div>
 				<button type="button" class="btn btn-light  btn-sm" onclick="javascript:history.back()">취소</button>
-				<button style="margin-left: 7px;"type="button" class="btn btn-secondary btn-sm" id="btnWrite" >저장</button>	
+				<button style="margin-left: 7px;"type="button" class="btn btn-secondary btn-sm" id="btnUpdate" >저장</button>	
 			</div>
 		</div>
 		
