@@ -48,6 +48,6 @@ public interface InterSungService {
 	int editLessonBoard(LessonBoardVO lbvo);
 	
 	// 강의자료실 댓글 삭제하기
-	int deleteLessonComment(String seq);
+	int deleteLessonComment(Map<String, String> paraMap);
 
 }

@@ -107,8 +107,8 @@ public class SungDAO implements InterSungDAO {
 	
 	// 강의자료실 댓글 삭제하기
 	@Override
-	public int deleteLessonComment(String seq) {
-		int n = sqlsession2.delete("Sung.deleteLessonComment", seq);
+	public int deleteLessonComment(Map<String, String> paraMap) {
+		int n = sqlsession2.delete("Sung.deleteLessonComment", paraMap);
 		return n;
 	}
 	
@@ -116,6 +116,13 @@ public class SungDAO implements InterSungDAO {
 	@Override
 	public int updateCommentCnt(String parentSeq) {
 		int n = sqlsession2.update("Sung.updateCommentCnt", parentSeq);
+		return n;
+	}
+	
+	// 강의자료실 댓글삭제 -> 해당 글 댓글 수 1 차감
+	@Override
+	public int downCommentCnt(Map<String, String> paraMap) {
+		int n = sqlsession2.update("Sung.downCommentCnt", paraMap);
 		return n;
 	}
 	

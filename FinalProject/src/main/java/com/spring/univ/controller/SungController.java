@@ -338,6 +338,7 @@ public class SungController {
 			jsObj.put("name", lbcvo.getName());
 			jsObj.put("content", lbcvo.getContent());
 			jsObj.put("regDate", lbcvo.getRegDate());
+			jsObj.put("parentSeq", lbcvo.getParentSeq());
 			
 			jsonArr.put(jsObj);
 		}
@@ -601,8 +602,13 @@ public class SungController {
 	public String subject_deleteLessonComment(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, LessonBoardVO lbvo) {
 		
 		String seq = request.getParameter("seq");
+		String parentSeq = request.getParameter("parentSeq");
 		
-		int n = service.deleteLessonComment(seq);
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("seq", seq);
+		paraMap.put("parentSeq", parentSeq);
+		
+		int n = service.deleteLessonComment(paraMap);
 		
 		JSONObject jsObj = new JSONObject();
 		jsObj.put("n", n);

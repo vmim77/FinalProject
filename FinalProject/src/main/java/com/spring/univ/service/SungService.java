@@ -120,8 +120,15 @@ public class SungService implements InterSungService {
 	
 	// 강의자료실 댓글 삭제하기
 	@Override
-	public int deleteLessonComment(String seq) {
-		int n = dao.deleteLessonComment(seq);
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
+	public int deleteLessonComment(Map<String, String> paraMap) {
+		
+		int n = dao.deleteLessonComment(paraMap);
+		
+		if(n==1) {
+			int m = dao.downCommentCnt(paraMap);
+		}
+		
 		return n;
 	}
 

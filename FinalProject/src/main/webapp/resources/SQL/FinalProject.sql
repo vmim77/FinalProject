@@ -422,12 +422,12 @@ select *
 from tbl_lessonboard
 order by seq desc;
 
-select * 
-from tbl_lessonboard_comment;
-
-delete tbl_lessonboard_comment;
-
+update tbl_lessonboard set commentcount = 0;
 commit;
 
 select * 
-from tbl_member;
+from tbl_lessonboard_comment;
+
+delete from tbl_lessonboard_comment;
+
+

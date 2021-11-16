@@ -141,6 +141,7 @@
 	
 	<select id="getLessonBoardComment" parameterType="String" resultType="com.spring.univ.model.LessonBoardCommentVO">
 		select A.seq AS seq, A.fk_hakbun AS fk_hakbun, case B.authority when 0 then '학생 ' when 1 then '교수 ' end || A.name AS name, A.content AS content, to_char(A.regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+		, A.parentSeq AS parentSeq
 		from tbl_lessonBoard_comment A
 		JOIN tbl_member B
 		on A.fk_hakbun = B.hakbun
@@ -166,13 +167,18 @@
 	</update>
 	
 	
-	<delete id="deleteLessonComment" parameterType="String">
+	<delete id="deleteLessonComment" parameterType="HashMap">
 		delete from tbl_lessonboard_comment
 		where seq = #{seq}
 	</delete>
 	
 	<update id="updateCommentCnt">
 		update tbl_lessonBoard set commentcount = commentcount + 1
+		where seq = #{parentSeq}
+	</update>
+	
+	<update id="downCommentCnt">
+		update tbl_lessonBoard set commentcount = commentcount - 1
 		where seq = #{parentSeq}
 	</update>
 </mapper>

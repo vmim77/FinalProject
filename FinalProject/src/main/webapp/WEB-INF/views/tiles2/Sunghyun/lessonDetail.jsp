@@ -67,6 +67,7 @@
 				}
 				else{
 					getCommentList();
+					$(window).scrollTop(999999);
 				}
 				
 				$("input[name=content]").val("");
@@ -96,7 +97,7 @@
 						html += "<td style='width: 10%; text-align: center; font-weight: bold;'><img src='<%= request.getContextPath()%>/resources/images/personimg.png' />"+item.name+"("+item.fk_hakbun+")</td>";
 						html += "<td style='width: 40%;'>"+item.content+"</td>";
 						html += "<td style='width: 10%; text-align: center;'>"+item.regDate+"</td>";
-						html += "<td style='width: 1%; text-align: right; font-size: 15pt; color: red; cursor: pointer;' onclick='deleteComment("+item.seq+","+item.fk_hakbun+")'>&times;</td>";
+						html += "<td style='width: 1%; text-align: right; font-size: 15pt; color: red; cursor: pointer;' onclick='deleteComment("+item.seq+","+item.fk_hakbun+","+item.parentSeq+")'>&times;</td>";
 						html += "</tr>";
 						
 						console.log(item.fk_hakbun);
@@ -134,7 +135,7 @@
 	}// end of function goEdit(seq){}----------------------------------
 	
 	
-	function deleteComment(seq, fk_hakbun) {
+	function deleteComment(seq, fk_hakbun, parentSeq) {
 		
 		var loginuserHakbun = ${sessionScope.loginuser.hakbun};
 		
@@ -146,7 +147,8 @@
 		
 		$.ajax({
 			url:"<%= request.getContextPath()%>/deleteLessonComment.univ",
-			data:{"seq":seq},
+			data:{"seq":seq,
+				  "parentSeq":parentSeq},
 			type:"POST",
 			dataType:"JSON",
 			success:function(json) {
@@ -154,6 +156,7 @@
 				if(json.n==1){
 					alert(seq+" 번 댓글삭제 성공");
 					getCommentList();
+					$(window).scrollTop(999999);
 				}
 				else{
 					alert("댓글삭제 실패!!");
