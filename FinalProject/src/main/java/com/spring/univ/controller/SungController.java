@@ -595,7 +595,6 @@ public class SungController {
 		
 	}
 	
-	
 	// 강의자료실 댓글삭제
 	@ResponseBody
 	@RequestMapping(value="/deleteLessonComment.univ", method= {RequestMethod.POST} , produces="text/plain;charset=UTF-8")
@@ -616,12 +615,24 @@ public class SungController {
 		return jsObj.toString();
 	}
 	
+	
+	
+	@RequestMapping(value="/messenger.univ")
+	public String requiredLogin_multichat(HttpServletRequest request, HttpServletResponse response) {
+		
+		return "Sunghyun/multichat";
+	}
+	
+	
+	
 	// 과제 게시판
 	@RequestMapping(value="/homework.univ")
 	public ModelAndView subject_homework(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		mav.setViewName("Sunghyun/homework.tiles2");
 		return mav;
 	}
+	
+	
 
 	
 }	
