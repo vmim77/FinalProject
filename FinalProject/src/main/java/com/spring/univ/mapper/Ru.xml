@@ -79,7 +79,7 @@
 		    and lower(${searchType}) like '%'||lower(#{searchWord}) ||'%'
 		    </if>
 		) V 
-		where V.seq = #{seq} and fk_code = #{fk_code}
+		where V.seq = #{seq}
 	</select>
 	
 	
@@ -94,7 +94,7 @@
     <update id="edit" parameterType="com.spring.univ.model.FreeBoardVO">
         update tbl_FreeBoard set subject = #{subject}
                                , content = #{content}
-        where seq = #{seq} and pw = #{pw} and fk_code = #{fk_code}
+        where seq = #{seq} and pw = #{pw}
     </update>
 
 

@@ -12,7 +12,7 @@
 			//폼(form)을 전송(submit)
 			var frm = document.DelFrm;
 			frm.method = "POST";
-			frm.action = "<%= ctxPath%>/delEnd.action";
+			frm.action = "<%= ctxPath%>/delEnd.univ";
 			frm.submit();
 		});
 		

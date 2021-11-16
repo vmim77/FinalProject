@@ -371,6 +371,10 @@ public class RuController {
 		paraMap.put("seq", seq);
 		paraMap.put("fk_code", fk_code); // 추가
 		
+		
+		paraMap.put("searchType", "");// 추가
+	    paraMap.put("searchWord", "");// 추가
+		
 		FreeBoardVO freeboardvo = service.getWithNoAddCount(paraMap);
 		
 		try {
@@ -445,10 +449,15 @@ public class RuController {
 
 		// 삭제해야 할 글번호 가져오기
 		String seq = request.getParameter("seq");
+		String fk_code = request.getParameter("fk_code");// 추가
 		
 		// 글 삭제해야할 글1개 내용 가져오기
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("seq", seq);
+		paraMap.put("fk_code", fk_code);// 추가
+		
+		paraMap.put("searchType", "");// 추가
+	    paraMap.put("searchWord", "");// 추가
 		
 		FreeBoardVO freeboardvo = service.getWithNoAddCount(paraMap);
 		

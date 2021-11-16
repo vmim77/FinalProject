@@ -345,9 +345,9 @@
 	  		&nbsp;&nbsp;
 	  		<button type="button" style="height: 36px;"  class="btn btn-secondary" onclick="javascript:location.href='<%= request.getContextPath()%>${requestScope.gobackURL}'">검색된 결과목록보기</button>
 	  		
-	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/edit.univ?code=${requestScope.freeboardvo.fk_code}&seq=${requestScope.freeboardvo.seq}'" class="btn btn-light" style="height: 36px; margin-left: 47%;font-weight:bold; font-size: 10pt; padding: 7px 12px; text-align: right; "><i class="far fa-edit"></i>&nbsp;수정</button> <%-- fk_code추가함 --%>
+	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/edit.univ?fk_code=${sessionScope.code}&seq=${requestScope.freeboardvo.seq}'" class="btn btn-light" style="height: 36px; margin-left: 47%;font-weight:bold; font-size: 10pt; padding: 7px 12px; text-align: right; "><i class="far fa-edit"></i>&nbsp;수정</button> <%-- fk_code추가함 --%>
 	  		&nbsp;&nbsp;
-	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/del.univ?seq=${requestScope.freeboardvo.seq}'" class="btn btn-light" style="height: 36px; font-weight:bold; font-size: 10pt; padding: 7px 12px;"><i class="far fa-trash-alt"></i>&nbsp;삭제</button>&nbsp;	
+	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/del.univ?fk_code=${sessionScope.code}&seq=${requestScope.freeboardvo.seq}'" class="btn btn-light" style="height: 36px; font-weight:bold; font-size: 10pt; padding: 7px 12px;"><i class="far fa-trash-alt"></i>&nbsp;삭제</button>&nbsp;	
 	   		
 	</div>
 	
