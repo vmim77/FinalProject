@@ -40,7 +40,7 @@
 	
 	<!-- 글1개 조회하기 추가-->
 	
-	<select id="getView" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO">
+	<!-- <select id="getView" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO">
 		select previousseq, previoussubject, 
 		       seq, fk_hakbun, name, subject, content, readCount, regDate, nextseq, nextsubject
 		from 
@@ -58,6 +58,28 @@
 		    </if>
 		) V 
 		where V.seq = #{seq}
+	</select> -->
+	<!-- 아래로 수정함  -->
+	<select id="getView" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO">
+		select previousseq, previoussubject, 
+		       seq, fk_hakbun, name, subject, content, readCount, regDate, nextseq, nextsubject, fk_code 
+		from 
+		(
+		    select   lag(seq, 1) over(order by seq desc) AS previousseq
+		           , lag(subject, 1) over(order by seq desc) AS previoussubject		           
+		           , seq, fk_hakbun, name, subject, content, readCount
+		           , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate		    
+		           , lead(seq, 1) over(order by seq desc) AS nextseq
+		           , lead(subject, 1) over(order by seq desc) AS nextsubject
+		           , fk_code 		        
+		    from tbl_FreeBoard
+		    where status = 1
+		    and fk_code = #{fk_code}
+		    <if test='searchType != "" and searchWord != ""'>
+		    and lower(${searchType}) like '%'||lower(#{searchWord}) ||'%'
+		    </if>
+		) V 
+		where V.seq = #{seq} and fk_code = #{fk_code}
 	</select>
 	
 	
@@ -72,7 +94,7 @@
     <update id="edit" parameterType="com.spring.univ.model.FreeBoardVO">
         update tbl_FreeBoard set subject = #{subject}
                                , content = #{content}
-        where seq = #{seq} and pw = #{pw} 
+        where seq = #{seq} and pw = #{pw} and fk_code = #{fk_code}
     </update>
 
 

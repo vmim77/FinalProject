@@ -432,6 +432,19 @@ from tbl_subject;
 select *
 from tbl_freeBoard;
 
+select *
+from tbl_freecomment;
+
+select *
+from tbl_sugang;
+
+insert into tbl_sugang(fk_code, fk_hakbun)
+values('0202','2100021');
+
+insert into tbl_sugang(fk_code, fk_hakbun)
+values('0202','2100022');
+
+commit;
 
 -- code 0202 빅데이터실무에 데이터 넣기
 insert into tbl_FreeBoard(seq, fk_hakbun, name, subject, content, pw, readCount, regDate, status, commentCount, fk_code)
@@ -445,6 +458,12 @@ begin
    end loop;
 end;
 
+begin
+   for i in 1..5 loop
+     insert into tbl_FreeBoard(seq, fk_hakbun, name, subject, content, pw, readCount, regDate, status, commentCount, fk_code)
+     values(boardSeq.nextval, '2100021','이루리', '빅데이터질문입니다'||i, '질문입니다'||i, '1234', default, default, default, default,'0202');
+   end loop;
+end;
 
 
 commit;

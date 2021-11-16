@@ -52,8 +52,9 @@
 			<tr>
 				<th style="width: 15%; background-color: #DDDDDD">성명</th>
 				<td>
-					<input type="hidden" name="seq" value="${requestScope.freeboardvo.seq}" />
-					${requestScope.freeboardvo.name}
+					<input type="hidden" name="fk_hakbun" value="${requestScope.freeboardvo.fk_hakbun}" readonly/>
+					<input type="text" name="name" value="${requestScope.freeboardvo.name}" readonly/>
+					<input type="hidden" name="fk_code" id="fk_code" size="100" value="${requestScope.freeboardvo.fk_code}" readonly/>
 				</td>
 			</tr>
 			<tr>

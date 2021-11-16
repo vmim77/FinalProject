@@ -4,13 +4,21 @@
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+
+ <!-- Font Awesome 5 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
     
 <style type="text/css">
 
 	.move {cursor: pointer; color: navy;}
 	.moveColor {color: #660029; font-weight: bold; background-color: #ffffe6;}
 
-    td.comment {text-align: center;}
+    td.comment {text-align: center;} 
+    #commentDisplay > tr:nth-child(1) > td:nth-child(1) {width: 5%;} 
+   
+    #commentDisplay > tr:nth-child(1) > td:nth-child(3) {width: 9%;} 
+    #commentDisplay > tr:nth-child(1) > td:nth-child(4) {width: 19%;} 
     
     
     /* 부트스트랩 버튼 색 변경    */
@@ -60,7 +68,8 @@
 	// Function Declration
 	function goAddWrite() {
 		
-		var contentVal = $("input#commentContent").val().trim();
+		//var contentVal = $("input#commentContent").val().trim();
+		var contentVal = $('textarea[name*="commentContent"]').val().trim();
 		if(contentVal == "") {
 			alert("댓글 내용을 입력하세요!!");
 			return; // 종료
@@ -80,7 +89,7 @@
 			data:{"fk_hakbun":$("input#fk_hakbun").val()
 				 ,"name":$("input#name").val()
 				 ,"fk_code":$("input#fk_code").val()
-				 ,"content":$("input#commentContent").val()
+				 ,"content":$('textarea[name*="commentContent"]').val()
 				 ,"parentSeq":$("input#parentSeq").val()},
 			type:"POST",
 			dataType:"JSON",
@@ -96,7 +105,8 @@
 			    	goViewComment(1); // 페이징처리 한 댓글 읽어오기
 			    }
 			    
-			    $("input#commentContent").val("");
+			   // $("input#commentContent").val(""); 방금수정
+			   $('textarea[name*="commentContent"]').val("");
 				
 			},
 			error: function(request, status, error){
@@ -142,7 +152,7 @@
 	}// end of function goReadComment() {}----------------------------------
 	
 	
-	// === #127. Ajax로 불러온 댓글내용을 페이징처리 하기 === //
+	// === #127. Ajax로 불러온 댓글내용을 페이징처리 하기 === // //댓글보이기는 goViewComment를 사용함
 	function goViewComment(currentShowPageNo) {
 		
 		$.ajax({
@@ -335,49 +345,36 @@
 	  		&nbsp;&nbsp;
 	  		<button type="button" style="height: 36px;"  class="btn btn-secondary" onclick="javascript:location.href='<%= request.getContextPath()%>${requestScope.gobackURL}'">검색된 결과목록보기</button>
 	  		
-	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/edit.univ?seq=${freeboardvo.seq}'" class="btn btn-light" style="height: 36px; margin-left: 47%;font-weight:bold; font-size: 10pt; padding: 7px 12px; text-align: right; "><i class="far fa-edit"></i>&nbsp;수정</button>
+	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/edit.univ?code=${requestScope.freeboardvo.fk_code}&seq=${requestScope.freeboardvo.seq}'" class="btn btn-light" style="height: 36px; margin-left: 47%;font-weight:bold; font-size: 10pt; padding: 7px 12px; text-align: right; "><i class="far fa-edit"></i>&nbsp;수정</button> <%-- fk_code추가함 --%>
 	  		&nbsp;&nbsp;
-	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/del.univ?seq=${freeboardvo.seq}'" class="btn btn-light" style="height: 36px; font-weight:bold; font-size: 10pt; padding: 7px 12px;"><i class="far fa-trash-alt"></i>&nbsp;삭제</button>&nbsp;	
+	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/del.univ?seq=${requestScope.freeboardvo.seq}'" class="btn btn-light" style="height: 36px; font-weight:bold; font-size: 10pt; padding: 7px 12px;"><i class="far fa-trash-alt"></i>&nbsp;삭제</button>&nbsp;	
 	   		
 	</div>
 	
 	<c:if test="${not empty requestScope.freeboardvo}">
 		
-			<tr>
-				<th style="width: 15%;">글번호</th>
-				<td>${freeboardvo.seq}</td>
-			</tr>
-			<tr>	
-				<th>글쓴이</th>
-				<td>${freeboardvo.name}&nbsp;&nbsp;(${freeboardvo.fk_hakbun})</td>
-			</tr>
-			<tr>	
-				<th>제목</th>
-				<td>${freeboardvo.subject}</td>
-			</tr>
-			<tr>	
-				<th>내용</th>
-				<td>
-				  <p style="word-break: break-all;">${freeboardvo.content}</p>
-				  <%-- 
-				      style="word-break: break-all; 은 공백없는 긴영문일 경우 width 크기를 뚫고 나오는 것을 막는 것임. 
-				           그런데 style="word-break: break-all; 나 style="word-wrap: break-word; 은
-				           테이블태그의 <td>태그에는 안되고 <p> 나 <div> 태그안에서 적용되어지므로 <td>태그에서 적용하려면
-				      <table>태그속에 style="word-wrap: break-word; table-layout: fixed;" 을 주면 된다.
-				 --%>
-				</td>
-			</tr>
-			<tr>	
-				<th>조회수</th>
-				<td>${freeboardvo.readCount}</td>
-			</tr>	
-			<tr>	
-				<th>작성일</th>
-				<td>${freeboardvo.regDate}</td>
-			</tr>
+		<%-- 글내용보기  --%>
+		
+		<div class="pl-4">
+	  	 <br>
+	  	 <br>
+		  	<div style="font-weight: bold; font-size: 20px; word-break: break-all;">
+		   		${freeboardvo.subject}
+		   	</div>
+		
+		<br>
+	 		<span style="">작성자 :&ensp;${freeboardvo.name} &ensp;|&ensp;작성일 :&ensp;${freeboardvo.regDate}&ensp;</span> 
+	 		<span style="margin-left: 580px;"> 조회수: ${freeboardvo.readCount}</span>
+	   
+	    <br>
+	    <br>
+		    <div style="word-break: break-all;">
+		    	${freeboardvo.content}
+		    </div>
+		    
+		</div> 
 		
 		
-		<br/>
 		
 		<c:set var="v_gobackURL" value='${ fn:replace(requestScope.gobackURL, "&", " ") }' />
 		
@@ -386,7 +383,6 @@
 		<div style="margin-bottom: 1%;">다음글제목&nbsp;:&nbsp;<span class="move" onclick="javascript:location.href='view.univ?seq=${freeboardvo.nextseq}'">${freeboardvo.nextsubject}</span></div>
 		 --%>
 		
-		 
 		<br>    
 	    <br>
 	    <hr>
@@ -396,66 +392,42 @@
 	  
 	  <br>
 	  <br>
-<%-- 글내용보기 끝 === --%>	
+	<%-- 글내용보기 끝 === --%>	
 
-	
 		
-		<%-- === #83. 댓글쓰기 폼 추가 === --%>
+		
+		<%-- === 댓글쓰기 폼 === --%>
 		
 		<c:if test="${not empty sessionScope.loginuser}">
-			<h3 style="margin-top: 50px;">댓글쓰기</h3>
-			
-			<form name="addWriteFrm" id="addWriteFrm" style="margin-top: 20px;"> 
-				<table class="table" style="width: 1024px">
-					<tr style="height: 30px;">
-					   <th width="10%">성명</th>
-					   <td>
-					   	  <input type="hidden" id="fk_hakbun" value="${sessionScope.loginuser.hakbun}" /> <%-- fk_userid => fk_hakbun --%>
-					   	  <input type="text" id="name" value="${sessionScope.loginuser.name}" readonly />
-					   </td>
-					</tr>
-					<tr style="height: 30px;">
-					   <th>학과코드</th>
-					   <td>
-					   	  <input type="text" id="fk_code" size="100" />
-					   	  <input type="hidden" id="fk_code" value="${freeboardvo.fk_code}" readonly />
-					   </td>
-					</tr>
-					<tr style="height: 30px;">
-					   <th>댓글내용</th>
-					   <td>
-					   	  <input type="text" id="commentContent" size="100" />
-					   	  <input type="hidden" id="parentSeq" value="${freeboardvo.seq}" readonly />
-					   </td>
-					</tr>
-					<tr>
-					   <th colspan="2">
-					   	  <button type="button" class="btn btn-success btn-sm mr-3" onclick="goAddWrite()">댓글쓰기 확인</button>
-					   	  <button type="reset" class="btn btn-success btn-sm">댓글쓰기 취소</button>
-					   </th>
-					</tr>
-				</table>
+		
+			<form name="addWriteFrm" id="addWriteFrm" style="margin-top: 20px;">
+		
+			  <div class="card-body" style="display: flex; height: 13%;   background-color:#f2f2f2;   padding: 20px 15px 15px 15px;  ">
+			 		   
+			      <input type="hidden" id="fk_hakbun" value="${sessionScope.loginuser.hakbun}" /> <%-- fk_userid => fk_hakbun --%>
+			   	  <input type="hidden" id="name" value="${sessionScope.loginuser.name}" />
+			   	  <textarea name="commentContent" id="commentContent" maxlength="400" cols="100" style="width: 870px; height: 43px; margin-left: 18px;"></textarea>
+			   	  <input type="hidden" id="parentSeq" value="${freeboardvo.seq}" readonly />
+			   	  &ensp;&ensp;&ensp;
+			   	  <button style="margin-top: 0px; height: 43px; width: 95px;" type="button" class="btn btn-secondary btn-sm mr-3" onclick="goAddWrite()">등록</button>
+			   	  <input type="hidden" id="fk_code" value="${sessionScope.code}" />
+			  </div>	
+		
+		
 			</form>
 		</c:if>
 		
-		<%-- ==== #94. 댓글 내용 보여주기 ==== --%>
-		<h3 style="margin-top: 50px;">댓글내용</h3>
-		<table class="table" style="width: 1024px; margin-top: 2%; margin-bottom: 3%;">
-			<thead>
-			<tr>
-			   <th style="width: 6%; text-align: center;">번호</th>
-			   <th style="text-align: center;">내용</th>
-			   
-			   <%-- 첨부파일이 있는 경우 시작 --%>
-			  
-			   <%-- 첨부파일이 있는 경우 끝 --%>
-			   
-			   <th style="width: 8%; text-align: center;">작성자</th>
-			   <th style="width: 17%; text-align: center;">작성일자</th>
-			</tr>
-			</thead>
+		<%-- === 댓글쓰기 폼  끝=== --%>
+		
+		
+		
+		
+		<%-- === 댓글 내용 보여주기 시작=== --%>
+		<table class="table" style="margin-top: 2%; margin-bottom: 3%;">
 			<tbody id="commentDisplay"></tbody>
 		</table>
+		<%-- === 댓글 내용 보여주기 끝=== --%>
+		
 		
 		<%-- === 댓글 페이지바 === --%>
 		<div style="display: flex; margin-bottom: 50px;">

@@ -2,7 +2,10 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+ <!-- Font Awesome 5 Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    
 <% String ctxPath = request.getContextPath(); %>
 
 <style type="text/css">
@@ -168,6 +171,8 @@ table td {
 		var frm = document.searchFrm;
 		frm.method = "GET";
 		frm.action = "<%= request.getContextPath()%>/list.univ";
+		
+		//code를 추가했는데 맞게 한건지 다시 빼야하는지 모르겠다
 		frm.submit();
 	}// end of function goSearch() {}---------------------------------
 	
@@ -206,7 +211,7 @@ table td {
 					<th style="width: 150px; text-align: center;">글쓴이</th>
 					<th style="width: 150px; text-align: center;">작성일</th>
 					<th style="width: 70px; text-align: center;">조회수</th>
-					<th style="width: 70px; text-align: center;">확인용과목코드</th>
+					
 				</tr>	
 			</thead>
 			<tbody>
@@ -230,7 +235,7 @@ table td {
 						<td align="center">${freeboardvo.name} (${freeboardvo.fk_hakbun})</td>
 						<td align="center">${freeboardvo.regDate}</td>
 						<td align="center">${freeboardvo.readCount}</td>
-						<td align="center">${freeboardvo.fk_code}</td>
+						
 					</tr>
 				</c:forEach>	
 			</tbody>
