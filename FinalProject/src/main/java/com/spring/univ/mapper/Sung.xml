@@ -79,7 +79,9 @@
 		select hakbun, code, subject, teacher, hakjum, classdate, location
 		from
 		(
-		select B.hakbun AS hakbun ,C.code AS code, C.subject AS subject, D.name AS teacher, C.hakjum AS hakjum, C.classdate AS classdate, E.deptlocation || ' ' || E.deptname AS location
+		select B.hakbun AS hakbun ,C.code AS code, C.subject AS subject, D.name AS teacher, C.hakjum AS hakjum
+		, case C.classdate when '1' then '월' when '2' then '화' when '3' then '수' when '4' then '목' else '금' end  AS classdate
+		, E.deptlocation || ' ' || E.deptname AS location
 		from tbl_sugang A
 		JOIN tbl_member B
 		on A.fk_hakbun = B.hakbun
@@ -113,14 +115,20 @@
 		<result property="deptcode" column="deptcode" javaType="String" />
 		<result property="deptname" column="deptname" javaType="String" />
 		<result property="deptlocation" column="deptlocation" javaType="String" />
+		<result property="cnt" column="cnt" javaType="String" />
 	</resultMap>
 	
+		
 	<select id="getsuUp" parameterType="String" resultMap="suupMap">
-		select code, subject, hakjum, classdate, deptcode, deptname, deptlocation
+		select code, subject, hakjum
+		, case classdate when '1' then '월' when '2' then '화' when '3' then '수' when '4' then '목' else '금' end  AS classdate
+		, deptcode, deptname, deptlocation, NVL(cnt, 0) AS cnt
 		from tbl_subject A
 		JOIN tbl_department B
 		ON A.fk_deptcode = B.deptcode
-		where fk_hakbun = #{hakbun}
+		LEFT JOIN (select count(*) AS cnt, fk_code from tbl_sugang group by fk_code) C
+		on A.code = C.fk_code
+		where A.fk_hakbun = #{hakbun}
 	</select>
 	
 	<select id="checkLesson" parameterType="HashMap" resultType="int">

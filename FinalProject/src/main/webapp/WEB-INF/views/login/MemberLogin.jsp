@@ -29,7 +29,7 @@
 
 <style>
 
-body { background-color: #f5a100;
+body { background-color: #ffb84d;
 	   background-image: url("<%= request.getContextPath()%>/resources/images/background.jpg");
 	    }
 

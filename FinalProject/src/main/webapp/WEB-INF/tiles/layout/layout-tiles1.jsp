@@ -140,7 +140,7 @@
 		
 		$("#MessengerToggle").click(function(){
 			
-			$("div#Messenger").append("<div style='background-color: #f5a100; text-align:center; font-size:15pt;'>길영대학교 메신저</div><span id='MessangerClose' style='font-size:20pt; float:right;'>&times;</span>");
+			$("div#Messenger").append("<div style='background-color: #ffb84d; text-align:center; font-size:15pt;'>길영대학교 메신저</div><span id='MessangerClose' style='font-size:20pt; float:right;'>&times;</span>");
 			$("div#Messenger").append("<div style='clear:both;'></div>");
 			$("div#Messenger").append("<iframe src='<%= serverName%><%= ctxPath%>/messenger.univ' style='width: 100%; height: 100%; border:solid 1px gray;'></iframe>");
 			$("div#Messenger").show('slow');

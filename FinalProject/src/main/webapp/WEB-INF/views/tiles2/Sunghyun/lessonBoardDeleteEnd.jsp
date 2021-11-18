@@ -3,8 +3,8 @@
     
 
 <style type="text/css">
-	th { background-color: #f5a100; width: 15%; }
-	.btn { background-color: #f5a100; }
+	th { background-color: #ffb84d; width: 15%; }
+	.btn { background-color: #ffb84d; }
 </style>
 
     

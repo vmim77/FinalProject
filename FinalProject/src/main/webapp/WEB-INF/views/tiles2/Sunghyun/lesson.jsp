@@ -103,7 +103,7 @@
 <hr>
 <c:if test="${sessionScope.loginuser.authority == 1}">
 	<div class="text-right">
-		<button type="button" class="btn btn-md" onclick="goLessonWrite()" style="background-color: #f5a100; color:#fff; border: none;">글쓰기</button>
+		<button type="button" class="btn btn-md" onclick="goLessonWrite()" style="background-color: #ffb84d; color:#fff; border: none;">글쓰기</button>
 	</div>
 </c:if>
 
@@ -118,7 +118,7 @@
 		
 		<input type="text" name="searchWord" size="50" />
 		
-		<button type="button" class="btn btn-sm" id="btnSearch" style="background-color: #f5a100; color:#fff;">검색</button>
+		<button type="button" class="btn btn-sm" id="btnSearch" style="background-color: #ffb84d; color:#fff;">검색</button>
 	</form>
 </div>
 

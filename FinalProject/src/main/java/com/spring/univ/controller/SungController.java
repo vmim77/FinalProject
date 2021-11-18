@@ -109,9 +109,6 @@ public class SungController {
 		paraMap.put("searchType", searchType);
 		paraMap.put("searchWord", searchWord);
 		
-		System.out.println(searchType);
-		System.out.println(searchWord);
-		
 		
 	    int totalCount = 0;        
 	    int sizePerPage = 5;      

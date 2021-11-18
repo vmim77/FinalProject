@@ -76,7 +76,7 @@
 				 	   <div style="width: 100%; height: 200px;"><img style="width: 100%; height: 100%;" src='<%= request.getContextPath()%>/resources/images/${suupMap.code}.jpg' /></div>
 				 	   <div class="card-body">
 				 	     <h5 class="card-title">${suupMap.subject}</h5>
-				 	     <p class="card-text" style="font-size: 8pt; color: gray;">수업요일: ${suupMap.classdate}<br>배정학점: ${suupMap.hakjum}</p>
+				 	     <p class="card-text" style="font-size: 12pt; color: gray;">수업요일: ${suupMap.classdate}<br>배정학점: ${suupMap.hakjum}점<br>수강인원: ${suupMap.cnt} 명</p>
 				 	     <a href='/univ/subject.univ?code=${suupMap.code}' class='stretched-link btn btn-primary btn-sm' role='button'>강의실 입장</a>
 				 	   </div>
 				     </div>

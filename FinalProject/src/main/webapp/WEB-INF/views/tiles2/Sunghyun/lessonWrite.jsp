@@ -11,7 +11,7 @@
 	
 	#lessonWriteTbl { width: 100%; }
 	
-	#lessonWriteTbl th { background-color: #f5a100; }
+	#lessonWriteTbl th { background-color: #ffb84d; }
 	
 	#btnWrite::after { content: ''; display: block; clear: both;  }
 </style>

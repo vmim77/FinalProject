@@ -8,7 +8,7 @@
 
 <style type="text/css">
 
-	#lessonTbl th { background-color: #f5a100; width: 15%; }
+	#lessonTbl th { background-color: #ffb84d; width: 15%; }
 	
 	.alert{ cursor:pointer; }
 	
@@ -209,13 +209,13 @@
 		
 		<div style="display: flex;">
 			<div style="margin-right: auto;">
-				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100">이전글:&nbsp;<span id="previousSubject" style="color: #fff;">${requestScope.lbvo.previousSubject}</span></div>
-				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100; margin: 0 20px;"><span id="goBackList">목록보기</span></div>
-				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100">다음글:&nbsp;<span id="nextSubject" style="color: #fff;">${requestScope.lbvo.nextSubject}</span></div>
+				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #ffb84d">이전글:&nbsp;<span id="previousSubject" style="color: #fff;">${requestScope.lbvo.previousSubject}</span></div>
+				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #ffb84d; margin: 0 20px;"><span id="goBackList">목록보기</span></div>
+				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #ffb84d">다음글:&nbsp;<span id="nextSubject" style="color: #fff;">${requestScope.lbvo.nextSubject}</span></div>
 			</div>
 			<div style="margin-left: auto;">
-				<div class="alert mx-1" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100" onclick="location.href='<%=request.getContextPath()%>/lessonBoardDelete.univ?seq=${requestScope.lbvo.seq}'">글삭제</div>
-				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #f5a100" onclick="goEdit('${requestScope.lbvo.seq}')">글수정</div>
+				<div class="alert mx-1" role="alert" style="display:inline-block; text-align:center; background-color: #ffb84d" onclick="location.href='<%=request.getContextPath()%>/lessonBoardDelete.univ?seq=${requestScope.lbvo.seq}'">글삭제</div>
+				<div class="alert" role="alert" style="display:inline-block; text-align:center; background-color: #ffb84d" onclick="goEdit('${requestScope.lbvo.seq}')">글수정</div>
 			</div>
 		</div>
 		
@@ -234,8 +234,8 @@
 					</tr>
 					<tr>
 						<th colspan="3">
-							<button type="button" class="btn" style="background-color:#f5a100; margin-right: 20px;" onclick="goWrite()">댓글쓰기</button>
-							<button type="reset"  class="btn" style="background-color:#f5a100;">취소</button>
+							<button type="button" class="btn" style="background-color:#ffb84d; margin-right: 20px;" onclick="goWrite()">댓글쓰기</button>
+							<button type="reset"  class="btn" style="background-color:#ffb84d;">취소</button>
 						</th>
 					</tr>
 				</table>
