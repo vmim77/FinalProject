@@ -73,6 +73,10 @@
 	  
 	  a { text-decoration: none; }
 	  
+   	  #Messenger::-webkit-scrollbar {
+    		display: none;
+      }
+	  
   </style>
   
   <script type="text/javascript">
@@ -147,9 +151,9 @@
 		
 		$("#MessengerToggle").click(function(){
 			
-			$("div#Messenger").append("<div style='background-color: #ffb84d; text-align:center; font-size:15pt;'>길영대학교 메신저</div><span id='MessangerClose' style='font-size:20pt; float:right;'>&times;</span>");
-			$("div#Messenger").append("<div style='clear:both;'></div>");
-			$("div#Messenger").append("<iframe src='<%= serverName%><%= ctxPath%>/messenger.univ' style='width: 100%; height: 100%; border:solid 1px gray;'></iframe>");
+			$("div#Messenger").append("<div style='padding-top: 20px; height: 60px; background-color: #ffb84d; text-align:center; font-size:15pt; color: #fff; font-weight: bold;'>길영대학교 메신저<span id='MessangerClose' style='height: 100%; font-size:20pt; float:right; margin-right: 10px; cursor: pointer;'>&times;</span></div>");
+			$("div#Messenger").append("<div width: 0; height: 0; style='clear:both;'></div>");
+			$("div#Messenger").append("<iframe src='<%= serverName%><%= ctxPath%>/messenger.univ' style='width: 100%; height: 100%; border:solid 1px gray; margin: 0;'></iframe>");
 			$("div#Messenger").show('slow');
 			$(this).hide();
 			
@@ -251,14 +255,14 @@
 		</div>
 		
 		<%-- 메신저용 --%>
-		<div id="Messenger" style="position:fixed; width:30%; height: 50%; right: 0%; bottom: 0%; background-color: #fff; z-index: 7; overflow:auto;">
-
+		<div id="Messenger" style="position:fixed; width:32%; height: 80%; right: 0%; bottom: 0%; background-color: #fff; z-index: 7; overflow:auto; box-shadow: 0px 1px 3px;">
+		
 		</div>
 		
 		
 		<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; right: 0%; bottom: 0%; z-index: 8;" data-delay="10000">
 		  <div class="toast-header">
-		    <strong id="messageHead" class="mr-auto"></strong>
+		    <strong id="messageHead" class="mr-auto" style="font-size: 12pt;"></strong>
 		    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
 		      <span aria-hidden="true">&times;</span>
 		    </button>
