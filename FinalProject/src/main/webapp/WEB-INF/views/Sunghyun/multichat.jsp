@@ -210,11 +210,11 @@
 	
 	<div id="chatMessage" style="max-height: 500px; overFlow: auto; margin: 20px 0;"></div>
 
-	<input type="text"   id="message" class="form-control" placeholder="메시지 내용" autocomplete="off"/>
+	<input type="text"   id="message" class="form-control" placeholder="Type your message" autocomplete="off"/>
 	<div style="display: flex;">
 	<div style="margin: auto;">
-		<input type="button" id="btnSendMessage" class="btn btn-success btn-sm my-3" value="메시지보내기" />
-		<input type="button" class="btn btn-danger btn-sm my-3 mx-3" onClick="$('#MessangerClose', parent.document).click();" value="채팅방나가기" />
+		<input type="button" id="btnSendMessage" class="btn btn-primary btn-md my-3" value="Send to Message" />
+		<input type="button" class="btn btn-secondary btn-md my-3 mx-3" onClick="$('#MessangerClose', parent.document).click();" value="Exit Messenger" />
 	</div>
 	</div>
 </div>

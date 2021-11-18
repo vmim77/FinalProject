@@ -93,7 +93,7 @@
 	
 	
 	<%-- 캘린더를 이용하여 예정학과일정 등이 표시될 곳입니다. --%>
-	<section style="width: 30%; margin-top: 15px; margin-left: 15px;">
+	<section style="width: 30%; margin-top: 5px; margin-left: 15px;">
 		<h3>To do</h3>
 		<hr>
 		<ul class="list-group list-group-flush" style="width: 80%;">
