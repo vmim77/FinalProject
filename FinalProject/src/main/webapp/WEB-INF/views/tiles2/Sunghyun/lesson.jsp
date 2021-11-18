@@ -25,6 +25,9 @@
 <script>
 	$(document).ready(function(){
 		
+		$("#searchWord").val("${requestScope.searchWord}");
+		$("#searchType").val("${requestScope.searchType}");
+		
 		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
 		
 		$("ul#sideMenuList").hover(function(){
@@ -37,6 +40,16 @@
 			var seq = $(this).find("td:first-child").text();
 			location.href="<%= request.getContextPath()%>/lessonDetail.univ?code=${sessionScope.code}&seq="+seq;
 		});
+		
+		$("#btnSearch").click(function(){
+			
+			var frm = document.searchFrm;
+			frm.action = "<%= request.getContextPath()%>/lesson.univ";
+			frm.method = "GET";
+			frm.submit();
+		});
+		
+		
 		
 	});
 	
@@ -82,10 +95,30 @@
 			</tr>
 		</c:forEach>
 	</table>
+	<br />
+	<div align="center" style="display: flex; width: 100%;">
+		${requestScope.pageBar}
+	</div>
 </c:if>
 <hr>
 <c:if test="${sessionScope.loginuser.authority == 1}">
 	<div class="text-right">
-		<button type="button" class="btn btn-md" onclick="goLessonWrite()" style="background-color: #f5a100; border: none;">글쓰기</button>
+		<button type="button" class="btn btn-md" onclick="goLessonWrite()" style="background-color: #f5a100; color:#fff; border: none;">글쓰기</button>
 	</div>
 </c:if>
+
+<br />
+<div style="width: 100%; text-align: center;">
+
+	<form name="searchFrm" style="width: 100%;">
+		<select name="searchType">
+			<option value="subject">제목</option>
+			<option value="content">내용</option>
+		</select>
+		
+		<input type="text" name="searchWord" size="50" />
+		
+		<button type="button" class="btn btn-sm" id="btnSearch" style="background-color: #f5a100; color:#fff;">검색</button>
+	</form>
+</div>
+

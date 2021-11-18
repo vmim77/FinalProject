@@ -9,7 +9,7 @@ public interface InterSungDAO {
 	Map<String,String> getSubjectInfo(String code);
 	
 	// 해당 과목의 강좌자료실 내용을 가져온다.
-	List<LessonBoardVO> getLessonBoard(String code);
+	List<LessonBoardVO> getLessonBoard(Map<String, String> paraMap);
 	
 	// 로그인한 유저의 수강리스트를 뽑아온다.
 	List<Map<String, String>> getSugang(String hakbun);
@@ -52,5 +52,8 @@ public interface InterSungDAO {
 	
 	// 강의자료실 댓글삭제 -> 해당 글 댓글 수 1 차감
 	int downCommentCnt(Map<String, String> paraMap);
+	
+	// 강의자료실 전체 페이지수
+	int getTotalLessonPage(Map<String, String> paraMap);
 
 }

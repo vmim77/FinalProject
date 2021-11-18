@@ -31,11 +31,18 @@
 	</select>
 	
 	
-	<select id="getLessonBoard" parameterType="String" resultType="com.spring.univ.model.LessonBoardVO">
-		select seq, fk_hakbun, fk_code, name, subject, to_char(regdate,'yyyy-mm-dd hh24:mi:ss') as regDate, status, commentCount, filename
-		from tbl_lessonboard
-		where status = 1 and fk_code = #{code}
-		order by seq desc
+	<select id="getLessonBoard" parameterType="HashMap" resultType="com.spring.univ.model.LessonBoardVO">
+		select seq, fk_hakbun, fk_code, name, subject, regDate, status, commentCount, filename
+		from
+		(
+		    select row_number() over(order by seq desc) AS rno, seq, fk_hakbun, fk_code, name, subject, to_char(regdate,'yyyy-mm-dd hh24:mi:ss') as regDate, status, commentCount, filename
+		    from tbl_lessonboard
+		    where status = 1 and fk_code = #{code}
+		   	<if test='searchType != "" and searchWord != ""'>
+				 and lower( ${searchType} ) like '%' || lower( #{searchWord} ) || '%'
+			</if>
+		)
+		where rno between #{startRno} and #{endRno}
 	</select>
 	
 	
@@ -181,4 +188,13 @@
 		update tbl_lessonBoard set commentcount = commentcount - 1
 		where seq = #{parentSeq}
 	</update>
+	
+	<select id="getTotalLessonPage" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_lessonBoard
+		where status = 1 and fk_code = #{code}
+	   	<if test='searchType != "" and searchWord != ""'>
+			 and lower( ${searchType} ) like '%' || lower( #{searchWord} ) || '%'
+		</if>
+	</select>
 </mapper>

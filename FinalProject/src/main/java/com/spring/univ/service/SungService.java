@@ -28,8 +28,8 @@ public class SungService implements InterSungService {
 	
 	// 해당 과목의 강좌자료실 내용을 가져온다.
 	@Override
-	public List<LessonBoardVO> getLessonBoard(String code) {
-		List<LessonBoardVO> boardList = dao.getLessonBoard(code);
+	public List<LessonBoardVO> getLessonBoard(Map<String, String> paraMap) {
+		List<LessonBoardVO> boardList = dao.getLessonBoard(paraMap);
 		
 		return boardList;
 	}
@@ -129,6 +129,13 @@ public class SungService implements InterSungService {
 			int m = dao.downCommentCnt(paraMap);
 		}
 		
+		return n;
+	}
+	
+	// 강의자료실 전체 페이지수
+	@Override
+	public int getTotalLessonPage(Map<String, String> paraMap) {
+		int n = dao.getTotalLessonPage(paraMap);
 		return n;
 	}
 

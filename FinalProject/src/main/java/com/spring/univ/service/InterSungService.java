@@ -12,7 +12,7 @@ public interface InterSungService {
 	Map<String,String> getSubjectInfo(String code);
 	
 	// 해당 과목 강좌자료실의 글들을 가져온다.
-	List<LessonBoardVO> getLessonBoard(String code);
+	List<LessonBoardVO> getLessonBoard(Map<String, String> paraMap);
 	
 	// 로그인한 유저의 수강리스트를 뽑아온다.
 	List<Map<String, String>> getSugang(String hakbun);
@@ -49,5 +49,8 @@ public interface InterSungService {
 	
 	// 강의자료실 댓글 삭제하기
 	int deleteLessonComment(Map<String, String> paraMap);
+	
+	// 강의자료실 전체 페이지수
+	int getTotalLessonPage(Map<String, String> paraMap);
 
 }

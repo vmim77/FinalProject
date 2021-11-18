@@ -235,7 +235,7 @@
 					<tr>
 						<th colspan="3">
 							<button type="button" class="btn" style="background-color:#f5a100; margin-right: 20px;" onclick="goWrite()">댓글쓰기</button>
-							<button type="reset"  class="btn" style="background-color:#f5a100;">댓글쓰기 취소</button>
+							<button type="reset"  class="btn" style="background-color:#f5a100;">취소</button>
 						</th>
 					</tr>
 				</table>

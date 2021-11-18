@@ -88,9 +88,108 @@ public class SungController {
 		
 		HttpSession session = request.getSession();
 		String code = (String) session.getAttribute("code"); // 해당 과목의 강의자료실 게시글을 가져오기 위한 과목코드
+		String str_currentShowPageNo = request.getParameter("currentShowPageNo");
+		
+	    String searchType = request.getParameter("searchType");
+	    String searchWord = request.getParameter("searchWord");
+	    
+	    if(searchType == null || (!"subject".equals(searchType) && !"content".equals(searchType)) ) {
+		   searchType = "";
+		}
+		
+		if(searchWord == null || "".equals(searchWord) || searchWord.trim().isEmpty() ) {
+		   searchWord = "";
+		}
+		
+		
+		Map<String, String> paraMap = new HashMap<>();
+		
+		paraMap.put("code", code);
+		paraMap.put("currentShowPageNo", str_currentShowPageNo);
+		paraMap.put("searchType", searchType);
+		paraMap.put("searchWord", searchWord);
+		
+		System.out.println(searchType);
+		System.out.println(searchWord);
+		
+		
+	    int totalCount = 0;        
+	    int sizePerPage = 5;      
+	    int currentShowPageNo = 0; 
+	    int totalPage = 0;         
+	    
+	    int startRno = 0;          
+	    int endRno = 0; 
+	    
+	    totalCount = service.getTotalLessonPage(paraMap);
+	    
+	    totalPage = (int) Math.ceil((double)totalCount/sizePerPage);
+	    
+	    if(str_currentShowPageNo == null) {
+		       currentShowPageNo = 1;
+		}
+	    
+		else {
+		   try {
+		      currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
+		      if(currentShowPageNo < 1 || currentShowPageNo > totalPage) {
+		         currentShowPageNo = 1;
+		      }
+		   } catch(NumberFormatException e) {
+		      currentShowPageNo = 1;
+		   }
+		}
+	    
+	    startRno = ( (currentShowPageNo - 1) * sizePerPage ) + 1;
+	    endRno = startRno + sizePerPage - 1;
+	    
+	    paraMap.put("startRno", String.valueOf(startRno));
+	    paraMap.put("endRno", String.valueOf(endRno));
+	    
+	    if(!"".equals(searchType) && !"".equals(searchWord)) {
+		       mav.addObject("paraMap", paraMap);
+		}
+	    
+	    int blockSize = 10;
+	    
+	    int loop = 1;
+	    
+	    int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
+	    
+	    String pageBar = "<ul style='list-style: none; margin: auto; padding: 0 60px 0 0; width: 100%;'>";
+	    String url = "lesson.univ";
+	    
+	    if(pageNo != 1) {
+	         pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo=1'>[맨처음]</a></li>";
+	         pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+	      }
+	      
+	    while( !(loop > blockSize || pageNo > totalPage) ) {
+	       
+	       if(pageNo == currentShowPageNo) {
+	          pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px gray; color:red; padding:2px 4px;'>"+pageNo+"</li>";
+	       }
+	       else {
+	          pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+	       }
+	       
+	       loop++;
+	       pageNo++;
+	       
+	    }// end of while------------------------
+	    
+	    
+	    if(pageNo <= totalPage) {
+	       pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+	       pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+	    }
+	    
+	    pageBar += "</ul>";
+	    
+	    mav.addObject("pageBar", pageBar);
 		
 		if(code != null) {
-			List<LessonBoardVO> boardList = service.getLessonBoard(code);
+			List<LessonBoardVO> boardList = service.getLessonBoard(paraMap);
 			mav.addObject("boardList", boardList);
 			mav.setViewName("Sunghyun/lesson.tiles2");
 			return mav;
