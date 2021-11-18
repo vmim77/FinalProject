@@ -76,6 +76,32 @@
    	  #Messenger::-webkit-scrollbar {
     		display: none;
       }
+      
+      div#MessengerToggle {
+			background-color: #ffb84d;
+			position: fixed;
+			right: 0.5%;
+			bottom: 2%;
+			z-index: 9;
+			font-size: 15pt;
+			padding: 10px;
+			border-radius: 20px 20px 20px 20px;
+			box-shadow: 0px 2px 3px;
+	  }
+	  
+	  div#MessengerToggle:hover {
+	  		background-color: #ff9900;
+	  		color: #fff;
+			position: fixed;
+			right: 0.5%;
+			bottom: 2%;
+			z-index: 9;
+			font-size: 15pt;
+			padding: 10px;
+			border-radius: 20px 20px 20px 20px;
+			box-shadow: 0px 2px 3px;
+			cursor: pointer;
+	  }
 	  
   </style>
   
@@ -165,6 +191,9 @@
 			$("div#Messenger").empty();
 			$("#MessengerToggle").show();
 		});
+		
+		
+		$("#MessengerToggle").hover(function(){$(this).text("Join us!") },function(){ $(this).text("Messenger") });
 		
 		////////////////////////////////////////////////////////
 		
@@ -270,7 +299,7 @@
 		</div>
 		
 		<%-- 메신저 toggle --%>
-		<img id="MessengerToggle" src="<%=ctxPath%>/resources/images/kakao.png" style="position: fixed; right: 2%; bottom: 2%; z-index: 9; width: 2%; height: 5%;">
+		<div id="MessengerToggle">Messenger</div>
 		
 		<div id="showSideInfo" style="position: fixed; top: 50%; left: 10px; z-index: 2">
 			<i class="fas fa-forward fa-2x"></i>
