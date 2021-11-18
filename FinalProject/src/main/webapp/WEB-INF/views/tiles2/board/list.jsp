@@ -10,36 +10,74 @@
 
 <style type="text/css">
 
+
 /* 부트스트랩 버튼 색 변경    */
 
-.btn-light {
-    background-color: #778899;
-    border-color: #778899;
+/* .btn-light {
+    background-color: #ffcc80; 
+    border-color: #ffcc80;
     color:  #FFF;}
 .btn-light:hover,
 .btn-light:focus {
-    border-color: #cccccc;
-    background-color: #cccccc;
+    border-color: #ffcc80;
+    background-color: #ffcc80;
     color: #FFF; }
-
-    .btn-dark {
-    background-color: #555555;
-    border-color: #555555;
+    
+    
+   .btn-secondary {
+    background-color: #ffb84d;
+    border-color: #ffb84d;
     color: #FFF; 
-    }
-.btn-dark:hover,
-.btn-dark:focus {
-    border-color: #cccccc;
-    background-color: #cccccc;
+    }    
+    
+	.btn-secondary:hover,
+	.btn-secondary:focus {
+    border-color: #ffcc80;
+    background-color: #ffcc80;
+    color: #FFF; }   
+ */
+
+
+/* 부트스트랩 버튼 색 변경    */
+
+.btn-light {
+    background-color: #ffffff;
+    border-color: #ff9900;
+    color:  #ff8c00;}
+.btn-light:hover,
+.btn-light:focus {
+    border-color: #ffcc80;
+    background-color: #ffcc80;
     color: #FFF; }
+    
+    
+   .btn-secondary {
+    background-color: #ffb84d;
+    border-color: #ffb84d;
+    color: #FFF; 
+    }    
+    
+	.btn-secondary:hover,
+	.btn-secondary:focus {
+    border-color: #ffcc80;
+    background-color: #ffcc80;
+    color: #FFF; }  
+    
+
 
 /* 게시판 정렬 , 글자색, 글자크기*/
 table td {
 	text-align: center;
-	color:#616161;
+	color:#616161; 
 	font-size: 15px;
 }
 
+
+
+.subjectStyle {font-weight: bold; 
+			   cursor: pointer;} 
+			   
+ 
 
 </style>
 
@@ -190,8 +228,8 @@ table td {
 			<input type="text" name="searchWord" id="searchWord" size="110" style="height: 30px; width: 250px; font-size: 12pt;  autocomplete="off" />
 			<input type="text" style="display: none;"/> <%-- form 태그내에 input 태그가 오로지 1개 뿐일경우에는 엔터를 했을 경우 검색이 되어지므로 이것을 방지하고자 만든것이다. --%>
 			&nbsp;
-			<button type="button" class="btn btn-secondary btn-sm" onclick="goSearch()">검색</button>
-			<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/add.univ'" class="btn btn-light float-right" style="font-size: 10pt; padding: 5px 12px; text-align: right;">+ 글쓰기</button>&nbsp;		
+			<button type="button" class="btn btn-light btn-sm" onclick="goSearch()">검색</button>
+			<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/add.univ'" class="btn btn-secondary float-right" style="font-size: 10pt; padding: 5px 12px; text-align: right;">+ 글쓰기</button>&nbsp;		
 			
 		</form>
 		

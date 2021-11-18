@@ -400,6 +400,47 @@ order by seq desc;
 
 ------------------------------------
 -- 글 1개 조회하기 수정하기 -- 학번 where에 넣기
+select *
+from tbl_FreeBoard;
+
+   update tbl_FreeBoard set subject = '안녕하세요142 수정'
+                               , content = '오늘도 좋은 하루 보내세요~142'
+        where seq = 195 and pw = '1234';
+commit;
+
+
+select previousseq, previoussubject, 
+		       seq, fk_hakbun, name, subject, content, readCount, regDate, nextseq, nextsubject, fk_code 
+		from 
+		(
+		    select   lag(seq, 1) over(order by seq desc) AS previousseq
+		           , lag(subject, 1) over(order by seq desc) AS previoussubject		           
+		           , seq, fk_hakbun, name, subject, content, readCount
+		           , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate		    
+		           , lead(seq, 1) over(order by seq desc) AS nextseq
+		           , lead(subject, 1) over(order by seq desc) AS nextsubject
+		           , fk_code 		        
+		    from tbl_FreeBoard
+		    where status = 1
+		    and fk_code = 0502
+		    
+		    and lower(subject) like '%'||lower('안녕') ||'%'
+		   
+		) V 
+		where V.seq = 194;
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------
 select previousseq, previoussubject, 
 		       seq, fk_hakbun, name, subject, content, readCount, regDate, nextseq, nextsubject
                , fk_code
@@ -419,7 +460,7 @@ select previousseq, previoussubject,
 		    and lower( subject ) like '%'|| lower( '즐거운' ) ||'%'
 		    
 		) V 
-		where V.seq = 255
+		where V.seq = 255 and fk_code = 0502
         
         
 --
@@ -467,3 +508,4 @@ end;
 
 
 commit;
+

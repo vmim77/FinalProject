@@ -3,6 +3,37 @@
 
 <% String ctxPath = request.getContextPath(); %> 
 
+<style type="text/css">
+
+    
+    /* 부트스트랩 버튼 색 변경    */
+
+.btn-light {
+    background-color: #ffffff;
+    border-color: #ff9900;
+    color:  #ff8c00;}
+.btn-light:hover,
+.btn-light:focus {
+    border-color: #ffcc80;
+    background-color: #ffcc80;
+    color: #FFF; }
+    
+    
+   .btn-secondary {
+    background-color: #ffb84d;
+    border-color: #ffb84d;
+    color: #FFF; 
+    }    
+    
+	.btn-secondary:hover,
+	.btn-secondary:focus {
+    border-color: #ffcc80;
+    background-color: #ffcc80;
+    color: #FFF; }  
+    
+</style>
+
+
 <script type="text/javascript">
 
 	$(document).ready(function(){

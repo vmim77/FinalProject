@@ -21,30 +21,31 @@
     #commentDisplay > tr:nth-child(1) > td:nth-child(4) {width: 19%;} 
     
     
-    /* 부트스트랩 버튼 색 변경    */
-
+/* 부트스트랩 버튼 색 변경    */
 .btn-light {
     background-color: #ffffff;
-    border-color: #778899;
-    color:  #616161;}
+    border-color: #ff9900;
+    color:  #ff8c00;}
 .btn-light:hover,
 .btn-light:focus {
-    border-color: #cccccc;
-    background-color: #cccccc;
+    border-color: #ffcc80;
+    background-color: #ffcc80;
     color: #FFF; }
     
     
    .btn-secondary {
-    background-color: #7e7f80;
-    border-color: #7e7f80;
+    background-color: #ffb84d;
+    border-color: #ffb84d;
     color: #FFF; 
     }    
     
 	.btn-secondary:hover,
 	.btn-secondary:focus {
-    border-color: #cccccc;
-    background-color: #cccccc;
+    border-color: #ffcc80;
+    background-color: #ffcc80;
     color: #FFF; }   
+    
+
     
 </style>
 
@@ -337,21 +338,23 @@
 
 
 <%-- 게시판 글내용보기 --%>
-<div class="pt-4 pb-5">	
- <div style="margin: 20px 20px 20px 70px; width: 80%;">
+
+ <div style="display: flex;">
+<div style="margin: auto; padding-left: 3%; padding-top: 4%;">
+ <c:if test="${not empty requestScope.freeboardvo}">
  
- 	<div class="card-body" style="display: flex; height: 13%;   background-color:#f2f2f2;  border: solid 1px gray; padding: 15px 15px 15px 15px;  ">
+ 	<div class="card-body" style="display: flex; height: 13%;   background-color:#ffd699;  border: solid 1px #ffd699; padding: 1.4%  0% 1.4% 0% ; margin-left: 0%; ">
 	  		<button type="button" style="height: 36px; margin-left: 2.5%;"  class="btn btn-secondary" onclick="javascript:location.href='<%= request.getContextPath()%>/list.univ'">전체목록보기</button>
 	  		&nbsp;&nbsp;
 	  		<button type="button" style="height: 36px;"  class="btn btn-secondary" onclick="javascript:location.href='<%= request.getContextPath()%>${requestScope.gobackURL}'">검색된 결과목록보기</button>
 	  		
-	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/edit.univ?fk_code=${sessionScope.code}&seq=${requestScope.freeboardvo.seq}'" class="btn btn-light" style="height: 36px; margin-left: 47%;font-weight:bold; font-size: 10pt; padding: 7px 12px; text-align: right; "><i class="far fa-edit"></i>&nbsp;수정</button> <%-- fk_code추가함 --%>
+	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/edit.univ?fk_code=${sessionScope.code}&seq=${requestScope.freeboardvo.seq}'" class="btn btn-light" style="height: 36px; margin-left: 52%;font-weight:bold; font-size: 10pt; padding: 7px 12px; text-align: right; "><i class="far fa-edit"></i>&nbsp;수정</button> <%-- fk_code추가함 --%>
 	  		&nbsp;&nbsp;
 	  		<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/del.univ?fk_code=${sessionScope.code}&seq=${requestScope.freeboardvo.seq}'" class="btn btn-light" style="height: 36px; font-weight:bold; font-size: 10pt; padding: 7px 12px;"><i class="far fa-trash-alt"></i>&nbsp;삭제</button>&nbsp;	
 	   		
 	</div>
 	
-	<c:if test="${not empty requestScope.freeboardvo}">
+	
 		
 		<%-- 글내용보기  --%>
 		
@@ -363,8 +366,8 @@
 		   	</div>
 		
 		<br>
-	 		<span style="">작성자 :&ensp;${freeboardvo.name} &ensp;|&ensp;작성일 :&ensp;${freeboardvo.regDate}&ensp;</span> 
-	 		<span style="margin-left: 580px;"> 조회수: ${freeboardvo.readCount}</span>
+	 		<span >작성자 :&ensp;${freeboardvo.name} &ensp;|&ensp;작성일 :&ensp;${freeboardvo.regDate}&ensp;</span> 
+	 		<span style="margin-left: 480px;"> 조회수: ${freeboardvo.readCount}</span>
 	   
 	    <br>
 	    <br>
@@ -402,7 +405,7 @@
 		
 			<form name="addWriteFrm" id="addWriteFrm" style="margin-top: 20px;">
 		
-			  <div class="card-body" style="display: flex; height: 13%;   background-color:#f2f2f2;   padding: 20px 15px 15px 15px;  ">
+			  <div class="card-body" style="display: flex; height: 13%;   background-color:#ffd699;   padding: 20px 15px 15px 15px;  ">
 			 		   
 			      <input type="hidden" id="fk_hakbun" value="${sessionScope.loginuser.hakbun}" /> <%-- fk_userid => fk_hakbun --%>
 			   	  <input type="hidden" id="name" value="${sessionScope.loginuser.name}" />
@@ -437,7 +440,7 @@
 	</c:if>
 	
 	<c:if test="${empty requestScope.freeboardvo}">
-		<div style="padding: 50px 0; font-size: 16pt; color: red;">존재하지 않습니다</div>
+		<div style="padding: 100px 0; font-weight: bold; font-size: 16pt; color: red;">존재하지 않습니다</div>
 	</c:if>
 
  </div>

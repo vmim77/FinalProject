@@ -691,7 +691,7 @@ public class RuController {
 	      // 스마트에디터 파일첨부이다. 스마트 에디터 파일첨부는 기존에 폼태그에 이미지를 담은것과 달리 글내용물에 담긴다
 	         
 	      // System.out.println(">>>> 확인용 path ==> " + path); 
-	      // >>>> 확인용 path ==> C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\resources\photo_upload    
+	      // >>>> 확인용 path ==> C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\FinalProject\resources\photo_upload    
 	         
 	      File dir = new File(path);
 	      if(!dir.exists())
@@ -760,37 +760,7 @@ public class RuController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//view.jsp수정용. 곧 삭제할 것.
-	@RequestMapping(value="/viewchange.univ")
-	public String viewchange(HttpServletRequest request) {
-		
-		
-		
-		return "board/viewchange.tiles2";
-		//   /WEB-INF/views/test1.jsp 페이지를 만들어야 한다.
-				
-	}
-		
-	//add.jsp 글쓰기 페이지 디자인 수정용. 곧 삭제할 것.
-	@RequestMapping(value="/addchange.univ")
-	public String addchange(HttpServletRequest request) {
-		
-		
-		
-		return "board/addchange.tiles2";
-		//   /WEB-INF/views/test1.jsp 페이지를 만들어야 한다.
-				
-	}	
+
 
 
 

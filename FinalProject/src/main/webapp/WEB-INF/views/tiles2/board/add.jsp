@@ -5,7 +5,7 @@
 
     
     /* 부트스트랩 버튼 색 변경    */
-
+/* 
 .btn-light {
     background-color: #ffffff;
     border-color: #778899;
@@ -17,9 +17,9 @@
     color: #FFF; }
     
     
-   .btn-secondary {
-    background-color: #778899;
-    border-color: #778899;
+    .btn-secondary {
+    background-color: #ffb84d;
+    border-color: #ffb84d;
     color: #FFF; 
     }    
     
@@ -27,8 +27,35 @@
 	.btn-secondary:focus {
     border-color: #cccccc;
     background-color: #cccccc;
-    color: #FFF; }   
+    color: #FFF; }   */ 
     
+    
+/* 부트스트랩 버튼 색 변경    */
+
+.btn-light {
+     background-color: #ffffff;
+    border-color: #ff9900;
+    color:  #ff8c00;}
+.btn-light:hover,
+.btn-light:focus {
+    border-color: #ffcc80;
+    background-color: #ffcc80;
+    color: #FFF; }
+    
+    
+   .btn-secondary {
+    background-color: #ffb84d;
+    border-color: #ffb84d;
+    color: #FFF; 
+    }    
+    
+	.btn-secondary:hover,
+	.btn-secondary:focus {
+    border-color: #ffcc80;
+    background-color: #ffcc80;
+    color: #FFF; }  
+    
+   
 </style>
 <script type="text/javascript">
 
@@ -151,7 +178,7 @@
 			
 			
 				<div>					
-					<textarea rows="11" cols="102" name="content" id="content"></textarea>
+					<textarea rows="17" cols="102" name="content" id="content"></textarea>
 				</div>
 		
 			<br>
