@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.spring.univ.model.HomeworkVO;
 import com.spring.univ.model.InterSungDAO;
 import com.spring.univ.model.LessonBoardCommentVO;
 import com.spring.univ.model.LessonBoardVO;
@@ -137,6 +138,13 @@ public class SungService implements InterSungService {
 	public int getTotalLessonPage(Map<String, String> paraMap) {
 		int n = dao.getTotalLessonPage(paraMap);
 		return n;
+	}
+	
+	// 과제게시판의 글목록 조회
+	@Override
+	public List<HomeworkVO> getHomeworkList(String code) {
+		List<HomeworkVO> homeworkList = dao.getHomeworkList(code);
+		return homeworkList;
 	}
 
 }

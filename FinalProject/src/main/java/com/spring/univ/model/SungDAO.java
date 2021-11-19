@@ -133,6 +133,13 @@ public class SungDAO implements InterSungDAO {
 		return n;
 	}
 	
+	// 과제게시판의 글목록 조회
+	@Override
+	public List<HomeworkVO> getHomeworkList(String code) {
+		List<HomeworkVO> homeworkList = sqlsession2.selectList("Sung.getHomeworkList", code);
+		return homeworkList;
+	}
+	
 	
 
 }

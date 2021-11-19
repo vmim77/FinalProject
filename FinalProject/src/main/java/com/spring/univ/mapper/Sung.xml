@@ -205,4 +205,11 @@
 			 and lower( ${searchType} ) like '%' || lower( #{searchWord} ) || '%'
 		</if>
 	</select>
+	
+	<select id="getHomeworkList" parameterType="String" resultType="com.spring.univ.model.HomeworkVO">
+		select seq, fk_hakbun, fk_code, name, subject, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, commentCount, fileName, orgFilename, fileSize
+		from tbl_homework
+		where fk_code = #{code}
+		order by seq desc 
+	</select>
 </mapper>

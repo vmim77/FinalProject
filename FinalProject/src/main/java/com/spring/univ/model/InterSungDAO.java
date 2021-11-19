@@ -55,5 +55,8 @@ public interface InterSungDAO {
 	
 	// 강의자료실 전체 페이지수
 	int getTotalLessonPage(Map<String, String> paraMap);
+	
+	// 과제게시판의 글목록 조회
+	List<HomeworkVO> getHomeworkList(String code);
 
 }

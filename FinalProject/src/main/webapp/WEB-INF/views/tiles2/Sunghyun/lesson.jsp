@@ -117,6 +117,8 @@
 		</select>
 		
 		<input type="text" name="searchWord" size="50" />
+		<input type="text" style="display: none;" />
+		
 		
 		<button type="button" class="btn btn-sm" id="btnSearch" style="background-color: #ffb84d; color:#fff;">검색</button>
 	</form>

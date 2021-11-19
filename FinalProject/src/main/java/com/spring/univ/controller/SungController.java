@@ -712,10 +712,9 @@ public class SungController {
 	}
 	
 	
-	
+	// 메신저
 	@RequestMapping(value="/messenger.univ")
 	public String requiredLogin_multichat(HttpServletRequest request, HttpServletResponse response) {
-		
 		return "Sunghyun/multichat";
 	}
 	
@@ -724,6 +723,13 @@ public class SungController {
 	// 과제 게시판
 	@RequestMapping(value="/homework.univ")
 	public ModelAndView subject_homework(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		HttpSession session = request.getSession();
+		String code = (String) session.getAttribute("code");
+		
+		List<HomeworkVO> homeworkList = service.getHomeworkList(code);
+		
+		mav.addObject("homeworkList", homeworkList);
 		mav.setViewName("Sunghyun/homework.tiles2");
 		return mav;
 	}

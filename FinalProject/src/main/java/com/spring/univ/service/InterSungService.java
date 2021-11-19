@@ -3,6 +3,7 @@ package com.spring.univ.service;
 import java.util.List;
 import java.util.Map;
 
+import com.spring.univ.model.HomeworkVO;
 import com.spring.univ.model.LessonBoardCommentVO;
 import com.spring.univ.model.LessonBoardVO;
 
@@ -52,5 +53,8 @@ public interface InterSungService {
 	
 	// 강의자료실 전체 페이지수
 	int getTotalLessonPage(Map<String, String> paraMap);
+	
+	// 과제게시판의 글목록 조회
+	List<HomeworkVO> getHomeworkList(String code);
 
 }

@@ -431,3 +431,75 @@ from tbl_lessonboard_comment;
 delete from tbl_lessonboard_comment;
 
 
+select * 
+from tab;
+
+desc tbl_lessonboard;
+
+create table tbl_homework(
+seq             number,
+fk_hakbun       varchar2(50)   NOT NULL,
+fk_code         varchar2(100)  NOT NULL,
+name            varchar2(20)   NOT NULL,
+subject         varchar2(200)  NOT NULL,
+content         varchar2(2000) NOT NULL,
+regDate         date    default sysdate    NOT NULL,
+commentCount    number(3) default 0,
+fileName        varchar2(255),
+orgFilename     varchar2(255),
+fileSize        number,
+constraint  PK_TBL_HOMEWORK_SEQ primary key(seq),
+constraint  FK_TBL_HOMEWORK_FK_HAKBUN foreign key(fk_hakbun) references tbl_member(hakbun) on delete cascade,
+constraint  FK_TBL_HOMEWORK_FK_CODE foreign key(fk_code) references tbl_subject(code) on delete cascade
+)
+-- Table TBL_HOMEWORK이(가) 생성되었습니다.
+
+insert into tbl_homework(seq, fk_hakbun, fk_code, name, subject, content, regDate, commentCount)
+values(homeworkSeq.nextval, '2100001', '0101', '금길영', '테스트222', '테스트222 내용', default, default);
+
+commit;
+
+select * 
+from tbl_homework;
+
+drop table tbl_homework purge;
+
+create sequence homeworkSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+-- Sequence HOMEWORKSEQ이(가) 생성되었습니다.
+
+
+create table tbl_homework_comment(
+seq             number,
+parentSeq       number  not null,
+fk_hakbun       varchar2(50)    not null,
+content         varchar2(500)   not null,
+fileName        varchar2(255),
+orgFilename     varchar2(255),
+fileSize        number,
+constraint  PK_TBL_HW_COMMENT primary key(seq),
+constraint FK_TBL_HW_COMMENT_PARENTSEQ  foreign key(parentSeq) references tbl_homework(seq) on delete cascade,
+constraint FK_TBL_HW_COMMENT_FKHAKBUN foreign key(fk_hakbun) references tbl_member(hakbun) on delete cascade
+)
+-- Table TBL_HOMEWORK_COMMENT이(가) 생성되었습니다.
+
+
+drop table tbl_homework_comment purge;
+
+create sequence homeworkCommentSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+-- Sequence HOMEWORKCOMMENTSEQ이(가) 생성되었습니다.
+
+
+select seq, fk_hakbun, fk_code, name, subject, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, commentCount, fileName, orgFilename, fileSize
+from tbl_homework
