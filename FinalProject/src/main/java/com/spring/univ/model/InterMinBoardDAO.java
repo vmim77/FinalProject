@@ -11,6 +11,7 @@ public interface InterMinBoardDAO {
 	// 주차 가져오기
 	List<WeekVO> getWeekList();
 
-
+	// 민경장군
+	List<SubjectVO> Teacherservey(String serveyCode);
 	
 }//end of public interface InterBoardDAO {

@@ -42,5 +42,14 @@
 		from tbl_week
 	</select>
 	
-
+	<select id="Teacherservey" resultType="com.spring.univ.model.SubjectVO" parameterType="String">
+		select subject, (select name
+                 		from tbl_member
+                 		where hakbun = (select fk_hakbun
+                                 		from tbl_subject
+                                 		where code = #{serveyCode})) as fk_hakbun, code
+		from tbl_subject
+		where code = #{serveyCode}
+	</select>
+	
 </mapper>

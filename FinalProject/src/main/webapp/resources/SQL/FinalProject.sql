@@ -283,10 +283,261 @@ select A.code AS code, A.subject AS subject, A.fk_hakbun AS fk_hakbun, A.hakjum 
       where week='2'     
       order by week, lesson asc
    
-           
+
+drop sequence EVALUATIONCODESEQ
+
+ALTER TABLE tbl_evaluation ADD For ('fk_hakbun');
+
+ALTER TABLE 'tbl_evaluation' ADD CONSTRAINT 'fk_hakbun' FOREIGN KEY('Evaluationcode') 
+
+select Evaluationcode
+from tbl_evaluation
+
+SELECT * 
+FROM user_CONSTRAINTS
+WHERE TABLE_NAME = 'tbl_evaluation';
+                    TBL_EVALUATION
+
+select *
+from user_cons_columns
+WHERE TABLE_NAME = 'TBL_EVALUATION';
+
+delete TBL_EVALUATION;
+commit;
+
+
+
+
 select *
 from tbl_member;
 
 select subject, fk_hakbun
 from tbl_subject
 where fk_hakbun = 2100001
+
+select subject,fk_hakbun
+from tbl_subject;
+
+select *
+from tbl_evaluation;
+
+SELECT * 
+FROM  ALL_CONSTRAINTS
+WHERE TABLE_NAME = 'tbl_evaluation';
+
+
+
+
+  select *
+  from tbl_evaluation;
+
+
+select *
+from tbl_evaluationDetail;
+
+update tbl_evaluationDetail set fk_evaluationcode = '0528'
+commit;
+
+select *
+from tbl_evaluationDetail;
+
+select *
+from tbl_evaluationResult;
+
+select *
+from tbl_evaluationMember;
+
+alter table tbl_evaluationResult modify EVALUATIONRESULTCODE varchar2(50);
+
+commit;
+
+drop sequence evaluationResultCodeSeq;
+
+commit;
+
+insert into tbl_evaluation (evaluationCode,evaluationTopic) values (evaluationCodeSeq.nextval,'강의평가');
+
+insert into tbl_evaluationDetail (fk_evaluationCode,evaluationNum,evaluationContent ) values (0520,'1','나는 수업에 적극적으로 참여하였다.');
+insert into tbl_evaluationDetail (fk_evaluationCode,evaluationNum,evaluationContent ) values (0520,'2','강의는 수업 계획서대로 진행되었다.');
+insert into tbl_evaluationDetail (fk_evaluationCode,evaluationNum,evaluationContent ) values (0520,'3','수업 계획서에는 강의에 관한 정보가 체계적이고 명확하게 제시되었다.');
+insert into tbl_evaluationDetail (fk_evaluationCode,evaluationNum,evaluationContent ) values (0520,'4','교수는 수업준비(교재,학습자료 등)을 철저히 하였다.');
+insert into tbl_evaluationDetail (fk_evaluationCode,evaluationNum,evaluationContent ) values (0520,'5','교수는 결강을 하지 않았으며, 휴강시에는 보강을 철저히 하였다.');
+insert into tbl_evaluationDetail (fk_evaluationCode,evaluationNum,evaluationContent ) values (0520,'6','교수는 학생들의 출결관리를 철저하게 하였다.');
+insert into tbl_evaluationDetail (fk_evaluationCode,evaluationNum,evaluationContent ) values (0520,'7','교수는 교과내용을 학생들이 이해할 수 있도록 명확하게 설명하였다.');
+insert into tbl_evaluationDetail (fk_evaluationCode,evaluationNum,evaluationContent ) values (0520,'8','과제는 학습효과를 높이는데 도움이 되었다.');
+insert into tbl_evaluationDetail (fk_evaluationCode,evaluationNum,evaluationContent ) values (0520,'9','평가 기준 및 방식은 객관적이고 합리적으로 제시되었다.');
+insert into tbl_evaluationDetail (fk_evaluationCode,evaluationNum,evaluationContent ) values (0520,'10','이 강의에 대해 만족하여, 동기나 후배에게도 추천하고 싶다.');
+insert into tbl_evaluationDetail (fk_evaluationCode,evaluationNum,evaluationContent ) values (0520,'11','교수는 학생들의 질문을 적절히 수용하였고 성실히 응답하였다.');
+insert into tbl_evaluationDetail (fk_evaluationCode,evaluationNum,evaluationContent ) values (0520,'12','교수는 열성적으로 강의하였다.');
+
+0521
+0599
+5111
+0519
+0101
+0102
+0103
+0104
+0598
+0540
+5041
+0544
+commit;
+
+
+select evaluationTopic
+from
+(
+    select fk_evaluationCode, fk_hakbun, evaluationDate
+    from tbl_evaluationMember A
+    join tbl_evaluation B
+    on A.fk_evaluationCode = B.evaluationCode
+    where fk_hakbun = '2100021'
+)
+where evaluationCode = '1'
+
+
+insert into tbl_evaluation
+select
+
+ALTER TABLE TBL_EVALUATION DROP CONSTRAINT FK_TBL_EVALUATION_FK_HAKBUN CASCADE;
+
+
+
+select *
+from tbl_sugang
+
+ALTER TABLE TBL_EVALUATION ADD constraint FK_tbl_EVALUATION_FK_CODE foreign key(evaluationCode) references tbl_SUBJECT(code) on delete cascade
+
+insert into tbl_evaluation(evaluationCode, evaluationTopic)  
+select code, subject || ' 강의평가'
+from tbl_subject
+where fk_deptCode = '01'
+commit;
+select *
+from tbl_sugang
+
+
+select evaluationtopic, evaluationCode, m.name, g.fk_hakbun
+from tbl_evaluation e
+join tbl_subject s
+on s.code = e.evaluationCode
+join tbl_member m
+on s.fk_hakbun = m.hakbun
+join tbl_sugang g
+on g.fk_code = s.code
+where g.fk_hakbun = '2100038'
+order by evaluationCode
+-------------------------------
+
+select *
+from tbl_evaluationMember 
+
+select A.fk_code, A.fk_hakbun, evaluationtopic
+from tbl_sugang A
+JOIN tbl_evaluation
+on fk_code = evaluationcode
+JOIN tbl_evaluationMember B
+on A.fk_code != B.fk_evaluationCode
+where A.fk_hakbun = '2100022'
+
+
+
+select *
+from tbl_sugang
+where fk_hakbun = '2100022'
+
+select *
+from tbl_serveyMember 
+where fk_hakbun = '2100021'
+order by 
+
+
+
+insert into tbl_evaluationMember(fk_evaluationCode, fk_hakbun, evaluationDate)
+values('0101', '2100022', sysdate)
+
+commit;
+
+select *
+from tbl_serveyDetail;
+
+
+insert into tbl_serveyDetail (fk_serveyCode,serveyNum,serveyContent) values ('0544','1','나는 수업에 적극적으로 참여하였다.');
+insert into tbl_serveyDetail (fk_serveyCode,serveyNum,serveyContent) values ('0544','2','강의는 수업 계획서대로 진행되었다.');
+insert into tbl_serveyDetail (fk_serveyCode,serveyNum,serveyContent) values ('0544','3','수업 계획서에는 강의에 관한 정보가 체계적이고 명확하게 제시되었다.');
+insert into tbl_serveyDetail (fk_serveyCode,serveyNum,serveyContent) values ('0544','4','교수는 수업준비(교재,학습자료 등)을 철저히 하였다.');
+insert into tbl_serveyDetail (fk_serveyCode,serveyNum,serveyContent) values ('0544','5','교수는 결강을 하지 않았으며, 휴강시에는 보강을 철저히 하였다.');
+insert into tbl_serveyDetail (fk_serveyCode,serveyNum,serveyContent) values ('0544','6','교수는 학생들의 출결관리를 철저하게 하였다.');
+insert into tbl_serveyDetail (fk_serveyCode,serveyNum,serveyContent) values ('0544','7','교수는 교과내용을 학생들이 이해할 수 있도록 명확하게 설명하였다.');
+insert into tbl_serveyDetail (fk_serveyCode,serveyNum,serveyContent) values ('0544','8','과제는 학습효과를 높이는데 도움이 되었다.');
+insert into tbl_serveyDetail (fk_serveyCode,serveyNum,serveyContent) values ('0544','9','평가 기준 및 방식은 객관적이고 합리적으로 제시되었다.');
+insert into tbl_serveyDetail (fk_serveyCode,serveyNum,serveyContent) values ('0544','10','이 강의에 대해 만족하여, 동기나 후배에게도 추천하고 싶다.');
+insert into tbl_serveyDetail (fk_serveyCode,serveyNum,serveyContent) values ('0544','11','교수는 학생들의 질문을 적절히 수용하였고 성실히 응답하였다.');
+insert into tbl_serveyDetail (fk_serveyCode,serveyNum,serveyContent) values ('0544','12','교수는 열성적으로 강의하였다.');
+
+
+
+commit;
+
+
+
+select (select name
+        from tbl_member
+        where hakbun = t.fk_hakbun) as name, y.serveyTopic
+from tbl_servey y
+join tbl_subject t
+on y.serveyCode = t.code
+join tbl_sugang g
+on g.fk_code = t.code
+where g.fk_hakbun = '2100004'
+order by y.serveyTopic
+
+select fk_hakbun
+from tbl_sugang
+where fk_hakbun = and serveyTopic = 
+
+
+
+select (select name
+        		from tbl_member
+        		where hakbun = t.fk_hakbun) as name, y.serveyTopic, y.serveyCode
+		from tbl_servey y
+		join tbl_subject t
+		on y.serveyCode = t.code
+		join tbl_sugang g
+		on g.fk_code = t.code
+		where g.fk_hakbun = '2100021'
+		order by y.serveyCode
+        
+        
+        
+        
+        
+        select *
+from tbl_sugang
+
+select (select name
+        		from tbl_member
+        		where hakbun = t.fk_hakbun) as name, y.serveyTopic, y.serveyCode
+		from tbl_servey y
+		join tbl_subject t
+		on y.serveyCode = t.code
+		join tbl_sugang g
+		on g.fk_code = t.code
+		where g.fk_hakbun = '2100022'
+		order by y.serveyCode
+        
+        
+        select *
+		from tbl_serveyMember
+		where fk_hakbun = '2100022' and fk_serveyCode = '0101'
+        
+        insert into tbl_serveyMember(fk_serveyCode, fk_hakbun, serveyDate)
+        values('0101', '2100022', default)
+        commit;
+        다이어트비법 강의평가	0101
+----------------------------------------------------------------------------------------        
+select subject, (select name from tbl_member where hakbun = fk_hakbun) as fk_hakbun
+from tbl_subject
+where code = '0102'

@@ -81,29 +81,38 @@ public class MinController {
 		
 		return "pp.tiles1";
 		
-	}//end of public String test1(HttpServletRequest request) {}------------
+	}//end of public String test1(HttpServletRequest reques1t) {}------------
 	
 	
-    @RequestMapping(value="/servey.univ")
-    public ModelAndView servey(ModelAndView mav, HttpServletRequest request) {
-       
-    
-       mav.setViewName("login/servey");
-       
-       return mav;
-    }// end of public ModelAndView servey(ModelAndView mav, HttpServletRequest request) {}--------------------------
-    
-    
-    @RequestMapping(value="/evaluation.univ")
-    public ModelAndView evaluation(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
-       
+	
+	@RequestMapping(value="/Teacherservey.univ", method= {RequestMethod.POST})
+	public String Teacherservey(HttpServletRequest request) {
+		
+		String serveyCode = request.getParameter("serveyCode");
+		
+		
+		List<SubjectVO> serveyList = MinService.Teacherservey(serveyCode);
+		
+		String subject = "";
+		String name = "";
+		String code = "";
+		
+		for(SubjectVO svo : serveyList) {
+			subject = svo.getSubject();
+			name = svo.getFk_hakbun();
+			code = svo.getCode();
+		}
+		
+		request.setAttribute("subject", subject);
+		request.setAttribute("name", name);
+		request.setAttribute("serveyCode", code);
+		
+		
+		
+		
+		return "login/Teacherservey";
+		
+	}//end of public String test1(HttpServletRequest reques1t) {}------------
 
-       mav.setViewName("login/evaluation");
-       
-       return mav;
-    }// end of public ModelAndView servey(ModelAndView mav, HttpServletRequest request) {}--------------------------
-
-	
-	
 	
 }	

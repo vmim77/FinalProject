@@ -35,10 +35,12 @@ button {
 
 <script type="text/javascript">
 
-   $(document).ready(function(){
-      
-   
-   });
+$(document).ready(function(){
+	   
+	  
+	   
+	   
+	});// end of $(document).ready(function(){
 
 </script>
 
@@ -125,7 +127,7 @@ button {
 				<label for="english">&nbsp;&nbsp;1. TOEIC/TOEFL</label> <input type="radio" name="activity" id="english" />
 				<label for="glicense">&nbsp;&nbsp;2. 각종 자격증 취득</label> <input type="radio" name="activity" id="glicense" />
 				<label for="lecture">&nbsp;&nbsp;3. 관련 학원 수강</label> <input type="radio" name="activity" id="lecture" />
-				<label for="presentation">&nbsp;&nbsp;4. 설명회,박람회 참관</label> <input type="radio" name="activity" id="presentation" />
+				<label for="presentation">&nbsp;&nbsp;4. 설명회 참관</label> <input type="radio" name="activity" id="presentation" />
 				<label for="else">&nbsp;&nbsp;5. 기타</label> <input type="radio" name="activity" id="else" />
 				<br><br>
 			</li>	
@@ -166,7 +168,7 @@ button {
 				<label for="internship">&nbsp;&nbsp;3. 현장실습 및 인턴십</label> <input type="radio" name="join" id="internship" />
 				<label for="slecture">&nbsp;&nbsp;4. 초청 특강</label> <input type="radio" name="join" id="lecture" /> <br>
 				<label for="sprogram">&nbsp;&nbsp;5. 학과 자체 프로그램</label> <input type="radio" name="join" id="sprogram" />
-				<label for="consult ">&nbsp;&nbsp;6. 취업지원실 및 지도교수 방문 상담</label> <input type="radio" name="join" id="consult " />
+				<label for="consult ">&nbsp;&nbsp;6. 지도교수 상담</label> <input type="radio" name="join" id="consult " />
 				<label for="ele">&nbsp;&nbsp;7. 기타</label> <input type="radio" name="join" id="ele" />
 				<br><br>
 			</li>	
@@ -195,7 +197,7 @@ button {
 		<p style="float: right; font-weight: bold;">응답해주셔서 감사합니다.</p>
 
 		<br><br><br>
- 		<button type="submit">제출</button>
+ 		<button type="submit" id="btnok">제출</button>
 
  
 	</form>

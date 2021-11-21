@@ -18,6 +18,12 @@ public interface InterDongService {
 	// 마이페이지 보여주기
 	List<MemberVO> getMyMember(Map<String, String> paraMap);
 
+	// 내가 신청한 전공평가 가져오기
+	List<Map<String, String>> getServeyList(String hakbun);
+
+	// 강의평가 했는지 확인하기
+	String getServeyMemberList(Map<String, String> paraMap);
+
 
 	
 }//end of public interface InterBoardService {

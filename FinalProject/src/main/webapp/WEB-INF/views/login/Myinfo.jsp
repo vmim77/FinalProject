@@ -59,8 +59,65 @@ $(document).ready(function(){
 		
 	}); //end of $("button#update").click(function(){
 	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+		
+	$("button#evaluation").click(function(){
+		
+		$.ajax({
+            url:"<%= request.getContextPath()%>/servey.univ",
+            type:"GET",
+            dataType:"JSON",
+            success:function(json){
+            
+            	var tblhtml = "<colgroup>"
+								+"<col>"
+								+"<col style='width: 130px;'>"
+								+"<col style='width: 130px;'>"
+								+"<col style='width: 160px;'>"
+							  +"</colgroup>"
+							  +"<thead>"
+							  	+"<tr>"
+							  		+"<th scope='col' class='tg-uofs'>설문</th>"
+								    +"<th class='tg-uofs'>교수</th>"
+								    +"<th class='tg-uofs'>설문일시</th>"
+								    +"<th class='tg-uofs'>비고</th>"
+							    +"</tr>"
+							  +"</thead>";
+							
+
+            	$.each(json, function(index, item){
+      
+            		tblhtml += "<tbody>"
+	            				   +"<td scope='col' class='tg-o40d'>"+item.serveyTopic+"</td>"
+						    	   +"<td class='tg-o40d'>"+item.name+"</td>"
+				    			   +"<td class='tg-o40d'>"+item.serveyDate+"</td>"
+				    			   +"<td class='tg-o40d'>"+item.html+"</td>";
+          					   +"</tbody>";	
+                });//end of $.each(json, function(index, item){--------------------------------------
+                
+                $("table#inthis").html(tblhtml);
+
+            },
+            error: function(request, status, error){
+               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+             }
+            
+         });//end of $.ajax({--------------------------------------------------------
+		
+	});//end of $("button#evaluation").click(function(){------------------	
 	
-	
+	$(document).on("click", "#goServey", function(){
+
+		var serveyCode = $(this).val();
+		
+		$("input#serveyCode").val(serveyCode);
+		
+		var frm = document.GoServey;
+		frm.method="POST";
+		frm.action = "<%= ctxPath%>/Teacherservey.univ";
+		frm.submit();
+	});
+		
 });// end of $(document).ready(function(){
 
 
@@ -71,6 +128,8 @@ $(function(){
         $('div.modal').modal();
     })
 })
+
+
 
 
 
@@ -211,7 +270,7 @@ body {
                            <button class="btn btn-danger" data-target="#plan" data-toggle="modal">학습안내서/교수계획서</button>
                            <a type="button" onclick="" class="btn btn-danger">성적표</a>
                            <button class="btn btn-success" data-target="#servey" data-toggle="modal">설문관리</button>
-                           <button class="btn btn-success" data-target="#evaluation" data-toggle="modal">강의평가</button>
+                           <button id="evaluation" class="btn btn-success" data-target="#servey2" data-toggle="modal">강의평가</button>
                            <a type="button" onclick="" class="btn btn-warning">1 : 1 문의</a>
                            
                         </div>
@@ -405,7 +464,7 @@ body {
         
                 <!-- Modal Header -->
                 <div class="modal-header" style="background-color: #e6e6e6;">
-                    <h2 class="modal-title" style="font-weight: bold; font-size: 18pt; margin: auto;">{{학번}} 님의 설문조사 현황</h2>
+                    <h2 class="modal-title" style="font-weight: bold; font-size: 18pt; margin: auto;">${sessionScope.loginuser.hakbun } 님의 설문조사 현황</h2>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
             
@@ -428,8 +487,8 @@ body {
 						</thead>
 						<tbody>
 						  <tr>
-						    <td scope="col" class="tg-o40d">과목명</td>
-						    <td class="tg-o40d">교수명</td>
+						    <td scope="col" class="tg-o40d"></td>
+						    <td class="tg-o40d">${sessionScope.loginuser.name}</td>
 						    <td class="tg-o40d">날짜</td>
 						    <td class="tg-o40d"><a type="button" id="evaluationbutton" onclick="javascript:location.href='<%= ctxPath%>/servey.univ'">설문참여</a></td>
 						  </tr>
@@ -454,7 +513,7 @@ body {
 
 
 <!--  강의평가 -->                 
-    <div class="modal" id="evaluation">
+    <div class="modal" id="servey2">
         <div class="modal-dialog modal-lg">
             <div class="modal-content ">
             
@@ -468,36 +527,9 @@ body {
             
                 <!-- Modal body -->
 					<br> 
-	            	<table class="tg" style="width: 740px; margin: auto;">
-	            	<colgroup>
-						<col>
-						<col style="width: 130px;">
-						<col style="width: 130px;">
-						<col style="width: 160px;">
-					</colgroup>
-						<thead>
-						  <tr>
-						    <th scope="col" class="tg-uofs">설문</th>
-						    <th class="tg-uofs">교수</th>
-						    <th class="tg-uofs">설문일시</th>
-						    <th class="tg-uofs">비고</th>
-						  </tr>
-						</thead>
-						<tbody>
-						  <tr>
-						    <td scope="col" class="tg-o40d">${sessionScope.subject}</td>
-						    <td class="tg-o40d">교수명</td>
-						    <td class="tg-o40d">날짜</td>
-						    <td class="tg-o40d"><a type="button" id="evaluationbutton" onclick="javascript:location.href='<%= ctxPath%>/evaluation.univ'">평가하기</a></td>
-						  </tr>
-						  <tr>
-						    <td scope="col" class="tg-o40d">과목명</td>
-						    <td class="tg-o40d">교수명</td>
-						    <td class="tg-o40d">날짜</td>
-						    <td class="tg-o40d"><a type="button" id="evaluationbutton" onclick="javascript:location.href='<%= ctxPath%>/evaluation.univ'">평가하기</a></td>
-						  </tr>
-						</tbody>
-						</table>
+	            	<table id="inthis" class="tg" style="width: 740px; margin: auto;">
+	            	
+					</table>
 						
 					
 				<!-- Modal footer -->
@@ -510,8 +542,9 @@ body {
     </div>
         
 
-
-
+<form name="GoServey">
+	<input type="hidden" id="serveyCode" name="serveyCode" value="">
+</form>
 
 </body>
 </html>

@@ -13,13 +13,13 @@
 .tg1 .tg-0pky { border-color:inherit;text-align:left;vertical-align:top}
 
 .tg {border-collapse:collapse;border-spacing:0;}
-.tg td {border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th {border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg td {border-color:#ffcc80;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th {border-color:#ffcc80;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg .tg-1jqf {background-color:#efefef;border-color:#c0c0c0;color:#9b9b9b;font-weight:bold;text-align:center;vertical-align:top}
 .tg .tg-r1ml { background-color:#f0fbec;border-color:#c0c0c0;color:#00b33c;font-weight:bold;text-align:center;vertical-align:top}
 .tg .tg-dcw3 {background-color:#f0fbec;border-color:#c0c0c0;color:#05af06;font-weight:bold;text-align:center;vertical-align:middle}
-.tg .tg-ougll { background-color:#d6d6d6; border-color:#9b9b9b;color:#000000;font-weight:bold;text-align:center;vertical-align:top;}
-.tg .tg-ougl { background-color:#d6d6d6; border-color:#9b9b9b;color:#000000;font-weight:bold;text-align:center;vertical-align:top; border-left: hidden; border-right: hidden;}
+.tg .tg-ougll { background-color: #ffb84d; border-color:#ffcc80;color:#000000;font-weight:bold;text-align:center;vertical-align:top;}
+.tg .tg-ougl { background-color: #ffb84d; border-color:#ffcc80;color:#000000;font-weight:bold;text-align:center;vertical-align:top; border-left: hidden; border-right: hidden;}
 .tg .tg-fzdr { border-color:#c0c0c0;text-align:center;vertical-align:center;}
 .tg .tg-wo29 { border-color:#c0c0c0;text-align:left;vertical-align:top}
 .tg .tg-377c {background-color:#e1f0fb;border-color:#c0c0c0;color:#3a68eb;font-weight:bold;text-align:center;vertical-align:top}

@@ -201,9 +201,12 @@ public class DongController {
 		   
 		   Map<String,String>paraMap = new HashMap<>();
 		   paraMap.put("hakbun", hakbun);
-		   System.out.println("확인용 hakbun" + hakbun);
+
 		   List<MemberVO> MemberList = service.getMyMember(paraMap);
 		   
+
+		 
+
 		   
 		   mav.addObject("MemberList",MemberList);
 		   mav.setViewName("login/Myinfo");
@@ -246,8 +249,55 @@ public class DongController {
 
 	   
 //====================================================================================================================
-	   
+	// 민경작업 //
+	   @ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
+	   @RequestMapping(value="/servey.univ", produces="text/plain;charset=UTF-8", method= {RequestMethod.GET})
+	   public String servey(HttpServletRequest request){
+		   
+		   HttpSession session = request.getSession();
+		   MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+	    	  
+		   String hakbun = loginuser.getHakbun();
+		   
+		   // 내가 신청한 전공평가 가져오기
+		   List<Map<String, String>> serveyList = service.getServeyList(hakbun);
 
+		   JSONArray jsonarr = new JSONArray();
+		      
+		   
+		   Map<String, String> paraMap = new HashMap<>();
+		   
+	         for(Map<String, String> ServeyMap : serveyList) {
+	        	 	
+	        	 JSONObject jsonobj = new JSONObject();
+	        	 
+	        	 paraMap.put("serveyCode", ServeyMap.get("serveyCode"));
+	        	 paraMap.put("hakbun", hakbun);
+	        	 System.out.println(ServeyMap.get("serveyCode"));
+	        	 // 강의평가 했는지 확인하기
+	        	 String serveyDate = service.getServeyMemberList(paraMap);
+	
+	        	 if(serveyDate == null) {
+	        		 jsonobj.put("name", ServeyMap.get("name")); 
+	 	             jsonobj.put("serveyTopic", ServeyMap.get("serveyTopic"));
+	 	             jsonobj.put("serveyDate", "미 참여");
+	 	             jsonobj.put("html", "<button id='goServey' value='"+ServeyMap.get("serveyCode")+"'>설문참여</button>");    	             
+	        	 }
+	        	 else {
+	        		 jsonobj.put("name", ServeyMap.get("name")); 
+	 	             jsonobj.put("serveyTopic", ServeyMap.get("serveyTopic"));
+	 	             jsonobj.put("serveyDate", serveyDate);
+	 	             jsonobj.put("html", "참여완료");
+	        	 }
+	        	 
+	        	 jsonarr.put(jsonobj);	
+		        	 
+	        }
+	         
+		      return jsonarr.toString();   
+	
+
+	   }
 		
 	   
 }	

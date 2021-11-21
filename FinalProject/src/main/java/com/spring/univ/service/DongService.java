@@ -50,6 +50,27 @@ public class DongService implements InterDongService {
 			
 			return MemberList;
 		}
+//==============================================================================================
+		
+		
+		
+		
+		
+		
+		
+		
+		// 내가 신청한 전공평가 가져오기
+		@Override
+		public List<Map<String, String>> getServeyList(String hakbun) {
+			  List<Map<String, String>> serveyList = dao.getServeyList(hakbun);
+			return serveyList;
+		}
+		 // 강의평가 했는지 확인하기
+		@Override
+		public String getServeyMemberList(Map<String, String> paraMap) {
+			String serveyDate = dao.getServeyMemberList(paraMap);
+			return serveyDate;
+		}
 
 
 //==============================================================================================

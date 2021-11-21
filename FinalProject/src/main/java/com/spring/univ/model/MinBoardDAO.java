@@ -26,8 +26,11 @@ public class MinBoardDAO implements InterMinBoardDAO {
 		return WeekList;
 	}
 
-	
-
+	@Override
+	public List<SubjectVO> Teacherservey(String serveyCode) {
+		List<SubjectVO> serveyList = sqlsession2.selectList("Min.Teacherservey", serveyCode);
+		return serveyList;
+	}
 
 	
 	

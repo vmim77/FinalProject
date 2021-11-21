@@ -33,4 +33,36 @@
 		where hakbun = #{hakbun}
 	</select>
 <!-- === -->		
+
+
+
+<!-- 내가 신청한 전공평가 가져오기 -->
+	<select id="getServeyList" parameterType="String" resultMap="ServeyMap">
+		select (select name
+        		from tbl_member
+        		where hakbun = t.fk_hakbun) as name, y.serveyTopic, y.serveyCode
+		from tbl_servey y
+		join tbl_subject t
+		on y.serveyCode = t.code
+		join tbl_sugang g
+		on g.fk_code = t.code
+		where g.fk_hakbun = #{hakbun}
+		order by y.serveyCode
+	</select>
+
+	<resultMap type="HashMap" id="ServeyMap">
+      <result property="name" column="name" javaType="String" />
+       <result property="serveyTopic" column="serveyTopic" javaType="String" /> 
+        <result property="serveyCode" column="serveyCode" javaType="String" />   
+   </resultMap>
+
+	<!-- 강의평가 했는지 확인하기 -->
+	<select id="getServeyMemberList" parameterType="HashMap" resultType="String">
+		select serveyDate
+		from tbl_serveyMember
+		where fk_hakbun = #{hakbun} and fk_serveyCode = #{serveyCode}
+	</select>
+
+
+
 </mapper>
