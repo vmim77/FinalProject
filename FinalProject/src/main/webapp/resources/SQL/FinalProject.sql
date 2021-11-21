@@ -560,3 +560,11 @@ commit;
 update tbl_homework set status = 1
 where seq = 2;
 
+
+select * 
+from tbl_member;
+
+update tbl_member set picture = 'kakao.png'
+where hakbun = '2100036';
+
+commit;

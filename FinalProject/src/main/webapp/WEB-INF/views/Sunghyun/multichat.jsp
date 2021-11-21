@@ -84,7 +84,7 @@
 	    	   
 	    	   var userArr =  userList.split(",");
 	    	   
-	    	   $("div#connectingUserList").html(userList+" ( " + userArr.length + "명 )");
+	    	   $("div#connectingUserList").html(userList+"<br> [ " + userArr.length + "명 접속중 ]");
 	    	   
 	       }
 	       else {

@@ -34,11 +34,20 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 			
 			MemberVO loginuser = (MemberVO) map.get("loginuser");
 			
+			String grade = "";
+			if(loginuser.getAuthority() == 0) {
+				grade = " 학생";
+			}
+			
+			else if(loginuser.getAuthority() == 1) {
+				grade = " 교수";
+			}
+			
 			if(size == cnt) {
-				connectingUserName += loginuser.getName(); 
+				connectingUserName += loginuser.getName()+grade+"("+loginuser.getHakbun()+")"; 
 			}
 			else {
-				connectingUserName += loginuser.getName()+","; 
+				connectingUserName += loginuser.getName()+grade+"("+loginuser.getHakbun()+")"+", "; 
 			}
 			
 		}// end of for--------------------
