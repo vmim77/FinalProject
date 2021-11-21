@@ -145,28 +145,20 @@
 
 <div id="homeworkContainer" style="width: 100%;">
 
-	<div style="display: flex;">
-		<input type="text" placeholder="과제 검색" style="margin-left: 10px;" />
-		<div style="margin-left: auto;">
-			<button type="button" class="btn btn-secondary">날짜로 보기</button>
-			<button type="button" class="btn btn-secondary">유형별 보기</button>
-		</div>
-	</div>
-	
-	<div class="container-fluid my-3 p-3" style="background-color: #ddd;">
+	<div class="container-fluid my-3 p-3" style="background-color: #ffb84d;">
 		<c:if test="${not empty requestScope.homeworkList}">
 			<c:forEach var="homeworkvo" items="${requestScope.homeworkList}" varStatus="status">
 				<div class="accordion" id="accordion${status.count}">
 					<div class="card">
-						<div class="card-header" id="heading${status.count}">
+						<div class="card-header" id="heading${status.count}" style="background-color: #fff">
 							<h2 class="mb-0">
 								<button class="btn btn-link btn-block text-left" type="button"
 									data-toggle="collapse" data-target="#collapse${status.count}"
 									aria-expanded="false" aria-controls="collapse${status.count}">
 									${homeworkvo.subject}
 									<div class="title">${homeworkvo.regDate} | 작성자: ${homeworkvo.name}
-										<c:if test="${homeworkvo.status == 0}"><span class="badge badge-success">과제 진행중</span></c:if>
-										<c:if test="${homeworkvo.status == 1}"><span class="badge badge-danger">과제 마감</span></c:if>
+										<c:if test="${homeworkvo.status == 0}"><span class="badge badge-success">제출 가능</span></c:if>
+										<c:if test="${homeworkvo.status == 1}"><span class="badge badge-danger">제출 마감</span></c:if>
 									</div>
 								</button>
 							</h2>

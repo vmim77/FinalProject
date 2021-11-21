@@ -551,7 +551,12 @@ alter table tbl_homework
 add constraint CK_TBL_HW_COMMENT_ST check(status in(0, 1));
 
 select *
-from tbl_homework_comment;
+from tbl_homework;
 
 delete from tbl_homework_comment;
+
+commit;
+
+update tbl_homework set status = 1
+where seq = 2;
 
