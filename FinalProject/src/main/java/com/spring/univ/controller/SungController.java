@@ -734,7 +734,101 @@ public class SungController {
 		return mav;
 	}
 	
+	// 과제 게시판 댓글가져오기
+	@ResponseBody
+	@RequestMapping(value="/getHomeworkComment.univ", produces="text/plain;charset=UTF-8")
+	public String subject_getHomeworkComment(HttpServletRequest request, HttpServletResponse response) {
+		
+		String code = request.getParameter("code");
+		
+		
+		List<HomeWorkCommentVO> homeworkCommentList = service.getHomeworkComment(code);
+		
+		
+		JSONArray jsonArr = new JSONArray();
+		
+		for(HomeWorkCommentVO hwcvo : homeworkCommentList) {
+			
+			JSONObject jsObj = new JSONObject();
+			jsObj.put("seq", hwcvo.getSeq());
+			jsObj.put("parentSeq", hwcvo.getParentSeq());
+			jsObj.put("fk_hakbun", hwcvo.getFk_hakbun());
+			jsObj.put("name", hwcvo.getName());
+			jsObj.put("regDate", hwcvo.getRegDate());
+			jsObj.put("content", hwcvo.getContent());
+			jsObj.put("fileName", hwcvo.getFileName());
+			jsObj.put("orgFilename", hwcvo.getOrgFilename());
+			jsObj.put("fileSize", hwcvo.getFileSize());
+			
+			jsonArr.put(jsObj);
+		}
+		
+		return jsonArr.toString();
+	}
 	
-
+	
+	// 과제게시판 댓글달기
+	@ResponseBody
+	@RequestMapping(value="/writeHomeworkComment.univ", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public String writeHomeworkComment(MultipartHttpServletRequest mrequest, HttpServletResponse response, HomeWorkCommentVO hwcvo) {
+		
+		String content = hwcvo.getContent();
+		
+		content.replaceAll("<", "&lt;");
+		content.replaceAll(">", "&gt;");
+		
+		hwcvo.setContent(content);
+		
+		MultipartFile attach = hwcvo.getAttach();
+		
+		if( !attach.isEmpty() ) {
+			
+			try {
+			String path = mrequest.getSession().getServletContext().getRealPath("/");
+			String root = path + "resources" + File.separator + "files"; 
+			
+			byte[] bytes = attach.getBytes(); // 실제 파일내용물
+			
+			String newFilename = "";
+			String fileExt = attach.getOriginalFilename().substring(attach.getOriginalFilename().lastIndexOf(".")); 
+			
+			newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
+			newFilename += System.nanoTime();
+			newFilename += fileExt;
+			
+			hwcvo.setFileName(newFilename); // WAS DISK에 저장될 파일명
+			hwcvo.setOrgFilename(attach.getOriginalFilename()); 	// 실제 파일명
+			hwcvo.setFileSize(String.valueOf(attach.getSize())); // 파일사이즈
+			
+			File file = new File(root);
+			
+			if(!file.exists()) { // 폴더가 없으면 만들어준다.
+				file.mkdir();
+			}
+			
+			String pathname = root + File.separator + newFilename;
+			
+			FileOutputStream fos;
+			
+			fos = new FileOutputStream(pathname);
+			fos.write(bytes); 
+			fos.flush();
+			fos.close();
+			
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+		int n = service.writeHomeworkComment(hwcvo);
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("n", n);
+		
+		
+		return jsonObj.toString();
+	}
 	
 }	

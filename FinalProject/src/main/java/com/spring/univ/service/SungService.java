@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.spring.univ.model.HomeWorkCommentVO;
 import com.spring.univ.model.HomeworkVO;
 import com.spring.univ.model.InterSungDAO;
 import com.spring.univ.model.LessonBoardCommentVO;
@@ -145,6 +146,29 @@ public class SungService implements InterSungService {
 	public List<HomeworkVO> getHomeworkList(String code) {
 		List<HomeworkVO> homeworkList = dao.getHomeworkList(code);
 		return homeworkList;
+	}
+	
+	// 과제게시판의 댓글 가져오기
+	@Override
+	public List<HomeWorkCommentVO> getHomeworkComment(String code) {
+		List<HomeWorkCommentVO> homeworkCommentList = dao.getHomeworkComment(code);
+		return homeworkCommentList;
+	}
+	
+	// 과제게시판 댓글쓰기[파일첨부기능]
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
+	public int writeHomeworkComment(HomeWorkCommentVO hwcvo) {
+		
+		int n = 0, m = 0;
+		
+		n = dao.writeHomeworkComment(hwcvo);
+		
+		if(n==1) {
+			m = dao.plusCommentCnt(hwcvo);
+		}
+		
+		return m;
 	}
 
 }

@@ -58,5 +58,14 @@ public interface InterSungDAO {
 	
 	// 과제게시판의 글목록 조회
 	List<HomeworkVO> getHomeworkList(String code);
+	
+	// 과제게시판의 댓글 가져오기
+	List<HomeWorkCommentVO> getHomeworkComment(String code);
+
+	// 과제게시판 댓글쓰기[파일첨부기능]
+	int writeHomeworkComment(HomeWorkCommentVO hwcvo);
+	
+	// 과제게시판 부모글 댓글갯수 증가
+	int plusCommentCnt(HomeWorkCommentVO hwcvo);
 
 }

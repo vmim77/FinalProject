@@ -15,12 +15,13 @@ public class HomeworkVO {
 	private String fileName;		// 파일명(WAS DISK) 
 	private String orgFilename;		// 원본파일명
 	private String fileSize;		// 파일사이즈
+	private String status;			// 과제 진행중, 과제 마감(댓글달기 불가)
 	
 	
 	public HomeworkVO() {}
 	
 	public HomeworkVO(String seq, String fk_hakbun, String fk_code, String name, String subject, String content,
-			String regDate, String commentCount, String fileName, String orgFilename, String fileSize) {
+			String regDate, String commentCount, String fileName, String orgFilename, String fileSize, String status) {
 		this.seq = seq;
 		this.fk_hakbun = fk_hakbun;
 		this.fk_code = fk_code;
@@ -32,6 +33,7 @@ public class HomeworkVO {
 		this.fileName = fileName;
 		this.orgFilename = orgFilename;
 		this.fileSize = fileSize;
+		this.status = status;
 	}
 
 	public String getSeq() {
@@ -121,6 +123,15 @@ public class HomeworkVO {
 	public void setFileSize(String fileSize) {
 		this.fileSize = fileSize;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	
 	
 	

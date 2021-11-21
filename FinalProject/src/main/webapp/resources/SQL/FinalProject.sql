@@ -455,7 +455,12 @@ constraint  FK_TBL_HOMEWORK_FK_CODE foreign key(fk_code) references tbl_subject(
 -- Table TBL_HOMEWORK이(가) 생성되었습니다.
 
 insert into tbl_homework(seq, fk_hakbun, fk_code, name, subject, content, regDate, commentCount)
-values(homeworkSeq.nextval, '2100001', '0101', '금길영', '테스트222', '테스트222 내용', default, default);
+values(homeworkSeq.nextval, '2100001', '5041', '금길영', '테스트222', '테스트222 내용', default, default);
+
+commit;
+
+insert into tbl_homework_comment(seq, parentSeq, fk_code, fk_hakbun, content)
+values(homeworkCommentSeq.nextval, 3, '5041', '2100001', '댓글테스트1');
 
 commit;
 
@@ -503,3 +508,50 @@ nocache;
 
 select seq, fk_hakbun, fk_code, name, subject, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, commentCount, fileName, orgFilename, fileSize
 from tbl_homework
+
+
+select seq, parentSeq, fk_hakbun, name, content, fileName, orgFilename, FileSize
+from tbl_homework_comment
+JOIN tbl_member
+on fk_hakbun = hakbun
+
+select *
+from tbl_homework_comment
+
+insert into tbl_homework_comment(seq, parentSeq, fk_hakbun, content)
+values(homeworkCommentSeq.nextval, 2, '2100001', '댓글테스트1');
+
+commit;
+
+alter table tbl_homework_comment
+add fk_code varchar2(100)
+
+update tbl_homework_comment set fk_code = '0101'
+
+alter table tbl_homework_comment
+add constraint FK_TBL_HW_COMMENT_FK_CODE foreign key(fk_code) references tbl_subject(code);
+
+alter table tbl_homework_comment
+add regDate date default sysdate;
+
+		select seq, parentSeq, fk_hakbun, name, content, fileName, orgFilename, FileSize,
+		to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate
+		from tbl_homework_comment
+		JOIN tbl_member
+		on fk_hakbun = hakbun
+		where fk_code = '0101'
+
+alter table tbl_homework
+add status number(1) default 0;
+
+select * 
+from tbl_homework;
+
+alter table tbl_homework
+add constraint CK_TBL_HW_COMMENT_ST check(status in(0, 1));
+
+select *
+from tbl_homework_comment;
+
+delete from tbl_homework_comment;
+

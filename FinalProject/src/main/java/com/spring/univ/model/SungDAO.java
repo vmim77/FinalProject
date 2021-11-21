@@ -140,6 +140,27 @@ public class SungDAO implements InterSungDAO {
 		return homeworkList;
 	}
 	
+	// 과제게시판의 댓글 가져오기
+	@Override
+	public List<HomeWorkCommentVO> getHomeworkComment(String code) {
+		List<HomeWorkCommentVO> homeworkCommentList = sqlsession2.selectList("Sung.getHomeworkComment", code);
+		return homeworkCommentList;
+	}
+	
+	// 과제게시판 댓글쓰기[파일첨부기능]
+	@Override
+	public int writeHomeworkComment(HomeWorkCommentVO hwcvo) {
+		int n = sqlsession2.insert("Sung.writeHomeworkComment", hwcvo);
+		return n;
+	}
+	
+	// 과제게시판 부모글 댓글갯수 증가
+	@Override
+	public int plusCommentCnt(HomeWorkCommentVO hwcvo) {
+		int m = sqlsession2.update("Sung.plusCommentCnt", hwcvo);		
+		return m;
+	}
+	
 	
 
 }

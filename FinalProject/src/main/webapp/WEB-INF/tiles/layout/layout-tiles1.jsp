@@ -169,7 +169,7 @@
 			
 			$("div#Messenger").append("<div style='padding-top: 20px; height: 60px; background-color: #ffb84d; text-align:center; font-size:15pt; color: #fff; font-weight: bold;'>길영대학교 메신저<span id='MessangerClose' style='height: 100%; font-size:20pt; float:right; margin-right: 10px; cursor: pointer;'>&times;</span></div>");
 			$("div#Messenger").append("<div width: 0; height: 0; style='clear:both;'></div>");
-			$("div#Messenger").append("<iframe src='<%= serverName%><%= ctxPath%>/messenger.univ' style='width: 100%; height: 100%; border:solid 1px gray; margin: 0;'></iframe>");
+			$("div#Messenger").append("<iframe src='<%= serverName%><%= ctxPath%>/messenger.univ?serverName=<%= serverName%>' style='width: 100%; height: 100%; border:solid 1px gray; margin: 0;'></iframe>");
 			$("div#Messenger").show('slow');
 			$(this).hide();
 			

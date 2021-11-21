@@ -3,6 +3,7 @@ package com.spring.univ.service;
 import java.util.List;
 import java.util.Map;
 
+import com.spring.univ.model.HomeWorkCommentVO;
 import com.spring.univ.model.HomeworkVO;
 import com.spring.univ.model.LessonBoardCommentVO;
 import com.spring.univ.model.LessonBoardVO;
@@ -56,5 +57,11 @@ public interface InterSungService {
 	
 	// 과제게시판의 글목록 조회
 	List<HomeworkVO> getHomeworkList(String code);
+	
+	// 과제게시판의 댓글 가져오기
+	List<HomeWorkCommentVO> getHomeworkComment(String code);
+	
+	// 과제게시판 댓글쓰기[파일첨부기능]
+	int writeHomeworkComment(HomeWorkCommentVO hwcvo);
 
 }

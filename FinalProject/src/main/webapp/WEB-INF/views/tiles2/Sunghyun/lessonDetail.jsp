@@ -100,7 +100,6 @@
 						html += "<td style='width: 1%; text-align: right; font-size: 15pt; color: red; cursor: pointer;' onclick='deleteComment("+item.seq+","+item.fk_hakbun+","+item.parentSeq+")'>&times;</td>";
 						html += "</tr>";
 						
-						console.log(item.fk_hakbun);
 					});
 					
 				}
@@ -240,6 +239,8 @@
 					</tr>
 				</table>
 			</form>
+			
+
 		</c:if>
 		
 		<table id="commentList" class="table" style="margin-top: 30px;">
