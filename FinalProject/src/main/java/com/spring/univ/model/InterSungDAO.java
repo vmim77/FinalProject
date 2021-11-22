@@ -67,5 +67,8 @@ public interface InterSungDAO {
 	
 	// 과제게시판 부모글 댓글갯수 증가
 	int plusCommentCnt(HomeWorkCommentVO hwcvo);
+	
+	// 마감기한인 과제게시물의 status를 바꾼다.
+	void updateStatus(String seq);
 
 }

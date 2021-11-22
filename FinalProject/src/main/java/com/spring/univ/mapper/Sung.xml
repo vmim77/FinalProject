@@ -207,7 +207,7 @@
 	</select>
 	
 	<select id="getHomeworkList" parameterType="String" resultType="com.spring.univ.model.HomeworkVO">
-		select seq, fk_hakbun, fk_code, name, subject, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, commentCount, fileName, orgFilename, fileSize, status
+		select seq, fk_hakbun, fk_code, name, subject, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, commentCount, fileName, orgFilename, fileSize, status, deadline
 		from tbl_homework
 		where fk_code = #{code}
 		order by seq desc 
@@ -237,5 +237,10 @@
 	<update id="plusCommentCnt" parameterType="com.spring.univ.model.HomeWorkCommentVO">
 		update tbl_homework set commentCount = commentCount + 1
 		where seq = #{parentSeq}
+	</update>
+	
+	<update id="updateStatus" parameterType="String">
+		update tbl_homework set status = 1
+		where seq = #{seq}
 	</update>
 </mapper>

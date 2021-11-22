@@ -161,6 +161,13 @@ public class SungDAO implements InterSungDAO {
 		return m;
 	}
 	
+	// 마감기한인 과제게시물의 status를 바꾼다.
+	@Override
+	public void updateStatus(String seq) {
+		sqlsession2.update("Sung.updateStatus", seq);
+		
+	}
+	
 	
 
 }

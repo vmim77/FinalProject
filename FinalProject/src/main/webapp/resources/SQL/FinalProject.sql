@@ -557,7 +557,7 @@ delete from tbl_homework_comment;
 
 commit;
 
-update tbl_homework set status = 1
+update tbl_homework set status = 0
 where seq = 2;
 
 
@@ -568,3 +568,21 @@ update tbl_member set picture = 'kakao.png'
 where hakbun = '2100036';
 
 commit;
+
+
+delete from tbl_homework_comment;
+
+select *
+from tbl_homework;
+
+update tbl_homework set status = 0
+where seq = 2;
+
+alter table tbl_homework
+add deadline date default sysdate+7;
+
+update tbl_homework set deadline = '21/11/22'
+where seq = 2
+
+select * 
+from tbl_homework;

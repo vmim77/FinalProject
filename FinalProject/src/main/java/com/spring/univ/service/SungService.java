@@ -1,5 +1,7 @@
 package com.spring.univ.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -143,8 +145,31 @@ public class SungService implements InterSungService {
 	
 	// 과제게시판의 글목록 조회
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
 	public List<HomeworkVO> getHomeworkList(String code) {
+		
 		List<HomeworkVO> homeworkList = dao.getHomeworkList(code);
+		
+		if(homeworkList != null) {
+			
+			for(HomeworkVO hwvo : homeworkList) {
+				
+				hwvo.getDeadline();
+				Date now = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String currentDate = sdf.format(now);
+				
+				String dbDate = hwvo.getDeadline().substring(0, 10);
+				
+				if(dbDate.equals(currentDate)) {
+					dao.updateStatus(hwvo.getSeq());
+					
+				}
+				
+			}// end of for------------------------------------
+		}
+		
+		
 		return homeworkList;
 	}
 	
