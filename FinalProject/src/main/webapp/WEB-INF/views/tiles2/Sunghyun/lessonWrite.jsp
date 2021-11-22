@@ -122,7 +122,7 @@
 			</tr>
 		</table>
 		
-		<button class="btn btn-dark btn-md" type="button" style="float: right;" onclick="javascript:location.href='<%= request.getContextPath()%>/lesson.univ'">취소</button>
+		<button class="btn btn-dark btn-md" type="button" style="float: right;" onclick="javascript:location.href='<%= request.getContextPath()%>/homework.univ'">취소</button>
 		<button class="btn btn-dark btn-md" type="button" style="float: right; margin-right: 10px;" id="btnWrite">작성</button>
 	</div>
 	

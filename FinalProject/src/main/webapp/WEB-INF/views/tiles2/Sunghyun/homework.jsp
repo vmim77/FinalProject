@@ -5,6 +5,8 @@
 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <style>
 
  .card {margin-left: 10px;}
@@ -22,6 +24,14 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
+		
+		$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
+		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(5)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
+		});
 		
 		/////////////////////////////////////////////////////////////////////////
 		var list = new Array();
@@ -137,10 +147,28 @@
 		
 		
 	}// end of function goWrite(seq) {}-------------------------------------
+	
+	// Function Declaration
+	function goHomeworkWrite() {
+		
+		if(${sessionScope.loginuser.authority==0}){
+			alert("교수만 접근이 가능합니다!!");
+			return;
+		}
+		
+		location.href="<%= request.getContextPath()%>/homeworkWrite.univ";
+		
+		
+		
+		
+	}// end of function goHomeworkWrite()-----------------------
+	
+	
+	
 </script>
 
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
-<h3 style="float:left;">${requestScope.subjectMap.subject} 강의실(${requestScope.subjectMap.name}) > <span style="color: #0099ff; text-decoration: underline;">과제및평가</span></h3>
+<h3 style="float:left;">${requestScope.subjectMap.subject} 강의실(${requestScope.subjectMap.name}) > <span style="color: #0099ff; text-decoration: underline;">과제 및 평가</span></h3>
 <hr style="clear: both;">
 
 <div id="homeworkContainer" style="width: 100%;">
@@ -156,7 +184,7 @@
 									data-toggle="collapse" data-target="#collapse${status.count}"
 									aria-expanded="false" aria-controls="collapse${status.count}">
 									${homeworkvo.subject}
-									<div class="title">${homeworkvo.regDate} | 작성자: ${homeworkvo.name}
+									<div class="title">작성자: ${homeworkvo.name} | 작성시간: ${homeworkvo.regDate} | 마감기간: ${fn:substring(homeworkvo.deadline, 0, 10)}
 										<c:if test="${homeworkvo.status == 0}"><span class="badge badge-success">제출 가능</span></c:if>
 										<c:if test="${homeworkvo.status == 1}"><span class="badge badge-danger">제출 마감</span></c:if>
 									</div>
@@ -232,8 +260,15 @@
 			</c:forEach>
 		</c:if>
 		
+		
 		<c:if test="${empty requestScope.homeworkList}">
 			등록된 게시물이 없습니다.
 		</c:if>
 	</div>
+	
+	<c:if test="${sessionScope.loginuser.authority == 1}">
+		<div class="text-right">
+			<button type="button" class="btn btn-md" onclick="goHomeworkWrite()" style="background-color: #ffb84d; color:#fff; border: none;">글쓰기</button>
+		</div>
+	</c:if>
 </div>

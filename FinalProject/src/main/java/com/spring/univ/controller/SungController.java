@@ -232,9 +232,6 @@ public class SungController {
 		
 		MultipartFile attach = lbvo.getAttach();
 		
-		String content = lbvo.getContent();
-		
-		lbvo.setContent(content);
 		
 		if(!attach.isEmpty()) {
 			// 파일이 있는 게시글
@@ -625,7 +622,7 @@ public class SungController {
 		lbvo.setContent(content);
 		
 		if(!attach.isEmpty()) {
-			// 파일이 있는 게시글
+		// 파일이 있는 게시글
 			
 			String path = request.getSession().getServletContext().getRealPath("/");
 			String root = path + "resources" + File.separator + "files"; 
@@ -831,4 +828,113 @@ public class SungController {
 		return jsonObj.toString();
 	}
 	
+	
+	// 과제 및 평가 글쓰기 폼페이지 요청하기
+	@RequestMapping(value="/homeworkWrite.univ")
+	public ModelAndView subject_homeworkWrite(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		HttpSession session = request.getSession();
+		
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		String login_hakbun = loginuser.getHakbun();
+		
+		Map<String, String> subjectMap = (Map<String, String>) request.getAttribute("subjectMap");
+		String subject_hakbun = subjectMap.get("fk_hakbun");
+		
+		if(login_hakbun != null && !subject_hakbun.equals(login_hakbun)) {
+			
+			mav.addObject("message", "해당과목의 교수님만 접근이 가능합니다!");
+			mav.addObject("loc", request.getContextPath()+"/homework.univ");
+			mav.setViewName("msg");
+			return mav;
+		}
+		
+		mav.setViewName("Sunghyun/homeworkWrite.tiles2");
+		
+		return mav;
+	}
+	
+	// 과제 및 평가 글쓰기 완료 요청하기
+	@RequestMapping(value="/homeworkWriteEnd.univ", method= {RequestMethod.POST})
+	public ModelAndView subject_homeworkWriteEnd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, HomeworkVO hwvo, MultipartHttpServletRequest mrequest) {
+		
+		
+		MultipartFile attach = hwvo.getAttach();
+		
+		
+		if(!attach.isEmpty()) {
+			// 파일이 있는 게시글
+			
+			String path = request.getSession().getServletContext().getRealPath("/");
+			String root = path + "resources" + File.separator + "files"; 
+			
+			try {
+				
+				byte[] bytes = attach.getBytes(); // 실제 파일내용물
+				
+				String newFilename = "";
+				String fileExt = attach.getOriginalFilename().substring(attach.getOriginalFilename().lastIndexOf(".")); 
+				
+				newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
+				newFilename += System.nanoTime();
+				newFilename += fileExt;
+				
+				hwvo.setFileName(newFilename); // WAS DISK에 저장될 파일명
+				hwvo.setOrgFilename(attach.getOriginalFilename()); 	// 실제 파일명
+				hwvo.setFileSize(String.valueOf(attach.getSize())); // 파일사이즈
+				
+				File file = new File(root);
+				
+				if(!file.exists()) { // 폴더가 없으면 만들어준다.
+					file.mkdir();
+				}
+				
+				String pathname = root + File.separator + newFilename;
+				
+				FileOutputStream fos;
+				
+				fos = new FileOutputStream(pathname);
+				fos.write(bytes); 
+				fos.flush();
+				fos.close();
+				
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+		else {
+			hwvo.setFileName("");
+		}
+		
+		int n = service.homeworkWriteEnd(hwvo);
+		
+		if(n==1) {
+			String message = "과제 및 평가 게시판 글쓰기 성공";
+			String loc = request.getContextPath()+"/homework.univ";
+			
+			mav.addObject("message", message);
+			mav.addObject("loc", loc);
+			mav.setViewName("msg");
+			
+		}
+		else {
+			String message = "과제 및 평가 게시판 글쓰기 실패";
+			String loc = request.getContextPath()+"/homework.univ";
+			
+			mav.addObject("message", message);
+			mav.addObject("loc", loc);
+			mav.setViewName("msg");
+		}
+		
+		return mav;
+	}
+	
+		
 }	

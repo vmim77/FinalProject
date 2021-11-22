@@ -1,5 +1,7 @@
 package com.spring.univ.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class HomeworkVO {
 	
 	// 과제 및 평가 게시판 VO
@@ -17,6 +19,8 @@ public class HomeworkVO {
 	private String fileSize;		// 파일사이즈
 	private String status;			// 과제 진행중, 과제 마감(댓글달기 불가)
 	private String deadline;		// 마감기한
+	
+	private MultipartFile attach;
 	
 	
 	public HomeworkVO() {}
@@ -140,6 +144,14 @@ public class HomeworkVO {
 
 	public void setDeadline(String deadline) {
 		this.deadline = deadline;
+	}
+
+	public MultipartFile getAttach() {
+		return attach;
+	}
+
+	public void setAttach(MultipartFile attach) {
+		this.attach = attach;
 	}
 	
 	

@@ -63,5 +63,8 @@ public interface InterSungService {
 	
 	// 과제게시판 댓글쓰기[파일첨부기능]
 	int writeHomeworkComment(HomeWorkCommentVO hwcvo);
+	
+	// 과제게시판 글쓰기 요청
+	int homeworkWriteEnd(HomeworkVO hwvo);
 
 }

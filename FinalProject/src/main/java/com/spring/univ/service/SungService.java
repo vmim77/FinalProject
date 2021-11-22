@@ -195,5 +195,12 @@ public class SungService implements InterSungService {
 		
 		return m;
 	}
+	
+	// 과제게시판 글쓰기 요청
+	@Override
+	public int homeworkWriteEnd(HomeworkVO hwvo) {
+		int n = dao.homeworkWriteEnd(hwvo);
+		return n;
+	}
 
 }

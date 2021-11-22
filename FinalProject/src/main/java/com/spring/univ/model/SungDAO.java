@@ -168,6 +168,13 @@ public class SungDAO implements InterSungDAO {
 		
 	}
 	
+	// 과제게시판 글쓰기 요청
+	@Override
+	public int homeworkWriteEnd(HomeworkVO hwvo) {
+		int n = sqlsession2.insert("Sung.homeworkWriteEnd", hwvo);
+		return n;
+	}
+	
 	
 
 }

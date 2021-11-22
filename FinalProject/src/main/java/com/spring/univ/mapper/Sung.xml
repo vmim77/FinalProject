@@ -243,4 +243,16 @@
 		update tbl_homework set status = 1
 		where seq = #{seq}
 	</update>
+	
+	<insert id="homeworkWriteEnd" parameterType="com.spring.univ.model.HomeworkVO">
+		<if test='fileName != ""'>
+			insert into tbl_homework(seq, fk_hakbun, fk_code, name, subject, content, regDate, commentCount, fileName, orgFilename, fileSize, status, deadline)
+			values(homeworkSeq.nextval, #{fk_hakbun}, #{fk_code}, #{name}, #{subject}, #{content}, default, default, #{fileName}, #{orgFilename}, #{fileSize}, default, default)
+		</if>
+		
+		<if test='fileName == ""'>
+			insert into tbl_homework(seq, fk_hakbun, fk_code, name, subject, content, regDate, commentCount, status, deadline)
+			values(homeworkSeq.nextval, #{fk_hakbun}, #{fk_code}, #{name}, #{subject}, #{content}, default, default, default, default)
+		</if>
+	</insert>
 </mapper>

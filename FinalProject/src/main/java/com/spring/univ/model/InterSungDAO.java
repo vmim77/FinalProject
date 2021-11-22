@@ -70,5 +70,8 @@ public interface InterSungDAO {
 	
 	// 마감기한인 과제게시물의 status를 바꾼다.
 	void updateStatus(String seq);
+	
+	// 과제게시판 글쓰기 요청
+	int homeworkWriteEnd(HomeworkVO hwvo);
 
 }

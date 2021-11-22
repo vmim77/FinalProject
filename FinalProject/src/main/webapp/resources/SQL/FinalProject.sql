@@ -586,3 +586,6 @@ where seq = 2
 
 select * 
 from tbl_homework;
+
+insert into tbl_homework(seq, fk_hakbun, fk_code, name, subject, content, regDate, commentCount, fileName, orgFilename, fileSize, status, deadline)
+values()

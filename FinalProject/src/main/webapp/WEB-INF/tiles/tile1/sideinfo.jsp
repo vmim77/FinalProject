@@ -63,10 +63,6 @@
 	<i class="hideicon far fa-calendar fa-2x"></i>
 	<div>캘린더</div>
 </a>
-<a class="menu" href="#">
-	<i class="hideicon fas fa-envelope-open-text fa-2x"></i>
-	<div>메신저</div>
-</a>
 
 
 <div id="hideSideInfo">

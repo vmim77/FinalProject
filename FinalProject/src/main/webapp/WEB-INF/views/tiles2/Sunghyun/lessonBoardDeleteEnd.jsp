@@ -12,6 +12,14 @@
 
 $(document).ready(function(){
 	
+	$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+	
+	$("ul#sideMenuList").hover(function(){
+		$("ul#sideMenuList > li:nth-child(2)").removeClass("hoverdEffect");
+	}, function(){
+		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+	});
+	
 	$("button#godelete").click(function(){
 		
 		if($("input[name=pw]").val().trim() == "") {
@@ -32,6 +40,10 @@ $(document).ready(function(){
 
 
 </script>    
+
+<i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
+<h3 style="float:left;">${requestScope.subjectMap.subject} 강의실(${requestScope.subjectMap.name}) > 강의자료실 > <span style="color: #0099ff; text-decoration: underline;">${requestScope.seq}번 게시글 삭제하기</span></h3>
+<hr style="clear: both;">
 
 <div style="display: flex;">
 	<div style="width: 100%; margin: auto;">
