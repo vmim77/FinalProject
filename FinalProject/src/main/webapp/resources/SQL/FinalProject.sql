@@ -585,7 +585,34 @@ update tbl_homework set deadline = '21/11/22'
 where seq = 2
 
 select * 
+from tbl_homework
+order by seq desc;
+
+update tbl_homework set deadline = sysdate+7
+where seq = 1;
+
+commit;
+
+
+select * 
 from tbl_homework;
 
-insert into tbl_homework(seq, fk_hakbun, fk_code, name, subject, content, regDate, commentCount, fileName, orgFilename, fileSize, status, deadline)
-values()
+delete from tbl_homework_comment;
+commit;
+
+update tbl_homework set commentCount = 0;
+
+update tbl_homework set status = 0, deadline = sysdate +7
+where seq = 2;
+
+
+select A.seq, A.parentSeq, A.fk_hakbun, B.name, A.content, A.fileName, A.orgFilename, A.FileSize, 
+to_char(A.regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate,
+C.commentCount
+from tbl_homework_comment A
+JOIN tbl_member B
+on A.fk_hakbun = B.hakbun
+JOIN tbl_homework C
+on A.parentSeq = C.seq
+where A.fk_code = '0101'
+order by seq desc

@@ -214,13 +214,16 @@
 	</select>
 	
 	<select id="getHomeworkComment" parameterType="String" resultType="com.spring.univ.model.HomeWorkCommentVO">
-		select seq, parentSeq, fk_hakbun, name, content, fileName, orgFilename, FileSize,
-		to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate
-		from tbl_homework_comment
-		JOIN tbl_member
-		on fk_hakbun = hakbun
-		where fk_code = #{code}
-		order by seq desc
+			select A.seq, A.parentSeq, A.fk_hakbun, B.name, A.content, A.fileName, A.orgFilename, A.FileSize, 
+			to_char(A.regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate,
+			C.commentCount
+			from tbl_homework_comment A
+			JOIN tbl_member B
+			on A.fk_hakbun = B.hakbun
+			JOIN tbl_homework C
+			on A.parentSeq = C.seq
+			where A.fk_code = #{code}
+			order by seq desc
 	</select>
 	
 	<insert id="writeHomeworkComment" parameterType="com.spring.univ.model.HomeWorkCommentVO">
@@ -255,4 +258,28 @@
 			values(homeworkSeq.nextval, #{fk_hakbun}, #{fk_code}, #{name}, #{subject}, #{content}, default, default, default, default)
 		</if>
 	</insert>
+	
+	<select id="getHomeworkDetail" parameterType="String" resultType="com.spring.univ.model.HomeworkVO">
+		select fileName, orgFilename, fileSize
+		from tbl_homework
+		where seq = #{seq}
+	</select>
+	
+	<select id="getHomeworkCommentDetail" parameterType="String" resultType="com.spring.univ.model.HomeWorkCommentVO">
+		select fileName, orgFilename, fileSize
+		from tbl_homework_comment
+		where seq = #{seq}
+	</select>
+	
+	<delete id="deleteHomeworkCommentDelete" parameterType="HashMap">
+		delete from tbl_homework_comment
+		where seq = #{seq}
+	</delete>
+	
+	<update id="minusCommentCnt" parameterType="HashMap">
+		update tbl_homework set commentCount = commentCount - 1
+		where seq = #{parentSeq}
+	</update>
+	
+	
 </mapper>

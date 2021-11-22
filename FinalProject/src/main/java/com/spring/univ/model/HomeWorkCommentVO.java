@@ -17,6 +17,12 @@ public class HomeWorkCommentVO {
 	private String orgFilename; // 원본파일명
 	private String fileSize;	// 파일사이즈
 	
+	
+	///////////////////////////////////////////////////////////
+	// select 용 컬럼
+	private String commentCount; // 원글 댓글갯수
+
+	
 	private MultipartFile attach;
 	
 	public HomeWorkCommentVO() {}
@@ -121,6 +127,14 @@ public class HomeWorkCommentVO {
 
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
+	}
+
+	public String getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(String commentCount) {
+		this.commentCount = commentCount;
 	}
 	
 	

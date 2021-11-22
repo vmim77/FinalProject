@@ -175,6 +175,34 @@ public class SungDAO implements InterSungDAO {
 		return n;
 	}
 	
+	// 과제게시판 특정글 요청
+	@Override
+	public HomeworkVO getHomeworkDetail(String seq) {
+		HomeworkVO hwvo = sqlsession2.selectOne("Sung.getHomeworkDetail", seq);
+		return hwvo;
+	}
+	
+	// 과제게시판 특정댓글 요청
+	@Override
+	public HomeWorkCommentVO getHomeworkCommentDetail(String seq) {
+		HomeWorkCommentVO hwcvo = sqlsession2.selectOne("Sung.getHomeworkCommentDetail", seq);
+		return hwcvo;
+	}
+	
+	// 과제게시판 댓글 삭제
+	@Override
+	public int deleteHomeworkCommentDelete(Map<String, String> paraMap) {
+		int n = sqlsession2.delete("Sung.deleteHomeworkCommentDelete", paraMap);
+		return n;
+	}
+	
+	// 과제게시판 원글 댓글갯수 삭감
+	@Override
+	public int minusCommentCnt(Map<String, String> paraMap) {
+		int n = sqlsession2.update("Sung.minusCommentCnt", paraMap);
+		return n;
+	}
+	
 	
 
 }

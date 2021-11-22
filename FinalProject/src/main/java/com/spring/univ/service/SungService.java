@@ -154,7 +154,6 @@ public class SungService implements InterSungService {
 			
 			for(HomeworkVO hwvo : homeworkList) {
 				
-				hwvo.getDeadline();
 				Date now = new Date();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String currentDate = sdf.format(now);
@@ -163,11 +162,13 @@ public class SungService implements InterSungService {
 				
 				if(dbDate.equals(currentDate)) {
 					dao.updateStatus(hwvo.getSeq());
-					
 				}
 				
 			}// end of for------------------------------------
+			
+			homeworkList = dao.getHomeworkList(code);
 		}
+		
 		
 		
 		return homeworkList;
@@ -201,6 +202,35 @@ public class SungService implements InterSungService {
 	public int homeworkWriteEnd(HomeworkVO hwvo) {
 		int n = dao.homeworkWriteEnd(hwvo);
 		return n;
+	}
+	
+	// 과제게시판 특정글 요청
+	@Override
+	public HomeworkVO getHomeworkDetail(String seq) {
+		HomeworkVO hwvo = dao.getHomeworkDetail(seq);
+		return hwvo;
+	}
+	
+	// 과제게시판 특정댓글 요청
+	@Override
+	public HomeWorkCommentVO getHomeworkCommentDetail(String seq) {
+		HomeWorkCommentVO hwcvo = dao.getHomeworkCommentDetail(seq);
+		return hwcvo;
+	}
+	
+	// 과제게시판 댓글 삭제하기
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
+	public int deleteHomeworkCommentDelete(Map<String, String> paraMap) {
+		
+		int n = dao.deleteHomeworkCommentDelete(paraMap);
+		
+		int m = 0;
+		
+		if(n==1) {
+			m = dao.minusCommentCnt(paraMap);
+		}
+		return m;
 	}
 
 }

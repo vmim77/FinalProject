@@ -40,10 +40,7 @@
 			list.push("${homeworkvo.seq}");
 		</c:forEach>
 		
-		console.log(list);
-		
 		for(var i=0; i<list.length; i++){
-			console.log(list[i]);
 			getCommentList(list[i]);
 		}
 		/////////////////////////////////////////////////////////////////////////
@@ -61,6 +58,7 @@
 	
 	//Function Declaration
 	function getCommentList(parentSeq){
+		
 		$.ajax({
 			url:"<%= request.getContextPath()%>/getHomeworkComment.univ",
 			data:{"code":"${sessionScope.code}"},
@@ -68,31 +66,31 @@
 			dataType:"JSON",
 			success:function(json) {
 				
+				$("table#commentList"+parentSeq).empty();
 				
 				$.each(json, function(index, item){
 					
 					if(item.parentSeq == parentSeq) {
 						
-						if(index==0){
-							$("table#commentList"+item.parentSeq).empty();
-						}
-						
 						var html = "";
 						
-						html += "<tr>";
+						html += "<tr style='vertical-align: middle;'>";
 						html += "<td style='width: 10%; text-align: center; font-weight: bold;'><img src='<%= request.getContextPath()%>/resources/images/personimg.png' />"+item.name+"("+item.fk_hakbun+")</td>";
 						html += "<td style='width: 40%;'>"+item.content;
-						html += "<br /><br />"+item.orgFilename+"("+Number(item.fileSize).toLocaleString('en')+" bytes)"+"</td>";
+						html += "<br /><br /><a href='<%= request.getContextPath()%>/homeworkCommentFileDownload.univ?seq="+item.seq+"'>"+item.orgFilename+"</a>&nbsp;&nbsp;("+Number(item.fileSize).toLocaleString('en')+" Bytes)"+"</td>";
 						html += "<td style='width: 10%; text-align: center;'>"+item.regDate +"</td>";
+						html += "<td style='width: 1%; font-size: 20pt; text-align: center;'><span onclick='deleteComment("+item.seq+","+item.parentSeq+","+item.fk_hakbun+")' style='cursor: pointer;'>&times;</span></td>";
 						html += "</tr>";
 						
 						$("table#commentList"+item.parentSeq).append(html);
-						
+						$("span#commentCount"+parentSeq).html(item.commentCount);
 					}
-					
 					
 				});
 				
+				if(json.length == 0){
+					$("span#commentCount"+parentSeq).text("0");
+				}
 				
 			},
 	        error: function(request, status, error){
@@ -158,10 +156,43 @@
 		
 		location.href="<%= request.getContextPath()%>/homeworkWrite.univ";
 		
-		
-		
-		
 	}// end of function goHomeworkWrite()-----------------------
+	
+	// Function Declaration
+	function deleteComment(seq, parentSeq, fk_hakbun) {
+		
+		var hakbun = "${sessionScope.loginuser.hakbun}";
+		
+		if(hakbun != fk_hakbun){
+			alert("타인의 댓글은 삭제할 수 없습니다.");
+			return;
+		}
+		
+		
+		$.ajax({
+			url:"<%= request.getContextPath()%>/deleteHomeworkComment.univ",
+			type:"POST",
+			data:{"seq":seq, "parentSeq":parentSeq},
+			dataType:"JSON",
+			success:function(json) {
+				
+				if(json.n==1){
+					alert("댓글삭제 성공");
+					getCommentList(parentSeq);
+				}
+				else{
+					alert("댓글삭제 실패");
+				}
+				
+			},
+	        error: function(request, status, error){
+	              alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+			
+		});
+		
+		
+	} // end of function deleteComment(seq)----------------------------------
 	
 	
 	
@@ -212,10 +243,10 @@
 									</tr>
 									<tr>
 										<th>첨부파일</th>
-										<td>${homeworkvo.fileName}</td>
+										<td><a href="<%= request.getContextPath()%>/homeworkFileDownload.univ?seq=${homeworkvo.seq}">${homeworkvo.orgFilename}</a></td>
 									</tr>
 									<tr>
-										<th>파일용량(KB)</th>
+										<th>파일용량(Bytes)</th>
 										<td><fmt:formatNumber value="${homeworkvo.fileSize}" pattern="#,###" /></td>
 									</tr>
 								</table>
@@ -250,6 +281,8 @@
 										</table>
 									</form>
 								</c:if>
+								
+								<div style="margin: 0 10px; padding: 10px; color: #fff; text-align:center; font-size: 20pt; background-color: #ffb84d">제출인원 : <span id="commentCount${homeworkvo.seq}"></span> 명</div>
 								
 								<table id="commentList${homeworkvo.seq}" class="table" style="margin-top: 30px;">
 								

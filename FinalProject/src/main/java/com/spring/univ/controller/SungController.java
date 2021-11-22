@@ -504,6 +504,12 @@ public class SungController {
 					souts.close();
 					bfin.close();
 				}
+				
+				else {
+					out = response.getWriter();
+					out.println("<script type='text/javascript'> alert('존재하지 않는 글번호 이거나 첨부파일이 없으므로 파일 다운로드가 불가합니다!!'); history.back(); </script>");
+					return;
+				}
 			}
 			
 		} catch (Exception e) {
@@ -756,6 +762,7 @@ public class SungController {
 			jsObj.put("fileName", hwcvo.getFileName());
 			jsObj.put("orgFilename", hwcvo.getOrgFilename());
 			jsObj.put("fileSize", hwcvo.getFileSize());
+			jsObj.put("commentCount", hwcvo.getCommentCount());
 			
 			jsonArr.put(jsObj);
 		}
@@ -936,5 +943,178 @@ public class SungController {
 		return mav;
 	}
 	
+	
+	// 과제게시판 원글 파일 다운로드
+	@RequestMapping(value="/homeworkFileDownload.univ")
+	public void subject_homeworkFileDownload(HttpServletRequest request, HttpServletResponse response) {
 		
+		String seq = request.getParameter("seq");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("seq", seq);
+		
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = null; 
+		
+		try {
+			Integer.parseInt(seq);
+			
+			HomeworkVO hwvo = service.getHomeworkDetail(seq);
+			
+			if(hwvo == null || (hwvo != null && hwvo.getFileName() == null)) {
+				out = response.getWriter();
+				out.println("<script type='text/javascript'> alert('존재하지 않는 글번호 이거나 첨부파일이 없으므로 파일 다운로드가 불가합니다!!'); history.back(); </script>");
+				return;
+			}
+			
+			else {
+				String fileName = hwvo.getFileName();
+				String orgFilename = hwvo.getOrgFilename();
+				
+				HttpSession session = request.getSession();
+				String root = session.getServletContext().getRealPath("/");
+				String pathname = root + "resources" + File.separator + "files" + File.separator + fileName;
+				
+				
+				if(orgFilename == null || "".equals(orgFilename)) {
+					orgFilename = fileName;
+				}
+				
+				orgFilename = new String(orgFilename.getBytes("UTF-8"),"8859_1"); 
+				
+				File file = new File(pathname);
+				
+				if(file.exists()) {
+					
+					response.setContentType("application/octet-stream");
+					
+					response.setHeader("Content-disposition",
+                             "attachment; filename=" + orgFilename);
+					
+					byte[] readByte = new byte[4096];
+					
+					BufferedInputStream bfin = new BufferedInputStream(new FileInputStream(file));
+					
+					ServletOutputStream souts = response.getOutputStream();
+					
+					int length = 0;
+					
+					while( (length = bfin.read(readByte, 0, 4096)) != -1) {
+						souts.write(readByte, 0, length);
+					}
+					souts.flush();
+					souts.close();
+					bfin.close();
+				}
+				
+				else {
+					out = response.getWriter();
+					out.println("<script type='text/javascript'> alert('존재하지 않는 글번호 이거나 첨부파일이 없으므로 파일 다운로드가 불가합니다!!'); history.back(); </script>");
+					return;
+				}
+			}
+			
+		} catch (Exception e) {
+			
+		}
+		
+	}
+	
+	
+	// 과제게시판 댓글 파일 다운로드
+	@RequestMapping(value="/homeworkCommentFileDownload.univ")
+	public void subject_homeworkCommentFileDownload(HttpServletRequest request, HttpServletResponse response) {
+		
+		String seq = request.getParameter("seq");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("seq", seq);
+		
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = null; 
+		
+		try {
+			Integer.parseInt(seq);
+			
+			HomeWorkCommentVO hwcvo = service.getHomeworkCommentDetail(seq);
+			
+			if(hwcvo == null || (hwcvo != null && hwcvo.getFileName() == null)) {
+				out = response.getWriter();
+				out.println("<script type='text/javascript'> alert('존재하지 않는 글번호 이거나 첨부파일이 없으므로 파일 다운로드가 불가합니다!!'); history.back(); </script>");
+				return;
+			}
+			
+			else {
+				String fileName = hwcvo.getFileName();
+				String orgFilename = hwcvo.getOrgFilename();
+				
+				HttpSession session = request.getSession();
+				String root = session.getServletContext().getRealPath("/");
+				String pathname = root + "resources" + File.separator + "files" + File.separator + fileName;
+				
+				
+				if(orgFilename == null || "".equals(orgFilename)) {
+					orgFilename = fileName;
+				}
+				
+				orgFilename = new String(orgFilename.getBytes("UTF-8"),"8859_1"); 
+				
+				File file = new File(pathname);
+				
+				if(file.exists()) {
+					
+					response.setContentType("application/octet-stream");
+					
+					response.setHeader("Content-disposition",
+                             "attachment; filename=" + orgFilename);
+					
+					byte[] readByte = new byte[4096];
+					
+					BufferedInputStream bfin = new BufferedInputStream(new FileInputStream(file));
+					
+					ServletOutputStream souts = response.getOutputStream();
+					
+					int length = 0;
+					
+					while( (length = bfin.read(readByte, 0, 4096)) != -1) {
+						souts.write(readByte, 0, length);
+					}
+					souts.flush();
+					souts.close();
+					bfin.close();
+				}
+				
+				else {
+					out = response.getWriter();
+					out.println("<script type='text/javascript'> alert('존재하지 않는 글번호 이거나 첨부파일이 없으므로 파일 다운로드가 불가합니다!!'); history.back(); </script>");
+					return;
+				}
+			}
+			
+		} catch (Exception e) {
+			
+		}
+		
+	}
+	
+	// 과제게시물 댓글삭제
+	@ResponseBody
+	@RequestMapping(value="/deleteHomeworkComment.univ", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public String subject_deleteHomeworkComment(HttpServletRequest request, HttpServletResponse response) {
+		
+		String seq = request.getParameter("seq");
+		String parentSeq = request.getParameter("parentSeq");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("seq", seq);
+		paraMap.put("parentSeq", parentSeq);
+		
+		int n = service.deleteHomeworkCommentDelete(paraMap);
+		
+		JSONObject jsObj = new JSONObject();
+		jsObj.put("n", n);
+		
+		
+		return jsObj.toString();
+	}
 }	

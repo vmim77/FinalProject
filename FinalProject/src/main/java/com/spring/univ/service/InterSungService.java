@@ -1,12 +1,8 @@
 package com.spring.univ.service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import com.spring.univ.model.HomeWorkCommentVO;
-import com.spring.univ.model.HomeworkVO;
-import com.spring.univ.model.LessonBoardCommentVO;
-import com.spring.univ.model.LessonBoardVO;
+import com.spring.univ.model.*;
 
 public interface InterSungService {
 	
@@ -66,5 +62,14 @@ public interface InterSungService {
 	
 	// 과제게시판 글쓰기 요청
 	int homeworkWriteEnd(HomeworkVO hwvo);
+	
+	// 과제게시판 특정글 요청
+	HomeworkVO getHomeworkDetail(String seq);
+	
+	// 과제게시판 특정댓글 요청
+	HomeWorkCommentVO getHomeworkCommentDetail(String seq);
+	
+	// 과제게시판 댓글 삭제하기
+	int deleteHomeworkCommentDelete(Map<String, String> paraMap);
 
 }

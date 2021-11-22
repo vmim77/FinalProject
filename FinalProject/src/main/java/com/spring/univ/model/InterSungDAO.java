@@ -73,5 +73,17 @@ public interface InterSungDAO {
 	
 	// 과제게시판 글쓰기 요청
 	int homeworkWriteEnd(HomeworkVO hwvo);
+	
+	// 과제게시판 특정글 요청
+	HomeworkVO getHomeworkDetail(String seq);
+	
+	// 과제게시판 특정댓글 요청
+	HomeWorkCommentVO getHomeworkCommentDetail(String seq);
+	
+	// 과제게시판 댓글 삭제
+	int deleteHomeworkCommentDelete(Map<String, String> paraMap);
+	
+	// 과제게시판 원글 댓글갯수 삭감
+	int minusCommentCnt(Map<String, String> paraMap);
 
 }
