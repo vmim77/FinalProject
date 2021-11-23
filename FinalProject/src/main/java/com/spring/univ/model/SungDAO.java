@@ -203,6 +203,14 @@ public class SungDAO implements InterSungDAO {
 		return n;
 	}
 	
+	// 과제게시판 게시글 삭제하기
+	@Override
+	public int deleteHomework(String seq) {
+		int n = sqlsession2.delete("Sung.deleteHomework", seq);
+		return n;
+	}
+
+	
 	
 
 }

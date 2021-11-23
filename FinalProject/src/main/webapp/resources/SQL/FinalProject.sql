@@ -616,3 +616,9 @@ JOIN tbl_homework C
 on A.parentSeq = C.seq
 where A.fk_code = '0101'
 order by seq desc
+
+
+select *
+from tbl_homework;
+
+desc tbl_homework;

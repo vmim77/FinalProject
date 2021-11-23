@@ -195,6 +195,49 @@
 	} // end of function deleteComment(seq)----------------------------------
 	
 	
+	//Function Declaration
+	function editHomework(seq) {
+		location.href="<%= request.getContextPath()%>/editHomework.univ?seq="+seq;
+	}// end of function editHomework(seq){}----------------------------------
+	
+	
+	
+	
+	
+	//Function Declaration
+	function deleteHomework(seq) {
+		
+		var bool = window.confirm("정말로 " + seq + "번 글을 삭제하시겠습니까?");
+		
+		if(bool){
+			$.ajax({
+				url:"<%= request.getContextPath()%>/deleteHomework.univ",
+				type:"POST",
+				data:{"seq":seq},
+				dataType:"JSON",
+				success:function(json){
+					
+					if(json.n==1){
+						alert("게시글 삭제성공");
+						window.location.reload();
+						
+					}
+					else{
+						alert("게시글 삭제실패");
+					}
+					
+				},
+		        error: function(request, status, error){
+		              alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		        }
+			});
+		}
+		
+		else{
+			return;
+		}
+		
+	}// function deleteHomework(seq){}---------------------------------------
 	
 </script>
 
@@ -249,40 +292,48 @@
 										<th>파일용량(Bytes)</th>
 										<td><fmt:formatNumber value="${homeworkvo.fileSize}" pattern="#,###" /></td>
 									</tr>
+									
 								</table>
 								
-								
-								
 							</div>
-								<c:if test="${sessionScope.loginuser != null and homeworkvo.status == 0}">
-									<form name="homeworkFrm${homeworkvo.seq}" style="margin-top: 30px;">
-										<table class="table">
-											<tr>
-												<th style="width: 10%;">작성자</th>
-												<td><input type="text"  value="${sessionScope.loginuser.name}" readonly /></td>
-												<td><input type="hidden" name="fk_hakbun" value="${sessionScope.loginuser.hakbun}" /></td>
-												<td><input type="hidden" name="fk_code" value="${sessionScope.code}" /></td>
-											</tr>
-											<tr>
-												<th>댓글내용</th>
-												<td><input id="content${homeworkvo.seq}" type="text" name="content" size="100"  /></td>
-												<td colspan="2"><input type="hidden" name="parentSeq" value="${homeworkvo.seq}" /></td>
-											</tr>
-											<tr>
-												<th>파일첨부</th>
-												<td colspan="3"><input id="file${homeworkvo.seq}" type="file" name="attach" /></td>
-											</tr>
-											<tr>
-												<th colspan="4">
-													<button type="button" class="btn" style="background-color:#ffb84d; margin-right: 20px;" onclick="goWrite('${homeworkvo.seq}')">댓글쓰기</button>
-													<button type="reset"  class="btn" style="background-color:#ffb84d;">취소</button>
-												</th>
-											</tr>
-										</table>
-									</form>
+							
+							<div style="float: right; margin: 0 20px;">
+								<c:if test="${sessionScope.loginuser.hakbun == homeworkvo.fk_hakbun}">
+									<button type="button" class="btn btn-md" style="background-color:#ffb84d;" onclick="editHomework('${homeworkvo.seq}')" >글 수정</button>
+									<button type="button" class="btn btn-md" style="background-color:#ffb84d;" onclick="deleteHomework('${homeworkvo.seq}')" >글 삭제</button>
 								</c:if>
+							</div>
+							<div style="clear: both;"></div>
+							
+							<c:if test="${sessionScope.loginuser != null and homeworkvo.status == 0}">
+								<form name="homeworkFrm${homeworkvo.seq}" style="margin-top: 30px;">
+									<table class="table">
+										<tr>
+											<th style="width: 10%;">작성자</th>
+											<td><input type="text"  value="${sessionScope.loginuser.name}" readonly /></td>
+											<td><input type="hidden" name="fk_hakbun" value="${sessionScope.loginuser.hakbun}" /></td>
+											<td><input type="hidden" name="fk_code" value="${sessionScope.code}" /></td>
+										</tr>
+										<tr>
+											<th>댓글내용</th>
+											<td><input id="content${homeworkvo.seq}" type="text" name="content" size="100"  /></td>
+											<td colspan="2"><input type="hidden" name="parentSeq" value="${homeworkvo.seq}" /></td>
+										</tr>
+										<tr>
+											<th>파일첨부</th>
+											<td colspan="3"><input id="file${homeworkvo.seq}" type="file" name="attach" /></td>
+										</tr>
+										<tr>
+											<th colspan="4">
+												<button type="button" class="btn" style="background-color:#ffb84d;" onclick="goWrite('${homeworkvo.seq}')">댓글쓰기</button>
+												<button type="reset"  class="btn" style="background-color:#ffb84d;">취소</button>
+											</th>
+										</tr>
+									</table>
+								</form>
+							</c:if>
 								
-								<div style="margin: 0 10px; padding: 10px; color: #fff; text-align:center; font-size: 20pt; background-color: #ffb84d">제출인원 : <span id="commentCount${homeworkvo.seq}"></span> 명</div>
+								<div style="margin: 10px; padding: 10px; color: #fff; text-align:center; font-size: 20pt; background-color: #ffb84d">제출인원 : <span id="commentCount${homeworkvo.seq}"></span> 명</div>
 								
 								<table id="commentList${homeworkvo.seq}" class="table" style="margin-top: 30px;">
 								

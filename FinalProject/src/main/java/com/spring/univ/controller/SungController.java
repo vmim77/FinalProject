@@ -1117,4 +1117,52 @@ public class SungController {
 		
 		return jsObj.toString();
 	}
-}	
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/deleteHomework.univ", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public String subject_deleteHomework(HttpServletRequest request, HttpServletResponse response) {
+		
+		String seq = request.getParameter("seq");
+		
+		int n = service.deleteHomework(seq);
+		
+		JSONObject jsObj = new JSONObject();
+		jsObj.put("n", n);
+		
+		return jsObj.toString();
+	}
+	
+	
+	@RequestMapping(value="/editHomework.univ")
+	public ModelAndView subject_editHomework(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		String seq = request.getParameter("seq");
+		HomeworkVO hwvo = service.getHomeworkDetail(seq);
+		
+		if(hwvo != null) {
+			
+			System.out.println("확인용 => " + hwvo.getStatus());
+			mav.addObject("hwvo", hwvo);
+			mav.setViewName("Sunghyun/editHomework.tiles2");
+		}
+		else {
+			mav.addObject("message", "해당 글번호의 게시글은 없습니다.");
+			mav.addObject("loc", request.getContextPath()+"/homework.univ");
+			
+			mav.setViewName("msg");
+		}
+		
+		return mav;
+	}
+	
+	
+	
+	
+	
+}
+	
+	

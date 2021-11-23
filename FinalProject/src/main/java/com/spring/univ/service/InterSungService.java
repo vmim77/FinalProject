@@ -71,5 +71,9 @@ public interface InterSungService {
 	
 	// 과제게시판 댓글 삭제하기
 	int deleteHomeworkCommentDelete(Map<String, String> paraMap);
+	
+	// 과제게시판 글 삭제하기
+	int deleteHomework(String seq);
+	
 
 }

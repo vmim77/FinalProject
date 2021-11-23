@@ -260,7 +260,7 @@
 	</insert>
 	
 	<select id="getHomeworkDetail" parameterType="String" resultType="com.spring.univ.model.HomeworkVO">
-		select fileName, orgFilename, fileSize
+		select seq, fk_hakbun, fk_code, name, subject, content, regDate, fileName, orgFilename, fileSize, status
 		from tbl_homework
 		where seq = #{seq}
 	</select>
@@ -280,6 +280,11 @@
 		update tbl_homework set commentCount = commentCount - 1
 		where seq = #{parentSeq}
 	</update>
+	
+	<delete id="deleteHomework" parameterType="String">
+		delete from tbl_homework
+		where seq = #{seq}
+	</delete>
 	
 	
 </mapper>

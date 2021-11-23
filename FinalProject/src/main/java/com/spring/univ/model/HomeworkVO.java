@@ -25,8 +25,11 @@ public class HomeworkVO {
 	
 	public HomeworkVO() {}
 	
+	
+	
 	public HomeworkVO(String seq, String fk_hakbun, String fk_code, String name, String subject, String content,
-			String regDate, String commentCount, String fileName, String orgFilename, String fileSize, String status, String deadline) {
+			String regDate, String commentCount, String fileName, String orgFilename, String fileSize, String status,
+			String deadline, MultipartFile attach) {
 		this.seq = seq;
 		this.fk_hakbun = fk_hakbun;
 		this.fk_code = fk_code;
@@ -40,7 +43,10 @@ public class HomeworkVO {
 		this.fileSize = fileSize;
 		this.status = status;
 		this.deadline = deadline;
+		this.attach = attach;
 	}
+
+
 
 	public String getSeq() {
 		return seq;

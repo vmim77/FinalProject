@@ -122,8 +122,8 @@
 			</tr>
 		</table>
 		
-		<button class="btn btn-dark btn-md" type="button" style="float: right;" onclick="javascript:location.href='<%= request.getContextPath()%>/homework.univ'">취소</button>
-		<button class="btn btn-dark btn-md" type="button" style="float: right; margin-right: 10px;" id="btnWrite">작성</button>
+		<button class="btn btn-dark btn-md" type="button" style="background-color: #ffb84d; float: right;" onclick="javascript:location.href='<%= request.getContextPath()%>/homework.univ'">취소</button>
+		<button class="btn btn-dark btn-md" type="button" style="background-color: #ffb84d; float: right; margin-right: 10px;" id="btnWrite">작성</button>
 	</div>
 	
 	<input type="hidden" name="fk_code" value="${sessionScope.code}" />

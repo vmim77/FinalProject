@@ -232,5 +232,13 @@ public class SungService implements InterSungService {
 		}
 		return m;
 	}
+	
+	// 과제게시판 글 삭제하기
+	@Override
+	public int deleteHomework(String seq) {
+		int n = dao.deleteHomework(seq);
+		return n;
+	}
+	
 
 }

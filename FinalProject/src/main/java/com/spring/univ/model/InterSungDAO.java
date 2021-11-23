@@ -85,5 +85,9 @@ public interface InterSungDAO {
 	
 	// 과제게시판 원글 댓글갯수 삭감
 	int minusCommentCnt(Map<String, String> paraMap);
+	
+	// 과제게시판 게시글 삭제하기
+	int deleteHomework(String seq);
+	
 
 }

@@ -9,9 +9,9 @@
 	
 	#lessonTblFlex { width: 60%; margin: auto; }
 	
-	#lessonWriteTbl { width: 100%; }
+	#lessonEditTbl { width: 100%; }
 	
-	#lessonWriteTbl th { background-color: #ffb84d; }
+	#lessonEditTbl th { background-color: #ffb84d; }
 	
 	#btnWrite::after { content: ''; display: block; clear: both;  }
 </style>
@@ -130,8 +130,8 @@
 			</tr>
 		</table>
 		
-		<button class="btn btn-dark btn-md" type="button" style="float: right;" onclick="javascript:location.href='<%= request.getContextPath()%>/lesson.univ'">취소</button>
-		<button class="btn btn-dark btn-md" type="button" style="float: right; margin-right: 10px;" id="btnEdit">수정</button>
+		<button class="btn btn-dark btn-md" type="button" style="background-color: #ffb84d; float: right;" onclick="javascript:location.href='<%= request.getContextPath()%>/lesson.univ'">취소</button>
+		<button class="btn btn-dark btn-md" type="button" style="background-color: #ffb84d; float: right; margin-right: 10px;" id="btnEdit">수정</button>
 	</div>
 	
 	<input type="hidden" name="fk_code" value="${sessionScope.code}" />
