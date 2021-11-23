@@ -2,12 +2,12 @@ package com.spring.univ.model;
 
 public class LessonBoardCommentVO {
 	
-	private String seq;
-	private String fk_hakbun;
-	private String name;
-	private String content;
-	private String parentSeq;
-	private String regDate;
+	private String seq;			// 시퀀스
+	private String fk_hakbun;	// 학번
+	private String name;		// 성명
+	private String content;		// 댓글내용
+	private String parentSeq;	// 부모글 번호
+	private String regDate;		// 작성일자
 	
 	public LessonBoardCommentVO() {}
 	

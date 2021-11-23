@@ -2,12 +2,11 @@ package com.spring.chatting.websockethandler;
 
 import com.google.gson.Gson;
 
-// === #178. (웹채팅관련9)
 public class MessageVO {
 	
-	private String message;
-	private String type;   // all 이면 전체에게 채팅메시지를 보냄 
-	private String to;     // 특정 클라이언트 IP Address
+	private String message;// 메시지 내용
+	private String type;   // 전체채팅 or 비밀채팅
+	private String to;     // 비밀채팅 대상
 	
 	public String getMessage() {
 		return message;
@@ -34,10 +33,6 @@ public class MessageVO {
 		Gson gson = new Gson();
 		
 		messagevo = gson.fromJson(source, MessageVO.class);
-		// JSON 모양을 띄는 String 타입을 자바의 messagevo 객체 형태로 바꿔준다.
-		
-		// gson.fromJson(source, MessageVO.class); 은
-		// JSON 형태로 되어진 문자열을 실제 MessageVO 객체로 변환해준다.
 		return messagevo;
 		
 	}

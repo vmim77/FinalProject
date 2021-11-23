@@ -6,6 +6,7 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="Sung">
 
+	<!-- [학생] 학생이 접근하려는 과목의 정보를 가져온다. -->
 	<resultMap type="HashMap" id="subjectMap">
 		<result property="code" column="code" javaType="String" />
 		<result property="subject" column="subject" javaType="String" />
@@ -17,7 +18,8 @@
 		<result property="deptName" column="deptName" javaType="String" />
 		<result property="deptLocation" column="deptLocation" javaType="String" />
 	</resultMap>
-
+	
+	<!-- [학생] 학생이 접근하려는 과목의 정보를 가져온다. -->
 	<select id="getSubjectInfo" parameterType="String" resultMap="subjectMap"> 
 		select A.code AS code, A.subject AS subject, A.fk_hakbun AS fk_hakbun, C.name AS name, A.hakjum AS hakjum
 		, case A.classdate when '1' then '월' when '2' then '화' when '3' then '수' when '4' then '목' else '금' end  AS classdate
@@ -31,6 +33,7 @@
 	</select>
 	
 	
+	<!-- 과제게시판의 글 목록을 가져온다. -->
 	<select id="getLessonBoard" parameterType="HashMap" resultType="com.spring.univ.model.LessonBoardVO">
 		select seq, fk_hakbun, fk_code, name, subject, regDate, status, commentCount, filename
 		from
@@ -45,7 +48,7 @@
 		where rno between #{startRno} and #{endRno}
 	</select>
 	
-	
+	<!-- 강의자료실 글 상세조회 -->
 	<select id="getLessonBoardDetail" parameterType="HashMap" resultType="com.spring.univ.model.LessonBoardVO">
 		select seq, fk_hakbun, fk_code, name, subject, content, pw, regDate, status, commentCount
 		     , fileName, orgFilename, fileSize
@@ -64,7 +67,7 @@
 		order by seq desc
 	</select>
 	
-	
+	<!-- [학생] 로그인한 유저가 학생이라면 해당 학생의 수강신청 목록을 가져온다. -->
 	<resultMap type="HashMap" id="sugangMap">
 		<result property="hakbun" column="hakbun" javaType="String" />
 		<result property="code" column="code" javaType="String" />
@@ -75,6 +78,8 @@
 		<result property="location" column="location" javaType="String" />
 	</resultMap>
 	
+	
+	<!-- [학생] 로그인한 유저가 학생이라면 해당 학생의 수강신청 목록을 가져온다. -->
 	<select id="getSugang" parameterType="String" resultMap="sugangMap">
 		select hakbun, code, subject, teacher, hakjum, classdate, location
 		from
@@ -95,18 +100,24 @@
 		where hakbun = #{hakbun}
 	</select>
 	
+	
+	<!-- [학생] 로그인한 학생이 접근하려는 과목이 수강신청한 과목인지 아닌지 검사한다. -->
 	<select id="checkSugang" parameterType="HashMap" resultType="int">
 		select count(*)
 		from tbl_sugang
 		where fk_hakbun = #{hakbun} and fk_code= #{code}
 	</select>
 	
+	
+	<!-- 접근하려는 과목 코드가 정상적인 코드인지 확인한다. (URL 접근 차단용) -->
 	<select id="checkCode" parameterType="String" resultType="int">
 		select count(*)
 		from tbl_subject
 		where code = #{sessionCode}
 	</select>
 	
+	
+	<!-- [교수] 로그인한 유저가 교수라면 해당 교수의 담당과목 목록을 가져온다. -->
 	<resultMap type="HashMap" id="suupMap">
 		<result property="code" column="code" javaType="String" />
 		<result property="subject" column="subject" javaType="String" />
@@ -118,7 +129,7 @@
 		<result property="cnt" column="cnt" javaType="String" />
 	</resultMap>
 	
-		
+	<!-- [교수] 로그인한 유저가 교수라면 해당 교수의 담당과목 목록을 가져온다. -->		
 	<select id="getsuUp" parameterType="String" resultMap="suupMap">
 		select code, subject, hakjum
 		, case classdate when '1' then '월' when '2' then '화' when '3' then '수' when '4' then '목' else '금' end  AS classdate
@@ -131,12 +142,16 @@
 		where A.fk_hakbun = #{hakbun}
 	</select>
 	
+	
+	<!-- [교수] 교수가 접근하려는 과목이 본인의 담당과목인지 아닌지 검사한다. -->
 	<select id="checkLesson" parameterType="HashMap" resultType="int">
 		select count(*)
 		from tbl_subject
 		where fk_hakbun = #{hakbun} and code = #{code}
 	</select>
 	
+	
+	<!-- [교수] 강의자료실 글쓰기 -->
 	<insert id="lessonWriteEnd" parameterType="com.spring.univ.model.LessonBoardVO">
 		<if test='fileName!=""'>
 			insert into tbl_lessonboard(seq, fk_hakbun, fk_code, name, subject, content, pw, regDate, status, commentCount, fileName, orgFilename, fileSize)
@@ -148,12 +163,14 @@
 		</if>
 	</insert>
 	
-	
+	<!-- 강의자료실 댓글쓰기 -->
 	<insert id="addLessonBoardComment" parameterType="com.spring.univ.model.LessonBoardCommentVO">
 		insert into tbl_lessonBoard_comment(seq, fk_hakbun, name, content, parentSeq, regDate)
 		values(lessonboard_commentSeq.nextval, #{fk_hakbun}, #{name}, #{content}, #{parentSeq}, default)
 	</insert>
 	
+	
+	<!-- 강의자료실 댓글목록 가져오기 -->
 	<select id="getLessonBoardComment" parameterType="String" resultType="com.spring.univ.model.LessonBoardCommentVO">
 		select A.seq AS seq, A.fk_hakbun AS fk_hakbun, case B.authority when 0 then '학생 ' when 1 then '교수 ' end || A.name AS name, A.content AS content, to_char(A.regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
 		, A.parentSeq AS parentSeq
@@ -164,12 +181,13 @@
 		order by seq desc
 	</select>
 	
-	
+	<!-- [교수] 강의자료실 글 삭제하기 -->
 	<delete id="deleteLessonBoard" parameterType="String">
 		delete from tbl_lessonBoard
 		where seq = #{seq}
 	</delete>
 	
+	<!-- [교수] 강의자료실 글 수정하기 완료요청 -->
 	<update id="editLessonBoard" parameterType="com.spring.univ.model.LessonBoardCommentVO">
 		<if test='fileName!=""'>
 			update tbl_lessonboard set subject = #{subject}, content = #{content}, regDate = sysdate, fileName = #{fileName}, orgFilename = #{orgFilename}, fileSize = #{fileSize}
@@ -182,21 +200,27 @@
 	</update>
 	
 	
+	<!-- 강의자료실 댓글 삭제하기 -->
 	<delete id="deleteLessonComment" parameterType="HashMap">
 		delete from tbl_lessonboard_comment
 		where seq = #{seq}
 	</delete>
 	
+	
+	<!-- 강의자료실 댓글작성 -> 해당 글 댓글 수 1 증가 -->
 	<update id="updateCommentCnt">
 		update tbl_lessonBoard set commentcount = commentcount + 1
 		where seq = #{parentSeq}
 	</update>
 	
+	<!-- 강의자료실 댓글삭제 -> 해당 글 댓글 수 1 차감 -->
 	<update id="downCommentCnt">
 		update tbl_lessonBoard set commentcount = commentcount - 1
 		where seq = #{parentSeq}
 	</update>
 	
+	
+	<!-- 강의자료실 전체 페이지 수 -->
 	<select id="getTotalLessonPage" parameterType="HashMap" resultType="int">
 		select count(*)
 		from tbl_lessonBoard
@@ -206,6 +230,7 @@
 		</if>
 	</select>
 	
+	<!-- 과제 및 평가 게시판 글목록 조회 -->
 	<select id="getHomeworkList" parameterType="String" resultType="com.spring.univ.model.HomeworkVO">
 		select seq, fk_hakbun, fk_code, name, subject, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, commentCount, fileName, orgFilename, fileSize, acceptance, deadline
 		from tbl_homework
@@ -213,6 +238,7 @@
 		order by seq desc 
 	</select>
 	
+	<!-- 과제 및 평가 게시판의 댓글 가져오기 -->
 	<select id="getHomeworkComment" parameterType="String" resultType="com.spring.univ.model.HomeWorkCommentVO">
 			select A.seq, A.parentSeq, A.fk_hakbun, B.name, A.content, A.fileName, A.orgFilename, A.FileSize, 
 			to_char(A.regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate,
@@ -226,6 +252,7 @@
 			order by seq desc
 	</select>
 	
+	<!-- 과제 및 평가 게시판 댓글쓰기[파일첨부기능] -->
 	<insert id="writeHomeworkComment" parameterType="com.spring.univ.model.HomeWorkCommentVO">
 		<if test="fileName == null">
 			insert into tbl_homework_comment(seq, parentSeq, fk_hakbun, content, fk_code, regDate)
@@ -237,16 +264,20 @@
 		</if>
 	</insert>
 	
+	<!-- 과제 및 평가 게시판 부모글 댓글갯수 증가 -->
 	<update id="plusCommentCnt" parameterType="com.spring.univ.model.HomeWorkCommentVO">
 		update tbl_homework set commentCount = commentCount + 1
 		where seq = #{parentSeq}
 	</update>
 	
+	<!-- 마감기한인 과제게시물의 status를 바꾼다. -->
 	<update id="updateStatus" parameterType="String">
 		update tbl_homework set status = 1
 		where seq = #{seq}
 	</update>
 	
+	
+	<!-- [교수] 과제 및 평가 게시판 글쓰기 완료 요청 -->
 	<insert id="homeworkWriteEnd" parameterType="com.spring.univ.model.HomeworkVO">
 		<if test='fileName != ""'>
 			insert into tbl_homework(seq, fk_hakbun, fk_code, name, subject, content, regDate, commentCount, fileName, orgFilename, fileSize, acceptance, deadline)
@@ -259,33 +290,39 @@
 		</if>
 	</insert>
 	
+	<!-- 과제 및 게시판 특정글 조회 -->
 	<select id="getHomeworkDetail" parameterType="String" resultType="com.spring.univ.model.HomeworkVO">
 		select seq, fk_hakbun, fk_code, name, subject, content, regDate, fileName, orgFilename, fileSize, acceptance
 		from tbl_homework
 		where seq = #{seq}
 	</select>
 	
+	<!-- 과제 및 게시판 특정댓글 조회  -->
 	<select id="getHomeworkCommentDetail" parameterType="String" resultType="com.spring.univ.model.HomeWorkCommentVO">
 		select fileName, orgFilename, fileSize
 		from tbl_homework_comment
 		where seq = #{seq}
 	</select>
 	
+	<!-- 과제 및 게시판 댓글 삭제 -->
 	<delete id="deleteHomeworkCommentDelete" parameterType="HashMap">
 		delete from tbl_homework_comment
 		where seq = #{seq}
 	</delete>
 	
+	<!-- 과제 및 평가 게시판 부모글 댓글갯수 차감 -->
 	<update id="minusCommentCnt" parameterType="HashMap">
 		update tbl_homework set commentCount = commentCount - 1
 		where seq = #{parentSeq}
 	</update>
 	
+	<!-- 과제 및 게시판 게시글 삭제 -->
 	<delete id="deleteHomework" parameterType="String">
 		delete from tbl_homework
 		where seq = #{seq}
 	</delete>
 	
+	<!-- 과제 및 게시판 수정 완료 요청 -->
 	<update id="homeworkEditEnd" parameterType="com.spring.univ.model.HomeworkVO">
 		<if test='fileName == ""'>
 			update tbl_homework set subject = #{subject}, content = #{content}, acceptance = #{acceptance}

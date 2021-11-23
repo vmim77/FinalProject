@@ -25,10 +25,10 @@ public class LessonBoardVO {
 	
 	/////////////////////////////////////////////////////////////////////
 	
-	private String previousSeq;
-	private String previousSubject;
-	private String nextSeq;
-	private String nextSubject;
+	private String previousSeq;		// 이전글 시퀀스
+	private String previousSubject;	// 이전글 제목
+	private String nextSeq;			// 다음글 시퀀스
+	private String nextSubject;		// 다음글 제목
 	
 	////////////////////////////////////////////////////////////////////
 	

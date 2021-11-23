@@ -4,20 +4,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class HomeworkVO {
 	
-	private String seq;
-	private String fk_hakbun;
-	private String fk_code;
-	private String name;
-	private String subject;
-	private String content;
-	private String regDate;
-	private String commentCount;
-	private String fileName;
-	private String orgFilename;
-	private String fileSize;
-	private String acceptance;
-	private String deadline;
-	private MultipartFile attach;
+	private String seq;				// 시퀀스
+	private String fk_hakbun;		// 학번
+	private String fk_code;			// 과목코드
+	private String name;			// 성명
+	private String subject;			// 제목
+	private String content;			// 내용
+	private String regDate;			// 작성일자 
+	private String commentCount;	// 댓글갯수
+	private String fileName;		// WAS에 저장될 파일명
+	private String orgFilename;		// 업로드 시 원본 파일명
+	private String fileSize;		// 파일용량
+	private String acceptance;		// 과제제출 마감여부
+	private String deadline;		// 과제제출 마감날짜
+	private MultipartFile attach;	// input[type=file]용 필드
 	
 	
 	public HomeworkVO() {}

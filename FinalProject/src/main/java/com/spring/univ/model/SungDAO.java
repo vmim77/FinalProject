@@ -14,49 +14,49 @@ public class SungDAO implements InterSungDAO {
 	@Resource
 	private SqlSessionTemplate sqlsession2;
 	
-	// 해당 학생이 수강하고있는 과목의 정보를 가져온다.
+	// [학생] 학생이 접근하려는 과목의 정보를 가져온다.
 	@Override
 	public Map<String, String> getSubjectInfo(String code) {
 		Map<String,String> subjectMap = sqlsession2.selectOne("Sung.getSubjectInfo", code);
 		return subjectMap;
 	}
 	
-	// 해당 과목의 강좌자료실 내용을 가져온다.
+	// 과제게시판의 글 목록을 가져온다.
 	@Override
 	public List<LessonBoardVO> getLessonBoard(Map<String, String> paraMap) {
 		List<LessonBoardVO> boardList = sqlsession2.selectList("Sung.getLessonBoard", paraMap);
 		return boardList;
 	}
 	
-	// 로그인한 유저의 수강리스트를 뽑아온다.
+	// [학생] 로그인한 유저가 학생이라면 해당 학생의 수강신청 목록을 가져온다.
 	@Override
 	public List<Map<String, String>> getSugang(String hakbun) {
 		List<Map<String, String>> sugangList = sqlsession2.selectList("Sung.getSugang", hakbun);
 		return sugangList;
 	}
 	
-	// 로그인한 학생이 듣는 수업인지 확인을 한다.
+	// [학생] 로그인한 학생이 접근하려는 과목이 수강신청한 과목인지 아닌지 검사한다.
 	@Override
 	public int checkSugang(Map<String, String> paraMap) {
 		int n = sqlsession2.selectOne("Sung.checkSugang", paraMap);
 		return n;
 	}
 	
-	// 과목코드가 정상적인지 확인한다.
+	// 접근하려는 과목 코드가 정상적인 코드인지 확인한다. (URL 접근 차단용)
 	@Override
 	public int checkCode(String sessionCode) {
 		int result = sqlsession2.selectOne("Sung.checkCode", sessionCode);
 		return result;
 	}
 	
-	// 교수의 담당과목을 불러온다.
+	// [교수] 로그인한 유저가 교수라면 해당 교수의 담당과목 목록을 가져온다.
 	@Override
 	public List<Map<String, String>> getsuUp(String hakbun) {
 		List<Map<String, String>> suupList = sqlsession2.selectList("Sung.getsuUp", hakbun);
 		return suupList;
 	}
 	
-	// 교수 본인이 수업하는 과목인지 확인한다.
+	// [교수] 교수가 접근하려는 과목이 본인의 담당과목인지 아닌지 검사한다.
 	@Override
 	public int checkLesson(Map<String, String> paraMap) {
 		int n = sqlsession2.selectOne("Sung.checkLesson", paraMap);
@@ -70,7 +70,7 @@ public class SungDAO implements InterSungDAO {
 		return n;
 	}
 	
-	// 해당 과목 강좌자료실의 특정 글을 가져온다.
+	// 강의자료실 글 상세조회
 	@Override
 	public LessonBoardVO getLessonBoardDetail(Map<String, String> paraMap) {
 		LessonBoardVO lbvo = sqlsession2.selectOne("Sung.getLessonBoardDetail", paraMap);
@@ -91,14 +91,14 @@ public class SungDAO implements InterSungDAO {
 		return commentList;
 	}
 	
-	// 강의자료실 글  삭제하기
+	// [교수] 강의자료실 글 삭제하기
 	@Override
 	public int deleteLessonBoard(String seq) {
 		int n = sqlsession2.delete("Sung.deleteLessonBoard", seq);
 		return n;
 	}
 	
-	// 강의자료실 글 수정하기 완료요청
+	// [교수] 강의자료실 글 수정하기 완료요청
 	@Override
 	public int editLessonBoard(LessonBoardVO lbvo) {
 		int n = sqlsession2.update("Sung.editLessonBoard", lbvo);
@@ -126,35 +126,35 @@ public class SungDAO implements InterSungDAO {
 		return n;
 	}
 	
-	// 강의자료실 전체 페이지수
+	// 강의자료실 전체 페이지 수
 	@Override
 	public int getTotalLessonPage(Map<String, String> paraMap) {
 		int n = sqlsession2.selectOne("Sung.getTotalLessonPage", paraMap);
 		return n;
 	}
 	
-	// 과제게시판의 글목록 조회
+	// 과제 및 평가 게시판 글목록 조회
 	@Override
 	public List<HomeworkVO> getHomeworkList(String code) {
 		List<HomeworkVO> homeworkList = sqlsession2.selectList("Sung.getHomeworkList", code);
 		return homeworkList;
 	}
 	
-	// 과제게시판의 댓글 가져오기
+	// 과제 및 평가 게시판의 댓글 가져오기
 	@Override
 	public List<HomeWorkCommentVO> getHomeworkComment(String code) {
 		List<HomeWorkCommentVO> homeworkCommentList = sqlsession2.selectList("Sung.getHomeworkComment", code);
 		return homeworkCommentList;
 	}
 	
-	// 과제게시판 댓글쓰기[파일첨부기능]
+	// 과제 및 평가 게시판 댓글쓰기[파일첨부기능]
 	@Override
 	public int writeHomeworkComment(HomeWorkCommentVO hwcvo) {
 		int n = sqlsession2.insert("Sung.writeHomeworkComment", hwcvo);
 		return n;
 	}
 	
-	// 과제게시판 부모글 댓글갯수 증가
+	// 과제 및 평가 게시판 부모글 댓글갯수 증가
 	@Override
 	public int plusCommentCnt(HomeWorkCommentVO hwcvo) {
 		int m = sqlsession2.update("Sung.plusCommentCnt", hwcvo);		
@@ -168,49 +168,49 @@ public class SungDAO implements InterSungDAO {
 		
 	}
 	
-	// 과제게시판 글쓰기 요청
+	// [교수] 과제 및 평가 게시판 글쓰기 완료 요청
 	@Override
 	public int homeworkWriteEnd(HomeworkVO hwvo) {
 		int n = sqlsession2.insert("Sung.homeworkWriteEnd", hwvo);
 		return n;
 	}
 	
-	// 과제게시판 특정글 요청
+	// 과제 및 게시판 특정글 조회
 	@Override
 	public HomeworkVO getHomeworkDetail(String seq) {
 		HomeworkVO hwvo = sqlsession2.selectOne("Sung.getHomeworkDetail", seq);
 		return hwvo;
 	}
 	
-	// 과제게시판 특정댓글 요청
+	// 과제 및 게시판 특정댓글 조회
 	@Override
 	public HomeWorkCommentVO getHomeworkCommentDetail(String seq) {
 		HomeWorkCommentVO hwcvo = sqlsession2.selectOne("Sung.getHomeworkCommentDetail", seq);
 		return hwcvo;
 	}
 	
-	// 과제게시판 댓글 삭제
+	// 과제 및 게시판 댓글 삭제
 	@Override
 	public int deleteHomeworkCommentDelete(Map<String, String> paraMap) {
 		int n = sqlsession2.delete("Sung.deleteHomeworkCommentDelete", paraMap);
 		return n;
 	}
 	
-	// 과제게시판 원글 댓글갯수 삭감
+	// 과제 및 평가 게시판 부모글 댓글갯수 차감
 	@Override
 	public int minusCommentCnt(Map<String, String> paraMap) {
 		int n = sqlsession2.update("Sung.minusCommentCnt", paraMap);
 		return n;
 	}
 	
-	// 과제게시판 게시글 삭제하기
+	// 과제 및 게시판 게시글 삭제
 	@Override
 	public int deleteHomework(String seq) {
 		int n = sqlsession2.delete("Sung.deleteHomework", seq);
 		return n;
 	}
 	
-	// 과제게시판 글 수정하기
+	// 과제 및 게시판 수정 완료 요청
 	@Override
 	public int homeworkEditEnd(HomeworkVO hwvo) {
 		int n = sqlsession2.update("Sung.homeworkEditEnd", hwvo);

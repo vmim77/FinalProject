@@ -630,4 +630,9 @@ commit;
 alter table tbl_homework 
 rename column status to acceptance;
 
+select * 
+from tab;
+
+
+desc TBL_JJOKJI;
 
