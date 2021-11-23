@@ -207,7 +207,7 @@
 	</select>
 	
 	<select id="getHomeworkList" parameterType="String" resultType="com.spring.univ.model.HomeworkVO">
-		select seq, fk_hakbun, fk_code, name, subject, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, commentCount, fileName, orgFilename, fileSize, status, deadline
+		select seq, fk_hakbun, fk_code, name, subject, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, commentCount, fileName, orgFilename, fileSize, acceptance, deadline
 		from tbl_homework
 		where fk_code = #{code}
 		order by seq desc 
@@ -249,18 +249,18 @@
 	
 	<insert id="homeworkWriteEnd" parameterType="com.spring.univ.model.HomeworkVO">
 		<if test='fileName != ""'>
-			insert into tbl_homework(seq, fk_hakbun, fk_code, name, subject, content, regDate, commentCount, fileName, orgFilename, fileSize, status, deadline)
+			insert into tbl_homework(seq, fk_hakbun, fk_code, name, subject, content, regDate, commentCount, fileName, orgFilename, fileSize, acceptance, deadline)
 			values(homeworkSeq.nextval, #{fk_hakbun}, #{fk_code}, #{name}, #{subject}, #{content}, default, default, #{fileName}, #{orgFilename}, #{fileSize}, default, default)
 		</if>
 		
 		<if test='fileName == ""'>
-			insert into tbl_homework(seq, fk_hakbun, fk_code, name, subject, content, regDate, commentCount, status, deadline)
+			insert into tbl_homework(seq, fk_hakbun, fk_code, name, subject, content, regDate, commentCount, acceptance, deadline)
 			values(homeworkSeq.nextval, #{fk_hakbun}, #{fk_code}, #{name}, #{subject}, #{content}, default, default, default, default)
 		</if>
 	</insert>
 	
 	<select id="getHomeworkDetail" parameterType="String" resultType="com.spring.univ.model.HomeworkVO">
-		select seq, fk_hakbun, fk_code, name, subject, content, regDate, fileName, orgFilename, fileSize, status
+		select seq, fk_hakbun, fk_code, name, subject, content, regDate, fileName, orgFilename, fileSize, acceptance
 		from tbl_homework
 		where seq = #{seq}
 	</select>
@@ -285,6 +285,17 @@
 		delete from tbl_homework
 		where seq = #{seq}
 	</delete>
+	
+	<update id="homeworkEditEnd" parameterType="com.spring.univ.model.HomeworkVO">
+		<if test='fileName == ""'>
+			update tbl_homework set subject = #{subject}, content = #{content}, acceptance = #{acceptance}
+			where seq = #{seq}
+		</if>
+		<if test='fileName != ""'>
+			update tbl_homework set subject = #{subject}, content = #{content}, acceptance = #{acceptance}, fileName = #{fileName}, orgFilename = #{orgFilename}, fileSize = #{fileSize}
+			where seq = #{seq}
+		</if>
+	</update>
 	
 	
 </mapper>

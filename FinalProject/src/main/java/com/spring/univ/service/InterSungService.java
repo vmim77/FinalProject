@@ -75,5 +75,8 @@ public interface InterSungService {
 	// 과제게시판 글 삭제하기
 	int deleteHomework(String seq);
 	
+	// 과제게시판 글 수정하기
+	int homeworkEditEnd(HomeworkVO hwvo);
+	
 
 }

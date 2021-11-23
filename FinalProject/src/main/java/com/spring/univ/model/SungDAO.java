@@ -209,6 +209,13 @@ public class SungDAO implements InterSungDAO {
 		int n = sqlsession2.delete("Sung.deleteHomework", seq);
 		return n;
 	}
+	
+	// 과제게시판 글 수정하기
+	@Override
+	public int homeworkEditEnd(HomeworkVO hwvo) {
+		int n = sqlsession2.update("Sung.homeworkEditEnd", hwvo);
+		return n;
+	}
 
 	
 	

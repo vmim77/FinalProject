@@ -618,7 +618,16 @@ where A.fk_code = '0101'
 order by seq desc
 
 
-select *
+select to_number(status)
 from tbl_homework;
 
 desc tbl_homework;
+
+update tbl_homework set status = '0';
+
+commit;
+
+alter table tbl_homework 
+rename column status to acceptance;
+
+

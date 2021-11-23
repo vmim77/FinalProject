@@ -197,7 +197,9 @@
 	
 	//Function Declaration
 	function editHomework(seq) {
+		
 		location.href="<%= request.getContextPath()%>/editHomework.univ?seq="+seq;
+		
 	}// end of function editHomework(seq){}----------------------------------
 	
 	
@@ -259,8 +261,8 @@
 									aria-expanded="false" aria-controls="collapse${status.count}">
 									${homeworkvo.subject}
 									<div class="title">작성자: ${homeworkvo.name} | 작성시간: ${homeworkvo.regDate} | 마감기간: ${fn:substring(homeworkvo.deadline, 0, 10)}
-										<c:if test="${homeworkvo.status == 0}"><span class="badge badge-success">제출 가능</span></c:if>
-										<c:if test="${homeworkvo.status == 1}"><span class="badge badge-danger">제출 마감</span></c:if>
+										<c:if test="${homeworkvo.acceptance == 0}"><span class="badge badge-success">제출 가능</span></c:if>
+										<c:if test="${homeworkvo.acceptance == 1}"><span class="badge badge-danger">제출 마감</span></c:if>
 									</div>
 								</button>
 							</h2>
@@ -305,7 +307,7 @@
 							</div>
 							<div style="clear: both;"></div>
 							
-							<c:if test="${sessionScope.loginuser != null and homeworkvo.status == 0}">
+							<c:if test="${sessionScope.loginuser != null and homeworkvo.acceptance == 0}">
 								<form name="homeworkFrm${homeworkvo.seq}" style="margin-top: 30px;">
 									<table class="table">
 										<tr>

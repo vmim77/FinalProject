@@ -4,31 +4,26 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class HomeworkVO {
 	
-	// 과제 및 평가 게시판 VO
-	
-	private String seq;				// 글번호
-	private String fk_hakbun;		// 작성자 학번
-	private String fk_code;			// 과목번호
-	private String name;			// 작성자명
-	private String subject;			// 제목
-	private String content;			// 내용
-	private String regDate;			// 작성일자
-	private String commentCount;	// 댓글수
-	private String fileName;		// 파일명(WAS DISK) 
-	private String orgFilename;		// 원본파일명
-	private String fileSize;		// 파일사이즈
-	private String status;			// 과제 진행중, 과제 마감(댓글달기 불가)
-	private String deadline;		// 마감기한
-	
+	private String seq;
+	private String fk_hakbun;
+	private String fk_code;
+	private String name;
+	private String subject;
+	private String content;
+	private String regDate;
+	private String commentCount;
+	private String fileName;
+	private String orgFilename;
+	private String fileSize;
+	private String acceptance;
+	private String deadline;
 	private MultipartFile attach;
 	
 	
 	public HomeworkVO() {}
 	
-	
-	
 	public HomeworkVO(String seq, String fk_hakbun, String fk_code, String name, String subject, String content,
-			String regDate, String commentCount, String fileName, String orgFilename, String fileSize, String status,
+			String regDate, String commentCount, String fileName, String orgFilename, String fileSize, String acceptance,
 			String deadline, MultipartFile attach) {
 		this.seq = seq;
 		this.fk_hakbun = fk_hakbun;
@@ -41,12 +36,10 @@ public class HomeworkVO {
 		this.fileName = fileName;
 		this.orgFilename = orgFilename;
 		this.fileSize = fileSize;
-		this.status = status;
+		this.acceptance = acceptance;
 		this.deadline = deadline;
 		this.attach = attach;
 	}
-
-
 
 	public String getSeq() {
 		return seq;
@@ -136,12 +129,12 @@ public class HomeworkVO {
 		this.fileSize = fileSize;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getAcceptance() {
+		return acceptance;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setAcceptance(String acceptance) {
+		this.acceptance = acceptance;
 	}
 
 	public String getDeadline() {
@@ -159,10 +152,6 @@ public class HomeworkVO {
 	public void setAttach(MultipartFile attach) {
 		this.attach = attach;
 	}
-	
-	
-	
-	
 	
 
 }
