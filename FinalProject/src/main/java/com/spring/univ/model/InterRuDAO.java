@@ -47,6 +47,44 @@ public interface InterRuDAO {
 	
 	
 	
+	// 쪽지 수신함 페이지 목록 가져오기
+	List<Map<String, String>> receiveList(Map<String, String> paraMap);
+	
+	// 쪽지 발신함 페이지 목록 가져오기
+	List<Map<String, String>> sendList(Map<String, String> paraMap); 
+	
+	// 쪽지 첨부파일 없는 경우
+	int sendjjokji(JjokjiVO jjokjivo);
+
+	// 쪽지 첨부파일이 있는 경우
+	int sendjjokji_withFile(JjokjiVO jjokjivo);
+
+	// 수신함 총 게시물 건수
+	int receiveTotalCount(Map<String, String> paraMap);
+
+	// 발신함 총 게시물 건수
+	int sendTotalCount(Map<String, String> paraMap);
+
+	// 쪽지 첨부파일 다운로드 받기 
+	JjokjiVO getjjokjiList(Map<String, String> paraMap);
+
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	// 쪽지 보내기 과목 및 과목번호 가져오기
+	List<DepartmentVO> getDeptList();
+
+	// 쪽지 보내기 담당교수 가져오기 
+	List<MemberVO> getTeacherList(Map<String, String> paraMap);
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
 	
 	
 }//end of public interface InterBoardDAO {

@@ -23,6 +23,20 @@ commit;
 select *
 from tbl_member;
 
+-- 교수
+select *
+from tbl_member
+where authority=1
+
+-- 총관리자
+select *
+from tbl_member
+where authority=2
+
+
+
+
+
 update tbl_member set picture = 'jae.png'
 where picture = '없음'
 
@@ -507,5 +521,233 @@ begin
 end;
 
 
+begin
+for i in 1..100 loop
+insert into tbl_FreeComment(seq, fk_hakbun, name, content, regDate, parentSeq, status, fk_code)
+values(commentSeq.nextval, '2100006', '김지훈', '파이팅입니다', default, 576, default, '0202');
+end loop;
+end;
+
 commit;
+
+
+
+-- join참고용
+select  pnum, pname, code, pcompany, pimage1, pimage2, pqty, price, saleprice, sname, pcontent, point, pinputdate   
+from
+(
+    select row_number() over(order by pnum asc) AS RNO 
+          , pnum, pname, C.code, pcompany, pimage1, pimage2, pqty, price, saleprice, S.sname, pcontent, point  
+          , to_char(pinputdate, 'yyyy-mm-dd') as pinputdate 
+    from tbl_product P
+    JOIN tbl_category C
+    ON P.fk_cnum = C.cnum
+    JOIN tbl_spec S
+    ON P.fk_snum = S.snum
+    where S.sname = 'HIT'
+) V
+where RNO between 1 and 8; 
+
+
+
+--쪽지테이블
+select *
+from tbl_jjokji;
+
+
+
+
+select  jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize
+from tbl_jjokji
+from sender_hakbun='2100006	
+
+
+
+
+
+-- 수신함 조회
+select *
+from tbl_jjokji
+where receive_hakbun='2100009' --로그인한 유저의 학번
+
+select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+from tbl_jjokji J
+JOIN tbl_member M
+ON J.sender_hakbun= M.hakbun
+where receive_hakbun = '2100009' 
+
+-- 수신함 페이징 처리
+
+select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+	from 
+	(
+	    select row_number() over(order by jseq desc) AS rno,
+	         jseq, receive_hakbun, sender_hakbun, jjokjiTime, 
+             jjokjiContent, fileName, orgFilename, fileSize, name
+	   from tbl_jjokji J
+       JOIN tbl_member M
+       ON J.sender_hakbun= M.hakbun
+       where receive_hakbun = '2100009' 
+	) V
+ where rno between 1 and 10
+ /*
+ select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+	from 
+	(
+	    select row_number() over(order by jseq desc) AS rno,
+	         jseq, receive_hakbun, sender_hakbun, jjokjiTime, 
+             jjokjiContent, fileName, orgFilename, fileSize, name
+	   from tbl_jjokji J
+       JOIN tbl_member M
+       ON J.sender_hakbun= M.hakbun
+       where receive_hakbun = '2100009' 
+	) V
+ where rno between 1 and 10
+ 
+ 
+ 
+ */
+
+-- 수신함 총게시물
+   select count(*)
+   from tbl_jjokji J
+   JOIN tbl_member M
+   ON J.sender_hakbun= M.hakbun
+   where receive_hakbun = '2100009' 
+		 
+
+
+
+
+
+
+
+-- 발신함 조회 -- 보낸 사람이 자기가 보낸 메세지 조회. 누구한테 뭘 보냈는지 알아야 함
+select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name as receive_name
+from tbl_jjokji J
+JOIN tbl_member M
+ON J.receive_hakbun= M.hakbun
+where sender_hakbun='2100006' --로그인한 유저의 학번
+-- 보낸 사람 김지훈, 받는 사람 손은종
+
+
+
+-- 발신함 페이징 처리
+select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+	from  
+	(
+	    select row_number() over(order by jseq desc) AS rno,
+	         jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, 
+             fileName, orgFilename, fileSize, name
+        from tbl_jjokji J
+        JOIN tbl_member M
+        ON J.receive_hakbun= M.hakbun
+        where sender_hakbun='2100006'
+	) V
+ where rno between 1 and 10
+
+/*
+select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+	from  
+	(
+	    select row_number() over(order by jseq desc) AS rno,
+	         jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, 
+             fileName, orgFilename, fileSize, name
+        from tbl_jjokji J
+        JOIN tbl_member M
+        ON J.receive_hakbun= M.hakbun
+        where sender_hakbun='2100006'
+	) V
+ where rno between 1 and 10
+
+*/
+
+
+-- 발신함 총게시물
+   select count(*)
+   from tbl_jjokji J
+   JOIN tbl_member M
+   ON J.receive_hakbun= M.hakbun
+   where sender_hakbun='2100006'
+		 
+
+
+select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize
+from tbl_jjokji
+where jseq = 1
+
+
+-- 파일 있을때
+insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize)
+
+
+-- 보낸사람 교수 2100006 김지훈 => 받는 사람 교수 2100009 손은종
+insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent)
+values(jseq.nextval, '2100009', '2100006', default, '파이팅입니다');
+
+-- 보낸사람 교수 2100010 정미혜 => 받는 사람 교수 2100009 손은종
+insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent)
+values(jseq.nextval, '2100009', '2100010', default, '파이팅입니다');
+
+commit;
+
+
+
+/*
+alter table tbl_jjokji
+add jseq number; 
+
+alter table tbl_jjokji modify jseq not null; -- 제약조건명은 생략가능
+*/
+commit;
+
+
+drop table tbl_jjokji purge;
+
+create table tbl_jjokji
+(
+jseq                number          not null                    -- 쪽지번호
+,receive_hakbun     varchar2(50)                                -- 수신자
+,sender_hakbun      varchar2(50)                                -- 발신자
+,jjokjiTime         varchar2(100) default sysdate               -- 보낸시간   
+,jjokjiContent      varchar2(500) default '쪽지 확인 부탁드립니다' -- 쪽지내용
+,fileName           varchar2(255)                               -- WAS(톰캣)에 저장될 파일명(2021110809271535243254235235234.png)                                       
+,orgFilename        varchar2(255)                               -- 진짜 파일명(강아지.png)  // 사용자가 파일을 업로드 하거나 파일을 다운로드 할때 사용되어지는 파일명 
+,fileSize           number                                      -- 파일크기
+,constraint fk_tbl_jjokji_receive_hakbun foreign key(receive_hakbun) references tbl_member(hakbun) on delete cascade
+,constraint fk_tbl_jjokji_sender_hakbun foreign key(sender_hakbun) references tbl_member(hakbun) on delete cascade
+);
+
+
+
+create sequence jseq 
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+from tbl_jjokji J
+JOIN tbl_member M
+ON J.receive_hakbun= M.hakbun
+where sender_hakbun= '2100009'
+
+select deptCode, deptName
+from tbl_department
+order by deptCode		
+		
+        
+select name, hakbun
+from tbl_member
+where fk_deptCode = '03' and authority = '1'
+
+
+
+
+
+
+
 

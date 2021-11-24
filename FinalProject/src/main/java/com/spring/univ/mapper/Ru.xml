@@ -197,5 +197,147 @@
 	   from tbl_FreeComment
 	   where status = 1 and parentSeq = #{parentSeq}
     </select>
+    
+    
+
+    <!-- 쪽지 --> 
+    
+    <resultMap type="HashMap" id="jjokjiListMap">
+	    <result property="jseq" 			column="jseq"			javaType="String" />
+	    <result property="receive_hakbun" 	column="receive_hakbun" javaType="String" />
+	    <result property="sender_hakbun" 	column="sender_hakbun"  javaType="String" />
+	    <result property="jjokjiTime" 		column="jjokjiTime" 	javaType="String" />
+	    <result property="jjokjiContent" 	column="jjokjiContent"  javaType="String" />
+	    <result property="fileName" 		column="fileName" 		javaType="String" />
+	    <result property="orgFilename" 		column="orgFilename" 	javaType="String" />
+	    <result property="fileSize" 		column="fileSize" 		javaType="String" />
+	    <result property="name" 			column="name" 			javaType="String" />
+	</resultMap>
+   
+   
+    <!-- 수신함 목록 총 게시물 건수(totalCount) 구하기-->
+    <select id="receiveTotalCount" parameterType="HashMap" resultType="int" >
+       select count(*)
+	   from tbl_jjokji J
+	   JOIN tbl_member M
+	   ON J.sender_hakbun= M.hakbun
+	   where receive_hakbun = #{fk_hakbun}
+   </select>
+   
+   
+   <!-- 쪽지 수신함 목록 가져오기-->  
+  <!--   <select id="receiveList" parameterType="HashMap" resultMap="jjokjiListMap"> 
+  	 	select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+		from tbl_jjokji J
+		JOIN tbl_member M
+		ON J.sender_hakbun= M.hakbun
+		where receive_hakbun= #{fk_hakbun}
+    </select>  -->
+    
+    <!-- 쪽지 수신함 목록 가져오기 페이징처리 -->  
+     <select id="receiveList" parameterType="HashMap" resultMap="jjokjiListMap"> 
+  	 	select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+		from 
+		(
+		    select row_number() over(order by jseq desc) AS rno,
+		         jseq, receive_hakbun, sender_hakbun, jjokjiTime, 
+	             jjokjiContent, fileName, orgFilename, fileSize, name
+		   from tbl_jjokji J
+	       JOIN tbl_member M
+	       ON J.sender_hakbun= M.hakbun
+	       where receive_hakbun = #{fk_hakbun} 
+		) V
+		where rno between #{startRno} and #{endRno}
+    </select>  
+    
+    <!-- 발신함 목록 총 게시물 건수(totalCount) 구하기-->
+   <select id="sendTotalCount" parameterType="HashMap" resultType="int" >
+	     select count(*)
+	   	 from tbl_jjokji J
+	     JOIN tbl_member M
+	     ON J.receive_hakbun= M.hakbun
+	     where sender_hakbun= #{fk_hakbun}
+    </select> 
+     
+    
+    
+     <!-- 쪽지 발신함 목록 가져오기-->
+     
+ <!--    <select id="sendList" parameterType="HashMap" resultMap="jjokjiListMap"> 
+  	 	select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+		from tbl_jjokji J
+		JOIN tbl_member M
+		ON J.receive_hakbun= M.hakbun
+		where sender_hakbun= #{fk_hakbun}
+    </select>   
+      -->
+     
+     
+    <!-- 쪽지 발신함 목록 가져오기 페이징처리 -->  
+    <select id="sendList" parameterType="HashMap" resultMap="jjokjiListMap"> 
+  	 	select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+		from  
+		(
+		    select row_number() over(order by jseq desc) AS rno,
+		         jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, 
+	             fileName, orgFilename, fileSize, name
+	        from tbl_jjokji J
+	        JOIN tbl_member M
+	        ON J.receive_hakbun= M.hakbun
+	        where sender_hakbun= #{fk_hakbun} 
+		) V
+		 where rno between #{startRno} and #{endRno}
+    </select> 
+     
+    
+    
+    
+    
+    
+    
+    
+    <!-- === 쪽지 첨부파일 없는 경우 === -->
+	<insert id="sendjjokji" parameterType="com.spring.univ.model.JjokjiVO">
+		insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent)
+		values(jseq.nextval, #{receive_hakbun}, #{sender_hakbun}, default, #{jjokjiContent})
+	</insert>
+	
+	
+	
+	<!-- === 쪽지 첨부파일이 있는 경우 === -->
+	<insert id="sendjjokji_withFile" parameterType="com.spring.univ.model.JjokjiVO">
+		insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize)
+		values(jseq.nextval, #{receive_hakbun}, #{sender_hakbun}, default, #{jjokjiContent}, #{fileName}, #{orgFilename}, #{fileSize})
+	</insert>
+    
+    
+    <!-- === 쪽지 첨부파일 다운로드 받기 ===  -->
+    <select id="getjjokjiList" parameterType="HashMap" resultType="com.spring.univ.model.JjokjiVO">
+    	select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize
+		from tbl_jjokji
+		where jseq = #{jseq}
+    </select>
+    
+    
+    
+    
+    <!-- 쪽지 보내기 과목 및 과목번호 가져오기 -->
+	<select id="getDeptList" resultType="com.spring.univ.model.DepartmentVO">
+		select deptCode, deptName
+		from tbl_department
+		order by deptCode
+	</select>
+    
+    
+    <!-- 쪽지 보내기 담당교수 가져오기 -->
+    <select id="getTeacherList" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">
+    select name, hakbun
+	from tbl_member
+	where fk_deptCode = #{deptCode} and authority = '1'
+	</select>
+	
+	
+	
+	    
 	
 </mapper>

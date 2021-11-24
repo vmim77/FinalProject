@@ -147,7 +147,7 @@
 <div>
 <div style="margin:auto; margin-left: padding-top:70px;">
 
-	<h2 style=" font-size:23px; font-weight: bold;"><i class="far fa-edit" style="margin-right: 8px; font-size: 29px;"></i>게시글 작성</h2>
+	<h2 style=" font-size:23px; font-weight: bold;"><i class="far fa-edit" style="margin-right: 8px; font-size: 29px;"></i>게시글 수정</h2>
 	<hr style="width: 843px; margin-left: 0px;">
 	<form name="editFrm">
 		

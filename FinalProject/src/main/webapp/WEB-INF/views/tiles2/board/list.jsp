@@ -144,7 +144,7 @@ table td {
 								// 입력한 내용 길이
 								var len = $("input#searchWord").val().length;
 								// 결과값넣기
-								var result = word.substr(0, index) + "<span style='color:blue;'>"+word.substr(index,len)+"</span>" + word.substr(index+len); 
+								var result = word.substr(0, index) + "<span style='color:orange;'>"+word.substr(index,len)+"</span>" + word.substr(index+len); 
 								
 								html += "<span style='cursor:pointer' class='result'>"+result+"</span><br>";
 							
@@ -234,7 +234,7 @@ table td {
 		</form>
 		
 		<%-- === #106. 검색어 입력시 자동글 완성하기 1 === --%>
-		<div id="displayList" style="border: solid 1px gray; height: 100px; overflow: auto; margin-left: 77px; margin-top: -1px; border-top: 0px; "></div>	
+		<div id="displayList" style="border: solid 1px gray; height: 100px; overflow: auto; margin-left: 85px; margin-top: -16.6px; border-top: 0px; "></div>	
 </div>	
 		
 		

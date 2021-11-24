@@ -170,6 +170,9 @@
 						html += "<td>"+item.content+"</td>";
 						html += "<td class='comment'>"+item.name+"</td>";
 						html += "<td class='comment'>"+item.regDate+"</td>";
+						// 댓글삭제
+						<%-- html += "<td class='comment'><button type='button' class='btn btn-light' style='height: 36px; font-weight:bold; font-size: 10pt; padding: 7px 12px;' onclick='javascript:location.href="<%= request.getContextPath()%>/list.univ'>삭제</button></td>";
+						 --%>
 						html += "</tr>";
 					});
 				}
@@ -414,6 +417,7 @@
 			   	  &ensp;&ensp;&ensp;
 			   	  <button style="margin-top: 0px; height: 43px; width: 95px;" type="button" class="btn btn-secondary btn-sm mr-3" onclick="goAddWrite()">등록</button>
 			   	  <input type="hidden" id="fk_code" value="${sessionScope.code}" />
+			   	 
 			  </div>	
 		
 		

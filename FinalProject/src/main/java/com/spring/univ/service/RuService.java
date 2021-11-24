@@ -4,6 +4,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.*;
+
 import com.spring.univ.model.*;
 
 @Service
@@ -121,6 +122,103 @@ public class RuService implements InterRuService {
 		return totalCount;
 	}//end of public int getCommentTotalCount(Map<String, String> paraMap) {-------------------
 //==============================================================================================
+	
+	
+	
+	// 쪽지 수신함 페이지 목록 가져오기
+	@Override
+	public List<Map<String,String>> receiveList(Map<String, String> paraMap) {
+		List<Map<String,String>> receiveList = dao.receiveList(paraMap);
+		return receiveList;
+	}
+	
+	
+	// 쪽지 발신함 페이지 목록 가져오기
+	
+	
+	@Override
+	public List<Map<String,String>> sendList(Map<String, String> paraMap) {
+		List<Map<String,String>> sendList = dao.sendList(paraMap);
+		return sendList;
+	}
+	
+	
+	
+	
+	
+	// 쪽지 첨부파일 없는 경우
+	@Override
+	public int sendjjokji(JjokjiVO jjokjivo) {
+		int n = dao.sendjjokji(jjokjivo);  //의존객체인 dao에 보내기
+		return n;
+	}
+	
+	
+	
+	// 쪽지 첨부파일이 있는 경우
+	@Override
+	public int sendjjokji_withFile(JjokjiVO jjokjivo) {
+		int n = dao.sendjjokji_withFile(jjokjivo);  // 첨부파일이 있는 경우
+		return n;
+	}
+	
+	
+	
+	
+	// 수신함 총 게시물 건수
+	@Override
+	public int receiveTotalCount(Map<String, String> paraMap) {
+		int n = dao.receiveTotalCount(paraMap);
+		return n;
+	}
+	
+	
+	// 발신함 총 게시물 건수
+	@Override
+	public int sendTotalCount(Map<String, String> paraMap) {
+		int n = dao.sendTotalCount(paraMap);
+		return n;
+	}
+	
+	
+	
+	
+	// 쪽지 첨부파일 다운로드 받기 
+	@Override
+	public JjokjiVO getjjokjiList(Map<String, String> paraMap) {
+		JjokjiVO jjokjivo = dao.getjjokjiList(paraMap); 
+		return jjokjivo;
+	}
+	
+	
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	// 쪽지 보내기 과목 및 과목번호 가져오기
+	@Override
+	public List<DepartmentVO> getDeptList() {
+		List<DepartmentVO> getDeptList = dao.getDeptList();
+		return getDeptList;
+	}
+	
+	
+	
+	
+	// 쪽지 보내기 담당교수 가져오기 
+	@Override
+	public List<MemberVO> getTeacherList(Map<String, String> paraMap) {
+		List<MemberVO> getTeacherList = dao.getTeacherList(paraMap);
+		return getTeacherList;
+	}
+	
+//==============================================================================================
+		
+	
+	
+	
+	
+	
+	
 	
 	
 }//end of public class BoardService implements InterBoardService {
