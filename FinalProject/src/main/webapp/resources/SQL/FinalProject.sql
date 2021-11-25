@@ -636,3 +636,22 @@ from tab;
 
 desc TBL_JJOKJI;
 
+drop table TBL_LESSONPLAN purge;
+-- Table TBL_LESSONPLAN이(가) 삭제되었습니다.
+
+select * 
+from tab;
+
+select * 
+from TBL_SERVEY;
+
+desc TBL_DEPARTMENT;
+
+select *
+from user_constraintS
+where table_name = 'TBL_DEPARTMENT';
+
+select COLUMN_NAME, DATA_TYPE, DATA_LENGTH, NULLABLE, DATA_DEFAULT
+from USER_TAB_COLS
+where table_name = 'TBL_SERVEYRESULT';
+

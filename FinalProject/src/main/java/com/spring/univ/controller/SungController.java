@@ -101,6 +101,9 @@ public class SungController {
 		   searchWord = "";
 		}
 		
+		mav.addObject("searchType", searchType);
+		mav.addObject("searchWord", searchWord);
+		
 		
 		Map<String, String> paraMap = new HashMap<>();
 		

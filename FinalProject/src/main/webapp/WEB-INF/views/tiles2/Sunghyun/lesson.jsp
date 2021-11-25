@@ -25,8 +25,15 @@
 <script>
 	$(document).ready(function(){
 		
-		$("#searchWord").val("${requestScope.searchWord}");
-		$("#searchType").val("${requestScope.searchType}");
+		var searchWord = "${requestScope.searchWord}";
+		var searchType = "${requestScope.searchType}";
+		
+		if(searchWord != null && searchWord != ""){
+			$("#searchWord").val(searchWord);
+			$("#searchType").val(searchType);
+		}
+		
+		
 		
 		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
 		
