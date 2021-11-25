@@ -28,7 +28,7 @@
 		var searchWord = "${requestScope.searchWord}";
 		var searchType = "${requestScope.searchType}";
 		
-		if(searchWord != null && searchWord != ""){
+		if(searchWord != "") {
 			$("#searchWord").val(searchWord);
 			$("#searchType").val(searchType);
 		}
@@ -118,12 +118,12 @@
 <div style="width: 100%; text-align: center;">
 
 	<form name="searchFrm" style="width: 100%;">
-		<select name="searchType">
+		<select id="searchType" name="searchType">
 			<option value="subject">제목</option>
 			<option value="content">내용</option>
 		</select>
 		
-		<input type="text" name="searchWord" size="50" />
+		<input id="searchWord" type="text" name="searchWord" size="50" />
 		<input type="text" style="display: none;" />
 		
 		

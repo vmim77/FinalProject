@@ -125,7 +125,7 @@
 		$("div#showSideInfo").click(function(){
 			$("div#mysideinfo").animate({'left':'0px'},'slow');
 			$("div#mycontent").animate({"width":"95%"},'slow');
-			$(this).hide();
+			$("div#showSideInfo").hide();
 		});
 		///////////////////////////////////////////////////////
 		
