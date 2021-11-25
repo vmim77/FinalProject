@@ -81,7 +81,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 				
 				if( !wsession.getId().equals(webSocketSession.getId()) ) {
 					
-					webSocketSession.sendMessage(new TextMessage("<script>$('.toast', parent.document).toast('show'); $('#messageHead', parent.document).html('"+loginuser.getName()+" 님이 메시지를 보냈습니다!');</script><span>"+wsession.getRemoteAddress().getAddress().getHostAddress()+"</span>&nbsp;[<span style='font-weight:bold; cursor:pointer;' class='loginuserName'>"+ loginuser.getName() +"</span>]<br><div style='border-radius: 25px 25px 25px 25px; background-color: #eeeeee; display: inline-block; max-width: 60%; padding: 7px; border-radius: 15%; word-break: break-all;'> " + messageVO.getMessage() + "</div> <div style='display: inline-block; padding: 20px 0 0 5px; font-size: 7pt;'>"+currentTime+"</div> <div>&nbsp;</div>" ));    
+					webSocketSession.sendMessage(new TextMessage("<script>$('.toast', parent.document).toast('show'); $('#messageHead', parent.document).html('"+loginuser.getName()+" 님이 메시지를 보냈습니다!');</script><span>"+wsession.getRemoteAddress().getAddress().getHostAddress()+"</span>&nbsp;[<span style='font-weight:bold; cursor:pointer;' class='loginuserName'>"+ loginuser.getName() +"</span>]<br><div style=' background-color: #eeeeee; display: inline-block; max-width: 60%; padding: 7px; word-break: break-all;'> " + messageVO.getMessage() + "</div> <div style='display: inline-block; padding: 20px 0 0 5px; font-size: 7pt;'>"+currentTime+"</div> <div>&nbsp;</div>" ));    
 				}
 			}
 			
@@ -91,7 +91,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 			 	if (messageVO.getTo().equals(hostAddress)) { 
 			 		
 			        webSocketSession.sendMessage(
-		                new TextMessage("<span>"+ wsession.getRemoteAddress().getAddress().getHostAddress() +"</span>&nbsp;[<span style='font-weight:bold; cursor:pointer;' class='loginuserName'>" +loginuser.getName()+ "</span>]<br><div style='border-radius: 25px 25px 25px 25px;background-color: #eeeeee; display: inline-block; max-width: 60%; padding: 7px; border-radius: 15%; word-break: break-all; color: red;'>" + messageVO.getMessage() +"</div> <div style='display: inline-block; padding: 20px 0 0 5px; font-size: 7pt;'>"+currentTime+"</div> <div>&nbsp;</div>" ));  
+		                new TextMessage("<span>"+ wsession.getRemoteAddress().getAddress().getHostAddress() +"</span>&nbsp;[<span style='font-weight:bold; cursor:pointer;' class='loginuserName'>" +loginuser.getName()+ "</span>]<br><div style='background-color: #eeeeee; display: inline-block; max-width: 60%; padding: 7px; word-break: break-all; color: red;'>" + messageVO.getMessage() +"</div> <div style='display: inline-block; padding: 20px 0 0 5px; font-size: 7pt;'>"+currentTime+"</div> <div>&nbsp;</div>" ));  
 		        		break; 
 			     }
 				

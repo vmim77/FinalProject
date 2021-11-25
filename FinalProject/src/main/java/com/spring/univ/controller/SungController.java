@@ -1164,7 +1164,7 @@ public class SungController {
 	@RequestMapping(value="/editEndHomework.univ", method= {RequestMethod.POST})
 	public ModelAndView subject_editEndHomework(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, HomeworkVO hwvo, MultipartHttpServletRequest mrequest) {
 		
-		System.out.println("status 값 => " + hwvo.getAcceptance());
+		
 		
 		MultipartFile attach = hwvo.getAttach();
 		

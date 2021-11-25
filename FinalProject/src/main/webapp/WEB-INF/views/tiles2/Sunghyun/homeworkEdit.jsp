@@ -29,6 +29,17 @@
 			$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
 		});
 		
+		var acceptance = "${requestScope.hwvo.acceptance}";
+		
+		$("input[name=acceptance]").each(function(){
+			if($(this).val() == acceptance){
+				$(this).prop("checked", true);
+				return false;
+			}
+			
+		});
+		
+		
 	    //전역변수
 	    var obj = [];
 	    

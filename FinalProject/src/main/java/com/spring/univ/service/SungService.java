@@ -93,11 +93,9 @@ public class SungService implements InterSungService {
 	public int addLessonBoardComment(LessonBoardCommentVO lbcvo) {
 		int m = 0;
 		int n = dao.addLessonBoardComment(lbcvo);
-		
 		if(n==1) {
 			 m = dao.updateCommentCnt(lbcvo.getParentSeq()); // 원글의 댓글갯수를 증가
 		}
-		
 		return m;
 	}
 	
@@ -126,14 +124,14 @@ public class SungService implements InterSungService {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
 	public int deleteLessonComment(Map<String, String> paraMap) {
-		
+		int m = 0;
 		int n = dao.deleteLessonComment(paraMap);
 		
 		if(n==1) {
-			int m = dao.downCommentCnt(paraMap); // 원글의 댓글개수를 차감
+			m = dao.downCommentCnt(paraMap); // 원글의 댓글개수를 차감
 		}
 		
-		return n;
+		return m;
 	}
 	
 	// 강의자료실 전체 페이지 수
