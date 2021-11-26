@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ==== #29. mapper 기본설정 ==== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
+<mapper namespace="Jae">
+	
+	
+	<resultMap type="HashMap" id="mapgetclassList">
+		<result property="code"  column="code"  javaType="String"/>
+		<result property="subject"  column="subject"  javaType="String"/>
+		<result property="hakjum"  column="hakjum"  javaType="String"/>
+		<result property="classdate"  column="classdate"  javaType="String"/>
+		<result property="fk_deptcode"  column="fk_deptcode"  javaType="String"/>
+		<result property="startday"  column="startday"  javaType="String"/>
+		<result property="weekseq"  column="weekseq"  javaType="String"/>
+		<result property="lessonseq"  column="lessonseq"  javaType="String"/>
+		<result property="week"  column="week"  javaType="String"/>
+		<result property="lesson"  column="lesson"  javaType="String"/>
+		<result property="video"  column="video"  javaType="String"/>
+		<result property="savefile"  column="savefile"  javaType="String"/>
+		<result property="uploadfile"  column="uploadfile"  javaType="String"/>
+	</resultMap>
+	<select id="getclassList" resultMap="mapgetclassList">
+		select code, subject, hakjum, classdate, fk_deptcode,  startday,  weekseq, lessonseq, week, lesson, video, savefile, uploadfile
+		from tbl_subject A join tbl_week B
+		on A.code = B.fk_code
+		join tbl_weeklesson C
+		on B.weekseq = C.fk_weekseq
+		<!-- where code='0501' -->
+		order by lessonseq asc
+	</select>
+	
+	
+	
+	
+	<select id="getWeek" parameterType="String"  resultType="com.spring.univ.model.WeekVO">
+		select fk_code,week,weekseq,startday
+		from tbl_week
+		where fk_code= #{code}
+		order by weekseq
+	</select>
+	
+	
+	<select id="getWeekCount" parameterType="String" resultType="int">
+		select count(*)
+		from tbl_week
+		where fk_code=#{code}
+	</select>
+	
+	
+	
+	<select id="getOneSubjectByCode" parameterType="String" resultType="com.spring.univ.model.SubjectVO">
+		select *
+		from tbl_subject
+		where code=#{code}
+	</select>
+	
+	
+	<insert id="classWeekRegister" parameterType="HashMap">
+		insert into tbl_week(fk_code, week, startday, weekseq)
+		values(#{fk_code},#{week},default,weekseq.nextval)
+	</insert>
+	
+	
+	<insert id="classLessonRegister" parameterType="HashMap">
+		insert into tbl_weeklesson(lessonseq, fk_weekseq,lesson,video)
+		values(lessonseq.nextval,#{fk_weekseq},#{lesson},#{video})
+	</insert>
+	
+	
+	
+	
+	<resultMap type="HashMap" id="mapgetclassListbyWeek">
+		<result property="code"  column="code"  javaType="String"/>
+		<result property="subject"  column="subject"  javaType="String"/>
+		<result property="hakjum"  column="hakjum"  javaType="String"/>
+		<result property="classdate"  column="classdate"  javaType="String"/>
+		<result property="fk_deptcode"  column="fk_deptcode"  javaType="String"/>
+		<result property="startday"  column="startday"  javaType="String"/>
+		<result property="weekseq"  column="weekseq"  javaType="String"/>
+		<result property="lessonseq"  column="lessonseq"  javaType="String"/>
+		<result property="week"  column="week"  javaType="String"/>
+		<result property="lesson"  column="lesson"  javaType="String"/>
+		<result property="video"  column="video"  javaType="String"/>
+		<result property="savefile"  column="savefile"  javaType="String"/>
+		<result property="uploadfile"  column="uploadfile"  javaType="String"/>
+	</resultMap>
+	<select id="classListbyWeek" parameterType="HashMap" resultMap="mapgetclassListbyWeek">
+		select code, subject, hakjum, classdate, fk_deptcode,  startday,  weekseq, lessonseq, week, lesson, video, savefile, uploadfile
+		from tbl_subject A join tbl_week B
+		on A.code = B.fk_code
+		join tbl_weeklesson C
+		on B.weekseq = C.fk_weekseq
+		where week=#{week} and code = #{fk_code}
+		order by lessonseq asc
+	</select>
+	
+	
+	
+	
+	<resultMap type="HashMap" id="mapgetOneClassView">
+		<result property="code"  column="code"  javaType="String"/>
+		<result property="subject"  column="subject"  javaType="String"/>
+		<result property="hakjum"  column="hakjum"  javaType="String"/>
+		<result property="classdate"  column="classdate"  javaType="String"/>
+		<result property="fk_deptcode"  column="fk_deptcode"  javaType="String"/>
+		<result property="startday"  column="startday"  javaType="String"/>
+		<result property="endday"  column="endday"  javaType="String"/>
+		<result property="openday"  column="openday"  javaType="String"/>
+		<result property="weekseq"  column="weekseq"  javaType="String"/>
+		<result property="lessonseq"  column="lessonseq"  javaType="String"/>
+		<result property="week"  column="week"  javaType="String"/>
+		<result property="lesson"  column="lesson"  javaType="String"/>
+		<result property="video"  column="video"  javaType="String"/>
+		<result property="savefile"  column="savefile"  javaType="String"/>
+		<result property="uploadfile"  column="uploadfile"  javaType="String"/>
+	</resultMap>
+	<select id="getOneClassView" parameterType="HashMap" resultMap="mapgetOneClassView">
+		select code, subject, hakjum, classdate, fk_deptcode,  (to_char(to_date(startday), 'yyyy-mm-dd')) AS startday, to_char(to_date(add_months(startday,3)), 'yyyy-mm-dd') AS endday,  to_char(to_date(add_months(startday,-1)), 'yyyy-mm-dd') AS openday, weekseq, lessonseq, week, lesson, video, savefile, uploadfile
+		from tbl_subject A join tbl_week B
+		on A.code = B.fk_code
+		join tbl_weeklesson C
+		on B.weekseq = C.fk_weekseq
+		where code=#{code} and week=#{week} and lesson=#{lesson}
+	</select>
+	
+	
+	
+	<insert id="classContentAdd" parameterType="com.spring.univ.model.ClassContentBoardVO" >
+		insert into tbl_classContentBoard(classBoardSeq, fk_hakbun, fk_code, fk_lessonSeq, name, subject, CONTENT, REGDATE, STATUS)
+		values(classBoardSeq.nextval, #{fk_hakbun}, #{fk_code}, #{fk_lessonSeq}, #{name}, #{subject}, #{content}, default, 1)
+	</insert>
+	
+	
+	<insert id="classContentAdd_withFile" parameterType="com.spring.univ.model.ClassContentBoardVO">
+		insert into tbl_classContentBoard(classBoardSeq, fk_hakbun, fk_code, fk_lessonSeq, name, subject, CONTENT, REGDATE, STATUS, fileName, orgFilename, fileSize)
+		values(classBoardSeq.nextval, #{fk_hakbun}, #{fk_code}, #{fk_lessonSeq}, #{name}, #{subject}, #{content}, default, 1, #{fileName}, #{orgFilename}, #{fileSize})
+	</insert>
+	
+	
+	<select id="getclassContentList" parameterType="String" resultType="com.spring.univ.model.ClassContentBoardVO">
+		select classboardseq, fk_hakbun, fk_code, fk_lessonseq, name, subject, content, to_char(to_date(regdate), 'yyyy-mm-dd') AS regdate, to_char(to_date(regdate)+7, 'yyyy-mm-dd') AS enddate, status, filename, orgfilename, filesize
+		from tbl_classContentBoard
+		where fk_lessonseq = #{lessonseq}
+	</select>
+	
+	
+	<select id="getClassOneContent" parameterType="String" resultType="com.spring.univ.model.ClassContentBoardVO">
+		select classboardseq, fk_hakbun, fk_code, fk_lessonseq, name, subject, content, to_char(to_date(regdate), 'yyyy-mm-dd') AS regdate, to_char(to_date(regdate)+7, 'yyyy-mm-dd') AS enddate, status, filename, orgfilename, filesize
+		from tbl_classContentBoard
+		where classboardseq = #{classBoardSeq}
+	</select>
+	
+	
+	<update id="classContentEdit" parameterType="com.spring.univ.model.ClassContentBoardVO">
+		update tbl_classContentBoard set subject = #{subject}
+                           				, content = #{content}
+        where classBoardSeq = #{classBoardSeq}
+	</update>
+	
+	
+	<delete id="classContentDel" parameterType="HashMap">		
+		delete from tbl_classContentBoard
+		where classBoardSeq = #{classBoardSeq}
+	</delete>
+	
+	<update id="classContentEdit_withFile" parameterType="com.spring.univ.model.ClassContentBoardVO">
+		update tbl_classContentBoard set subject = #{subject}
+                           				, content = #{content}
+                           				, fileName = #{fileName}
+                           				, orgFilename = #{orgFilename}
+                           				, fileSize = #{fileSize}
+        where classBoardSeq = #{classBoardSeq}
+	</update>
+	
+	
+	<insert id="classCommentWrite_noAttach" parameterType="HashMap">
+		insert into tbl_classContentComment(classCommentSeq, fk_classBoardSeq, fk_hakbun, name, commentContent, REGDATE, STATUS)
+		values(classCommentSeq.nextval, #{fk_classBoardSeq}, #{hakbun},#{name},#{commentContent},default,1)
+	</insert>
+	
+	
+	<insert id="classCommentWrite_withAttach" parameterType="com.spring.univ.model.ClassContentCommentVO">
+		insert into tbl_classContentComment(classCommentSeq, fk_classBoardSeq, fk_hakbun, name, commentContent, REGDATE, STATUS, FILENAME, ORGFILENAME, FILESIZE)
+		values(classCommentSeq.nextval, #{fk_classBoardSeq}, #{fk_hakbun},#{name},#{commentContent},default,1, #{fileName}, #{orgFilename}, #{FileSize})
+	</insert>
+	
+	
+	<select id="getCommentListPaging" parameterType="HashMap" resultType="com.spring.univ.model.ClassContentCommentVO">
+		select classCommentSeq, name, fk_hakbun, commentContent, REGDATE,fk_classBoardSeq,
+		    	FILENAME, ORGFILENAME, fileSize
+		from 
+		(
+		  select row_number() over(order by classCommentSeq desc) as rno, 
+		        classCommentSeq, name, commentContent, fk_hakbun,
+		        to_char(to_date(regDate), 'yyyy-mm-dd') AS REGDATE,fk_classBoardSeq,
+		        nvl(FILENAME, ' ') as FILENAME, 
+		        nvl(ORGFILENAME, ' ') as ORGFILENAME, 
+		        nvl(to_char(FILESIZE), ' ') as fileSize
+		  from tbl_classContentComment
+		  where status = 1 and fk_classBoardSeq = #{fk_classBoardSeq} 		  
+		  <if test='searchWord != "" '>
+			and name like '%'||lower( #{searchWord} )||'%'
+		  </if>		
+		) V
+		where rno between #{startRno} and #{endRno}
+	</select>
+	
+	
+	<select id="getCommentTotalPageCount" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_classContentComment
+		where status = 1 and fk_classBoardSeq = #{fk_classBoardSeq}
+		<if test='searchWord != "" '>
+			and name like '%'||lower( #{searchWord} )||'%'
+	  	</if>
+	</select>
+	
+	
+	<select id="getClassContentCommentOne" parameterType="String" resultType="com.spring.univ.model.ClassContentCommentVO">
+		select classCommentSeq, name, fk_hakbun, commentContent, REGDATE,fk_classBoardSeq,
+		    	FILENAME, ORGFILENAME, fileSize
+        from tbl_classContentComment
+        where classCommentSeq = #{classCommentSeq}
+	</select>
+	
+	
+	<delete id="classCommentDel" parameterType="HashMap">
+		delete from tbl_classContentComment
+		where classCommentSeq = #{classCommentSeq}
+	</delete>
+	
+	
+	<insert id="goAttend" parameterType="HashMap">
+		insert into tbl_attend(fk_hakbun,fk_lessonseq,status)
+		values(#{fk_hakbun},#{fk_lessonseq},'1')
+	</insert>
+	
+	
+	<select id="attendCheck" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_attend
+		where fk_hakbun = #{fk_hakbun} and fk_lessonseq = #{fk_lessonseq}
+	</select>
+	
+	
+	<select id="getAttendCheck" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_attend
+		where fk_hakbun = #{fk_hakbun} and fk_lessonseq = #{fk_lessonseq}
+	</select>
+	
+	
+	
+</mapper>
