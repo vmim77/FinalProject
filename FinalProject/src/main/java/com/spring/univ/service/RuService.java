@@ -207,8 +207,8 @@ public class RuService implements InterRuService {
 	// 쪽지 보내기 담당교수 가져오기 
 	@Override
 	public List<MemberVO> getTeacherList(Map<String, String> paraMap) {
-		List<MemberVO> getTeacherList = dao.getTeacherList(paraMap);
-		return getTeacherList;
+		List<MemberVO> teacherList = dao.getTeacherList(paraMap);
+		return teacherList;
 	}
 	
 //==============================================================================================

@@ -38,10 +38,13 @@
 
 
 /* 게시판 정렬 , 글자색, 글자크기*/
-table td {
+td {
+	vertical-align : middle;
 	text-align: center;
 	color:#616161; 
 	font-size: 15px;
+	 line-height: 45px;
+	
 }
 
 
@@ -49,7 +52,9 @@ table td {
 .subjectStyle {font-weight: bold; 
 			   cursor: pointer;} 
 			   
- 
+#innerContent > div > table > thead > tr > th {
+ 	height: 10px;
+ }
 
 </style>
 
@@ -101,7 +106,7 @@ table td {
 		
 		<br>
 		
-		<ul class="nav nav-tabs">
+		<ul class="nav nav-tabs" style="margin-bottom: 50px;">
 			  <li class="nav-item">
 			    <a class="nav-link active text-secondary" href="<%= request.getContextPath()%>/receiveList.univ">수신함</a>
 			  </li>
@@ -113,17 +118,20 @@ table td {
 			  </li>
 		</ul>	
 		
-		<br>
-		<br>
+		<br><br>
 		
-	
+		
+		<h2 style="font-size:23px; font-weight: bold; color: #ffaa29;"><i class="far fa-envelope-open" style="font-size:29px; margin-left: 7px;"></i>&nbsp;&nbsp;수신함</h2>
+		
+		<hr>
+		
 		<button type="button" class="btn btn-light  btn-sm" style="float:right; margin-right: 1.5%;  margin-bottom: 1.5%;" onclick="javascript:location.href='<%= request.getContextPath()%>/receiveList.univ'"> <i class="fas fa-redo-alt"></i></button>
 		
 		<table class="table table-hover">
 			<thead>
 				<tr>
 					<th style="width: 70px; text-align: center;">번호</th>
-					<th style="width: 360px;text-align: center;">내용</th>
+					<th style="width: 360px;text-align: center;">쪽지 내용</th>
 					<th style="width: 360px;text-align: center;">첨부파일</th>
 					<th style="width: 150px; text-align: center;">보낸 사람</th>
 					<th style="width: 150px; text-align: center;">보낸 시간</th>
@@ -132,9 +140,9 @@ table td {
 			<tbody>
 				<c:forEach var="jjokjivo" items="${requestScope.receiveList}">
 					<tr>
-						<td align="center">${jjokjivo.jseq}</td>
-						<td align="center">${jjokjivo.jjokjiContent}</td>
-						<td align="center">
+						<td>${jjokjivo.jseq}</td>
+						<td  style="font-weight: bold;">${jjokjivo.jjokjiContent}</td>
+						<td>
 							<c:if test="${sessionScope.loginuser != null}">
 							<a href="<%= request.getContextPath()%>/download.univ?jseq=${jjokjivo.jseq}">${jjokjivo.orgFilename}</a> 
 							</c:if>
@@ -142,8 +150,8 @@ table td {
 								${jjokjivo.orgFilename}
 							</c:if>
 						</td>
-						<td align="center">${jjokjivo.name}</td>
-						<td align="center">${jjokjivo.jjokjiTime}</td>
+						<td>${jjokjivo.name}</td>
+						<td >${jjokjivo.jjokjiTime}</td>
 					</tr>
 				</c:forEach>	
 			</tbody>

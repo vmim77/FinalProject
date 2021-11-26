@@ -187,8 +187,8 @@ public class RuDAO implements InterRuDAO {
 	// 쪽지 보내기 담당교수 가져오기 
 	@Override
 	public List<MemberVO> getTeacherList(Map<String, String> paraMap) {
-		List<MemberVO> getTeacherList = sqlsession2.selectList("Ru.getTeacherList");
-		return getTeacherList;
+		List<MemberVO> teacherList = sqlsession2.selectList("Ru.getTeacherList", paraMap);
+		return teacherList;
 	}
 	
 	

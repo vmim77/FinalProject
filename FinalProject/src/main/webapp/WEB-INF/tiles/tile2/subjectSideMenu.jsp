@@ -15,4 +15,5 @@
 	<li class="sideMenu">사용자 및 그룹</li>
 	<li class="sideMenu">성적</li>
 	<li class="sideMenu">출결/학습 현황</li>
+	<li class="sideMenu" onclick="javascript:location.href='<%= ctxPath%>/sendList.univ'">쪽지</li>
 </ul>

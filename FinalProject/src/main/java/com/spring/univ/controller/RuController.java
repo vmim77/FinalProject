@@ -1115,10 +1115,29 @@ public class RuController {
 
 		List<DepartmentVO> deptList = service.getDeptList(); // 쪽지 보내기 과목 및 과목번호 가져오기
 		
+		/////////////// 확인용
+		// deptCode  deptName
 		
+		/*
+		for (int i=0; i<deptList.size(); i++) {
+			String deptCode = deptList.get(i).getDeptCode();
+			System.out.println(deptCode);
+			
+			
+			String deptName = deptList.get(i).getDeptName();
+			System.out.println(deptName);
+			
+		}
+		
+		 
+		 */
+		
+		///////////////
 	
 		
-		mav.addObject(deptList);
+		mav.addObject("deptList", deptList);
+		//request.setAttribute("deptList", deptList);
+		
 		
 		System.out.println("학번 " + fk_hakbun);
 		System.out.println("이름 " + name);
@@ -1127,11 +1146,10 @@ public class RuController {
 		session.setAttribute("name", name);
 
 		mav.setViewName("jjokji/sendjjokji.tiles2");
-
 		
 		}
+		
 		return mav;
-	
 	
 	
 	}// end of public ModelAndView requiredLogin_sendjjokji(HttpServletRequest
@@ -1301,11 +1319,12 @@ public class RuController {
 	@RequestMapping(value="/getTeacher.univ", produces="text/plain;charset=UTF-8", method= {RequestMethod.GET})
 	public String getTeacher(HttpServletRequest request){
 
-		String deptCode = request.getParameter("deptCode");
+		String fk_deptCode = request.getParameter("fk_deptCode");
+		System.out.println("~~~~ 확인용 fk_deptCode " + fk_deptCode); // 학과번호는 잘 받아옴
 
 		Map<String, String> paraMap = new HashMap<>();
 		
-		paraMap.put("deptCode", deptCode);
+		paraMap.put("fk_deptCode", fk_deptCode);
 
 		// 담당교수 가져오기
 		List<MemberVO> teacherList = service.getTeacherList(paraMap);

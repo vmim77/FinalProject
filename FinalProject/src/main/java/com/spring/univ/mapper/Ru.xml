@@ -333,10 +333,10 @@
     <select id="getTeacherList" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">
     select name, hakbun
 	from tbl_member
-	where fk_deptCode = #{deptCode} and authority = '1'
+	where fk_deptCode = #{fk_deptCode} and authority = '1'
 	</select>
 	
-	
+
 	
 	    
 	

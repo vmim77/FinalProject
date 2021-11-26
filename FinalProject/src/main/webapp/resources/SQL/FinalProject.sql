@@ -568,7 +568,7 @@ from sender_hakbun='2100006
 -- 수신함 조회
 select *
 from tbl_jjokji
-where receive_hakbun='2100009' --로그인한 유저의 학번
+where receive_hakbun='0000001' --로그인한 유저의 학번
 
 select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
 from tbl_jjokji J
@@ -627,7 +627,7 @@ select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName,
 from tbl_jjokji J
 JOIN tbl_member M
 ON J.receive_hakbun= M.hakbun
-where sender_hakbun='2100006' --로그인한 유저의 학번
+where sender_hakbun='0000001' --로그인한 유저의 학번
 -- 보낸 사람 김지훈, 받는 사람 손은종
 
 
@@ -689,6 +689,21 @@ values(jseq.nextval, '2100009', '2100006', default, '파이팅입니다');
 insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent)
 values(jseq.nextval, '2100009', '2100010', default, '파이팅입니다');
 
+
+-- 보낸사람 0000001 관리자 => 받는 사람 교수 2100009 손은종
+insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent)
+values(jseq.nextval, '2100009', '0000001', default, '관리자가 손은종에게 보낸 쪽지');
+
+insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent)
+values(jseq.nextval, '2100010', '0000001', default, '관리자가 정미혜에게 보낸 쪽지');
+
+insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent)
+values(jseq.nextval, '0000001', '2100010', default, '정미혜가 관라자에게 보낸 쪽지');
+
+insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent)
+values(jseq.nextval, '0000001', '2100009', default, '손은종이 관라자에게 보낸 쪽지');
+
+
 commit;
 
 
@@ -742,8 +757,14 @@ order by deptCode
         
 select name, hakbun
 from tbl_member
-where fk_deptCode = '03' and authority = '1'
+where fk_deptCode = '01' and authority = '1'
 
+
+
+
+select name, hakbun
+from tbl_member
+where authority = '2'
 
 
 
