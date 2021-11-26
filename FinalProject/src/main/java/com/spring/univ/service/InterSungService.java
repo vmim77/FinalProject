@@ -81,10 +81,6 @@ public interface InterSungService {
 	// 해당 과목 수강생 목록 요청
 	List<MemberVO> getSugangMember(String code);
 	
-	// 해당 과목의 수강생들의 과제제출율을 가져온다.
-	Map<String, String> gethomeworkEvaluation(Map<String, String> paraMap);
-	
-	
 	
 
 }

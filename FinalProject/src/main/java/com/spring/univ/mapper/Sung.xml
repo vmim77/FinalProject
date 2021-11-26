@@ -353,18 +353,4 @@
 	</resultMap>
 	
 	
-	<select id="gethomeworkEvaluation" parameterType="HashMap" resultMap="evalMap">
-	select distinct fk_hakbun, name, ((select count(*) from tbl_homework_comment where fk_hakbun = #{hakbun}) / cnt * 100) || '%' AS percentage, cnt
-	from
-	(
-		select parentSeq, fk_hakbun, name, (select count(*) from tbl_homework where fk_code = #{code}) AS cnt
-		from tbl_homework_comment A
-		JOIN tbl_member B
-		on A.fk_hakbun = B.hakbun
-		where fk_code = #{code}
-	)
-	where fk_hakbun = #{hakbun}
-	</select>
-	
-	
 </mapper>

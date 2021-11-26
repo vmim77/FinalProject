@@ -224,14 +224,6 @@ public class SungDAO implements InterSungDAO {
 		return sugangList;
 	}
 	
-	// 해당 과목의 수강생들의 과제제출율을 가져온다.
-	@Override
-	public Map<String, String> gethomeworkEvaluation(Map<String, String> paraMap) {
-		Map<String, String> evalMap = sqlsession2.selectOne("Sung.gethomeworkEvaluation", paraMap);
-		return evalMap;
-	}
-
-	
 	
 
 }

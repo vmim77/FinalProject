@@ -253,13 +253,5 @@ public class SungService implements InterSungService {
 		return sugangList;
 	}
 	
-	// 해당 과목의 수강생들의 과제제출율을 가져온다.
-	@Override
-	public Map<String, String> gethomeworkEvaluation(Map<String, String> paraMap) {
-		Map<String, String> evalMap = dao.gethomeworkEvaluation(paraMap);
-		return evalMap;
-	}
-	
-	
 
 }

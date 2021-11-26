@@ -681,7 +681,7 @@ select *
 from tbl_homework_comment;
 
 
-select distinct fk_hakbun, name, ((select count(*) from tbl_homework_comment where fk_hakbun = '2100040') / cnt * 100) || '%' AS percentage, cnt
+select distinct fk_hakbun, name, ((select count(*) from tbl_homework_comment) / cnt * 100) AS percentage, cnt
 from
 (
 select parentSeq, fk_hakbun, name, (select count(*) from tbl_homework where fk_code = '0101') AS cnt
@@ -690,13 +690,44 @@ JOIN tbl_member B
 on A.fk_hakbun = B.hakbun
 where fk_code = '0101'
 )
-where fk_hakbun = '2100040'
 
 
 select *
 from tbl_member
 where authority = 0
 
-select * 
+select distinct A.fk_hakbun, A.fk_code, B.name, C.orgFilename, C.fileName, C.regDate
+from tbl_sugang A
+JOIN tbl_member B
+on A.fk_hakbun = B.hakbun
+LEFT JOIN tbl_homework_comment C
+on A.fk_hakbun = C.fk_hakbun
+where A.fk_code = '0101'
+
+
+select code, C.hakbun, D.name, StudentCnt, totalCnt
+from 
+(
+    select B.fk_code AS code, B.fk_hakbun AS hakbun, NVL(StudentHomeworkCnt, 0) AS StudentCnt, NVL(totalHomeworkCnt, (select count(*) from tbl_homework where fk_code = '0103')) AS totalCnt
+    from 
+(
+        select fk_code, fk_hakbun, count(*) AS StudentHomeworkCnt, (select count(*) from tbl_homework where fk_code = '0103') AS totalHomeworkCnt
+        from tbl_homework_comment A
+        group by fk_code, fk_hakbun
+        having fk_code = '0103'
+) A
+RIGHT JOIN
+(
+        select fk_code, fk_hakbun
+        from tbl_sugang
+        where fk_code = '0103'
+) B
+    ON A.fk_hakbun = B.fk_hakbun
+) C
+JOIN tbl_member D 
+ON C.hakbun = D.hakbun
+
+
+select *
 from tbl_sugang
-where fk_code = '0101'
+where fk_code = '0103';

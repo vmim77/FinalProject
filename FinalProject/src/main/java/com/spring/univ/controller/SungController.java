@@ -1249,39 +1249,8 @@ public class SungController {
 	@RequestMapping(value="/homeworkEvaluation.univ")
 	public ModelAndView subject_homeworkEvaluation(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
-		HttpSession session = request.getSession();
-		String code = (String) session.getAttribute("code");
-		
-		List<MemberVO> sugangList = service.getSugangMember(code); // 해당과목 수강생 목록
-		List<HomeWorkCommentVO> homeworkCommentList = service.getHomeworkComment(code); // 해당과목 과제제출자 목록
-		
-		Map<String, String> paraMap = new HashMap<>(); // 파라미터용
-		
-		List<Map<String, String>> evalList = new ArrayList<>();
-		
-		for(MemberVO membervo : sugangList) {
-			
-			paraMap.put("code", code);
-			paraMap.put("hakbun", membervo.getHakbun());
-			
-			Map<String, String> evalMap = service.gethomeworkEvaluation(paraMap); // 해당 과목의 수강생들의 과제제출율을 가져온다.
-			
-			if(evalMap != null) {
-				evalList.add(evalMap);
-			}
-			
-		}
-		
-		mav.addObject("sugangList", sugangList);
-		mav.addObject("homeworkCommentList", homeworkCommentList);
-		mav.addObject("evalList", evalList);
-		
-		mav.setViewName("Sunghyun/homeworkEvaluation.tiles2");
-		
 		return mav;
 	}
-	
-	
 	
 }
 	
