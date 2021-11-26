@@ -73,14 +73,12 @@ public class UnivAOP {
 	@Before("subject()")
 	public void subjectCheck(JoinPoint joinPoint) {
 		
-		
 		try {
 			HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0]; 
 			HttpServletResponse response = (HttpServletResponse) joinPoint.getArgs()[1]; 
 			
 			HttpSession session = request.getSession();
 			String sessionCode = (String) session.getAttribute("code"); // 현재 세션에 저장된 코드를 가져옵니다.
-			
 			
 			String servletPass = request.getServletPath();
 			// ServletPath 란?
@@ -98,8 +96,53 @@ public class UnivAOP {
 			// 또한 과목으로 이동을 하면 무조건 "/subject.univ?code=과목번호"로 대쉬보드와 과목퀵메뉴에서 이동하게 설정을 해뒀습니다.
 			if(sessionCode == null || "".equals(sessionCode) || "/subject.univ".equals(servletPass)) { 
 				
-				sessionCode = request.getParameter("code"); // 대쉬보드와 과목퀵메뉴에서 보내준 과목코드를 받아서,
-				session.setAttribute("code", request.getParameter("code")); // 세션에 넣어줍니다.
+				String code = request.getParameter("code");
+				
+				MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+				String hakbun = loginuser.getHakbun();
+				
+				
+				Map<String, String> paraMap = new HashMap<>();
+				paraMap.put("hakbun", hakbun);
+				
+				int n = 0;
+				
+				try {
+					
+					if(Integer.parseInt(code) < 0) {
+						code = "9999";
+					}
+					
+				} catch (NumberFormatException e) {
+					code = "9999";
+				}
+				
+				paraMap.put("code", code);
+				
+				if(code != null && loginuser.getAuthority() == 0) {
+					n = service.checkSugang(paraMap); 
+				}
+				else if(code != null && loginuser.getAuthority() == 1) {
+					n = service.checkLesson(paraMap);
+				}
+			
+				if(n!=0) {
+					sessionCode = request.getParameter("code"); // 대쉬보드와 과목퀵메뉴에서 보내준 과목코드를 받아서,
+					session.setAttribute("code", request.getParameter("code")); // 세션에 넣어줍니다.
+				}
+				
+				else {
+					String message = "잘못된 요청입니다.";
+					String loc = request.getContextPath() + "/dashboard.univ";
+					
+					request.setAttribute("message", message);
+					request.setAttribute("loc", loc);
+					
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/msg.jsp");
+					dispatcher.forward(request, response);
+				}
+				
+				
 			}
 			
 			
@@ -124,6 +167,17 @@ public class UnivAOP {
 			// 2단계. 과목코드가 우리 학교에 존재하는 과목인지 검사합니다.
 			
 			if(sessionCode == null || "".equals(sessionCode)) { // null이거나 ""이라면 비정상적이니 우리 학교에 존재할리 없는 9999를 임의로 줍니다.
+				sessionCode = "9999";
+			}
+			
+			
+			try {
+				
+				if(Integer.parseInt(sessionCode) < 0) {
+					sessionCode = "9999";
+				}
+				
+			} catch (NumberFormatException e) {
 				sessionCode = "9999";
 			}
 			

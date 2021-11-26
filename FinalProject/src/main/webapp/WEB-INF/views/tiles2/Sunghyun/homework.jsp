@@ -248,7 +248,10 @@
 <hr style="clear: both;">
 
 <div id="homeworkContainer" style="width: 100%;">
-
+	<c:if test="${sessionScope.loginuser.authority == 1}">
+		<button type="button" class="btn btn-md" style="background-color: #ffb84d; color: #fff;" onclick="javascript:location.href='<%= request.getContextPath()%>/homeworkEvaluation.univ'">과제평가</button>
+	</c:if>
+	
 	<div class="container-fluid my-3 p-3" style="background-color: #ffb84d;">
 		<c:if test="${not empty requestScope.homeworkList}">
 			<c:forEach var="homeworkvo" items="${requestScope.homeworkList}" varStatus="status">

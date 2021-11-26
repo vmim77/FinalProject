@@ -655,3 +655,48 @@ select COLUMN_NAME, DATA_TYPE, DATA_LENGTH, NULLABLE, DATA_DEFAULT
 from USER_TAB_COLS
 where table_name = 'TBL_SERVEYRESULT';
 
+select *
+from tbl_homework_comment;
+
+select A.fk_hakbun, B.name 
+from tbl_sugang A
+JOIN tbl_member B
+on A.fk_hakbun = B.hakbun
+where A.fk_code = '0101';
+
+select * 
+from tbl_sugang
+where fk_hakbun='2100022' and fk_code ='1231231231232'
+
+select *
+from tbl_qna
+
+select A.fk_hakbun AS hakbun, B.name AS name 
+from tbl_sugang A
+JOIN tbl_member B
+on A.fk_hakbun = B.hakbun
+where A.fk_code = '0101'
+
+select *
+from tbl_homework_comment;
+
+
+select distinct fk_hakbun, name, ((select count(*) from tbl_homework_comment where fk_hakbun = '2100040') / cnt * 100) || '%' AS percentage, cnt
+from
+(
+select parentSeq, fk_hakbun, name, (select count(*) from tbl_homework where fk_code = '0101') AS cnt
+from tbl_homework_comment A
+JOIN tbl_member B
+on A.fk_hakbun = B.hakbun
+where fk_code = '0101'
+)
+where fk_hakbun = '2100040'
+
+
+select *
+from tbl_member
+where authority = 0
+
+select * 
+from tbl_sugang
+where fk_code = '0101'

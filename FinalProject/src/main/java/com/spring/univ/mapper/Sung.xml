@@ -334,5 +334,37 @@
 		</if>
 	</update>
 	
+	<select id="getSugangMember" parameterType="String" resultType="com.spring.univ.model.MemberVO">
+		select A.fk_hakbun AS hakbun, B.name AS name 
+		from tbl_sugang A
+		JOIN tbl_member B
+		on A.fk_hakbun = B.hakbun
+		where A.fk_code = #{code}
+		order by name 
+	</select>
+	
+	
+	
+	<resultMap type="HashMap" id="evalMap">
+		<result property="fk_hakbun" 	column="fk_hakbun" 	javaType="String"></result>
+		<result property="name" 		column="name" 		javaType="String"></result>
+		<result property="percentage" 	column="percentage" javaType="String"></result>
+		<result property="cnt" 			column="cnt" 		javaType="String"></result>
+	</resultMap>
+	
+	
+	<select id="gethomeworkEvaluation" parameterType="HashMap" resultMap="evalMap">
+	select distinct fk_hakbun, name, ((select count(*) from tbl_homework_comment where fk_hakbun = #{hakbun}) / cnt * 100) || '%' AS percentage, cnt
+	from
+	(
+		select parentSeq, fk_hakbun, name, (select count(*) from tbl_homework where fk_code = #{code}) AS cnt
+		from tbl_homework_comment A
+		JOIN tbl_member B
+		on A.fk_hakbun = B.hakbun
+		where fk_code = #{code}
+	)
+	where fk_hakbun = #{hakbun}
+	</select>
+	
 	
 </mapper>

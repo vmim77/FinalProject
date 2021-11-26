@@ -216,6 +216,20 @@ public class SungDAO implements InterSungDAO {
 		int n = sqlsession2.update("Sung.homeworkEditEnd", hwvo);
 		return n;
 	}
+	
+	// 해당 과목 수강생 목록 요청
+	@Override
+	public List<MemberVO> getSugangMember(String code) {
+		List<MemberVO> sugangList = sqlsession2.selectList("Sung.getSugangMember", code);
+		return sugangList;
+	}
+	
+	// 해당 과목의 수강생들의 과제제출율을 가져온다.
+	@Override
+	public Map<String, String> gethomeworkEvaluation(Map<String, String> paraMap) {
+		Map<String, String> evalMap = sqlsession2.selectOne("Sung.gethomeworkEvaluation", paraMap);
+		return evalMap;
+	}
 
 	
 	
