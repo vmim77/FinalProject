@@ -6,6 +6,7 @@
 %>    
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +25,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="sweetalert2.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 
 <script type="text/javascript">
@@ -32,32 +36,133 @@
 $(document).ready(function(){
 	
 	$("input#update").click(function(){
-		console.log($("input#phone").val());
-		
-		$.ajax({
-            url:"<%= request.getContextPath()%>/myedit.univ",
-            type:"GET",
-            data:{"hakbun":$("input#hakbun").val(),
-            	  "phone":$("input#phone").val(),
-            	  "email":$("input#email").val(),
-            	  "address":$("input#address").val()},
-            dataType:"JSON",
-            success:function(json){
-               
-              if(json.n == 1 ){
-            	  alert("성공");
-              }
-                    
-            },
-            error: function(request, status, error){
-               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-             }
-            
-         });//end of $.ajax({--------------------------------------------------------
-		
-		
+		swal.fire('수정 완료 되었습니다.');
+         
+        var frm = document.info; 
+        frm.action = "<%= ctxPath%>/Myinfo.univ";
+		frm.method="GET";
+		frm.submit();
+         
 	}); //end of $("button#update").click(function(){
 	
+		
+	$("button#btnWrite").click(function(){
+		var frm = document.addFrm;
+		frm.action = "<%= request.getContextPath() %>/EditPhotoEnd.univ";
+		frm.method = "POST";
+		frm.submit();	
+	});//end of $("button#btnWrite").click(function(){------------
+		
+	  $("button#seolmoon").click(function(){
+	         
+	         $.ajax({
+	               url:"<%= request.getContextPath()%>/seolmoon.univ",
+	               type:"GET",
+	               dataType:"JSON",
+	               success:function(json){
+	               
+	                  var tblhtml = "<colgroup>"
+	                           +"<col>"
+	                           +"<col style='width: 190px;'>"
+	                           +"<col style='width: 230px;'>"
+	                          +"</colgroup>"
+	                          +"<thead>"
+	                             +"<tr>"
+	                                +"<th scope='col' class='tg-uofs'>설문</th>"
+	                               +"<th class='tg-uofs'>설문일시</th>"
+	                               +"<th class='tg-uofs'>비고</th>"
+	                            +"</tr>"
+	                          +"</thead>";
+
+
+	         
+	                     tblhtml += "<tbody>"
+	                                 +"<td scope='col' class='tg-o40d'>"+json.serveyTopic+"</td>"
+	                               +"<td class='tg-o40d'>"+json.serveyDate+"</td>"
+	                               +"<td class='tg-o40d'>"+json.html+"</td>";
+	                               +"</tbody>";   
+
+	                   
+	                   $("table#seol").html(tblhtml);
+
+	               },
+	               error: function(request, status, error){
+	                  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	                }
+	               
+	            });//end of $.ajax({--------------------------------------------------------
+	         
+	      });//end of $("button#seolmoon").click(function(){------------------
+	         
+	      $(document).on("click", "#goSeolmoon", function(){
+
+	         
+	         var frm = document.GoSeolmoon;
+	         frm.method="POST";
+	         frm.action = "<%= ctxPath%>/Seolmoon.univ";
+	         frm.submit();
+	      });
+	      
+	      $("button#evaluation").click(function(){
+	          
+	          $.ajax({
+	                url:"<%= request.getContextPath()%>/servey.univ",
+	                type:"GET",
+	                dataType:"JSON",
+	                success:function(json){
+	                
+	                   var tblhtml = "<colgroup>"
+	                            +"<col>"
+	                            +"<col style='width: 130px;'>"
+	                            +"<col style='width: 130px;'>"
+	                            +"<col style='width: 160px;'>"
+	                           +"</colgroup>"
+	                           +"<thead>"
+	                              +"<tr>"
+	                                 +"<th scope='col' class='tg-uofs'>설문</th>"
+	                                +"<th class='tg-uofs'>교수</th>"
+	                                +"<th class='tg-uofs'>설문일시</th>"
+	                                +"<th class='tg-uofs'>비고</th>"
+	                             +"</tr>"
+	                           +"</thead>";
+	                         
+
+	                   $.each(json, function(index, item){
+	          
+	                      tblhtml += "<tbody>"
+	                                  +"<td scope='col' class='tg-o40d'>"+item.serveyTopic+"</td>"
+	                                +"<td class='tg-o40d'>"+item.name+"</td>"
+	                                +"<td class='tg-o40d'>"+item.serveyDate+"</td>"
+	                                +"<td class='tg-o40d'>"+item.html+"</td>";
+	                                +"</tbody>";   
+	                    });//end of $.each(json, function(index, item){--------------------------------------
+	                    
+	                    $("table#inthis").html(tblhtml);
+
+	                },
+	                error: function(request, status, error){
+	                   alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	                 }
+	                
+	             });//end of $.ajax({--------------------------------------------------------
+	          
+	       });//end of $("button#evaluation").click(function(){------------------   
+	       
+	       $(document).on("click", "#goServey", function(){
+
+	          var serveyCode = $(this).val();
+	          
+	          $("input#serveyCode").val(serveyCode);
+	          
+	          var frm = document.GoServey;
+	          frm.method="POST";
+	          frm.action = "<%= ctxPath%>/Teacherservey.univ";
+	          frm.submit();
+	       });
+	       
+
+	      
+
 	
 	
 });// end of $(document).ready(function(){
@@ -70,6 +175,21 @@ $(function(){
         $('div.modal').modal();
     })
 })
+
+function readURL(input){
+	
+	if(input.files && input.files[0]){
+		var reader = new FileReader();
+		reader.onload = function(e){
+			document.getElementById('preview').src = e.target.result;
+		};
+		reader.readAsDataURL(input.files[0]);
+	} else {
+		document.getElementById('preview').src = "";
+	}
+	
+}
+ 
 
 
 
@@ -158,55 +278,108 @@ body {
 
 </head>
 <body class="gray-bg">
-
+		
       <ul class="nav navbar-nav navbar-right">
          <li><a href="<%= ctxPath%>/MemberLogin.univ" >로그아웃</a></li>
       </ul>
 <div class="text-center">
-              
-               	
                      <table class="table">
                	<thead>
                         <tr>
                           <td width="210" rowspan="3" align="center">
-					            <img src="<%= ctxPath%>/resources/images/gill.png" style="width: 80%; margin: auto;"/>
+					            <img src="<%= ctxPath%>/resources/files/${sessionScope.loginuser.picture}" style="width: 80%; margin: auto;"/>
                           </td>
                           <td>성명</td>
-                          <td>${sessionScope.loginuser.name}</td>  
+                          <td>${requestScope.name}</td>  
                         </tr>
                         <tr>
                            <td>학번</td>
-                           <td>${sessionScope.loginuser.hakbun}</td>  
+                           <td>${requestScope.hakbun}</td>  
                         </tr>
                         <tr>
                           <td>연락처</td>
-                          <td>${sessionScope.loginuser.phone}</td>             
+                          <td>${requestScope.phone}</td>             
                         </tr>
                         <tr>
-                        <td rowspan="2" ><a type="button" href="<%= ctxPath %>/EditPhoto.univ" class="btn btn-primary" class="btn btn-gray" style="border: solid 1px gray; margin-top: 30%">사진변경</a></td>
+                        <td rowspan="2" ><a type="button" href="<%=ctxPath%>/EditPhoto.univ" class="btn btn-primary" data-target="#photo" data-toggle="modal" class="btn btn-gray" style="border: solid 1px gray; margin-top: 30% ">사진변경</a></td>
                           <td>이메일</td>
-                          <td>${sessionScope.loginuser.email}</td>             
+                          <td>${requestScope.email}</td>             
                         </tr>
                         <tr>
+                        
                           <td>주소</td>
-                          <td>${sessionScope.loginuser.address}</td>             
+                          
+                          <td>${requestScope.address}</td>
+                                     
                         </tr>
                        </tbody>
                      </table>
-
                       <div class="">
                         <div class="col-md-12" style="width:100%;text-align:center">
                            <button class="btn btn-primary" data-target="#layerpop" data-toggle="modal">개인정보수정</button>
-                           <button class="btn btn-primary" data-target="#schedule" data-toggle="modal">시간표</button>
+                           <a type="button" href="<%=ctxPath %>/Schedule.univ" class="btn btn-danger">시간표</a>
+                           <a type="button" href="<%=ctxPath %>/graph.univ" onclick="" class="btn btn-success">설문관리</a>
                            <button class="btn btn-danger" data-target="#plan" data-toggle="modal">학습안내서/교수계획서</button>
-                           <button class="btn btn-danger" data-target="#exam" data-toggle="modal">성적표</button>
-                           <a type="button" onclick="" class="btn btn-success">설문관리</a>
-                           <a type="button" onclick="" class="btn btn-success">강의평가</a>
+                           <button id="seolmoon" class="btn btn-success" data-target="#servey" data-toggle="modal">설문관리</button>
+                           <button id="evaluation" class="btn btn-success" data-target="#servey2" data-toggle="modal">강의평가</button>
+
                            <a type="button" onclick="" class="btn btn-warning">1 : 1 문의</a>
                            
                         </div>
                      </div>
                   </div>
+                  
+ <!--  사진추가 -->                 
+<div class="modal fade" id="photo" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- header -->
+      <div class="modal-header">
+        <!-- 닫기(x) 버튼 -->
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <!-- header title -->
+        <h4 class="modal-title">사진추가</h4>
+      </div>
+      <!-- body -->
+      <div class="modal-body">
+     	<table>
+			<tr>
+				<th>미리보기</th>
+				<td>
+					<img id="preview" style="width: 300px; height: 300px;" >			
+					<br>
+					<input type="file" onchange="readURL(this);" />
+				</td>	
+			</tr>
+	</table>
+    
+	<form name="addFrm"  enctype=multipart/form-data>
+		<table style="width: 1024px;"  class="table table-bordered">
+			
+			<tr>
+				<th style="width: 15%; background-color: #DDDDDD">파일첨부</th>
+				<td>
+					<input type="file" name="attach" /> 
+					<input type="hidden" name="hakbun"/>
+					<input type="hidden" name="checkNull" value="checkNull"/>
+				</td>
+			</tr>
+			
+		</table>
+			
+		<div style="margin: 20px;">
+			<button type="button" class="btn btn-secondary btn-sm mr-3" id="btnWrite">완료</button>
+		</div>
+	</form>
+      </div>
+    </div>
+  </div>
+</div>                 
+                  
+                  
+                  
+              
+                  
 <!--  개인정보 수정 -->                 
 <div class="modal fade" id="layerpop" >
   <div class="modal-dialog">
@@ -220,115 +393,52 @@ body {
       </div>
       <!-- body -->
       <div class="modal-body">
+      <form id="info" name="info">
+	 <input type="hidden" name="checknull" value="checknull" />
             	<ul style="text-align: center; margin-top: 10%;">
 				<li>
 					<label class=title for="name">성명</label>
-					<input type="text"  id="name" value="${sessionScope.loginuser.name}" size="40" class="requiredInfo" readonly/> 
+					<input type="text" name="name" id="name" value="${requestScope.name}" size="40" class="requiredInfo" readonly/> 
 				</li>
 		
 				<li>
 					<label class=title for="hakbun">학번</label>
-					<input type="text" id="hakbun" value="${sessionScope.loginuser.hakbun}" size="40" class="requiredInfo" readonly /> 
+					<input type="text" name="hakbun" id="hakbun" value="${requestScope.hakbun}" size="40" class="requiredInfo" readonly /> 
 				</li> 
-			
+				
+				<li>
+					<label class=title for="pwd">비밀번호</label>
+					<input type="password" name="pwd" id="pwd" value="${sessionScope.loginuser.pwd}" size="40" class="requiredInfo" required/> 
+				</li>
+				
 				<li>
 					<label class=title for="phone">연락처</label>
-					<input type="text"  id="phone" value="${sessionScope.loginuser.phone}" size="40" class="requiredInfo" required/> 
+					<input type="text" name="phone" id="phone" value="${requestScope.phone}" size="40" class="requiredInfo" required/> 
 				</li>
 				
 				<li>
 					<label class=title for="email">이메일 주소</label>
-					<input type="text"  id="email" value="${sessionScope.loginuser.email}" size="40" class="requiredInfo" required/> 
+					<input type="text" name="email" id="email" value="${requestScope.email}" size="40" class="requiredInfo" required/> 
 				</li>
 				
 				<li>
 					<label class=title for="address">주소</label><!-- 이메일은 타입 꼭 이메일로 -->
-					<input type="text"  id="address" value="${sessionScope.loginuser.address}" size="40" class="requiredInfo" required/> 
+					<input type="text" name="address" id="address" value="${requestScope.address}" size="40" class="requiredInfo" required/> 
 				</li>
 				
-			
 				<li>
 					<input type="submit" id="update" value="확인" onclick="goUpdate()"/>
 				</li>
 			</ul>
+      </form>
       </div>
     </div>
   </div>
 </div>
 
 
-<!--  시간표 -->                 
-<div class="modal fade" id="schedule" >
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <!-- header -->
-      <div class="modal-header">
-        <!-- 닫기(x) 버튼 -->
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <!-- header title -->
-        <h4 class="modal-title">시간표</h4>
-      </div>
-      <!-- body -->
-      <div class="modal-body">
-     <table cellspacing="5" align="center" border="1" bordercolor="#b3e6ff" width="650" height="600">
-		<caption>
-		<tr align="center"> <td width="50"></td>
-		 <td width="100" bgcolor="#ffe6e6">월</td>
-		 <td width="100" bgcolor="#ffe0cc">화</td>
-		 <td width="100" bgcolor="#ffffcc">수</td> 
-		<td width="100" bgcolor="#e6ffb3">목</td> 
-		<td width="100" bgcolor="#b3e6ff">금</td>
-		 </tr> <tr align="center"> <td bgcolor="#ffe6e6">1</td>
-		 <td></td> 
-		<td bgcolor="#ff4d4d">실전무술<br>김민경</td> 
-		<td></td> 
-		<td></td> 
-		<td></td>
-		 </tr> <tr align="center"> <td bgcolor="#ffe6e6">2</td>
-		 <td></td>
-		 <td bgcolor="#ffe0cc">보컬의기초<br>장현걸</td> 
-		<td></td>
-		 <td></td> 
-		<td></td> 
-		</tr> <tr align="center"> <td bgcolor="#ffe6e6">3</td> 
-		<td bgcolor="#ffe6e6">소녀미용학개론<br>이재성</td>
-		<td bgcolor="#ffe6e6">소녀미용학개론<br>이재성</td>
-		<td></td> 
-		<td></td> <td bgcolor="#e6ffb3">다이어트비법<br>금길영</td>
-		</tr> <tr align="center"> <td bgcolor="#ffe6e6">4</td> 
-		<td bgcolor="#ffe6e6">소녀미용학개론<br>이재성</td>
-		 <td></td>
-		 <td></td>
-		 <td bgcolor="#ff4d4d">실전무술<br>김민경</td> 
-		 <td bgcolor="#ffe0cc">보컬의기초<br>장현걸</td> 
-		 </tr> <tr align="center"> <td bgcolor="#ffe6e6">5</td>
-		 <td bgcolor="#ffe0cc">보컬의기초<br>장현걸</td> 
-		 <td></td>
-		 <td></td>
-		 <td></td>
-		 <td bgcolor="#ffe0cc">보컬의기초<br>장현걸</td> 
-		 </tr> <tr align="center"> <td bgcolor="#ffe6e6">6</td>
-		 <td></td> <td bgcolor="#e6ffb3">다이어트비법<br>금길영</td>
-		 <td></td> <td bgcolor="#e6ffb3">다이어트비법<br>금길영</td>
-		 <td bgcolor="#ff4d4d">실전무술<br>김민경</td> 
-		 </tr><tr align="center"> <td bgcolor="#ffe6e6">7</td> 
-		 <td></td> <td bgcolor="#e6ffb3">다이어트비법<br>금길영</td>
-		 <td bgcolor="#ff4d4d">실전무술<br>김민경</td>  
-		 <td bgcolor="#ffe6e6">소녀미용학개론<br>이재성</td>
-		 <td></td> 
-		 </tr><tr align="center"><td bgcolor="#ffe6e6">8</td> 
-		 <td></td>
-		 <td></td> 
-		 <td></td> 
-		 <td bgcolor="#ffe6e6">소녀미용학개론<br>이재성</td> 
-		 <td></td> 
-		</table> 
-      </div>
-    </div>
-  </div>
-</div>
-        
-        
+
+
    <!--  학습안내서/교수계획서 -->                 
 <div class="modal fade" id="plan" >
   <div class="modal-dialog">
@@ -358,7 +468,7 @@ body {
 			</colgroup>
 			<tbody>
 				<tr>
-					<td colspan="2" style="text-align:center !important;font-weight:bold">AMY UNIVERCITY</td>
+					<td colspan="2" style="text-align:center !important;font-weight:bold">쌍용대학교</td>
 				</tr>
 				<tr>
 					<th>교수계획서</th>
@@ -382,80 +492,74 @@ body {
     </div>
   </div>
 </div>
+
+<!-- 설문관리 -->                 
+    <div class="modal" id="servey">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content ">
         
-   <!--  성적표 -->                 
-<div class="modal fade" id="exam" >
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <!-- header -->
-      <div class="modal-header">
-        <!-- 닫기(x) 버튼 -->
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <!-- header title -->
-        <h4 class="modal-title">성적표 </h4>
-      </div>
-      <!-- body -->
-      <div class="modal-body">
-    <div class="panel panel-inverse">
-<div class="panel-heading">
-	<div class="panel-heading-btn">
-        <div class="panel-heading-btn"> <a href="javascript:;" onclick="hidePageModal()" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove" data-original-title="" title=""><i class="fa fa-times"></i></a> </div>
+                <!-- Modal Header -->
+                <div class="modal-header" style="background-color: #cce6ff;">
+                    <h2 class="modal-title" style="font-weight: bold; font-size: 18pt; margin: auto;">${sessionScope.loginuser.hakbun} 님의 설문조사 현황</h2>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+            
+                <!-- Modal body -->
+               <br> 
+                  <table id="seol" class="tg" style="width: 740px; margin: auto;">
+                  
+                  </table>
+                  
+               
+            <!-- Modal footer -->
+                <div class="modal-footer" style="margin: auto;">            
+               <button type="button" class="btn btn-secondary" id="noDelete" data-dismiss="modal">취소</button>      
+             </div>
+             <br>   
+            </div>   
+        </div>
     </div>
-    <h4 class="panel-title">성적표</h4>
-</div>
-<div class="panel-body">
-	<div class="row"> 
-		<table class="table table-bordered">
-			<colgroup>
-                <col width="40%">
-				<col width="60%">
-			</colgroup>
-			<tbody>
+    
+<form name="GoSeolmoon">
+   <input type="hidden" id="serveyCode" name="serveyCode" value="">
+</form>
 
-<table class="tg"">
-<thead>
-  <tr>
-    <th class="tg-0pky" colspan="8">2021년 1학기 중간고사 성적표</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-0lax">학번</td>
-    <td class="tg-0lax">이름</td>
-    <td class="tg-0lax">미용학개론</td>
-    <td class="tg-0lax">보컬의기초</td>
-    <td class="tg-0lax">다이어트성공비법</td>
-    <td class="tg-0lax">실전무술</td>
-    <td class="tg-0lax">자바와스프링</td>
-    <td class="tg-0lax">평균</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">2100004</td>
-    <td class="tg-0lax">김민경</td>
-    <td class="tg-0lax">A+</td>
-    <td class="tg-0lax">F</td>
-    <td class="tg-0lax">F</td>
-    <td class="tg-0lax">A+</td>
-    <td class="tg-0lax">F</td>
-    <td class="tg-0lax">2.7</td>
-  </tr>
-</tbody>
-</table>
-			</tbody>
-		</table>	
-	</div>
-    <div class="popbtmbtn_section">
-		<div class="col-md-12" style="width:100%;text-align:center">
-              <a type="button" href="<%=ctxPath %>/Myinfo.univ" class="btn btn-default">취 소</a>
-		</div>
-      		</div>
- 		</div>
-		</div>
-      </div>
+
+<!--  강의평가 -->                 
+    <div class="modal" id="servey2">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content ">
+            
+              
+                <!-- Modal Header -->
+                <div class="modal-header" style="background-color: #ffe6e6;">
+                    <h2 class="modal-title" style="font-weight: bold; font-size: 18pt; margin: auto;">2021년도 2학기 강의평가 현황</h2>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    
+                </div>
+            
+                <!-- Modal body -->
+               <br> 
+                  <table id="inthis" class="tg" style="width: 740px; margin: auto;">
+                  
+               </table>
+                  
+               
+            <!-- Modal footer -->
+                <div class="modal-footer" style="margin: auto;">            
+               <button type="button" class="btn btn-secondary" id="noDelete" data-dismiss="modal">취소</button>      
+             </div>
+             <br>   
+            </div>   
+        </div>
     </div>
-  </div>
-</div>
+        
 
+<form name="GoServey">
+   <input type="hidden" id="serveyCode" name="serveyCode" value="">
+</form>
+
+        
 
 
 </body>

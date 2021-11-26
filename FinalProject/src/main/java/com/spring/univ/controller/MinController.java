@@ -9,10 +9,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.spring.univ.model.MemberVO;
+import com.spring.univ.model.ServeyVO;
+import com.spring.univ.model.SubjectVO;
 import com.spring.univ.model.WeekVO;
 import com.spring.univ.service.InterMinService;
 
@@ -54,21 +59,176 @@ public class MinController {
 	@Autowired
 	private InterMinService MinService;
 	
+	
+	// 출결 주차
 	@RequestMapping(value="/attendance.univ")
 	public ModelAndView attendance(HttpServletRequest request, ModelAndView mav, HttpServletResponse response) {
 		
+		String week = "2";
+		
+		List<WeekVO> SubList = MinService.getSubList(week);
 		List<WeekVO> WeekList = MinService.getWeekList();
 		
 	
+		mav.addObject("SubList", SubList);
 		mav.addObject("WeekList", WeekList);
 		mav.setViewName("attendance.tiles1"); // 이건 만약 login 안에 있으면 login/attendance.tiles1 이런식
 		
 		return mav;
 		
-	}//end of public String test1(HttpServletRequest request) {------------
+	}//end of public ModelAndView attendance(HttpServletRequest request, ModelAndView mav, HttpServletResponse response) {}------------
 
 	
+	// 강의평가 보여주기
+	@RequestMapping(value="/Teacherservey.univ", method= {RequestMethod.POST})
+	public String Teacherservey(HttpServletRequest request) {
+		
+		String serveyCode = request.getParameter("serveyCode");
+		
+		
+		List<SubjectVO> serveyList = MinService.Teacherservey(serveyCode);
+		
+		String subject = "";
+		String name = "";
+		String code = "";
+		
+		for(SubjectVO svo : serveyList) {
+			subject = svo.getSubject();
+			name = svo.getFk_hakbun();
+			code = svo.getCode();
+			
+		}
+		
+		request.setAttribute("subject", subject);
+		request.setAttribute("name", name);
+		request.setAttribute("serveyCode", code);
+		
+		
+		
+		
+		return "login/Teacherservey";
+		
+	}//end of public String Teacherservey(HttpServletRequest request) {}------------
+	
+
+	   // === 강의평가 결과 === //
+	   @ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
+	   @RequestMapping(value="/Teacherservey2.univ", produces="text/plain;charset=UTF-8", method= {RequestMethod.POST})
+	   public String Teacherservey2(HttpServletRequest request){
+		   
+		   HttpSession session = request.getSession();
+		   MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+
+		   String hakbun = loginuser.getHakbun();
+		   
+		   
+		   String result = request.getParameter("result");
+		   String serveyCode = request.getParameter("serveyCode");
+		   
+		   System.out.println("확인용 => " + serveyCode);
+		   
+		   
+		   result = result.substring(0,result.lastIndexOf(","));
+		   
+		   int n = 0;
+		   String[] resultArr = result.split(",");
+		   
+		   Map<String,String>paraMap = new HashMap<>();
+		   
+		   for(int i=0; i<resultArr.length; i++) {
+			   System.out.println(resultArr[i]);
+			   
+			   paraMap.put("serveyCode", serveyCode);
+			   paraMap.put("fk_serveynum", (i+1)+"");
+			   
+			   
+			   if("one".equals(resultArr[i])) {
+				   paraMap.put("serveychecknum", 1+"");   
+			   } 
+			   else if("two".equals(resultArr[i])) {
+				   paraMap.put("serveychecknum", 2+"");
+			   }
+			   else if("three".equals(resultArr[i])) {
+				   paraMap.put("serveychecknum", 3+"");
+			   }
+			   else if("four".equals(resultArr[i])) {
+				   paraMap.put("serveychecknum", 4+"");
+			   }
+			   else {
+				   paraMap.put("serveychecknum", 5+"");
+			   }
+			   
+			   n = MinService.resultUpdate(paraMap);
+			   
+		   }
+		   
+		   int m = 0;
+		   
+		   if(n==1) {
+			   paraMap.put("hakbun", hakbun);
+			   m = MinService.attendance(paraMap);
+		   }
+
+		   System.out.println("dhdhdh"+n);
+		   System.out.println("확인용 코드"+serveyCode);
+
+         JSONObject jsonObj = new JSONObject();
+         jsonObj.put("m", m); // 여기를 int m 으로 바꿔서 보내야함 그래야 두 메소드가 성공했는지 알 수 있음
+
+		      
+		 return jsonObj.toString();
+
+	   }// end of public String myedit(HttpServletRequest request) -----------------------------------
+	   
+
+	// 설문조사 보여주기
+	@RequestMapping(value="/Seolmoon.univ", method= {RequestMethod.POST})
+	public String Seolmoon(HttpServletRequest request) {
+
+		return "login/Seolmoon";
+		
+	}//end of public String Seolmoon(HttpServletRequest request) {}------------
 	
 	
+	// === 설문조사 결과 === //
+	   @ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
+	   @RequestMapping(value="/Seolmoon2.univ", produces="text/plain;charset=UTF-8", method= {RequestMethod.POST})
+	   public String Seolmoon2(HttpServletRequest request){
+		   
+		   HttpSession session = request.getSession();
+		   MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+
+		   String hakbun = loginuser.getHakbun();
+		   String outcome = request.getParameter("outcome");
+		   
+		   outcome = outcome.substring(0,outcome.lastIndexOf(","));
+		   
+		   int n = 0;
+		   String[] outcomeArr = outcome.split(",");
+		   
+		   Map<String,String>paraMap = new HashMap<>();
+		   
+		   for(int i=0; i<outcomeArr.length; i++) {
+
+			   paraMap.put("fk_serveynum", (i+1)+"");
+			   paraMap.put("serveychecknum", outcomeArr[i]);   
+			 
+			   n = MinService.outcomeUpdate(paraMap);
+			   
+		   }
+		   
+		   if(n==1) {
+			   paraMap.put("hakbun", hakbun);
+			   MinService.seolattendance(paraMap);
+		   }
+
+      JSONObject jsonObj = new JSONObject();
+      jsonObj.put("n", n); // 여기를 int m 으로 바꿔서 보내야함 그래야 두 메소드가 성공했는지 알 수 있음
+
+		      
+		 return jsonObj.toString();
+
+	   }// end of public String myedit(HttpServletRequest request) -----------------------------------
+
 	
 }	

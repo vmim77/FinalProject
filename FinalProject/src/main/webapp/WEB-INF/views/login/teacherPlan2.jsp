@@ -71,25 +71,25 @@
 			<tr>
 				<th rowspan="2">교과목명</th>
 				<th>한글</th>
-				<td colspan="2">다이어트비법</td>
+				<td colspan="2">소녀 미용학개론</td>
 				<th rowspan="2">담당교수</th>
-				<td rowspan="2" colspan="2">금길영</td>
+				<td rowspan="2" colspan="2">이재성</td>
 			</tr>
 			<tr>
 				<th>영문</th>
 				<td colspan="2">Introduction to Management Information System</td>
 			</tr>
 			<tr>
-				<th colspan="2">학수번호-분반</th>
-				<td colspan="2">TA04206 - 01</td>
+				<th colspan="2">코드명</th>
+				<td colspan="2">0102</td>
 				<th>강의요일교시</th>
-				<td colspan="2">(주)월5b6ab,수7ab8a</td>
+				<td colspan="2">(주)화요일</td>
 			</tr>
 			<tr>
 				<th colspan="2">학점(시간수)</th>
 				<td colspan="2">3(3)</td>
 				<th>강의실</th>
-				<td colspan="2">강의실302</td>
+				<td colspan="2">강의실102</td>
 			</tr>			
 			<tr>
 				<th rowspan="3"colspan="2">개설(이수)구분</th>
@@ -134,7 +134,7 @@
 				<th>학문특성</th>
 				<td></td>
 				<th>기타특성</th>				
-				<td colspan="2">C러닝</td>
+				<td colspan="2">B러닝</td>
 			</tr>
 			<tr>
 				<th rowspan="2" colspan="2">교수학습<br>방법</th>
@@ -196,7 +196,7 @@
 				<td>요일</td>
 				<th>관리부서</th>
 				<td colspan="2">
-					교학1팀 (031-280-3410 ~ 3)
+					교학2팀 (031-281-3420 ~ 3)
 
 				</td>
 				
@@ -204,33 +204,33 @@
 			<tr>
 				<th colspan="2" rowspan="2">교육과정<br>참고사항</th>
 				<th>선수과목</th>
-				<td>기업경영과 IT, 전자상거래원론</td>
+				<td>뷰티뷰티학개론</td>
 				<th>관련 기초과목</th>
-				<td colspan="2">경영학개론</td>
+				<td colspan="2">에뛰드</td>
 			</tr>
 			<tr>
 				<th class="multi-line">동시수강<br>관련과목</th>
 				<td></td>
 				<th>관련 고급과목</th>
-				<td colspan="2">다이어트 비법</td>
+				<td colspan="2">소녀 미용학개론</td>
 			</tr>
 			
 			<!-- ------------------------------------------------------------------------  -->
 			<tr>
 				<th colspan="2">교과목 개요</th>
-				<td colspan="5">1. 다이어트의 원리
-2. 다이어트를 해야하는이유
-3. 다이어트 비법
-4. 다이어트 플랜</td>
+				<td colspan="5">1. 한국 미용의 역사
+2. 모발의 개요 & 모발 관리법
+3. 헤어 뷰티의 원리
+4. 21세기 인싸되는법</td>
 			</tr> 
 			<tr>
 				<th rowspan="3">교과목<br>운영</th>
 				<th>수업목표</th>
-				<td colspan="5">- 21세기 다이어트 유행<br>
-- 인싸들에 핏 되는법<br>
-- 건강의 중요한부분을 차지하는 살 <br>
-- 하루 5분만 운동해도 인생이바뀐다<br>
-- 나만의 플랜을 만들어서 운동해보자<br>
+				<td colspan="5">- 21세기 미용학<br>
+- 시대적 미용의 역사<br>
+- 모발관리의 중요성 <br>
+- 사람에게 맞는 두상 연구<br>
+- 세계제일의 네일아트 수업<br>
 </td>
 			</tr>
 			<tr>
@@ -238,6 +238,7 @@
 				<td colspan="5">- 사례 연구 실전 강의
 - 시청각 교육을 통한 현장의 간접 사례 학습
 - 인터넷 웹 사이트 탐방을 통한 사례 학습
+
 - 온라인 녹화 강의(75분), 온라인 채팅 질의응답(75분)</td>				
 			</tr>
 			<tr>
@@ -280,11 +281,11 @@
 			</tr>
 			<tr>
 				<th class="multi-line">참고도서<br>(저자,출판사)</th>
-				<td colspan="4"> - 김민경의 다이어트는 어렵지않아요  <br>
- - 금길영의 살이 왜찌는지 모르겠어요<br>
- - 장현걸의 소녀소녀 다이어트비법<br>
- - 이재성의 국밥은 살이안쪄요<br>
- - 박성현의 뇌섹남은 다이어트를 하지않는다  <br>
+				<td colspan="4"> - 김민경의 헤어롤의 중요성  <br>
+ - 금길영의 고데기 하는법<br>
+ - 장현걸의 여자 헤어 다루는법<br>
+ - 이재성의 뷰티뷰티 네일아트<br>
+ - 박성현의 젠틀맨은 포마드를 한다.  <br>
 </td>
 			</tr>			
 			
@@ -321,7 +322,7 @@
 			
 			<tr>
 				<th>1</th>
-				<td>개별 인바디 측정</td>
+				<td>고대미용의 역사</td>
 				<td>강의 / Zoom</td>
 				<td>매주 e-학습도우미에 PPT 자료 제공</td>
 				<td>과제는 중간고사 이전과 이후에 각각 1번씩 2회 부여할 예정임 </td>
@@ -329,7 +330,7 @@
 			
 			<tr>
 				<th>2</th>
-				<td>전신운동법 PT체조</td>
+				<td>한국 고대 미용의 역사</td>
 				<td>강의 및 토론 / Zoom</td>
 				<td></td>
 				<td>  </td>
@@ -337,7 +338,7 @@
 			
 			<tr>
 				<th>3</th>
-				<td>개별 목표 플랜 작성하기<br></td>
+				<td>두피관리법<br></td>
 				<td>강의 및 토론 / Projector</td>
 				<td></td>
 				<td>  </td>
@@ -345,7 +346,7 @@
 			
 			<tr>
 				<th>4</th>
-				<td>다이어트 원리 및 공부방법 </td>
+				<td>커트법 및 퍼머넌트 웨이브이 역사 </td>
 				<td>강의 및 토론 / Projector</td>
 				<td></td>
 				<td>  </td>
@@ -353,7 +354,7 @@
 			
 			<tr>
 				<th>5</th>
-				<td>개별 식단 및 운동방법 공부하기 </td>
+				<td>업 스타일 도구 및 사용법과 다양한 업 스타일 패턴</td>
 				<td>강의 및 토론 / Projector</td>
 				<td></td>
 				<td>  </td>
@@ -361,7 +362,7 @@
 			
 			<tr>
 				<th>6</th>
-				<td>3분할 운동법 교육 및 코칭 </td>
+				<td>피부미용의 역사 와 구조</td>
 				<td>강의 및 토론 / Projector</td>
 				<td></td>
 				<td>  </td>
@@ -377,7 +378,7 @@
 			
 			<tr>
 				<th>8</th>
-				<td>인바디 2차 측정</td>
+				<td>아로마테라피의 정의와 역사 및 에센셜 오일의 정리</td>
 				<td>강의 및 토론 / Projector</td>
 				<td></td>
 				<td>  </td>
@@ -385,7 +386,7 @@
 			
 			<tr>
 				<th>9</th>
-				<td>기구 원리 및 체력측정 </td>
+				<td>네일아트의 원리</td>
 				<td>강의 및 토론 / Projector</td>
 				<td></td>
 				<td>  </td>
@@ -393,7 +394,7 @@
 			
 			<tr>
 				<th>10</th>
-				<td>체력의 중요성</td>
+				<td>네일아트 실습1</td>
 				<td>강의 및 토론 / Projector</td>
 				<td></td>
 				<td>  </td>
@@ -401,7 +402,7 @@
 			
 			<tr>
 				<th>11</th>
-				<td>원하는 몸 만들기 시작</td>
+				<td>네일아트 실습2</td>
 				<td>강의 및 토론 / Projector</td>
 				<td></td>
 				<td>  </td>
@@ -409,7 +410,7 @@
 			
 			<tr>
 				<th>12</th>
-				<td>원하는 몸 만들기 시작 2</td>
+				<td>미용실로 실습</td>
 				<td>강의 및 토론 / Projector</td>
 				<td></td>
 				<td>  </td>
@@ -417,7 +418,7 @@
 			
 			<tr>
 				<th>13</th>
-				<td>중간 측정 및 확인 </td>
+				<td>미용실로 실습 </td>
 				<td>강의 및 토론 / Projector</td>
 				<td></td>
 				<td>  </td>
@@ -425,7 +426,7 @@
 			
 			<tr>
 				<th>14</th>
-				<td> 원하는 몸 만들기 시작 3</td>
+				<td>미용실로 실습</td>
 				<td>강의 및 토론 / Projector</td>
 				<td></td>
 				<td>  </td>

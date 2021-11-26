@@ -385,3 +385,63 @@ on C.lesson = D.fk_lesson_seq;
 
 select *
 from TBL_SUBJECT;
+
+
+select *
+from tab;
+
+select *
+from TBL_SUGANG
+
+select A.fk_code,A.fk_hakbun,B.name
+from tbl_sugang A join tbl_member B
+on A.fk_hakbun = B.hakbun
+
+update tbl_member set picture = 'min.jpg'
+where name = '김민경'
+
+commit;
+
+
+select A.subject,A.hakjum,A.fk_deptcode,A.fk_hakbun,B.name
+from tbl_subject A join tbl_member B
+on A.fk_hakbun = B.hakbun
+
+
+   select distinct s.fk_hakbun, t.code, t.subject, t.classDate
+	   from tbl_member m 
+	   join tbl_sugang s
+	   on m.hakbun = s.fk_hakbun
+	           join tbl_subject t
+	   on t.code = s.fk_code
+	   where m.hakbun = '2100022'
+
+
+select *
+from tbl_sugang
+
+
+select lessonseq,fk_hakbun,status,fk_weekseq
+from tbl_attend a
+join tbl_weeklesson w
+on a.fk_lessonseq = w.lessonseq
+
+
+select *
+from tbl_weeklesson
+
+select ,(
+select distinct fk_hakbun, week, fk_code
+from TBL_ATTEND A
+JOIN tbl_weeklesson B
+ON A.fk_lessonseq = B.lessonseq
+JOIN tbl_week C
+ON C.weekseq = B.fk_weekseq
+) AS cnt
+from attend
+
+
+update tbl_member set name = '송강'
+where name = '김유신'
+
+commit;

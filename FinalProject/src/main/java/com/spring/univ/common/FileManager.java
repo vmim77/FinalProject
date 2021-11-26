@@ -34,6 +34,9 @@ public class FileManager {
         // 현재의 년월일시분초에다가 현재 나노세컨즈nanoseconds 값을 결합하여 확장자를 붙여서 만든다.
 		picture = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
 		picture += System.nanoTime();
+		picture += originalFilename.substring(originalFilename.lastIndexOf("."));
+		
+		
 		
 		// 업로드할 경로가 존재하지 않는 경우 폴더를 생성한다.
 		File dir = new File(path);
@@ -46,7 +49,7 @@ public class FileManager {
 			dir.mkdirs(); // 파일을 저장할 경로인 폴더를 생성한다.
 		}
 		
-		String pathname = path + File.separator + picture;
+		String pathname =  path + File.separator + picture;
 							  // File.separator 은 운영체제에서 사용하는 파일경로의 구분자 이다.
 					          // 운영체제가 Windows 이라면 File.separator 은 "\" 이고,
 					          // 운영체제가 UNIX 또는 Linux 이라면 File.separator 은 "/" 이다.
