@@ -51,6 +51,10 @@
 <a href="#">
 	<img style="max-width:100%; margin: auto; padding: 30px 0;" src="<%= ctxPath%>/resources/images/logo.png" />
 </a>
+
+<div id="loginTime" style="text-align: center; color:white; margin-bottom: 10px;">
+</div>
+
 <a id="accountMenu" class="menu" href="<%= ctxPath%>/dashboard.univ">
 	<i class="hideicon fas fa-user-circle fa-2x"></i>
 	<div>계정</div>

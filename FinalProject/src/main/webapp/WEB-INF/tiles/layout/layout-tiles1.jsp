@@ -108,8 +108,12 @@
   </style>
   
   <script type="text/javascript">
+  
+  	var cnt = 0;
 
 	$(document).ready(function(){
+		
+		func_loopTimer();
 		
 		/////////////////////////////////////////////////////////	
 		// 사이드메뉴 보이기 버튼
@@ -192,6 +196,59 @@
 		
 		
 	});
+	
+	// === 타이머  === //
+	function func_loopTimer() {
+		
+		func_timer(cnt++);
+		
+		if(start >= 0) {
+			clock = setTimeout('func_loopTimer()', 1000);
+		}
+		
+	}// end of function func_loopTimer() {}---------------------
+	
+	// === 타이머 시간 구하기 시작 === //
+	function func_timer(i) {
+		
+		start = 60*60 - i; // i는 타이머 함수가 계속 시작되면서 증가되는 값
+		
+		if(start >= 0){
+			
+			var minute = "";
+			
+			if(start < 600) {
+				
+				minute = "0";
+			}
+			
+			minute += parseInt(start/60);
+			
+			var second = start%60;
+			
+			if(second < 10){
+				second = "0"+second;
+			}
+			
+			document.getElementById("loginTime").innerHTML = "<i class='far fa-clock'></i> "+minute + ":" + second;
+			
+			if(minute == "10" && second == "00"){
+				var bool = window.confirm("로그인을 연장하시겠습니까?");
+				if(bool){
+					cnt = 0;
+				}
+			}
+		}
+		
+		else {
+			location.href="<%= request.getContextPath()%>/logout.univ"
+		}
+		
+		
+		
+	}// end of function func_timer(i) {}-------------------------
+	
+	
   </script>
   
 </head>
