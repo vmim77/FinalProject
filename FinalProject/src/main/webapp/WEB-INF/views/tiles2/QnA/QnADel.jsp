@@ -35,6 +35,14 @@
 
 	$(document).ready(function(){
 		
+		$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
+		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(5)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
+		});
+		
 		// 쓰기 버튼
 		$("button#btnDelete").click(function(){
 			
@@ -48,6 +56,9 @@
 	}); // end of $(document).ready(function(){})----------------------------
 
 </script>
+<i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
+<h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">문의게시판</span></h3>
+<hr style="clear: both;">
 
 <div style="display:flex;">
 	<div style="margin: auto; margin-left: 20%; padding-top: 9%;">

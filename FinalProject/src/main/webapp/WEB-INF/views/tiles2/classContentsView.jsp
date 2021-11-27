@@ -19,6 +19,14 @@ var obj =  $("iframe#classVideo");
 
    $(document).ready(function(){
 	   
+		$("ul#sideMenuList > li:nth-child(7)").addClass("hoverdEffect");
+		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(7)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(7)").addClass("hoverdEffect");
+		});
+	   
 	   // 이 페이지를 보여줒기 위해선 항상 이 4개의 값이 필요하다. 게시물 글쓰다가 들어와도 보여줘야하고 출석확인하고도 보여줘야 한다.
 	   sessionStorage.setItem('code', "${requestScope.oneClassView.code}");
 	   sessionStorage.setItem('week', "${requestScope.oneClassView.week}");
@@ -603,6 +611,10 @@ var obj =  $("iframe#classVideo");
 	
 	
 </script>
+
+<i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
+<h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">강의콘텐츠</span></h3>
+<hr style="clear: both;">
 
 <form name="attendFrm">
 <!-- 출석테이블에 넣기위한것 -->

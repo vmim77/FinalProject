@@ -51,6 +51,14 @@
 
 	$(document).ready(function(){
 		
+		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(2)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+		});
+		
 		$("span.subject").bind("mouseover", function(event){
 			var $target = $(event.target);
 			$target.addClass("subjectStyle");
@@ -181,6 +189,9 @@
 	}// end of function goSearch() {}---------------------------------
 	
 </script>
+<i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
+<h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">공지사항</span></h3>
+<hr style="clear: both;">
 
 <div class="container p-5" >
 	<%-- === #101. 글검색 폼 추가하기 : 글제목, 글쓴이로 검색을 하도록 한다. === --%>

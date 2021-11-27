@@ -23,7 +23,13 @@
 
    $(document).ready(function(){
 	   
-	   
+		$("ul#sideMenuList > li:nth-child(7)").addClass("hoverdEffect");
+		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(7)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(7)").addClass("hoverdEffect");
+		});
 	 
       
 	  /*  $("button.numbtn").click(function(){
@@ -218,7 +224,9 @@
 
 </script>
 
-
+<i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
+<h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">강의콘텐츠</span></h3>
+<hr style="clear: both;">
 
 <div class="container" style="margin-top: 200px; color:black; ">
 

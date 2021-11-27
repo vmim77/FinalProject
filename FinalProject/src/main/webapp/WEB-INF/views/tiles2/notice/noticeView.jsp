@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+]<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
@@ -66,6 +66,14 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
+		
+		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(2)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+		});
 		
 	//	goReadComment();  // 페이징처리 안한 댓글 읽어오기 
 		goViewComment(1); // 페이징처리 한 댓글 읽어오기 
@@ -350,6 +358,11 @@
 </script>    
 
 <%-- 게시판 글내용보기 --%>
+
+<i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
+<h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">공지사항</span></h3>
+<hr style="clear: both;">
+
 <div style="display: flex;">
 	<div style="margin: auto; padding-left: 3%; padding-top: 4%;">
 		<c:if test="${not empty requestScope.noticevo}">

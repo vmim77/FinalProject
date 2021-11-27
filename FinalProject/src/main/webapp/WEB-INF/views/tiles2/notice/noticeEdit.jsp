@@ -35,6 +35,15 @@
 
 	$(document).ready(function(){
 		
+		
+		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(2)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+		});
+		
 		<%-- === #167. 스마트 에디터 구현 시작 === --%>
 	       //전역변수
 	       var obj = [];
@@ -127,6 +136,11 @@
 	});// end of $(document).ready(function(){})--------------------------
 
 </script>
+
+<i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
+<h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">공지사항</span></h3>
+<hr style="clear: both;">
+
 
 <div class="container p-5 pl-3" >
 	<div>

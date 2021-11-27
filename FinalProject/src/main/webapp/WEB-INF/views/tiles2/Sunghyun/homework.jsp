@@ -25,12 +25,12 @@
 
 	$(document).ready(function(){
 		
-		$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
+		$("ul#sideMenuList > li:nth-child(6)").addClass("hoverdEffect");
 		
 		$("ul#sideMenuList").hover(function(){
-			$("ul#sideMenuList > li:nth-child(5)").removeClass("hoverdEffect");
+			$("ul#sideMenuList > li:nth-child(6)").removeClass("hoverdEffect");
 		}, function(){
-			$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
+			$("ul#sideMenuList > li:nth-child(6)").addClass("hoverdEffect");
 		});
 		
 		/////////////////////////////////////////////////////////////////////////
@@ -44,14 +44,6 @@
 			getCommentList(list[i]);
 		}
 		/////////////////////////////////////////////////////////////////////////
-		
-		$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
-		
-		$("ul#sideMenuList").hover(function(){
-			$("ul#sideMenuList > li:nth-child(5)").removeClass("hoverdEffect");
-		}, function(){
-			$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
-		});
 		
 
 	});

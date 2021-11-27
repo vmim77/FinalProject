@@ -67,6 +67,14 @@
 
 	$(document).ready(function(){
 		
+		$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
+		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(5)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(5)").addClass("hoverdEffect");
+		});
+		
 		$("span.move").hover(function(){
 			                   $(this).addClass("moveColor");
 		                     }
@@ -79,6 +87,9 @@
 	
 </script>    
 
+<i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
+<h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">문의게시판</span></h3>
+<hr style="clear: both;">
 
 <%-- 게시판 글내용보기 --%>
 <div style="display: flex;">

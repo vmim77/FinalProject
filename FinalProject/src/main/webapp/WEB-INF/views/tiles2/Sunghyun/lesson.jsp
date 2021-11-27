@@ -39,12 +39,12 @@
 		
 		
 		
-		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+		$("ul#sideMenuList > li:nth-child(3)").addClass("hoverdEffect");
 		
 		$("ul#sideMenuList").hover(function(){
-			$("ul#sideMenuList > li:nth-child(2)").removeClass("hoverdEffect");
+			$("ul#sideMenuList > li:nth-child(3)").removeClass("hoverdEffect");
 		}, function(){
-			$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+			$("ul#sideMenuList > li:nth-child(3)").addClass("hoverdEffect");
 		});
 		
 		$(".leesonboardRows").click(function(){
