@@ -82,10 +82,10 @@ public class JaeController {
 		mav.addObject("code", code);
 		mav.addObject("getWeek", getWeek);
 		mav.addObject("classList", classList);
-		mav.setViewName("classContents.tiles1");
+		mav.setViewName("classContents.tiles2");
 		
 		return mav;
-		//return "classContents.tiles1";
+		//return "classContents.tiles2";
 		
 		
 	}
@@ -194,7 +194,7 @@ public class JaeController {
 			mav.addObject("sbvo", sbvo);
 			mav.addObject("hakbun", hakbun);
 			
-			mav.setViewName("classWeekRegister.tiles1");
+			mav.setViewName("classWeekRegister.tiles2");
 			
 		}
 		
@@ -287,7 +287,7 @@ public class JaeController {
 			mav.addObject("sbvo", sbvo);
 			mav.addObject("hakbun", hakbun);
 			
-			mav.setViewName("classLessonRegister.tiles1");
+			mav.setViewName("classLessonRegister.tiles2");
 			
 		}
 		
@@ -389,7 +389,7 @@ public class JaeController {
 		mav.addObject("classListbyWeek", classListbyWeek);
 		mav.addObject("classContentList", classContentList);
 		
-		mav.setViewName("classContentsView.tiles1");
+		mav.setViewName("classContentsView.tiles2");
 		
 		return mav;
 				
@@ -421,7 +421,7 @@ public class JaeController {
 		mav.addObject("code", code);
 		
 		
-		mav.setViewName("classContentWriteView.tiles1");
+		mav.setViewName("classContentWriteView.tiles2");
 		return mav;
 	}	
 	
@@ -667,7 +667,7 @@ public class JaeController {
 			  //자신의 글을 수정할 경우
 			  // 가져온 1개글을 글수정할 폼이 있는 view 단으로 보내준다.
 			  mav.addObject("ccbvo",ccbvo);
-			  mav.setViewName("classContentEdit.tiles1");
+			  mav.setViewName("classContentEdit.tiles2");
 		  }
 		   
 		   return mav;
