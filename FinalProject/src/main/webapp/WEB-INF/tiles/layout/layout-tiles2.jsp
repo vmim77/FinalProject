@@ -46,6 +46,8 @@
 
   <%-- *** ajax로 파일을 업로드할때 가장 널리 사용하는 방법 ==> ajaxForm *** --%>
   <script type="text/javascript" src="<%= ctxPath%>/resources/js/jquery.form.min.js"></script>
+  
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   	
   <style>
 	  @media ( max-width:1024px ) { .hideicon {display:none} } 

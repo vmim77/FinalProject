@@ -23,7 +23,7 @@ $(document).ready(function(){
 	$("button#godelete").click(function(){
 		
 		if($("input[name=pw]").val().trim() == "") {
-			alert("글암호를 입력하셔야 합니다.");
+			swal("warning", "글암호를 입력해야 합니다!", "warning");
 			return;
 		}
 		

@@ -50,7 +50,7 @@
 	function goWrite() {
 		
 		if($("input[name=content]").val().trim() == ""){
-			alert("댓글내용을 반드시 입력해야 합니다!");
+			swal("warning", "댓글 내용을 반드시 입력해야 합니다!", "warning");
 			return;
 		}
 		
@@ -63,7 +63,7 @@
 			dataType:"JSON",
 			success:function(json){
 				if(json.n==0){
-					alert("댓글쓰기 실패!!");
+					swal("error", "댓글 작성 실패", "error");
 				}
 				else{
 					getCommentList();
@@ -122,7 +122,7 @@
 		var writeHakbun = '${requestScope.lbvo.fk_hakbun}';
 		
 		if(loginHakbun != writeHakbun) {
-			alert("작성자 본인만 수정이 가능합니다.");
+			swal("warning", "본인만 수정이 가능합니다!", "warning");
 			return;
 		}
 		
@@ -139,7 +139,7 @@
 		var loginuserHakbun = ${sessionScope.loginuser.hakbun};
 		
 		if(loginuserHakbun != fk_hakbun){
-			alert("본인이 작성한 댓글만 삭제가 가능합니다.");
+			swal("warning", "본인의 댓글만 삭제가 가능합니다.", "warning");
 			return;
 		}
 		
@@ -153,12 +153,12 @@
 			success:function(json) {
 				
 				if(json.n==1){
-					alert(seq+" 번 댓글삭제 성공");
+					swal("success", seq+" 번 댓글삭제 성공", "success");
 					getCommentList();
 					$(window).scrollTop(999999);
 				}
 				else{
-					alert("댓글삭제 실패!!");
+					swal("error", "댓글삭제 실패!", "error");
 				}
 				
 			},

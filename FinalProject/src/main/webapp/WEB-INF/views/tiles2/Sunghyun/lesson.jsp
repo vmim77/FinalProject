@@ -10,6 +10,10 @@
 		margin: auto;
 	}
 	
+	table#lessonboard th {
+		background-color: #ffb84d;
+	}
+	
 	.title {
 		text-align: center;
 	}
@@ -64,7 +68,7 @@
 	function goLessonWrite() {
 		
 		if(${sessionScope.loginuser.authority==0}){
-			alert("교수만 접근이 가능합니다!!");
+			swal("warning", "교수만 접근이 가능합니다!", "warning");
 			return;
 		}
 		
@@ -85,7 +89,7 @@
 </c:if>
 
 <c:if test="${not empty requestScope.boardList}">
-	<table id="lessonboard" class="table table-striped table-bordered table-hover">
+	<table id="lessonboard" class="table table-bordered table-hover">
 		<tr>
 			<th class="title">글번호</th>
 			<th class="title">글쓴이</th>
@@ -94,11 +98,10 @@
 		</tr>
 		<c:forEach var="leesonboardvo" items="${requestScope.boardList}" varStatus="status">
 			<tr class="leesonboardRows">
-				<td style="display: none;">${leesonboardvo.seq}</td>
-				<td class="title">${status.index+1}</td>
-				<td class="title">${leesonboardvo.name}</td>
-				<td>${leesonboardvo.subject}<c:if test="${not empty leesonboardvo.fileName}"><img src='<%= request.getContextPath()%>/resources/images/disk.gif' style="margin-left: 10px;" /></c:if><c:if test="${leesonboardvo.commentCount ne 0}"><span style="font-size: 8pt; color:gray; margin-left:10px;">[${leesonboardvo.commentCount}]</span></c:if></td>
-				<td class="title">${leesonboardvo.regDate}</td>
+				<td style="width: 5%;" class="title">${leesonboardvo.seq}</td>
+				<td style="width: 5%;" class="title">${leesonboardvo.name}</td>
+				<td style="width: 40%;">${leesonboardvo.subject}<c:if test="${not empty leesonboardvo.fileName}"><img src='<%= request.getContextPath()%>/resources/images/disk.gif' style="margin-left: 10px;" /></c:if><c:if test="${leesonboardvo.commentCount ne 0}"><span style="font-size: 8pt; color:gray; margin-left:10px;">[${leesonboardvo.commentCount}]</span></c:if></td>
+				<td style="width: 20%;" class="title">${leesonboardvo.regDate}</td>
 			</tr>
 		</c:forEach>
 	</table>

@@ -61,19 +61,11 @@
 	    // 수정하기 버튼
 	    $("#btnEdit").click(function(){
 	    	
-	    	$("input[name=status]").each(function(){
-	    		
-	    		if($(this).is(":checked")) {
-	    			alert("값 확인용 => "+$(this).val());
-	    		}
-	    		
-	    	});
-	    	
 	    	
 	    	var subject = $("input[name=subject]").val().trim();
 	    	
 	    	if(subject == "") {
-	    		alert("제목을 반드시 입력해야 합니다.");
+	    		swal("warning", "제목을 반드시 입력해야 합니다!", "warning");
 	    		return;
 	    	}
 	    	
@@ -83,7 +75,7 @@
 		        
 	        // 글내용 유효성 검사 
 	        if(contentval == "" || contentval == "<p>&nbsp;</p>") {
-	        	alert("글내용을 입력하세요!!");
+	        	swal("warning", "내용을 반드시 입력해야 합니다!", "warning");
 	        	return;
 	        }
 	        

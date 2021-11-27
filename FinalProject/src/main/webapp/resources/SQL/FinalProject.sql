@@ -705,29 +705,46 @@ on A.fk_hakbun = C.fk_hakbun
 where A.fk_code = '0101'
 
 
-select code, C.hakbun, D.name, StudentCnt, totalCnt
+select E.subject, C.code, C.hakbun, D.name, F.deptname, StudentCnt, totalCnt, case when totalCnt > 0 then StudentCnt / totalCnt * 100 else 0 end || '%' AS percentage
 from 
 (
-    select B.fk_code AS code, B.fk_hakbun AS hakbun, NVL(StudentHomeworkCnt, 0) AS StudentCnt, NVL(totalHomeworkCnt, (select count(*) from tbl_homework where fk_code = '0103')) AS totalCnt
+    select B.fk_code AS code, B.fk_hakbun AS hakbun, NVL(StudentHomeworkCnt, 0) AS StudentCnt, NVL(totalHomeworkCnt, (select count(*) from tbl_homework where fk_code = '0101')) AS totalCnt
     from 
 (
-        select fk_code, fk_hakbun, count(*) AS StudentHomeworkCnt, (select count(*) from tbl_homework where fk_code = '0103') AS totalHomeworkCnt
+        select fk_code, fk_hakbun, count(*) AS StudentHomeworkCnt, (select count(*) from tbl_homework where fk_code = '0101') AS totalHomeworkCnt
         from tbl_homework_comment A
         group by fk_code, fk_hakbun
-        having fk_code = '0103'
+        having fk_code = '0101'
 ) A
 RIGHT JOIN
 (
         select fk_code, fk_hakbun
         from tbl_sugang
-        where fk_code = '0103'
+        where fk_code = '0101'
 ) B
     ON A.fk_hakbun = B.fk_hakbun
 ) C
 JOIN tbl_member D 
 ON C.hakbun = D.hakbun
+JOIN tbl_subject E
+ON C.code = E.code
+JOIN tbl_department F
+ON D.fk_deptcode = F.deptcode
 
 
 select *
 from tbl_sugang
-where fk_code = '0103';
+where fk_code = '0104';
+
+select *
+from tbl_homework_comment;
+
+
+select *
+from tbl_member
+
+select *
+from tbl_homework
+
+update tbl_homework set commentcount = 0
+commit;

@@ -216,12 +216,26 @@ public class SungDAO implements InterSungDAO {
 		int n = sqlsession2.update("Sung.homeworkEditEnd", hwvo);
 		return n;
 	}
-	
-	// 해당 과목 수강생 목록 요청
+		
+	// 해당 과목의 평가목록을 요청한다.
 	@Override
-	public List<MemberVO> getSugangMember(String code) {
-		List<MemberVO> sugangList = sqlsession2.selectList("Sung.getSugangMember", code);
-		return sugangList;
+	public List<Map<String, String>> getEvaluation(String code) {
+		List<Map<String, String>> evalList = sqlsession2.selectList("Sung.getEvaluation", code);
+		return evalList;
+	}
+	
+	// 과제 및 게시판 과제제출여부 확인
+	@Override
+	public int checkSubmit(HomeWorkCommentVO hwcvo) {
+		int n = sqlsession2.selectOne("Sung.checkSubmit", hwcvo);
+		return n;
+	}
+	
+	// 엑셀용 데이터 조회
+	@Override
+	public List<Map<String, String>> getEvaluationExcel(String code) {
+		List<Map<String, String>> evalExcelList = sqlsession2.selectList("Sung.getEvaluationExcel", code);
+		return evalExcelList;
 	}
 	
 	

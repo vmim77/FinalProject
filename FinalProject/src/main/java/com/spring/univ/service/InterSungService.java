@@ -78,8 +78,11 @@ public interface InterSungService {
 	// 과제 및 게시판 수정 완료 요청
 	int homeworkEditEnd(HomeworkVO hwvo);
 	
-	// 해당 과목 수강생 목록 요청
-	List<MemberVO> getSugangMember(String code);
+	// 해당 과목의 평가목록을 요청한다.
+	List<Map<String, String>> getEvaluation(String code);
+	
+	// 엑셀용 데이터 조회
+	List<Map<String, String>> getEvaluationExcel(String code);
 	
 	
 

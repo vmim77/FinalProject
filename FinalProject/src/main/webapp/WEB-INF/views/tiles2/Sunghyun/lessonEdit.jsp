@@ -52,21 +52,21 @@
 	    	var subject = $("input[name=subject]").val().trim();
 	    	
 	    	if(subject == "") {
-	    		alert("제목을 반드시 입력해야 합니다.");
+	    		swal("warning", "제목을 입력해야 합니다.", "warning");
 	    		return;
 	    	}
 	    	
 			var pw = $("input[name=pw]").val().trim();
 			
 			if(pw == "") {
-				alert("글암호를 반드시 입력해야 합니다.");
+				swal("warning", "글암호를 반드시 입력해야 합니다.", "warning");
 				return;
 			}
 			
 			var originalPw = "${requestScope.lbvo.pw}";
 			
 			if(pw != originalPw){
-				alert("글작성시 입력한 암호와 같지 않습니다!");
+				swal("warning", "글작성시 입력한 암호와 같지 않습니다!", "warning");
 				$("input[name=pw]").val("");
 				return;
 			}
@@ -77,7 +77,7 @@
 		        
 	        // 글내용 유효성 검사 
 	        if(contentval == "" || contentval == "<p>&nbsp;</p>") {
-	        	alert("글내용을 입력하세요!!");
+	        	swal("warning", "글내용을 입력하세요!", "warning");
 	        	return;
 	        }
 	        

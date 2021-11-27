@@ -105,15 +105,15 @@
 	function goWrite(parentSeq) {
 		
 		  if($("input#content"+parentSeq).val().trim() == "") {
-			  alert("댓글 내용을 작성해야 합니다.");
+			  swal("경고", "댓글 내용을 작성해야 합니다!", "warning");
 			  return;
 		  }
 		  
 		  if($("input#file"+parentSeq).val() == "") {
-			  alert("파일을 첨부해야 합니다.");
+			  swal("경고", "파일을 첨부해야 합니다!", "warning");
 			  return;
 		  }
-		
+		  
 		  var form_date = $("form[name=homeworkFrm"+parentSeq+"]").serialize();
 		  
 		  var frm = "homeworkFrm"+parentSeq;
@@ -128,11 +128,15 @@
 					
 		        	 if(json.n==1){
 		        		 getCommentList(parentSeq);
-		        		 alert("댓글작성 성공");
+		        		 swal("성공", "댓글작성 성공", "success");
 		        		 
 		        		 $("input#content"+parentSeq).val("");
 		        		 $("input#file"+parentSeq).val("");
 		        		 
+		        	 }
+		        	 else{
+		        		 swal("경고", "과제 제출은 게시글당 1번만 가능합니다!", "warning");
+		        		 return;
 		        	 }
 		            
 		         },
@@ -150,7 +154,7 @@
 	function goHomeworkWrite() {
 		
 		if(${sessionScope.loginuser.authority==0}){
-			alert("교수만 접근이 가능합니다!!");
+			swal("경고", "교수만 접근이 가능합니다!", "warning");
 			return;
 		}
 		
@@ -164,7 +168,7 @@
 		var hakbun = "${sessionScope.loginuser.hakbun}";
 		
 		if(hakbun != fk_hakbun){
-			alert("타인의 댓글은 삭제할 수 없습니다.");
+			swal("경고", "타인의 댓글은 삭제할 수 없습니다!", "warning");
 			return;
 		}
 		
@@ -177,11 +181,11 @@
 			success:function(json) {
 				
 				if(json.n==1){
-					alert("댓글삭제 성공");
+					swal("success", "댓글삭제 성공", "success");
 					getCommentList(parentSeq);
 				}
 				else{
-					alert("댓글삭제 실패");
+					swal("error", "댓글삭제 실패", "error");
 				}
 				
 			},
@@ -220,12 +224,12 @@
 				success:function(json){
 					
 					if(json.n==1){
-						alert("게시글 삭제성공");
+						swal("success", "게시글 삭제 성공", "success");
 						window.location.reload();
 						
 					}
 					else{
-						alert("게시글 삭제실패");
+						swal("error", "게시글 삭제 실패", "error");
 					}
 					
 				},
@@ -250,6 +254,7 @@
 <div id="homeworkContainer" style="width: 100%;">
 	<c:if test="${sessionScope.loginuser.authority == 1}">
 		<button type="button" class="btn btn-md" style="background-color: #ffb84d; color: #fff;" onclick="javascript:location.href='<%= request.getContextPath()%>/homeworkEvaluation.univ'">과제평가</button>
+		<button type="button" class="btn btn-md" onclick="goHomeworkWrite()" style="background-color: #ffb84d; color:#fff; border: none;">글쓰기</button>
 	</c:if>
 	
 	<div class="container-fluid my-3 p-3" style="background-color: #ffb84d;">
@@ -354,10 +359,4 @@
 			등록된 게시물이 없습니다.
 		</c:if>
 	</div>
-	
-	<c:if test="${sessionScope.loginuser.authority == 1}">
-		<div class="text-right">
-			<button type="button" class="btn btn-md" onclick="goHomeworkWrite()" style="background-color: #ffb84d; color:#fff; border: none;">글쓰기</button>
-		</div>
-	</c:if>
 </div>

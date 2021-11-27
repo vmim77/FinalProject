@@ -334,23 +334,88 @@
 		</if>
 	</update>
 	
-	<select id="getSugangMember" parameterType="String" resultType="com.spring.univ.model.MemberVO">
-		select A.fk_hakbun AS hakbun, B.name AS name 
-		from tbl_sugang A
-		JOIN tbl_member B
-		on A.fk_hakbun = B.hakbun
-		where A.fk_code = #{code}
-		order by name 
+	<!--  과제 및 평가 평가목록 요청 -->
+	<resultMap type="HashMap" id="evalMap">
+		<result property="code" column="code" javaType="String"/>
+		<result property="hakbun" column="hakbun" javaType="String"/>
+		<result property="name" column="name" javaType="String"/>
+		<result property="StudentCnt" column="StudentCnt" javaType="String"/>
+		<result property="totalCnt" column="totalCnt" javaType="String"/>
+	</resultMap>
+	
+	
+	<select id="getEvaluation" parameterType="String" resultMap="evalMap">
+		select code, C.hakbun AS hakbun, D.name AS name, StudentCnt, totalCnt
+		from 
+		(
+		    select B.fk_code AS code
+		    , B.fk_hakbun AS hakbun, NVL(StudentHomeworkCnt, 0) AS StudentCnt
+		    , NVL(totalHomeworkCnt, (select count(*) from tbl_homework where fk_code = #{code})) AS totalCnt
+		    from 
+		(
+		        select fk_code, fk_hakbun, count(*) AS StudentHomeworkCnt, (select count(*) from tbl_homework where fk_code = #{code}) AS totalHomeworkCnt
+		        from tbl_homework_comment A
+		        group by fk_code, fk_hakbun
+		        having fk_code = #{code}
+		) A
+		RIGHT JOIN
+		(
+		        select fk_code, fk_hakbun
+		        from tbl_sugang
+		        where fk_code = #{code}
+		) B
+		    ON A.fk_hakbun = B.fk_hakbun
+		) C
+		JOIN tbl_member D 
+		ON C.hakbun = D.hakbun
+		order by hakbun
+	</select>
+	
+	<select id="checkSubmit" parameterType="com.spring.univ.model.HomeWorkCommentVO" resultType="int">
+		select count(*)
+		from tbl_homework_comment
+		where fk_hakbun = #{fk_hakbun} and parentSeq = #{parentSeq}
 	</select>
 	
 	
-	
-	<resultMap type="HashMap" id="evalMap">
-		<result property="fk_hakbun" 	column="fk_hakbun" 	javaType="String"></result>
-		<result property="name" 		column="name" 		javaType="String"></result>
-		<result property="percentage" 	column="percentage" javaType="String"></result>
-		<result property="cnt" 			column="cnt" 		javaType="String"></result>
+	<!-- 과제평가 엑셀 다운로드 -->
+	<resultMap type="HashMap" id="evalExcelMap">
+		<result property="subject" column="subject" javaType="String"/>
+		<result property="code" column="code" javaType="String"/>
+		<result property="hakbun" column="hakbun" javaType="String"/>
+		<result property="name" column="name" javaType="String"/>
+		<result property="deptname" column="deptname" javaType="String"/>
+		<result property="StudentCnt" column="StudentCnt" javaType="String"/>
+		<result property="totalCnt" column="totalCnt" javaType="String"/>
+		<result property="percentage" column="percentage" javaType="String"/>
 	</resultMap>
 	
+	<select id="getEvaluationExcel" parameterType="String" resultMap="evalExcelMap">
+		select E.subject, C.code, C.hakbun, D.name, F.deptname, StudentCnt, totalCnt, case when totalCnt > 0 then StudentCnt / totalCnt * 100 else 0 end || '%' AS percentage
+		from 
+		(
+		    select B.fk_code AS code, B.fk_hakbun AS hakbun, NVL(StudentHomeworkCnt, 0) AS StudentCnt, NVL(totalHomeworkCnt, (select count(*) from tbl_homework where fk_code = #{code})) AS totalCnt
+		    from 
+		(
+		        select fk_code, fk_hakbun, count(*) AS StudentHomeworkCnt, (select count(*) from tbl_homework where fk_code = #{code}) AS totalHomeworkCnt
+		        from tbl_homework_comment A
+		        group by fk_code, fk_hakbun
+		        having fk_code = #{code}
+		) A
+		RIGHT JOIN
+		(
+		        select fk_code, fk_hakbun
+		        from tbl_sugang
+		        where fk_code = #{code}
+		) B
+		    ON A.fk_hakbun = B.fk_hakbun
+		) C
+		JOIN tbl_member D 
+		ON C.hakbun = D.hakbun
+		JOIN tbl_subject E
+		ON C.code = E.code
+		JOIN tbl_department F
+		ON D.fk_deptcode = F.deptcode
+	</select>
 	
 </mapper>

@@ -15,11 +15,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -829,6 +843,7 @@ public class SungController {
 			e.printStackTrace();
 		}
 	}
+		
 		int n = service.writeHomeworkComment(hwcvo);
 		
 		JSONObject jsonObj = new JSONObject();
@@ -1245,11 +1260,173 @@ public class SungController {
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
-	// 평가 페이지 요청
+	// 과제 및 평가 - 평가 페이지 요청
 	@RequestMapping(value="/homeworkEvaluation.univ")
 	public ModelAndView subject_homeworkEvaluation(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
+		HttpSession session = request.getSession();
+		String code = (String) session.getAttribute("code");
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		if(loginuser.getAuthority() != 1) {
+			mav.addObject("message", "잘못된 접근입니다.");
+			mav.addObject("loc", request.getContextPath()+"/dashboard.univ");
+			mav.setViewName("msg");
+		}
+		
+		else {
+			// 해당과목의 평가목록을 요청한다.
+			List<Map<String, String>> evalList = service.getEvaluation(code);
+			
+			// 과제 및 평가 댓글목록 가져오기
+			List<HomeWorkCommentVO> homeworkCommentList = service.getHomeworkComment(code);
+			
+			mav.addObject("evalList", evalList);
+			mav.addObject("homeworkCommentList", homeworkCommentList);
+			mav.setViewName("Sunghyun/homeworkEvaluation.tiles2");
+		}
+		
 		return mav;
+	}
+	
+	
+	// 과제 및 평가 - 평가 페이지 엑셀 다운로드 요청
+	
+	@RequestMapping(value="/downloadExcel.univ")
+	public String downloadExcel(HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		HttpSession session = request.getSession();
+		String code = (String) session.getAttribute("code");
+		
+		// 엑셀용 데이터 조회
+		List<Map<String, String>> evalExcelList = service.getEvaluationExcel(code);
+		
+		SXSSFWorkbook workbook = new SXSSFWorkbook();
+		
+		SXSSFSheet sheet = workbook.createSheet("수강학생 과제분석");
+		
+		sheet.setColumnWidth(0, 4000);
+		sheet.setColumnWidth(1, 2000);
+		sheet.setColumnWidth(2, 4000);
+		sheet.setColumnWidth(3, 3000);
+		sheet.setColumnWidth(4, 4000);
+		sheet.setColumnWidth(5, 4000);
+		sheet.setColumnWidth(6, 4000);
+		sheet.setColumnWidth(7, 4000);
+		
+		int rowLocation = 0;
+		
+		CellStyle mergeRowStyle = workbook.createCellStyle();
+	    mergeRowStyle.setAlignment(HorizontalAlignment.CENTER);
+	    mergeRowStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+	    
+	    CellStyle headerStyle = workbook.createCellStyle();
+	    headerStyle.setAlignment(HorizontalAlignment.CENTER);
+	    headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+	    
+	    mergeRowStyle.setFillForegroundColor(IndexedColors.GOLD.getIndex());
+	    mergeRowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	    
+	    Font mergeRowFont =  workbook.createFont(); 
+	    mergeRowFont.setFontName("나눔고딕");
+	    mergeRowFont.setFontHeight((short)500); 
+	    mergeRowFont.setColor(IndexedColors.WHITE.getIndex());
+	    mergeRowFont.setBold(true);
+	    
+	    mergeRowStyle.setFont(mergeRowFont);
+	    
+	    headerStyle.setBorderTop(BorderStyle.THICK);
+	    headerStyle.setBorderBottom(BorderStyle.THICK);
+	    headerStyle.setBorderLeft(BorderStyle.THIN);
+	    headerStyle.setBorderRight(BorderStyle.THIN);
+	    
+	    SXSSFRow mergeRow = sheet.createRow(rowLocation);
+	    
+	    for(int i=0; i<8; i++) {
+	    	
+	    	Cell cell = mergeRow.createCell(i);
+	    	cell.setCellStyle(mergeRowStyle);
+	    	cell.setCellValue(evalExcelList.get(0).get("subject")+"수강학생 과제분석");
+	    }// end of for-----------------------
+	    
+	    sheet.addMergedRegion(new CellRangeAddress(rowLocation, rowLocation, 0, 7));
+		
+	    Row headerRow = sheet.createRow(++rowLocation);
+	    
+        Cell headerCell = headerRow.createCell(0); 
+        headerCell.setCellValue("과목명");
+        headerCell.setCellStyle(headerStyle);
+        
+        headerCell = headerRow.createCell(1); 
+        headerCell.setCellValue("과목번호");
+        headerCell.setCellStyle(headerStyle);
+        
+        headerCell = headerRow.createCell(2); 
+        headerCell.setCellValue("학번");
+        headerCell.setCellStyle(headerStyle);
+        
+        headerCell = headerRow.createCell(3); 
+        headerCell.setCellValue("성명");
+        headerCell.setCellStyle(headerStyle);
+        
+        headerCell = headerRow.createCell(4); 
+        headerCell.setCellValue("소속학과");
+        headerCell.setCellStyle(headerStyle);
+        
+        headerCell = headerRow.createCell(5); 
+        headerCell.setCellValue("과제 제출건수");
+        headerCell.setCellStyle(headerStyle);
+        
+        headerCell = headerRow.createCell(6); 
+        headerCell.setCellValue("전체 과제수");
+        headerCell.setCellStyle(headerStyle);
+        
+        headerCell = headerRow.createCell(7); 
+        headerCell.setCellValue("과제 제출률");
+        headerCell.setCellStyle(headerStyle);
+        
+        Row bodyRow = null;
+        Cell bodyCell = null;
+        
+        for(int i=0; i<evalExcelList.size(); i++) {
+        	
+        	Map<String, String> map = evalExcelList.get(i);
+        	
+        	// 행생성
+        	bodyRow = sheet.createRow(i + (rowLocation+1) ); 
+        	
+        	bodyCell = bodyRow.createCell(0);
+        	bodyCell.setCellValue(map.get("subject"));
+        	
+        	bodyCell = bodyRow.createCell(1);
+        	bodyCell.setCellValue(map.get("code"));
+        	
+        	bodyCell = bodyRow.createCell(2);
+        	bodyCell.setCellValue(map.get("hakbun"));
+        	
+        	bodyCell = bodyRow.createCell(3);
+        	bodyCell.setCellValue(map.get("name"));
+        	
+        	bodyCell = bodyRow.createCell(4);
+        	bodyCell.setCellValue(map.get("deptname"));
+        	
+        	bodyCell = bodyRow.createCell(5);
+        	bodyCell.setCellValue(Integer.parseInt(map.get("StudentCnt")));
+        	
+        	bodyCell = bodyRow.createCell(6);
+        	bodyCell.setCellValue(Integer.parseInt(map.get("totalCnt")));
+        	
+        	bodyCell = bodyRow.createCell(7);
+        	bodyCell.setCellValue(map.get("percentage"));
+        	
+        }// end of for--------------------------
+        
+        model.addAttribute("locale", Locale.KOREA); 
+        model.addAttribute("workbook", workbook); 
+        model.addAttribute("workbookName", evalExcelList.get(0).get("subject")+"수강학생_과제분석");
+        
+        return "excelDownloadView";
+		
 	}
 	
 }

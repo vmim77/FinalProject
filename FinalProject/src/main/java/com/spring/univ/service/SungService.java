@@ -185,13 +185,19 @@ public class SungService implements InterSungService {
 	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
 	public int writeHomeworkComment(HomeWorkCommentVO hwcvo) {
 		
-		int n = 0, m = 0;
+		int n = 0, m = 0, result1 = 0;
 		
-		n = dao.writeHomeworkComment(hwcvo);
+		result1 = dao.checkSubmit(hwcvo);
 		
-		if(n==1) {
-			m = dao.plusCommentCnt(hwcvo); // 원글 댓글개수 증가
+		if(result1 == 0) {
+			
+			n = dao.writeHomeworkComment(hwcvo);
+			
+			if(n==1) {
+				m = dao.plusCommentCnt(hwcvo); // 원글 댓글개수 증가
+			}
 		}
+		
 		
 		return m;
 	}
@@ -246,11 +252,18 @@ public class SungService implements InterSungService {
 		return n;
 	}
 	
-	// 해당 과목 수강생 목록 요청
+	// 해당 과목의 평가목록을 요청한다.
 	@Override
-	public List<MemberVO> getSugangMember(String code) {
-		List<MemberVO> sugangList =  dao.getSugangMember(code);
-		return sugangList;
+	public List<Map<String, String>> getEvaluation(String code) {
+		List<Map<String, String>> evalList = dao.getEvaluation(code);
+		return evalList;
+	}
+	
+	// 엑셀용 데이터 조회
+	@Override
+	public List<Map<String, String>> getEvaluationExcel(String code) {
+		List<Map<String, String>> evalExcelList = dao.getEvaluationExcel(code);
+		return evalExcelList;
 	}
 	
 
