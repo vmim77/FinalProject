@@ -100,6 +100,8 @@ public interface InterSungDAO {
 	
 	// 엑셀용 데이터 조회
 	List<Map<String, String>> getEvaluationExcel(String code);
+
+	List<Map<String, String>> getAcademicCalendar();
 	
 	
 }

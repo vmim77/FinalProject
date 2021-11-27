@@ -753,6 +753,28 @@ select fk_code, count(*)
 from tbl_sugang
 group by fk_code
 
+select A.code, A.subject, B.name
+from tbl_subject A
+JOIN tbl_member B
+on A.fk_hakbun = B.hakbun
+order by A.code
+
 select *
-from tbl_subject
-where code = '0528';
+from tab;
+
+create table tbl_academic_calendar(
+title       varchar2(300),
+startday    date,
+endday      date,
+allDay      varchar2(50) default 'true'
+)
+
+insert into tbl_academic_calendar(title, startday, allday)
+values('2021년도 2학기 종강', '2021/12/04', default);
+commit;
+
+insert into tbl_academic_calendar(title, startday, allday)
+values('수업일수3/4', '2021/11/17', default);
+
+select title, startday, endday, allday
+from tbl_academic_calendar

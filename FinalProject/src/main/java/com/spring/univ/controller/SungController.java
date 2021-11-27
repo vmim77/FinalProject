@@ -1346,7 +1346,7 @@ public class SungController {
 	    	
 	    	Cell cell = mergeRow.createCell(i);
 	    	cell.setCellStyle(mergeRowStyle);
-	    	cell.setCellValue(evalExcelList.get(0).get("subject")+"수강학생 과제분석");
+	    	cell.setCellValue(evalExcelList.get(0).get("subject")+"_수강학생 과제분석");
 	    }// end of for-----------------------
 	    
 	    sheet.addMergedRegion(new CellRangeAddress(rowLocation, rowLocation, 0, 7));
@@ -1423,11 +1423,39 @@ public class SungController {
         
         model.addAttribute("locale", Locale.KOREA); 
         model.addAttribute("workbook", workbook); 
-        model.addAttribute("workbookName", evalExcelList.get(0).get("subject")+"수강학생_과제분석");
+        model.addAttribute("workbookName", evalExcelList.get(0).get("subject")+"_수강학생_과제분석");
         
         return "excelDownloadView";
 		
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/academicCalendar.univ", produces="text/plain;charset=UTF-8")
+	public String academicCalendar(HttpServletRequest request, HttpServletResponse response) {
+		
+		List<Map<String,String>> calendarList = service.getAcademicCalendar();
+		
+		JSONArray jsArr = new JSONArray();
+		
+		for(Map<String, String> map : calendarList) {
+			
+			JSONObject jsObj = new JSONObject();
+			jsObj.put("title", map.get("title"));
+			jsObj.put("start", map.get("startday"));
+			
+			if(map.get("endday") != null) {
+				jsObj.put("end", map.get("endday"));
+			}
+			
+			jsObj.put("allDay", true);
+			
+			jsArr.put(jsObj);
+			
+		}// end of for------------------------------
+		
+		return jsArr.toString();
+	}
+	
 	
 }
 	

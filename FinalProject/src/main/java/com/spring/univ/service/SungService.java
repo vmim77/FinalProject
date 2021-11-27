@@ -265,6 +265,12 @@ public class SungService implements InterSungService {
 		List<Map<String, String>> evalExcelList = dao.getEvaluationExcel(code);
 		return evalExcelList;
 	}
+
+	@Override
+	public List<Map<String, String>> getAcademicCalendar() {
+		List<Map<String, String>> calendarList =  dao.getAcademicCalendar();
+		return calendarList;
+	}
 	
 
 }

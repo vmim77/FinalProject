@@ -237,6 +237,12 @@ public class SungDAO implements InterSungDAO {
 		List<Map<String, String>> evalExcelList = sqlsession2.selectList("Sung.getEvaluationExcel", code);
 		return evalExcelList;
 	}
+
+	@Override
+	public List<Map<String, String>> getAcademicCalendar() {
+		List<Map<String, String>> calendarList =  sqlsession2.selectList("Sung.getAcademicCalendar");
+		return calendarList;
+	}
 	
 	
 

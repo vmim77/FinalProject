@@ -32,32 +32,63 @@
  
 </style>
 
-<script type="text/javascript">
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js' ></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
+<link href='/assets/demo-to-codepen.css' rel='stylesheet' />
 
-	$(document).ready(function(){
-		
-		
-		
+<script>
+
+
+	document.addEventListener('DOMContentLoaded', function() {
+	    var calendarEl = document.getElementById('calendar');
+	    var calendar = new FullCalendar.Calendar(calendarEl, {
+	      headerToolbar:{
+	    	  left: 'prev,next,today',
+	    	  center: 'title',
+	    	  right: 'dayGridMonth,listWeek'
+	      },
+	      initialView: 'dayGridMonth',
+	      navLinks: true,
+	      nowIndicator: true,
+	      locale: 'ko',
+	  	  eventSources: [{
+			events: function(info, successCallback, failureCallback) {
+				$.ajax({
+					url: "<%= request.getContextPath()%>/academicCalendar.univ",
+					type: "POST",
+					dataType: 'JSON',
+					success: function(json) {
+						successCallback(json);
+					}
+				});
+			}
+		}]
+	    });
+	    calendar.render();
 	});
-	
 </script>
 
-<c:if test="${not empty sessionScope.sugangList}"> <%-- 학생이면 가장 상단에 얘를 보여줍니다. --%>
-	<h2>대시보드 - 수강과목(학생)</h2>
-</c:if>
-<c:if test="${not empty sessionScope.suupList}"> <%-- 교수이면 가장 상단에 얘를 보여줍니다. --%>
-	<h2>대시보드 - 담당과목(교수)</h2>
-</c:if>
-<hr>
+
+
+
+
 
 <div id="maincontainer" style="display: flex;">
-	<section style="width: 100%; margin-right: auto;">
+	<section style="width: 60%; margin-right: auto;">
+		<c:if test="${not empty sessionScope.sugangList}"> <%-- 학생이면 가장 상단에 얘를 보여줍니다. --%>
+			<h2>대시보드 - 수강과목(학생)</h2>
+		</c:if>
+		<c:if test="${not empty sessionScope.suupList}"> <%-- 교수이면 가장 상단에 얘를 보여줍니다. --%>
+			<h2>대시보드 - 담당과목(교수)</h2>
+		</c:if>
+		<hr>
 		<div class="row mx-1">
 			
 			<%-- 학생이라면 수강한 과목을 반복문으로 카드로 만들어서 찍어줍니다. --%>
 			<c:if test="${not empty sessionScope.sugangList}">
 				<c:forEach var="sugangMap" items="${sessionScope.sugangList}">
-				     <div class="card col-2 p-0" style="width: 5%; box-shadow: 0px 1px 3px;">
+				     <div class="card col-3 p-0" style="width: 5%; box-shadow: 0px 1px 3px;">
 				 	   <div style="width: 100%; height: 200px;"><img style="width: 100%; height: 100%;" src='<%= request.getContextPath()%>/resources/images/${sugangMap.code}.jpg' /></div>
 				 	   <div class="card-body">
 				 	     <h5 class="card-title">${sugangMap.subject}</h5>
@@ -71,7 +102,7 @@
 			<%-- 교수이라면 담당 과목을 반복문으로 카드로 만들어서 찍어줍니다. --%>
 			<c:if test="${not empty sessionScope.suupList}">
 				<c:forEach var="suupMap" items="${suupList}">
-				     <div class="card col-2 p-0" style="width: 5%; box-shadow: 0px 1px 3px;">
+				     <div class="card col-3 p-0" style="width: 5%; box-shadow: 0px 1px 3px;">
 				 	   <div style="width: 100%; height: 200px;"><img style="width: 100%; height: 100%;" src='<%= request.getContextPath()%>/resources/images/${suupMap.code}.jpg' /></div>
 				 	   <div class="card-body">
 				 	     <h5 class="card-title">${suupMap.subject}</h5>
@@ -90,4 +121,9 @@
 		</div>
 	</section>
 	
+	<section style="width: 40%; margin: 0 10px;">
+		<h2>학사일정</h2>
+		<hr>
+		<div id='calendar'></div>
+	</section>
 </div>

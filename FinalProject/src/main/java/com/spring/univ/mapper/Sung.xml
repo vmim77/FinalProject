@@ -418,4 +418,17 @@
 		ON D.fk_deptcode = F.deptcode
 	</select>
 	
+	
+	<resultMap type="HashMap" id="calendarMap">
+		<result property="title" column="title" javaType="String"/>
+		<result property="startday" column="startday" javaType="String"/>
+		<result property="endday" column="endday" javaType="String"/>
+		<result property="allday" column="allday" javaType="String"/>
+	</resultMap>
+	
+	<select id="getAcademicCalendar" resultMap="calendarMap">
+		select title, to_char(startday, 'yyyy-mm-dd') AS startday, to_char(endday,'yyyy-mm-dd') AS endday, allday
+		from tbl_academic_calendar
+	</select>
+	
 </mapper>
