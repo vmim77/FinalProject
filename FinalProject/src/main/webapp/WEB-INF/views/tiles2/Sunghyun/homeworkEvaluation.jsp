@@ -114,9 +114,9 @@
 <hr style="clear: both;">
 
 <c:if test="${not empty evalList}">
+	<button type="button" class="btn btn-md my-2" style="background-color: #ffb84d; color: #fff;" onclick="javascript:location.href='<%= request.getContextPath()%>/homework.univ'">돌아가기</button>
 	<button type="button" class="btn btn-md my-2"
-		style="background-color: #ffb84d; color: #fff; border: none;" onclick="javascript:location.href='<%= request.getContextPath()%>/downloadExcel.univ'">Excel다운로드</button>
-
+		style="background-color: #ffb84d; color: #fff; border: none; margin-left: 10px;" onclick="javascript:location.href='<%= request.getContextPath()%>/downloadExcel.univ'">Excel다운로드</button>
 	<figure class="highcharts-figure my-2">
 		<div id="container"></div>
 

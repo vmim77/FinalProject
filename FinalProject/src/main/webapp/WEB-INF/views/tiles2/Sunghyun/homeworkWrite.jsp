@@ -8,7 +8,16 @@
 
 <Style type="text/css">
 
-
+	form[name=homeworkWriteFrm] { margin-top: 50px; display: flex; }
+	
+	#homeworkTblFlex { width: 60%; margin: auto; }
+	
+	#homeworkWriteTbl { width: 100%; }
+	
+	#homeworkWriteTbl th { background-color: #ffb84d; }
+	
+	#btnWrite::after { content: ''; display: block; clear: both;  }
+	
 </Style>
 
 
