@@ -253,7 +253,7 @@
 
 <div id="homeworkContainer" style="width: 100%;">
 	<c:if test="${sessionScope.loginuser.authority == 1}">
-		<button type="button" class="btn btn-md" style="background-color: #ffb84d; color: #fff;" onclick="javascript:location.href='<%= request.getContextPath()%>/homeworkEvaluation.univ'">과제평가</button>
+		<button type="button" class="btn btn-md" style="background-color: #ffb84d; color: #fff; margin-right: 10px;" onclick="javascript:location.href='<%= request.getContextPath()%>/homeworkEvaluation.univ'">과제평가</button>
 		<button type="button" class="btn btn-md" onclick="goHomeworkWrite()" style="background-color: #ffb84d; color:#fff; border: none;">글쓰기</button>
 	</c:if>
 	

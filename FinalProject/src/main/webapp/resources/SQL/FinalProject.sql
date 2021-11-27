@@ -748,3 +748,11 @@ from tbl_homework
 
 update tbl_homework set commentcount = 0
 commit;
+
+select fk_code, count(*)
+from tbl_sugang
+group by fk_code
+
+select *
+from tbl_subject
+where code = '0528';
