@@ -12,7 +12,7 @@ public class JjokjiVO {
 	private String orgFilename; 	//  진짜 파일명(강아지.png)  // 사용자가 파일을 업로드 하거나 파일을 다운로드 할때 사용되어지는 파일명 
 	private String fileSize;		//  파일크기
 	
-	
+	private String star;			// 추가
 	
 	private MultipartFile attach;
 	
@@ -23,7 +23,7 @@ public class JjokjiVO {
 	public JjokjiVO() {}
 
 	public JjokjiVO(String jseq, String receive_hakbun, String sender_hakbun, String jjokjiTime, String jjokjiContent,
-			String fileName, String orgFilename, String fileSize) {
+			String fileName, String orgFilename, String fileSize, String star) {
 		
 		this.jseq = jseq;
 		this.receive_hakbun = receive_hakbun;
@@ -33,6 +33,7 @@ public class JjokjiVO {
 		this.fileName = fileName;
 		this.orgFilename = orgFilename;
 		this.fileSize = fileSize;
+		this.star = star;
 	}
 
 
@@ -128,6 +129,18 @@ public class JjokjiVO {
 	}
 	
 	
+	
+	
+	public String getStar() {
+		return star;
+	}
+
+	public void setStar(String star) {
+		this.star = star;
+	}
+
+
+
 	
 	
 }

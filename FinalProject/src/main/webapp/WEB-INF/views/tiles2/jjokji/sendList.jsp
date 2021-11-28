@@ -123,7 +123,12 @@ td {
 		
 		<hr>
 		
-		<button type="button" class="btn btn-light  btn-sm" style="float:right; margin-right: 1.5%; margin-bottom: 1.5%;" onclick="javascript:location.href='<%= request.getContextPath()%>/sendList.univ'"> <i class="fas fa-redo-alt"></i></button>
+		
+		
+		<button type="button" class="btn btn-light  btn-sm" style="float:right; margin-left:15px; margin-right: 1.5%; margin-bottom: 1.5%;" onclick="javascript:location.href='<%= request.getContextPath()%>/sendList.univ'"> <i class="fas fa-redo-alt"></i></button>
+		
+		<button type="button" class="btn btn-light  btn-sm" style="float:right; " onclick="">선택 삭제</button>
+		
 		<table class="table table-hover">
 			<thead>
 				<tr>

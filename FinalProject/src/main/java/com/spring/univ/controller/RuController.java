@@ -1230,13 +1230,13 @@ public class RuController {
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	
-	// === #163. 첨부파일 다운로드 받기 === //   view.jsp에서 파일다운로드 되도록 함 첨부파일 칸에 있는 링크 누르면 실행됨
+	// === #163. 첨부파일 다운로드 받기 === //   
 		@RequestMapping(value="/download.univ") 
 		public void requiredLogin_download(HttpServletRequest request, HttpServletResponse response) { // 그냥 파일 다운받는 거니까 리턴 타입은 아무거나 상관없어서 void로 한다.
 			
 			String jseq = request.getParameter("jseq"); 
 			
-			Map<String, String> paraMap = new HashMap<>(); //getView매퍼보면 파라미터로 서치워드,서치타입,글번호를 맵으로 받아서 셀렉트한 값을 boardvo를 반환하도록 했다
+			Map<String, String> paraMap = new HashMap<>(); //매퍼보면 파라미터로 서치워드,서치타입,글번호를 맵으로 받아서 셀렉트한 값을 boardvo를 반환하도록 했다
 			paraMap.put("jseq", jseq);
 			
 			response.setContentType("text/html; charset=UTF-8");
