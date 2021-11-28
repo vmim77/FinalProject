@@ -197,7 +197,6 @@
 		
 	});
 	
-	// === 타이머  === //
 	function func_loopTimer() {
 		
 		func_timer(cnt++);
@@ -208,7 +207,6 @@
 		
 	}// end of function func_loopTimer() {}---------------------
 	
-	// === 타이머 시간 구하기 시작 === //
 	function func_timer(i) {
 		
 		start = 30*60 - i; // i는 타이머 함수가 계속 시작되면서 증가되는 값
@@ -239,13 +237,9 @@
 				}
 			}
 		}
-		
 		else {
 			location.href="<%= request.getContextPath()%>/logout.univ"
 		}
-		
-		
-		
 	}// end of function func_timer(i) {}-------------------------
 	
 	

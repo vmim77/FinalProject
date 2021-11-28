@@ -25,7 +25,7 @@ import com.spring.univ.service.InterSungService;
 public class UnivAOP {
    
    @Autowired
-   InterSungService service;
+   private InterSungService service;
    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    // 1. 로그인 유무 검사하는 Advice
@@ -114,7 +114,6 @@ public class UnivAOP {
             
             MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
             String hakbun = loginuser.getHakbun();
-            
             
             Map<String, String> paraMap = new HashMap<>();
             paraMap.put("hakbun", hakbun);
