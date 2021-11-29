@@ -211,6 +211,17 @@ public class RuService implements InterRuService {
 		return teacherList;
 	}
 	
+	
+//==============================================================================================
+	
+	
+	// 수신함,발신함 쪽지 삭제하기(Ajax 로 처리)
+	@Override
+	public int jjokjiListDel(Map<String, String[]> map) {
+		int n = dao.jjokjiListDel(map);
+		return n;
+	}
+	
 //==============================================================================================
 		
 	

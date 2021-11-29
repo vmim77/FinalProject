@@ -155,7 +155,7 @@
 		 </if> 
     </select>
 	
-    <!-- 페이징 처리한 글목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함한것) 답글포함 -->
+    <!-- 페이징 처리한 글목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함한것) -->
     <select id="boardListSearchWithPaging" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO"> 
     select seq, fk_hakbun, name, subject, readCount, regDate, commentCount, fk_code 
 	from 
@@ -335,6 +335,18 @@
 	from tbl_member
 	where fk_deptCode = #{fk_deptCode} and authority = '1'
 	</select>
+	
+	
+	
+	
+	<!-- 수신함,발신함 쪽지 삭제하기 -->
+	<delete id="jjokjiListDel" parameterType="HashMap">
+      delete tbl_jjokji
+      where jseq in
+      <foreach collection="jseqArr1" index="i" open="(" separator="," close=")"> 
+           ${jseqArr1[i]}
+      </foreach>
+   </delete>
 	
 
 	

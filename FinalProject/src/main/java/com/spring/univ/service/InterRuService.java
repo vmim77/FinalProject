@@ -83,6 +83,9 @@ public interface InterRuService {
 	// 쪽지 보내기 담당교수 가져오기 
 	List<MemberVO> getTeacherList(Map<String, String> paraMap);
 
+	// 수신함,발신함 쪽지 삭제하기(Ajax 로 처리)
+	int jjokjiListDel(Map<String, String[]> map);
+
 	
 
 	

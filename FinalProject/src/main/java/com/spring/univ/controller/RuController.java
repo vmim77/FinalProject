@@ -298,11 +298,11 @@ public class RuController {
 		paraMap.put("seq", seq);
 		paraMap.put("searchType", searchType);
 		paraMap.put("searchWord", searchWord);
-		paraMap.put("fk_code", fk_code); // 추가
+		paraMap.put("fk_code", fk_code);
 
 		mav.addObject("searchType", searchType);
 		mav.addObject("searchWord", searchWord);
-		mav.addObject("fk_code", fk_code); // 추가
+		mav.addObject("fk_code", fk_code); 
 		////////////////////////////////////////////////////////////////////////////////////////
 
 		// === #125. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후 === //
@@ -1355,9 +1355,32 @@ public class RuController {
 	
 	
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//=========================================================================
+	// === 수신함,발신함 쪽지 삭제하기(Ajax 로 처리) === //
+	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
+	@RequestMapping(value="/jjokjiListDel.univ", produces="text/plain;charset=UTF-8", method= {RequestMethod.GET})
+	public String jjokjiListDel(HttpServletRequest request){
 	
+	String jseq = request.getParameter("jseq");
 	
+	String[] jseqArr1 = jseq.substring(0, jseq.lastIndexOf(",")).split(",");
 	
+	Map<String, String[]> map = new HashMap<>();
+	map.putIfAbsent("jseqArr1", jseqArr1);
+	
+	// 발신함 삭제하기
+	int n = service.jjokjiListDel(map);
+	
+	JSONObject jsonobj = new JSONObject();
+	
+	jsonobj.put("n", n); 
+	
+	return jsonobj.toString();
+	
+	}//end of public String jjokjiDel(HttpServletRequest request){---------   
+	//=========================================================================   
+
 	
 	
 	

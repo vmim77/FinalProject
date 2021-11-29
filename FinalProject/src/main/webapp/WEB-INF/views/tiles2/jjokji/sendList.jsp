@@ -71,30 +71,88 @@ td {
 		});
 		
 		
+		
+////////////////////////////////////////////////////////////////////////
+		// 발신함 전체선택시
+		      $("input#senderAll").click(function(){
+		         
+		         if($(this).is(":checked")){
+
+		            $("input:checkbox[name=schk]").prop("checked", true);
+		            $("span#senderSpan").text("전체선택 해제");
+		            
+		         }
+		         else{
+
+		            $("input:checkbox[name=schk]").prop("checked", false);
+		            $("span#senderSpan").text("전체선택");
+		            
+		         }
+		         
+		      });//end of $("checkbox#senderAll").click(function(){---------------------------
+		
+		
+		
+		
+		
+
+		   // 발신함 선택항목 삭제
+		         $("button#sendDel").click(function(){
+		            
+		            var jseq = "";
+		            var cnt = 0;
+		            
+		            $("input:checkbox[name=schk]").each(function(){
+		               
+		               if($(this).is(":checked")){
+		                  
+		                  jseq += $(this).next().val() + ",";
+		                  cnt++;
+		                  
+		               }//end of if($(this).is(":checked")){-----------------------------------
+		            
+		            });//end of $("input:checkbox[name=schk]").each(function(){-----------------
+		            
+		            if(cnt == 0){
+		               alert("체크된 항목이 없습니다.");   
+		            }
+		            else{
+		               
+		               $.ajax({
+		                  url:"<%= request.getContextPath()%>/jjokjiListDel.univ",
+		                  type:"GET",
+		                  data:{"jseq":jseq},
+		                  dataType:"JSON",
+		                  success:function(json){
+
+		                     if(json.n > 0){
+		                        alert(json.n+"개의 쪽지가 삭제되었습니다.");
+		                     }
+		                   
+		                          
+		                  },
+		                  error: function(request, status, error){
+		                     alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		                   }
+		                  
+		               });//end of $.ajax({--------------------------------------------------------
+		               
+		            }//end of if(cnt == 0){-----------------------------------------------------
+		            
+		            // 체크박스 해제
+		            $("input:checkbox[name=schk]").prop("checked", false);
+		            
+		         });//end of $("button#senderDel").click(function(){-----------------------------
+
+
+		
+		
+		
 	});// end of $(document).ready(function(){})-----------------------------------------------------------------
 	
 	//////////////////////////////////////////////////////////////////
 	
-	<%-- function goView(seq) {
-		
-	location.href="<%= ctxPath%>/view.action?seq="+seq;
-		
-		// === #125. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후 === //
-		//           사용자가 목록보기 버튼을 클릭했을 떄 돌아갈 페이지를 알려주기위해
-		//			  현재 페이지 주소를 뷰단에 넘겨준다
-		var frm = document.goViewFrm;
-		frm.seq.value = seq;
-		frm.gobackURL.value = "${requestScope.gobackURL}"
-		frm.searchType.value = "${requestScope.paraMap.searchType}"; //이전글, 다음글 추가
-		frm.searchWord.value = "${requestScope.paraMap.searchWord}";
-		
-		frm.method = "GET";
-		frm.action = "<%= request.getContextPath()%>/view.univ";
-		frm.submit();
-		
-	}// end of function goView(seq) {}--------------------------------
-
-	 --%>
+	
 </script>
 
 
@@ -127,12 +185,14 @@ td {
 		
 		<button type="button" class="btn btn-light  btn-sm" style="float:right; margin-left:15px; margin-right: 1.5%; margin-bottom: 1.5%;" onclick="javascript:location.href='<%= request.getContextPath()%>/sendList.univ'"> <i class="fas fa-redo-alt"></i></button>
 		
-		<button type="button" class="btn btn-light  btn-sm" style="float:right; " onclick="">선택 삭제</button>
+		<button type="button" class="btn btn-light  btn-sm" style="float:right; " id="sendDel">선택 삭제</button>
 		
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th style="width: 70px; text-align: center;">번호</th>
+					
+					<th style="width: 70px; text-align: center;"><input id="senderAll" type="checkbox"/></th> <%-- 전체삭제 체크박스 --%>
+					<%-- <th style="width: 70px; text-align: center;">번호</th> --%>
 					<th style="width: 360px;text-align: center;">쪽지 내용</th>
 					<th style="width: 360px;text-align: center;">첨부파일</th>
 					<th style="width: 85px; text-align: center;">받는 사람</th>
@@ -142,7 +202,8 @@ td {
 			<tbody>
 				<c:forEach var="jjokjivo" items="${requestScope.sendList}">
 					<tr>
-						<td >${jjokjivo.jseq}</td>
+						<td><input class="schkbox" type="checkbox" name="schk"/> <input type="hidden" value="${jjokjivo.jseq}"/></td>
+						<%-- <td>${jjokjivo.jseq}</td> --%>
 						<td style="font-weight: bold;">${jjokjivo.jjokjiContent}</td>
 						<td >
 						<c:if test="${sessionScope.loginuser != null}">
@@ -167,13 +228,5 @@ td {
 		
 		
 		
-		<%-- === #124. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후 === //
-		  사용자가 목록보기 버튼을 클릭했을 떄 돌아갈 페이지를 알려주기위해 현재 페이지 주소를 뷰단에 넘겨준다 --%>
-		<form name="goViewFrm"> <%-- 폼태그에 담아서 view.jsp에 전송할 것이다. --%>
-			<input type="hidden" name="seq" />
-			<input type="hidden" name="gobackURL" />
-			<input type="hidden" name="searchType" /> 
-			<input type="hidden" name="searchWord" />
-		</form>
-	
+		
 </div>	

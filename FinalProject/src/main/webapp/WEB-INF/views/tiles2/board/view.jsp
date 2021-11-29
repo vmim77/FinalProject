@@ -94,8 +94,8 @@
 				 ,"parentSeq":$("input#parentSeq").val()},
 			type:"POST",
 			dataType:"JSON",
-			success:function(json){  //      {"n":1, "name":"이순신"}
-			                         // 또는    {"n":0, "name":"이순신"}
+			success:function(json){  
+				
 			    var n = json.n; 
 			    
 			    if(n==0) {

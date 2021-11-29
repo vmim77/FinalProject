@@ -197,9 +197,16 @@ public class RuDAO implements InterRuDAO {
 	
 	
 //================================================================================================
+	// 수신함,발신함 쪽지 삭제하기(Ajax 로 처리)
+	@Override
+	public int jjokjiListDel(Map<String, String[]> map) {
+		int n = sqlsession2.delete("Ru.jjokjiListDel", map);
+		return n;
+	}
+	
+	
+//================================================================================================
 		
-	
-	
 	
 	
 	
