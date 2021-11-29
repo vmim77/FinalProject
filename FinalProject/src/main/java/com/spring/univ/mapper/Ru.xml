@@ -40,7 +40,7 @@
 	
 	<!-- 글1개 조회하기 추가-->
 	
-	<select id="getView" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO">
+	<!-- <select id="getView" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO">
 		select previousseq, previoussubject, 
 		       seq, fk_hakbun, name, subject, content, readCount, regDate, nextseq, nextsubject
 		from 
@@ -53,6 +53,28 @@
 		           , lead(subject, 1) over(order by seq desc) AS nextsubject		        
 		    from tbl_FreeBoard
 		    where status = 1
+		    <if test='searchType != "" and searchWord != ""'>
+		    and lower(${searchType}) like '%'||lower(#{searchWord}) ||'%'
+		    </if>
+		) V 
+		where V.seq = #{seq}
+	</select> -->
+	<!-- 아래로 수정함  -->
+	<select id="getView" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO">
+		select previousseq, previoussubject, 
+		       seq, fk_hakbun, name, subject, content, readCount, regDate, nextseq, nextsubject, fk_code 
+		from 
+		(
+		    select   lag(seq, 1) over(order by seq desc) AS previousseq
+		           , lag(subject, 1) over(order by seq desc) AS previoussubject		           
+		           , seq, fk_hakbun, name, subject, content, readCount
+		           , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate		    
+		           , lead(seq, 1) over(order by seq desc) AS nextseq
+		           , lead(subject, 1) over(order by seq desc) AS nextsubject
+		           , fk_code 		        
+		    from tbl_FreeBoard
+		    where status = 1
+		    and fk_code = #{fk_code}
 		    <if test='searchType != "" and searchWord != ""'>
 		    and lower(${searchType}) like '%'||lower(#{searchWord}) ||'%'
 		    </if>
@@ -72,7 +94,7 @@
     <update id="edit" parameterType="com.spring.univ.model.FreeBoardVO">
         update tbl_FreeBoard set subject = #{subject}
                                , content = #{content}
-        where seq = #{seq} and pw = #{pw} 
+        where seq = #{seq} and pw = #{pw}
     </update>
 
 
@@ -127,6 +149,7 @@
          select count(*)
 	     from tbl_FreeBoard 
 		 where status = 1
+		 and fk_code = #{fk_code}
 		 <if test='searchWord != ""'>  
 		 and lower(${searchType}) like '%'||lower(#{searchWord})||'%'
 		 </if> 
@@ -134,15 +157,17 @@
 	
     <!-- 페이징 처리한 글목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함한것) 답글포함 -->
     <select id="boardListSearchWithPaging" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO"> 
-    select seq, fk_hakbun, name, subject, readCount, regDate, commentCount 
+    select seq, fk_hakbun, name, subject, readCount, regDate, commentCount, fk_code 
 	from 
 	(
 	    select row_number() over(order by seq desc) AS rno
 	         , seq, fk_hakbun, name, subject
 	         , readCount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
 	         , commentCount
+	         , fk_code
 	    from tbl_FreeBoard 
 	    where status = 1
+	    and fk_code = #{fk_code}
 	    <if test='searchType != "" and searchWord != ""'>
 	    and lower( ${searchType} ) like '%'|| lower( #{searchWord} ) ||'%'
 	    </if>
@@ -172,5 +197,159 @@
 	   from tbl_FreeComment
 	   where status = 1 and parentSeq = #{parentSeq}
     </select>
+    
+    
+
+    <!-- 쪽지 --> 
+    
+    <resultMap type="HashMap" id="jjokjiListMap">
+	    <result property="jseq" 			column="jseq"			javaType="String" />
+	    <result property="receive_hakbun" 	column="receive_hakbun" javaType="String" />
+	    <result property="sender_hakbun" 	column="sender_hakbun"  javaType="String" />
+	    <result property="jjokjiTime" 		column="jjokjiTime" 	javaType="String" />
+	    <result property="jjokjiContent" 	column="jjokjiContent"  javaType="String" />
+	    <result property="fileName" 		column="fileName" 		javaType="String" />
+	    <result property="orgFilename" 		column="orgFilename" 	javaType="String" />
+	    <result property="fileSize" 		column="fileSize" 		javaType="String" />
+	    <result property="name" 			column="name" 			javaType="String" />
+	</resultMap>
+   
+   
+    <!-- 수신함 목록 총 게시물 건수(totalCount) 구하기-->
+    <select id="receiveTotalCount" parameterType="HashMap" resultType="int" >
+       select count(*)
+	   from tbl_jjokji J
+	   JOIN tbl_member M
+	   ON J.sender_hakbun= M.hakbun
+	   where receive_hakbun = #{fk_hakbun}
+   </select>
+   
+   
+   <!-- 쪽지 수신함 목록 가져오기-->  
+  <!--   <select id="receiveList" parameterType="HashMap" resultMap="jjokjiListMap"> 
+  	 	select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+		from tbl_jjokji J
+		JOIN tbl_member M
+		ON J.sender_hakbun= M.hakbun
+		where receive_hakbun= #{fk_hakbun}
+    </select>  -->
+    
+    <!-- 쪽지 수신함 목록 가져오기 페이징처리 -->  
+     <select id="receiveList" parameterType="HashMap" resultMap="jjokjiListMap"> 
+  	 	select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+		from 
+		(
+		    select row_number() over(order by jseq desc) AS rno,
+		         jseq, receive_hakbun, sender_hakbun, jjokjiTime, 
+	             jjokjiContent, fileName, orgFilename, fileSize, name
+		   from tbl_jjokji J
+	       JOIN tbl_member M
+	       ON J.sender_hakbun= M.hakbun
+	       where receive_hakbun = #{fk_hakbun} 
+		) V
+		where rno between #{startRno} and #{endRno}
+    </select>  
+    
+    <!-- 발신함 목록 총 게시물 건수(totalCount) 구하기-->
+   <select id="sendTotalCount" parameterType="HashMap" resultType="int" >
+	     select count(*)
+	   	 from tbl_jjokji J
+	     JOIN tbl_member M
+	     ON J.receive_hakbun= M.hakbun
+	     where sender_hakbun= #{fk_hakbun}
+    </select> 
+     
+    
+    
+     <!-- 쪽지 발신함 목록 가져오기-->
+     
+ <!--    <select id="sendList" parameterType="HashMap" resultMap="jjokjiListMap"> 
+  	 	select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+		from tbl_jjokji J
+		JOIN tbl_member M
+		ON J.receive_hakbun= M.hakbun
+		where sender_hakbun= #{fk_hakbun}
+    </select>   
+      -->
+     
+     
+    <!-- 쪽지 발신함 목록 가져오기 페이징처리 -->  
+    <select id="sendList" parameterType="HashMap" resultMap="jjokjiListMap"> 
+  	 	select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize, name
+		from  
+		(
+		    select row_number() over(order by jseq desc) AS rno,
+		         jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, 
+	             fileName, orgFilename, fileSize, name
+	        from tbl_jjokji J
+	        JOIN tbl_member M
+	        ON J.receive_hakbun= M.hakbun
+	        where sender_hakbun= #{fk_hakbun} 
+		) V
+		 where rno between #{startRno} and #{endRno}
+    </select> 
+     
+    
+    
+    
+    
+    
+    
+    
+    <!-- === 쪽지 첨부파일 없는 경우 === -->
+	<insert id="sendjjokji" parameterType="com.spring.univ.model.JjokjiVO">
+		insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent)
+		values(jseq.nextval, #{receive_hakbun}, #{sender_hakbun}, default, #{jjokjiContent})
+	</insert>
+	
+	
+	
+	<!-- === 쪽지 첨부파일이 있는 경우 === -->
+	<insert id="sendjjokji_withFile" parameterType="com.spring.univ.model.JjokjiVO">
+		insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize)
+		values(jseq.nextval, #{receive_hakbun}, #{sender_hakbun}, default, #{jjokjiContent}, #{fileName}, #{orgFilename}, #{fileSize})
+	</insert>
+    
+    
+    <!-- === 쪽지 첨부파일 다운로드 받기 ===  -->
+    <select id="getjjokjiList" parameterType="HashMap" resultType="com.spring.univ.model.JjokjiVO">
+    	select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize
+		from tbl_jjokji
+		where jseq = #{jseq}
+    </select>
+    
+    
+    
+    
+    <!-- 쪽지 보내기 과목 및 과목번호 가져오기 -->
+	<select id="getDeptList" resultType="com.spring.univ.model.DepartmentVO">
+		select deptCode, deptName
+		from tbl_department
+		order by deptCode
+	</select>
+    
+    
+    <!-- 쪽지 보내기 담당교수 가져오기 -->
+    <select id="getTeacherList" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">
+    select name, hakbun
+	from tbl_member
+	where fk_deptCode = #{fk_deptCode} and authority = '1'
+	</select>
+	
+	
+	
+	
+	<!-- 수신함,발신함 쪽지 삭제하기 -->
+	<delete id="jjokjiListDel" parameterType="HashMap">
+      delete tbl_jjokji
+      where jseq in
+      <foreach collection="jseqArr1" index="i" open="(" separator="," close=")"> 
+           ${jseqArr1[i]}
+      </foreach>
+   </delete>
+	
+
+	
+	    
 	
 </mapper>

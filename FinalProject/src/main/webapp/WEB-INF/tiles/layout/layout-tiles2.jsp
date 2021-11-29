@@ -283,16 +283,10 @@
                  </c:if>
   	                           
                <c:if test="${not empty sessionScope.loginuser}">
-                  <a class="btn btn-secondary btn-sm justify-content-center" href="#">나의정보</a>
+                  <a class="btn btn-secondary btn-sm justify-content-center" href="<%= ctxPath%>/Myinfo.univ">나의정보</a>
                   <a class="btn btn-secondary btn-sm justify-content-center" href="<%=ctxPath%>/logout.univ">로그아웃</a>
                </c:if>
          </div>
-			<hr>
-			<ul id="MySubjectList" class="list-group list-group-flush" style="width: 90%; list-style: none; padding: 0;">
-				  <li class="list-group-item icons"><span>설정</span></li>
-				  <li class="list-group-item icons"><span>알람</span></li>
-				  <li class="list-group-item icons"><span>파일</span></li>
-			</ul>
 		</div>
 		<%-- 계정 퀵메뉴 --%>
 		

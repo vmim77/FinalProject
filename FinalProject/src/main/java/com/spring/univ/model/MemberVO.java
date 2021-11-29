@@ -2,6 +2,8 @@ package com.spring.univ.model;
 
 import java.util.Calendar;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class MemberVO {
 
 	/////////////////////////////////////////////////////////////////////
@@ -19,6 +21,9 @@ public class MemberVO {
 	private int authority;        // ( 0학생, 1교수, 2총 관리자 ) 
 	
 	/////////////////////////////////////////////////////////////////////
+	
+	
+	private MultipartFile attach;
 	
 	public MemberVO() {}
 	
@@ -141,5 +146,15 @@ public class MemberVO {
 	public void setAuthority(int authority) {
 		this.authority = authority;
 	}
+
+	public MultipartFile getAttach() {
+		return attach;
+	}
+
+	public void setAttach(MultipartFile attach) {
+		this.attach = attach;
+	}
+	
+	
 	
 }

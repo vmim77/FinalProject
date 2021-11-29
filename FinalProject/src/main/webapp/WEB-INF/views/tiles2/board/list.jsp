@@ -2,47 +2,96 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+ <!-- Font Awesome 5 Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    
 <% String ctxPath = request.getContextPath(); %>
 
 <style type="text/css">
 
+
 /* 부트스트랩 버튼 색 변경    */
 
-.btn-light {
-    background-color: #778899;
-    border-color: #778899;
+/* .btn-light {
+    background-color: #ffcc80; 
+    border-color: #ffcc80;
     color:  #FFF;}
 .btn-light:hover,
 .btn-light:focus {
-    border-color: #cccccc;
-    background-color: #cccccc;
+    border-color: #ffcc80;
+    background-color: #ffcc80;
     color: #FFF; }
-
-    .btn-dark {
-    background-color: #555555;
-    border-color: #555555;
+    
+    
+   .btn-secondary {
+    background-color: #ffb84d;
+    border-color: #ffb84d;
     color: #FFF; 
-    }
-.btn-dark:hover,
-.btn-dark:focus {
-    border-color: #cccccc;
-    background-color: #cccccc;
+    }    
+    
+	.btn-secondary:hover,
+	.btn-secondary:focus {
+    border-color: #ffcc80;
+    background-color: #ffcc80;
+    color: #FFF; }   
+ */
+
+
+/* 부트스트랩 버튼 색 변경    */
+
+.btn-light {
+    background-color: #ffffff;
+    border-color: #ff9900;
+    color:  #ff8c00;}
+.btn-light:hover,
+.btn-light:focus {
+    border-color: #ffcc80;
+    background-color: #ffcc80;
     color: #FFF; }
+    
+    
+   .btn-secondary {
+    background-color: #ffb84d;
+    border-color: #ffb84d;
+    color: #FFF; 
+    }    
+    
+	.btn-secondary:hover,
+	.btn-secondary:focus {
+    border-color: #ffcc80;
+    background-color: #ffcc80;
+    color: #FFF; }  
+    
+
 
 /* 게시판 정렬 , 글자색, 글자크기*/
 table td {
 	text-align: center;
-	color:#616161;
+	color:#616161; 
 	font-size: 15px;
 }
 
+
+
+.subjectStyle {font-weight: bold; 
+			   cursor: pointer;} 
+			   
+ 
 
 </style>
 
 <script type="text/javascript">
 
 	$(document).ready(function(){
+		
+		$("ul#sideMenuList > li:nth-child(4)").addClass("hoverdEffect");
+		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(4)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(4)").addClass("hoverdEffect");
+		});
 		
 		$("span.subject").bind("mouseover", function(event){
 			var $target = $(event.target);
@@ -103,7 +152,7 @@ table td {
 								// 입력한 내용 길이
 								var len = $("input#searchWord").val().length;
 								// 결과값넣기
-								var result = word.substr(0, index) + "<span style='color:blue;'>"+word.substr(index,len)+"</span>" + word.substr(index+len); 
+								var result = word.substr(0, index) + "<span style='color:orange;'>"+word.substr(index,len)+"</span>" + word.substr(index+len); 
 								
 								html += "<span style='cursor:pointer' class='result'>"+result+"</span><br>";
 							
@@ -168,11 +217,15 @@ table td {
 		var frm = document.searchFrm;
 		frm.method = "GET";
 		frm.action = "<%= request.getContextPath()%>/list.univ";
+		
+		//code를 추가했는데 맞게 한건지 다시 빼야하는지 모르겠다
 		frm.submit();
 	}// end of function goSearch() {}---------------------------------
 	
 </script>
-
+<i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
+<h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">자유게시판</span></h3>
+<hr style="clear: both;">
 <div class="container p-5" >
 
 <%-- === #101. 글검색 폼 추가하기 : 글제목, 글쓴이로 검색을 하도록 한다. === --%>
@@ -185,13 +238,13 @@ table td {
 			<input type="text" name="searchWord" id="searchWord" size="110" style="height: 30px; width: 250px; font-size: 12pt;  autocomplete="off" />
 			<input type="text" style="display: none;"/> <%-- form 태그내에 input 태그가 오로지 1개 뿐일경우에는 엔터를 했을 경우 검색이 되어지므로 이것을 방지하고자 만든것이다. --%>
 			&nbsp;
-			<button type="button" class="btn btn-secondary btn-sm" onclick="goSearch()">검색</button>
-			<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/add.univ'" class="btn btn-light float-right" style="font-size: 10pt; padding: 5px 12px; text-align: right;">+ 글쓰기</button>&nbsp;		
-		
+			<button type="button" class="btn btn-light btn-sm" onclick="goSearch()">검색</button>
+			<button type="button"  onclick="javascript:location.href='<%= request.getContextPath()%>/add.univ'" class="btn btn-secondary float-right" style="font-size: 10pt; padding: 5px 12px; text-align: right;">+ 글쓰기</button>&nbsp;		
+			
 		</form>
 		
 		<%-- === #106. 검색어 입력시 자동글 완성하기 1 === --%>
-		<div id="displayList" style="border: solid 1px gray; height: 100px; overflow: auto; margin-left: 77px; margin-top: -1px; border-top: 0px; "></div>	
+		<div id="displayList" style="border: solid 1px gray; height: 100px; overflow: auto; margin-left: 85px; margin-top: -16.6px; border-top: 0px; "></div>	
 </div>	
 		
 		
@@ -206,6 +259,7 @@ table td {
 					<th style="width: 150px; text-align: center;">글쓴이</th>
 					<th style="width: 150px; text-align: center;">작성일</th>
 					<th style="width: 70px; text-align: center;">조회수</th>
+					
 				</tr>	
 			</thead>
 			<tbody>
@@ -229,6 +283,7 @@ table td {
 						<td align="center">${freeboardvo.name} (${freeboardvo.fk_hakbun})</td>
 						<td align="center">${freeboardvo.regDate}</td>
 						<td align="center">${freeboardvo.readCount}</td>
+						
 					</tr>
 				</c:forEach>	
 			</tbody>

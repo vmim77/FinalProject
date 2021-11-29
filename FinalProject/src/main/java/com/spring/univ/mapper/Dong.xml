@@ -5,6 +5,7 @@
 
 <!-- ====  루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="Dong">
+	<!-- 로그인  -->
 	<select id="getLoginMember" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">
 		select hakbun, name, birth, fk_deptCode, pwd, email,
 		address, status,picture,phone,authority
@@ -12,10 +13,106 @@
 		where status = 1 and hakbun = #{hakbun} and pwd = #{pwd}
 	</select>
 	
-	<select id="getTeacher" resultType="com.spring.univ.model.SubjectVO">
-		select code,subject,teacher,ban,hakjum,classdate,fk_deptcode
-		from tbl_subject
+	
+	<resultMap type="HashMap" id="sugangMap">
+		<result property="code" column="code" javaType="String" />
+		<result property="subject" column="subject" javaType="String" />
+		<result property="hakbun" column="hakbun" javaType="String" />
+		<result property="name" column="name" javaType="String" />
+		<result property="picture" column="picture" javaType="String" />
+	</resultMap>
+	
+	<!-- 교수 보여주기 -->
+	<select id="getTeacher" resultMap="sugangMap" parameterType="HashMap">
+		select picture , (select subject
+                 from tbl_subject
+                 where code = #{code}) as subject, hakbun , name
+		from tbl_member m
+		join tbl_sugang s
+		on m.hakbun = s.fk_hakbun
+		where s.fk_code = #{code}
+		order by hakbun asc
 	</select>
 	
-<!-- === -->		
+	<!-- 개인정보 수정하기-->
+	<update id="MyUpdate" parameterType="com.spring.univ.model.MemberVO">
+		update tbl_member set pwd= #{pwd} ,phone= #{phone}, email= #{email}, address= #{address}
+		where hakbun = #{hakbun}
+	</update>
+	
+	
+	<!-- 마이페이지 보여주기 -->
+	<select id="getMyMember" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">
+		select name,hakbun,phone,email,address
+		from tbl_member
+		where hakbun = #{hakbun}
+	</select>
+	
+	
+	<!-- 사진 추가하기 -->
+	<update id="getPicture" parameterType="com.spring.univ.model.MemberVO" >
+		update tbl_member set picture = #{picture}
+		where hakbun = #{hakbun}
+	</update>
+	
+	
+	<!-- 시간표 보여주기 -->
+	<select id="getselectSugangList" parameterType="HashMap" resultType="com.spring.univ.model.SubjectVO"> 
+	  select classDate, subject
+		from tbl_subject t
+		join tbl_sugang g
+		on t.code = g.fk_code
+		where g.fk_hakbun = #{hakbun}
+	</select>
+	
+	<!-- 비밀번호 찾기  -->
+	<select id="getpwdFindEnd" parameterType="HashMap" resultType="String">
+		select pwd
+		from tbl_member
+		where hakbun = #{hakbun}
+	</select>
+	
+	<!-- 내가 신청한 전공평가 가져오기 -->
+	<select id="getServeyList" parameterType="String" resultMap="ServeyMap">
+		select (select name
+        		from tbl_member
+        		where hakbun = t.fk_hakbun) as name, y.serveyTopic, y.serveyCode
+		from tbl_servey y
+		join tbl_subject t
+		on y.serveyCode = t.code
+		join tbl_sugang g
+		on g.fk_code = t.code
+		where g.fk_hakbun = #{hakbun}
+		order by y.serveyCode
+	</select>
+
+	<resultMap type="HashMap" id="ServeyMap">
+      <result property="name" column="name" javaType="String" />
+       <result property="serveyTopic" column="serveyTopic" javaType="String" /> 
+        <result property="serveyCode" column="serveyCode" javaType="String" />   
+   </resultMap>
+
+	<!-- 강의평가 했는지 확인하기 -->
+	<select id="getServeyMemberList" parameterType="HashMap" resultType="String">
+		select serveyDate
+		from tbl_serveyMember
+		where fk_hakbun = #{hakbun} and fk_serveyCode = #{serveyCode}
+	</select>
+	
+	<!-- 설문조사 가져오기 -->
+	<select id="getSeolmoonList" resultType="com.spring.univ.model.ServeyVO">
+		select serveyCode, serveyTopic
+        from tbl_servey
+        where serveycode = '0001'
+	</select>
+	
+	
+	<!-- 강의평가 했는지 확인하기 -->
+	<select id="getSeolmoonMemberList" parameterType="HashMap" resultType="String">
+		select serveyDate
+        from tbl_serveymember
+        where fk_hakbun = #{hakbun} and fk_serveycode = '0001'
+	</select>
+	
+	
 </mapper>

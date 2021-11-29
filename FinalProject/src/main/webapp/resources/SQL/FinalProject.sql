@@ -778,3 +778,11 @@ values('수업일수3/4', '2021/11/17', default);
 
 select title, startday, endday, allday
 from tbl_academic_calendar
+
+select name, picture
+from tbl_member;
+
+update tbl_member set picture = 'wonbin.jpg'
+where name = '원빈'
+
+commit;

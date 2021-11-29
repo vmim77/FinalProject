@@ -452,7 +452,6 @@ public class JaeController {
 			   HttpSession session = mrequest.getSession();
 			   String root = session.getServletContext().getRealPath("/");
 			   
-			   System.out.println("~~~~확인용 webapp 의 절대경로 => " + root);
 			   //C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\
 			   
 			   String path = root + "resources" + File.separator + "files";
@@ -591,7 +590,6 @@ public class JaeController {
 				   HttpSession session = request.getSession();
 				   String root = session.getServletContext().getRealPath("/");
 				   
-				   System.out.println("~~~~확인용 webapp 의 절대경로 => " + root);
 				   //C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\
 				   
 				   String path = root + "resources" + File.separator + "files";
