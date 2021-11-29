@@ -3,14 +3,14 @@ package com.spring.univ.model;
 import org.springframework.web.multipart.MultipartFile;
 
 public class JjokjiVO {
-	private String jseq; 			// 쪽지번호 
-	private String receive_hakbun;  // 수신자
-	private String sender_hakbun;   // 발신자
-	private String jjokjiTime;		// 보낸시간
-	private String jjokjiContent;   //  쪽지내용
-	private String fileName; 		//  WAS(톰캣)에 저장될 파일명(2021110809271535243254235235234.png) 
-	private String orgFilename; 	//  진짜 파일명(강아지.png)  // 사용자가 파일을 업로드 하거나 파일을 다운로드 할때 사용되어지는 파일명 
-	private String fileSize;		//  파일크기
+	private String jseq = ""; 			 // 쪽지번호 
+	private String receive_hakbun = "";  // 수신자
+	private String sender_hakbun = "";   // 발신자
+	private String jjokjiTime = "";		 // 보낸시간
+	private String jjokjiContent = "";   //  쪽지내용
+	private String fileName = ""; 		 //  WAS(톰캣)에 저장될 파일명(2021110809271535243254235235234.png) 
+	private String orgFilename = ""; 	 //  진짜 파일명(강아지.png)  // 사용자가 파일을 업로드 하거나 파일을 다운로드 할때 사용되어지는 파일명 
+	private String fileSize = "";		 //  파일크기
 	
 	private String star;			// 추가
 	
