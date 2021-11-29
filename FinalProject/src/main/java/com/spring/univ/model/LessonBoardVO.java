@@ -1,5 +1,7 @@
 package com.spring.univ.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class LessonBoardVO {
 	
 	/////////////////////////////////////////////////////////////////////
@@ -14,17 +16,27 @@ public class LessonBoardVO {
 	private String regDate;			// 글쓴시간
 	private String status;			// 글삭제여부	1:사용가능한 글, 0:삭제된글
 	private String commentCount;	// 조회수
+	
+	
+	private MultipartFile attach; 	// 폼태그에서 첨부된 파일
 	private String fileName;		// WAS에 저장될 파일명
 	private String orgFilename;		// 진짜 파일명
 	private String fileSize;		// 파일사이즈
 	
 	/////////////////////////////////////////////////////////////////////
 	
+	private String previousSeq;		// 이전글 시퀀스
+	private String previousSubject;	// 이전글 제목
+	private String nextSeq;			// 다음글 시퀀스
+	private String nextSubject;		// 다음글 제목
+	
+	////////////////////////////////////////////////////////////////////
+	
 	public LessonBoardVO() {}
 	
 	public LessonBoardVO(String seq, String fk_hakbun, String fk_code, String name, String subject, String content, String pw,
 			String readCount, String regDate, String status, String commentCount, String fileName, String orgFilename,
-			String fileSize) {
+			String fileSize, String previousSeq, String previousSubject, String nextSeq, String nextSubject) {
 		this.seq = seq;
 		this.fk_hakbun = fk_hakbun;
 		this.fk_code = fk_code;
@@ -38,6 +50,10 @@ public class LessonBoardVO {
 		this.fileName = fileName;
 		this.orgFilename = orgFilename;
 		this.fileSize = fileSize;
+		this.previousSeq = previousSeq;
+		this.previousSubject = previousSubject;
+		this.nextSeq = nextSeq;
+		this.nextSubject = nextSubject;
 	}
 
 	public String getSeq() {
@@ -143,6 +159,47 @@ public class LessonBoardVO {
 	public void setFk_code(String fk_code) {
 		this.fk_code = fk_code;
 	}
+
+	public MultipartFile getAttach() {
+		return attach;
+	}
+
+	public void setAttach(MultipartFile attach) {
+		this.attach = attach;
+	}
+
+	public String getPreviousSeq() {
+		return previousSeq;
+	}
+
+	public void setPreviousSeq(String previousSeq) {
+		this.previousSeq = previousSeq;
+	}
+
+	public String getPreviousSubject() {
+		return previousSubject;
+	}
+
+	public void setPreviousSubject(String previousSubject) {
+		this.previousSubject = previousSubject;
+	}
+
+	public String getNextSeq() {
+		return nextSeq;
+	}
+
+	public void setNextSeq(String nextSeq) {
+		this.nextSeq = nextSeq;
+	}
+
+	public String getNextSubject() {
+		return nextSubject;
+	}
+
+	public void setNextSubject(String nextSubject) {
+		this.nextSubject = nextSubject;
+	}
+	
 	
 	
 	

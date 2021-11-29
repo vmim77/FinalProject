@@ -5,10 +5,77 @@
 
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="Min">
-	<select id="getWeekList"  resultType="com.spring.univ.model.WeekVO">
-		select fk_week,lesson,video,savefile,uploadfile,seq
-		from tbl_weeklesson
+	  <resultMap type="HashMap" id="mapgetclassList">
+      <result property="code"  column="code"  javaType="String"/>
+      <result property="subject"  column="subject"  javaType="String"/>     
+      <result property="fk_hakbun"  column="fk_hakbun"  javaType="String"/>
+      <result property="hakjum"  column="hakjum"  javaType="String"/>
+      <result property="classdate"  column="classdate"  javaType="String"/>
+      <result property="fk_deptcode"  column="deptcode"  javaType="String"/>
+      <result property="week"  column="week"  javaType="String"/>
+      <result property="startday"  column="startday"  javaType="String"/>
+      <result property="lesson"  column="lesson"  javaType="String"/>
+      <result property="lessonseq"  column="lessonseq"  javaType="String"/>
+      <result property="video"  column="video"  javaType="String"/>
+      <result property="savefile"  column="savefile"  javaType="String"/>
+      <result property="uploadfile"  column="uploadfile"  javaType="String"/>
+      <result property="weekseq"  column="weekseq"  javaType="String"/>
+   </resultMap>
+   
+   <select id="getSubList"  parameterType="String" resultMap="mapgetclassList">
+      select A.code AS code, A.subject AS subject, A.fk_hakbun AS fk_hakbun, A.hakjum AS hakjum
+      , A.classdate AS classdate, A.fk_deptcode AS deptcode
+      , B.week AS week, B.startday AS startday, B.weekseq AS weekseq
+      , C.lessonseq AS lessonseq, C.lesson AS lesson, C.video AS video, C.savefile AS savefile, C.uploadfile AS uploadfile
+      from tbl_subject A
+      JOIN tbl_week B
+      ON A.code = B.fk_code
+      JOIN tbl_weeklesson C
+      ON B.weekseq = C.fk_weekseq
+      where week=#{week}
+      order by week, lesson asc
+   </select>
+   
+   <!-- 주차 가져오기 -->
+   <select id="getWeekList" resultType="com.spring.univ.model.WeekVO">
+		select week
+		from tbl_week
 	</select>
+	
+	<!-- 강의평가 -->
+	<select id="Teacherservey" resultType="com.spring.univ.model.SubjectVO" parameterType="String">
+		select subject, (select name
+                 		from tbl_member
+                 		where hakbun = (select fk_hakbun
+                                 		from tbl_subject
+                                 		where code = #{serveyCode})) as fk_hakbun, code
+		from tbl_subject
+		where code = #{serveyCode}
+	</select>
+
+	<!-- 강의평가 결과 -->
+	<insert id="resultUpdate" parameterType="HashMap">
+        insert into tbl_serveyresult(fk_serveynum, serveychecknum, fk_serveyCode)
+        values(#{serveyCode}, #{serveychecknum}, #{serveyCode})
+    </insert>
+    
+    <!-- 강의평가 참여 -->
+    <insert id="attendance" parameterType="HashMap">
+        insert into tbl_serveyMember(fk_serveycode, fk_hakbun, serveydate)
+        values(#{serveyCode}, #{hakbun}, default)
+    </insert>
+
+	<!-- 설문조사 결과 -->
+	<insert id="outcomeUpdate" parameterType="HashMap">
+        insert into tbl_serveyresult(fk_serveynum, serveychecknum, fk_serveyCode)
+        values(#{fk_serveynum}, #{serveychecknum}, '0001')
+    </insert>
+    
+    <!-- 설문조사 참여 -->
+    <insert id="seolattendance" parameterType="HashMap">
+        insert into tbl_serveyMember(fk_serveycode, serveydate, fk_hakbun)
+        values('0001', default, #{hakbun})
+    </insert>
 	
 	
 </mapper>
