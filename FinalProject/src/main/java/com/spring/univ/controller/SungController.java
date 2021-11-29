@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.servlet.ServletOutputStream;
@@ -79,6 +80,9 @@ public class SungController {
 	
 	@Autowired
 	private InterSungService service;
+	
+	@Autowired
+    private InterJaeService Jaeservice;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	// 대쉬보드 페이지
 	@RequestMapping(value="/dashboard.univ")
@@ -91,7 +95,144 @@ public class SungController {
 	// 과목메뉴 메인 페이지
 	@RequestMapping(value="/subject.univ")
 	public ModelAndView subject_subject(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
-		
+		 HttpSession session = request.getSession();
+	      MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+	      
+	      String fk_hakbun = loginuser.getHakbun();
+	      String code = (String) session.getAttribute("code");
+	      
+	      List<WeekVO> getWeek = Jaeservice.getWeek(code);
+	      List<Map<String,String>> classList = Jaeservice.getclassList(code);
+	      
+	      List<String> lessonCntList = new ArrayList<>();
+	      
+	      //총 학습현황 횟수 알아오려는 용도
+	      int totalCommentCnt = 0;
+	      
+	      if(getWeek.size()>0){
+	         
+	      
+	         for(WeekVO wvo : getWeek) {
+	            
+	            Map<String,String> paraMap = new HashMap<>();
+	            paraMap.put("week", wvo.getWeek());
+	            paraMap.put("code", code);
+	            paraMap.put("fk_hakbun", fk_hakbun);
+	            
+	            
+	            //과목의 각 주차당 몇개의 차시가 있는지 알아오기
+	            String lessonCnt = Jaeservice.getlessonCnt(paraMap);
+	                                                                                 
+	            lessonCntList.add(lessonCnt);
+	            
+	         }
+	      }
+	      else {
+	         mav.addObject("message","등록된 강의가 없어 출석현황이 없습니다.");
+	         mav.addObject("loc", "javascript:history.back()");
+	         mav.setViewName("msg");
+	      }
+	      List<String> lessonCheckList = new ArrayList<>();
+	      List<String> lessonCommentList = new ArrayList<>();
+	      
+	      
+	      if(classList.size()>0) {
+	         
+	      
+	         for(Map<String,String> map : classList) {
+	            
+	            Map<String,String> paraMap2 = new HashMap<>();
+	            paraMap2.put("code", code);
+	            paraMap2.put("fk_hakbun", fk_hakbun);
+	            paraMap2.put("lessonseq", map.get("lessonseq"));
+	            
+	            //출석현황에서 어떤걸 출석했는지 알아오기 
+	                        
+	            //출석현황에서 학습현황 보여주려고    각 수업 게시물에 댓글쓴걸 알아온다.
+	            String lessonComment = Jaeservice.getlessonComment(paraMap2);            
+	            if(Integer.parseInt(lessonComment) >0) {
+	               totalCommentCnt++;
+	            }
+	            
+	            lessonCommentList.add(lessonComment);
+	            
+	            
+	            String endday = map.get("endday");
+	            String endPlusday = map.get("endPlusday");
+	         //   String endday = "2021-11-25";
+	         //   String endPlusday = "2021-12-03";
+	            
+	         //  String endPlusday = "2021-11-27";
+	            
+	         //   System.out.println(endday); //2022-02-27
+	         //   System.out.println(endPlusday); //2022-02-27
+	            
+	            
+	            Calendar currentDate = Calendar.getInstance(); // 현재날짜와 시간을 얻어온다.
+	              SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	              String currentTime = dateFormat.format(currentDate.getTime());
+	              
+	             // currentDate.add(currentTime, arg1);
+	              
+	              int compare = endday.compareTo(currentTime);
+	              int compare2 = endPlusday.compareTo(currentTime);
+	              
+	              if(compare > 0 ) {// 정상 출석햇을 경우
+	            //     System.out.println("정상 출석 및 미결 보여주는 구간");
+	                 String lessonCheck = Jaeservice.getlessonCheck(paraMap2);         
+	               lessonCheckList.add(lessonCheck);
+	              }
+	              else if(compare < 0 && compare2 > 0) {  // 기간 내 수업 안들으면 일단 지각처리로 하고 일주일간 지각출석 인정기간을 준다.
+	             //    System.out.println("지각 인정기간");
+	                 String lessonCheck = Jaeservice.getlessonCheck(paraMap2);
+	                 //System.out.println(lessonCheck);
+	                 if(lessonCheck.equals("0")) {// 지각인정기간전까지 출석을 안했을 경우 status를 2로하고 출석테이블에 insert 해준다.
+	                    
+	                    int n = Jaeservice.goLateAttend(paraMap2);
+	                    
+	                    if(n==1) {
+	                    //이제는 count로 알아오는게 아닌 status로 알아온다. 
+	                    lessonCheck = Jaeservice.getlessonCheck2(paraMap2);
+	                    lessonCheckList.add(lessonCheck);
+	                    }
+	                    else {
+	                       System.out.println("지각 인정기간 인서트 실패");
+	                    }
+	                 }
+	                 else {// 지각인정기간전까지 출석 했을경우 출석테이블에 status 1 로 이미 insert 되어있을 테니까 그 값을 알아와 넣어준다. 
+	                      //또한 지각으로 등록이 되고 난후 다시 읽어올땐 더이상 출석테이블에 인서트 되지 않은 차시 수업은 없기때문에 그대로 불러오면 된다.
+	                    lessonCheck = Jaeservice.getlessonCheck2(paraMap2);
+	                    lessonCheckList.add(lessonCheck);
+	                 }
+	                 
+	                 
+	              }
+	              else if(compare2 < 0){// 지각 인정기간에도 출석을 안했을 경우   ==> 결석 처리
+	             //    System.out.println("결석");
+	                 //먼저 status 를 알아오고 지각 인정기간을 넘었는데도 수강하지않은 과목들인 status가 2인 것들을 4로 업데이트해준다. 그리고 다시 알아와서 넣어준다.
+	                 String lessonCheck = Jaeservice.getlessonCheck2(paraMap2);
+	                 
+	                 if(lessonCheck.equals("2")) {
+	                    //결석처리 업데이트
+	                    int upSuccess = Jaeservice.notAttendUpdate(paraMap2);
+	                    
+	                    if(upSuccess == 1) {//업데이트 성공했다면 다시 알아와서 넣어준다.
+	                       lessonCheck = Jaeservice.getlessonCheck2(paraMap2);
+	                       lessonCheckList.add(lessonCheck);
+	                    }
+	                 }
+	                 else {
+	                    lessonCheckList.add(lessonCheck);
+	                 }
+	                 
+	              }
+	         }// end of for--------
+	      }
+	      else {
+	         mav.addObject("message","등록된 강의가 없어 출석현황이 없습니다.");
+	         mav.addObject("loc", "javascript:history.back()");
+	         mav.setViewName("msg");
+	      }
 		mav.setViewName("Sunghyun/subject.tiles2");
 		return mav;
 	}
@@ -714,7 +855,7 @@ public class SungController {
 	// 강의자료실 댓글삭제
 	@ResponseBody
 	@RequestMapping(value="/deleteLessonComment.univ", method= {RequestMethod.POST} , produces="text/plain;charset=UTF-8")
-	public String subject_deleteLessonComment(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, LessonBoardVO lbvo) {
+	public String subject_deleteLessonComment(HttpServletRequest request, HttpServletResponse response, LessonBoardVO lbvo) {
 		
 		String seq = request.getParameter("seq");
 		String parentSeq = request.getParameter("parentSeq");

@@ -3,6 +3,7 @@ package com.spring.univ.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,15 +74,59 @@ public class JaeController {
 	public ModelAndView subject_classContents(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
 		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+		String fk_hakbun = loginuser.getHakbun();
 		String code = (String) session.getAttribute("code");
 		
 		List<WeekVO> getWeek = service.getWeek(code);
-		List<Map<String,String>> classList = service.getclassList();
+		List<Map<String,String>> classList = service.getclassList(code);
 		
+		List<String> lessonCntList = new ArrayList<>();
+		List<String> lessonAttendCntList = new ArrayList<>();
+		List<String> attendPctList = new ArrayList<>();
+		
+		double attendPct = 0;
+		
+		// 1/3  0/3   이거 보여주려고 만드는 것
+		for(WeekVO wvo : getWeek) {
+			
+			Map<String,String> paraMap = new HashMap<>();
+			paraMap.put("week", wvo.getWeek());
+			paraMap.put("code", code);
+			paraMap.put("fk_hakbun", fk_hakbun);
+			
+			//과목의 각 주차당 몇개의 차시가 있는지 알아오기
+			String lessonCnt = service.getlessonCnt(paraMap);
+					
+			//과목의 각 주차에 몇 개나 출석을 했는지 가져오기
+			String lessonAttendCnt = service.getlessonAttendCnt(paraMap);
+									
+			if(lessonCnt.equals("0")) {
+				
+				 attendPct = 0;
+				 
+			}
+			else {
+				 attendPct = (Math.round((double)Integer.parseInt(lessonAttendCnt)/(double)Integer.parseInt(lessonCnt)*100)/100.0)*100;
+				 //attendPct = 3;
+			}
+									
+			lessonCntList.add(lessonCnt);
+			lessonAttendCntList.add(lessonAttendCnt);
+			attendPctList.add(String.valueOf(attendPct));
+			
+		}
+		
+	//	System.out.println(lessonAttendCntList);
+	//	System.out.println(lessonCntList);
+	//	System.out.println(attendPctList);
 		
 		mav.addObject("code", code);
 		mav.addObject("getWeek", getWeek);
 		mav.addObject("classList", classList);
+		mav.addObject("lessonCntList", lessonCntList);
+		mav.addObject("lessonAttendCntList", lessonAttendCntList);
+		mav.addObject("attendPctList",attendPctList);
 		mav.setViewName("classContents.tiles2");
 		
 		return mav;
@@ -90,7 +135,7 @@ public class JaeController {
 		
 	}
 	
-	
+
 	//주차별 차시 정보들 가져오기(Ajax로 아코디언 꽂아주는 것)
 	@ResponseBody
 	@RequestMapping(value="/getlesson.univ" ,method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
@@ -125,8 +170,12 @@ public class JaeController {
 				paraMap.put("fk_lessonseq", lessonseq);
 				paraMap.put("fk_hakbun", fk_hakbun);
 				
-				int isCheck = service.getAttendCheck(paraMap);
+				String isCheck = service.getAttendCheck(paraMap);
 				
+				if(isCheck.equals("1")) {
+					
+					isCheck = service.getAttendStatus(paraMap);					
+				}
 				
 				
 				
@@ -353,7 +402,7 @@ public class JaeController {
 	
 	// 하나의 수업 정보 가져오기
 	@RequestMapping(value="/classContentsView.univ")
-	public ModelAndView classContentsView(HttpServletRequest request, ModelAndView mav) {
+	public ModelAndView subject_classContentsView(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
 		//String code = "0501";
 		//String week = "1";
@@ -374,6 +423,8 @@ public class JaeController {
 		//하나의 수업 정보 가져오기
 		Map<String,String> oneClassView = service.getOneClassView(paraMap);
 		
+		
+		
 		//주차별 차시 수업 정보들 가져오기 - 목록으로 돌아가기 넣기 위해
 		
 		Map<String,String> paraMap2 = new HashMap<>();
@@ -385,9 +436,37 @@ public class JaeController {
 		//교수가 올린 강의 게시물 가져오기
 		List<ClassContentBoardVO> classContentList = service.getclassContentList(lessonseq);
 		
+		String endday = oneClassView.get("endday");
+		String endPlusday = oneClassView.get("endPlusday");
+	//	String endday = "2021-11-25";
+	//	String endPlusday = "2021-12-03";
+	//	System.out.println(endday); //2022-02-27
+	//	System.out.println(endPlusday); //2022-02-27
+		
+	//	System.out.println(endday);
+		
+		Calendar currentDate = Calendar.getInstance(); // 현재날짜와 시간을 얻어온다.
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentTime = dateFormat.format(currentDate.getTime());
+        
+        int compare = endday.compareTo(currentTime);
+        int compare2 = endPlusday.compareTo(currentTime);
+        int period = 0; 
+        if(compare > 0 ) {
+        	period=0;
+        }
+        else if(compare < 0 && compare2 > 0) {
+        	period=1;
+        }
+        else if(compare2 < 0){
+        	period=2;
+        }
+		
+        
 		mav.addObject("oneClassView", oneClassView);
 		mav.addObject("classListbyWeek", classListbyWeek);
 		mav.addObject("classContentList", classContentList);
+		mav.addObject("period", period);
 		
 		mav.setViewName("classContentsView.tiles2");
 		
@@ -452,6 +531,7 @@ public class JaeController {
 			   HttpSession session = mrequest.getSession();
 			   String root = session.getServletContext().getRealPath("/");
 			   
+			   System.out.println("~~~~확인용 webapp 의 절대경로 => " + root);
 			   //C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\
 			   
 			   String path = root + "resources" + File.separator + "files";
@@ -590,6 +670,7 @@ public class JaeController {
 				   HttpSession session = request.getSession();
 				   String root = session.getServletContext().getRealPath("/");
 				   
+				   System.out.println("~~~~확인용 webapp 의 절대경로 => " + root);
 				   //C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\
 				   
 				   String path = root + "resources" + File.separator + "files";
@@ -1345,19 +1426,54 @@ public class JaeController {
 		else {
 			
 			try {
-				
+				//출석테이블에 넣기전 지각인지 결석인지 알아오기 - 지각이나 결석이라면 이미 테이블에 status 2,3,4로 들어가 있기 때문에 insert하려고 하면 유니크 제약으로 오류 발생
+			String lessonCheck = service.getlessonCheckForAttendInsert(paraMap);
+			
+			if(lessonCheck.equals("0")) {// 출석테이블에 없다면 인서트
 			 n = service.goAttend(paraMap);
-		
-			 	if(n==1) {
+			 
+			 if(n==1) {
 					
 					mav.addObject("message","학습을 완료하여 출석 처리되었습니다.");	   
 				}
 				else {
 					mav.addObject("message","출석 실패!!!!!");	 
 				}
+			 
+			}
+			else { // 출석테이블에 있다면 status가 뭔지 알아오고 1,2,3,4에 따라서 결과 정해주기
+				 
+				String status = service.getAttendStatus(paraMap);
+				
+				if(status.equals("1")) {
+					
+					mav.addObject("message","이미 수강완료 하셨습니다.!");	   
+				}
+				else if(status.equals("2")) {
+					mav.addObject("message","수강 완료하였으나 지각 처리 되었습니다.");  // 지각 인정기간에 들었을 경우 업데이트 필요
+					String lateUpdate = service.lateUpdate(paraMap);
+				}
+				else if(status.equals("3")) {
+					mav.addObject("message","이미 지각 처리된 수업입니다.");
+				}
+				else if(status.equals("4")) {
+					mav.addObject("message","결석 처리된 수업입니다.");
+				}
+				
+				else {
+					mav.addObject("message","출석 실패!!!!!");	 
+				}
+				
+			}
+			/*
+			 * if(n==1) {
+			 * 
+			 * mav.addObject("message","학습을 완료하여 출석 처리되었습니다."); } else {
+			 * mav.addObject("message","출석 실패!!!!!"); }
+			 */
 				
 			} catch (Exception e) {
-				mav.addObject("message","이미 수강완료 하셨습니다.!");	   
+				mav.addObject("message","이미 수강완료 하셨습니다.! 오라클 오류");	   
 				e.printStackTrace();
 			}
 			
@@ -1384,12 +1500,230 @@ public class JaeController {
 	   paraMap.put("fk_lessonseq", fk_lessonseq);
 	   paraMap.put("fk_hakbun", fk_hakbun);
 	   
-	   int n = service.attendCheck(paraMap);
+	   String n = service.attendCheck(paraMap);
+	 //  System.out.println("n값 확인 : " +n);
+	   
+	   if(n.equals("1")) {
+		    n = service.getAttendStatus(paraMap);
+		    //System.out.println("status값 확인 : " +n);
+		  /* 
+		   if(status.equals("1")) {
+				
+				 n=1;
+			}
+			else if(status.equals("2")) {
+				
+			}
+			else if(status.equals("3")) {
+				
+			}
+			else if(status.equals("4")) {
+				
+			}
+			
+			else {
+				
+			}
+			*/
+	   }
+	   
 	   
 	   JSONObject jsonObj = new JSONObject();
 	   jsonObj.put("n", n);     
 		   		   
 	   return jsonObj.toString();
+   }
+   
+   
+  
+   
+   // 출석체크 화면으로 가기
+   @RequestMapping(value="/attendView.univ")
+   public ModelAndView subject_attendView(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	
+	    HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+		
+		String fk_hakbun = loginuser.getHakbun();
+		String code = (String) session.getAttribute("code");
+		
+		List<WeekVO> getWeek = service.getWeek(code);
+		List<Map<String,String>> classList = service.getclassList(code);
+		
+		List<String> lessonCntList = new ArrayList<>();
+		
+		//총 학습현황 횟수 알아오려는 용도
+		int totalCommentCnt = 0;
+		
+		if(getWeek.size()>0){
+			
+		
+			for(WeekVO wvo : getWeek) {
+				
+				Map<String,String> paraMap = new HashMap<>();
+				paraMap.put("week", wvo.getWeek());
+				paraMap.put("code", code);
+				paraMap.put("fk_hakbun", fk_hakbun);
+				
+				
+				//과목의 각 주차당 몇개의 차시가 있는지 알아오기
+				String lessonCnt = service.getlessonCnt(paraMap);
+																											
+				lessonCntList.add(lessonCnt);
+				
+			}
+		}
+		else {
+			mav.addObject("message","등록된 강의가 없어 출석현황이 없습니다.");
+			mav.addObject("loc", "javascript:history.back()");
+			mav.setViewName("msg");
+		}
+		List<String> lessonCheckList = new ArrayList<>();
+		List<String> lessonCommentList = new ArrayList<>();
+		
+		
+		if(classList.size()>0) {
+			
+		
+			for(Map<String,String> map : classList) {
+				
+				Map<String,String> paraMap2 = new HashMap<>();
+				paraMap2.put("code", code);
+				paraMap2.put("fk_hakbun", fk_hakbun);
+				paraMap2.put("lessonseq", map.get("lessonseq"));
+				
+				//출석현황에서 어떤걸 출석했는지 알아오기 
+								
+				//출석현황에서 학습현황 보여주려고    각 수업 게시물에 댓글쓴걸 알아온다.
+				String lessonComment = service.getlessonComment(paraMap2);				
+				if(Integer.parseInt(lessonComment) >0) {
+					totalCommentCnt++;
+				}
+				
+				lessonCommentList.add(lessonComment);
+				
+				
+				String endday = map.get("endday");
+				String endPlusday = map.get("endPlusday");
+			//	String endday = "2021-11-25";
+			//	String endPlusday = "2021-12-03";
+			//	System.out.println(endday); //2022-02-27
+			//	System.out.println(endPlusday); //2022-02-27
+				
+				
+				Calendar currentDate = Calendar.getInstance(); // 현재날짜와 시간을 얻어온다.
+		        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		        String currentTime = dateFormat.format(currentDate.getTime());
+		        
+		       // currentDate.add(currentTime, arg1);
+		        
+		        int compare = endday.compareTo(currentTime);
+		        int compare2 = endPlusday.compareTo(currentTime);
+		        
+		        if(compare > 0 ) {// 정상 출석햇을 경우
+		      //  	System.out.println("정상 출석 및 미결 보여주는 구간");
+		        	String lessonCheck = service.getlessonCheck(paraMap2);			
+					lessonCheckList.add(lessonCheck);
+		        }
+		        else if(compare < 0 && compare2 > 0) {  // 기간 내 수업 안들으면 일단 지각처리로 하고 일주일간 지각출석 인정기간을 준다.
+		       // 	System.out.println("지각 인정기간");
+		        	String lessonCheck = service.getlessonCheck(paraMap2);
+		        	//System.out.println(lessonCheck);
+		        	if(lessonCheck.equals("0")) {// 지각인정기간전까지 출석을 안했을 경우 status를 2로하고 출석테이블에 insert 해준다.
+		        		
+		        		int n = service.goLateAttend(paraMap2);
+		        		
+		        		if(n==1) {
+		        		//이제는 count로 알아오는게 아닌 status로 알아온다. 
+		        		lessonCheck = service.getlessonCheck2(paraMap2);
+		        		lessonCheckList.add(lessonCheck);
+		        		}
+		        		else {
+		        			System.out.println("지각 인정기간 인서트 실패");
+		        		}
+		        	}
+		        	else {// 지각인정기간전까지 출석 했을경우 출석테이블에 status 1 로 이미 insert 되어있을 테니까 그 값을 알아와 넣어준다. 
+		        		  //또한 지각으로 등록이 되고 난후 다시 읽어올땐 더이상 출석테이블에 인서트 되지 않은 차시 수업은 없기때문에 그대로 불러오면 된다.
+		        		lessonCheck = service.getlessonCheck2(paraMap2);
+		        		lessonCheckList.add(lessonCheck);
+		        	}
+		        	
+		        	
+		        }
+		        else if(compare2 < 0){// 지각 인정기간에도 출석을 안했을 경우   ==> 결석 처리
+		       // 	System.out.println("결석");
+		        	//먼저 status 를 알아오고 지각 인정기간을 넘었는데도 수강하지않은 과목들인 status가 2인 것들을 4로 업데이트해준다. 그리고 다시 알아와서 넣어준다.
+		        	String lessonCheck = service.getlessonCheck2(paraMap2);
+		        	
+		        	if(lessonCheck.equals("2")) {
+		        		//결석처리 업데이트
+		        		int upSuccess = service.notAttendUpdate(paraMap2);
+		        		
+		        		if(upSuccess == 1) {//업데이트 성공했다면 다시 알아와서 넣어준다.
+		        			lessonCheck = service.getlessonCheck2(paraMap2);
+		        			lessonCheckList.add(lessonCheck);
+		        		}
+		        	}
+		        	else {
+		        		lessonCheckList.add(lessonCheck);
+		        	}
+		        	
+		        }
+			}// end of for--------
+		}
+		else {
+			mav.addObject("message","등록된 강의가 없어 출석현황이 없습니다.");
+			mav.addObject("loc", "javascript:history.back()");
+			mav.setViewName("msg");
+		}
+		
+		//System.out.println(lessonCheckList);
+		
+		
+		//출석, 지각, 지각 출석, 결석 횟수 알아오기
+		Map<String,String> paraMap3 = new HashMap<>();
+		paraMap3.put("fk_hakbun", fk_hakbun);
+		paraMap3.put("code", code);
+		
+		int totalLessonCnt = service.getTotalLessonCnt(paraMap3); //총 수업 횟수		
+		
+		int totalAttendCnt = service.getTotalAttendCnt(paraMap3); //총 출석 횟수
+		int totalLateCnt = service.getTotalLateCnt(paraMap3); // 총 지각 횟수
+		int totalLateAttendCnt = service.getTotalLateAttendCnt(paraMap3);  // 총 지각 출석 횟수
+		int totalNotAttendCnt = service.getTotalNotAttendCnt(paraMap3); // 총 결석 처리 횟수
+		
+		int totalmigual = totalLessonCnt-( totalAttendCnt + totalLateCnt + totalLateAttendCnt + totalNotAttendCnt);
+		
+		//System.out.println("총 수업횟수 : " +totalLessonCnt);
+	//	System.out.println("총 춸석횟수 : " +totalAttendCnt);
+	//	System.out.println("총 지각횟수 : " +totalLateCnt);
+	//	System.out.println("총 지각출석횟수 : " +totalLateAttendCnt);
+	//	System.out.println("총 결석횟수 : " +totalNotAttendCnt);
+	//	System.out.println("총 미결횟수 : " +totalmigual);
+		
+		Map<String,String> paraMap4 = new HashMap<>();
+		paraMap4.put("totalLessonCnt", String.valueOf(totalLessonCnt));
+		paraMap4.put("totalAttendCnt", String.valueOf(totalAttendCnt));
+		paraMap4.put("totalLateCnt", String.valueOf(totalLateCnt));
+		paraMap4.put("totalLateAttendCnt", String.valueOf(totalLateAttendCnt));
+		paraMap4.put("totalNotAttendCnt", String.valueOf(totalNotAttendCnt));
+		paraMap4.put("totalmigual", String.valueOf(totalmigual));
+		
+		
+		int totalNotCommentCnt = totalLessonCnt - totalCommentCnt;
+		
+		paraMap4.put("totalCommentCnt", String.valueOf(totalCommentCnt));
+		paraMap4.put("totalNotCommentCnt", String.valueOf(totalNotCommentCnt));
+		
+		
+	   mav.addObject("getWeek",getWeek);
+	   mav.addObject("classList", classList);
+	   mav.addObject("lessonCntList", lessonCntList);
+	   mav.addObject("lessonCheckList", lessonCheckList);
+	   mav.addObject("lessonCommentList", lessonCommentList);
+	   mav.addObject("paraMap4",paraMap4);
+	   mav.setViewName("attendance.tiles2");
+	   return mav;
    }
    
 		   

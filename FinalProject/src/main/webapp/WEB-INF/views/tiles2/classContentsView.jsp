@@ -589,13 +589,22 @@ var obj =  $("iframe#classVideo");
 			success:function(json){ 
 			   
 				var html = "";
-				if(json.n == 1){
+				if(json.n == "1"){
 					
 					html += "<button id='attend' style='background-color:#1a75ff; color:white; border-radius: 5px; border:none; font-size:9pt; width:80px; height:30px; margin-right:10px;'>&nbsp;출석 완료&nbsp;</button>"
 					
 				}
+				else if(json.n == "2"){
+					html += "<button id='attend' style='background-color:#ff9933; color:white; border-radius: 5px; border:none; font-size:9pt; width:80px; height:30px; margin-right:10px;'>&nbsp;지각&nbsp;</button>"
+				}
+				else if(json.n == "3"){
+					html += "<button id='attend' style='background-color:#ff9933; color:white; border-radius: 5px; border:none; font-size:9pt; width:80px; height:30px; margin-right:10px;'>&nbsp;지각 출석&nbsp;</button>"
+				}
+				else if(json.n == "4"){
+					html += "<button id='attend' style='background-color:#ff0000; color:white; border-radius: 5px; border:none; font-size:9pt; width:80px; height:30px; margin-right:10px;'>&nbsp;결석&nbsp;</button>"
+				}
 				else{
-					html += "<button id='attend' style='background-color:#ff0000; color:white; border-radius: 5px; border:none; font-size:9pt; width:80px; height:30px; margin-right:10px;'>&nbsp;미수강&nbsp;</button>"
+					html += "<button id='attend' style='background-color:#595959; color:white; border-radius: 5px; border:none; font-size:9pt; width:80px; height:30px; margin-right:10px;'>&nbsp;미수강&nbsp;</button>"
 				}
 				
 				$("span#attendCheck").html(html);
@@ -612,10 +621,10 @@ var obj =  $("iframe#classVideo");
 	
 </script>
 
-<i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
-<h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">강의콘텐츠</span></h3>
-<hr style="clear: both;">
 
+<i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
+<h3 style="float:left;">${requestScope.subjectMap.subject} 강의실(${requestScope.subjectMap.name}) > <span style="color: #0099ff; text-decoration: underline;">강의콘텐츠</span></h3>
+<hr style="clear: both;">
 <form name="attendFrm">
 <!-- 출석테이블에 넣기위한것 -->
 <input type="hidden" id="fk_lessonseq" name="fk_lessonseq" value="${requestScope.oneClassView.lessonseq}"/>
@@ -629,7 +638,7 @@ var obj =  $("iframe#classVideo");
 
 <div class="container" style="margin-top:200px;">
 	<div>
-		<div class="btn" style=" border:1px solid #DDD; margin-bottom:15px;" onclick="javascript:location.href='<%= request.getContextPath()%>/classContents.univ'">Ξ 목록으로 돌아가기</div><div class="btn btn-secondary" style="display:inline-block; float:right;">학습 종료</div>
+		<div class="btn" style=" border:1px solid #DDD; margin-bottom:15px;" onclick="javascript:location.href='<%= request.getContextPath()%>/classContents.univ'">Ξ 목록으로 돌아가기</div><div class="btn btn-secondary" style="display:inline-block; float:right;" onclick="javascript:location.href='<%= request.getContextPath()%>/dashboard.univ'">학습 종료</div>
 	</div>
 	
 	<table style="width:100%; margin-bottom:50px; font-size:10pt;">
@@ -646,8 +655,8 @@ var obj =  $("iframe#classVideo");
 				  </div>
 				</div>
 			</td>	
-			<td style="text-align:right;  border-right:0.7px solid #DDD;">◁이전학습&nbsp;&nbsp;</td>
-			<td style="text-align:left;">&nbsp;&nbsp;다음학습▷</td>
+			<td style="text-align:right;  border-right:0.7px solid #DDD;">&nbsp;&nbsp;</td>
+			<td style="text-align:left;">&nbsp;&nbsp;</td>
 		</tr>
 	</table>
 	
@@ -657,16 +666,28 @@ var obj =  $("iframe#classVideo");
 	
 	<table style="width:100%; margin-bottom:15px; font-size:10pt; color:gray;">
 		<tr style="border-top:0.7px solid #DDD; border-bottom:0.7px solid #DDD; height:40px;">
-			<td >출석 마감일 ${requestScope.oneClassView.startday}</td>
-			<td >지각 마감일 ${requestScope.oneClassView.endday}</td>
+			<td >출석 마감일 ${requestScope.oneClassView.endday}</td>
+			<td >지각 마감일 ${requestScope.oneClassView.endPlusday}</td>
 			<td >열람기간 ${requestScope.oneClassView.openday} &nbsp;~&nbsp; ${requestScope.oneClassView.endday}</td>
 			<td id="playTime"></td>
 		</tr>
 	</table>
 	<table style="width:100%; font-size:10pt; margin-bottom:20px;">
-		<tr style="background-color:#ffe6e6; width:100%; height:40px;">
-			<td style="width:100%; color:#ff4d4d; font-weight:bold; padding-left:10px;">※ 지각 인정 기간입니다.</td>
-		</tr>
+		<c:if test="${requestScope.period ==0 }">
+			<tr style="background-color:#ccefff; width:100%; height:40px;">
+				<td style="width:100%; color:#008bcc; font-weight:bold; padding-left:10px;">※ 출석 인정 기간입니다.</td>
+			</tr>
+		</c:if>
+		<c:if test="${requestScope.period ==1 }">
+			<tr style="background-color:#ffe6e6; width:100%; height:40px;">
+				<td style="width:100%; color:#ff4d4d; font-weight:bold; padding-left:10px;">※ 지각 인정 기간입니다.</td>
+			</tr>
+		</c:if>
+		<c:if test="${requestScope.period ==2 }">
+			<tr style="background-color:#ffe6e6; width:100%; height:40px;">
+				<td style="width:100%; color:#ff3333; font-weight:bold; padding-left:10px;">※ 결석 처리된 수업입니다.</td>
+			</tr>	
+		</c:if>
 	</table>
 	
 	
@@ -694,17 +715,31 @@ var obj =  $("iframe#classVideo");
 	</div>
 	<table style="width:100%; margin-bottom:15px; font-size:10pt; color:gray;">
 		<tr style="border-top:0.7px solid #DDD; border-bottom:0.7px solid #DDD; height:40px;">
-			<td >출석 마감일 ${requestScope.oneClassView.startday}</td>
-			<td >지각 마감일 ${requestScope.oneClassView.endday}</td>
+			<td >출석 마감일 ${requestScope.oneClassView.endday}</td>
+			<td >지각 마감일 ${requestScope.oneClassView.endPlusday}</td>
 			<td >열람기간 ${requestScope.oneClassView.openday} &nbsp;~&nbsp; ${requestScope.oneClassView.endday}</td>
 			<td>배점 1점</td>
 		</tr>
 	</table>
 	
 	<table style="width:100%; font-size:10pt; margin-bottom:15px;">
-		<tr style="background-color:#ffe6e6; width:100%; height:40px;">
-			<td style="width:100%; color:#ff4d4d; font-weight:bold; padding-left:10px;">※ 지각 인정 기간입니다.</td>
-		</tr>
+		
+		<c:if test="${requestScope.period ==0 }">
+			<tr style="background-color:#ccefff; width:100%; height:40px;">
+				<td style="width:100%; color:#008bcc; font-weight:bold; padding-left:10px;">※ 출석 인정 기간입니다.</td>
+			</tr>
+		</c:if>
+		<c:if test="${requestScope.period ==1 }">
+			<tr style="background-color:#ffe6e6; width:100%; height:40px;">
+				<td style="width:100%; color:#ff4d4d; font-weight:bold; padding-left:10px;">※ 지각 인정 기간입니다.</td>
+			</tr>
+		</c:if>
+		<c:if test="${requestScope.period ==2 }">
+			<tr style="background-color:#ffe6e6; width:100%; height:40px;">
+				<td style="width:100%; color:#ff3333; font-weight:bold; padding-left:10px;">※ 결석 처리된 수업입니다.</td>
+			</tr>	
+		</c:if>
+		
 	</table>
 	
 	
@@ -730,7 +765,7 @@ var obj =  $("iframe#classVideo");
 				</tr>
 				<tr style="height:50px;">
 					<td >
-						<div style="width:99%; height:30px; background-color:#ccefff; border-radius:5px; margin:auto; font-size:10pt; padding-left:10px; padding-top:5px;"><span style="color:#008bcc; font-size:10pt; font-weight:bold;">채점대상 토론입니다.</span> : 1점 가능<div style="display:inline-block; float:right; margin-right:10px;">마감 ${list.enddate}</div></div>
+						<div style="width:99%; height:30px; background-color:#ccefff; border-radius:5px; margin:auto; font-size:10pt; padding-left:10px; padding-top:5px;"><span style="color:#008bcc; font-size:10pt; font-weight:bold;"></span><div style="display:inline-block; float:right; margin-right:10px;">마감 ${list.enddate}</div></div>
 					</td>
 				</tr>
 				<tr>
