@@ -775,14 +775,51 @@ commit;
 
 insert into tbl_academic_calendar(title, startday, allday)
 values('수업일수3/4', '2021/11/17', default);
-
-select title, startday, endday, allday
-from tbl_academic_calendar
-
-select name, picture
-from tbl_member;
-
-update tbl_member set picture = 'wonbin.jpg'
-where name = '원빈'
-
 commit;
+
+insert into tbl_academic_calendar(title, startday, allday)
+values('동계방학', '2021/12/06', default);
+commit;
+
+insert into tbl_academic_calendar(title, startday, allday)
+values('성적조회', '2021/12/10', default);
+commit;
+
+insert into tbl_academic_calendar(title, startday, endday, allday)
+values('2학기 강의평가', '2021/12/13', '2021/12/17', default);
+commit;
+
+insert into tbl_academic_calendar(title, startday, endday, allday)
+values('2학기 성적입력기간', '2021/12/20', '2021/12/28', default);
+commit;
+
+insert into tbl_academic_calendar(title, startday, allday)
+values('성탄절', '2021/12/25', default);
+commit;
+
+insert into tbl_academic_calendar(title, startday, allday)
+values('신정', '2022/01/01', default);
+commit;
+
+insert into tbl_academic_calendar(title, startday, allday)
+values('시무식', '2022/01/03', default);
+commit;
+
+insert into tbl_academic_calendar(title, startday, endday, allday)
+values('설날연휴', '2022/02/01', '2022/02/02', default);
+commit;
+
+insert into tbl_academic_calendar(title, startday, allday)
+values('21학년도 학위수여식(전기)', '2022/02/17', default);
+commit;
+
+insert into tbl_academic_calendar(title, startday, endday, allday)
+values('재학생 등록기간', '2022/02/21', '2022/02/25', default);
+commit;
+
+insert into tbl_academic_calendar(title, startday, allday)
+values('수업일수1/4(복학마감일)', '2022/03/29', default);
+commit;
+
+
+

@@ -714,7 +714,7 @@ public class SungController {
 	// 강의자료실 댓글삭제
 	@ResponseBody
 	@RequestMapping(value="/deleteLessonComment.univ", method= {RequestMethod.POST} , produces="text/plain;charset=UTF-8")
-	public String subject_deleteLessonComment(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, LessonBoardVO lbvo) {
+	public String subject_deleteLessonComment(HttpServletRequest request, HttpServletResponse response, LessonBoardVO lbvo) {
 		
 		String seq = request.getParameter("seq");
 		String parentSeq = request.getParameter("parentSeq");
