@@ -548,78 +548,6 @@ public class HyunController {
 	}
 	
 	
-	// 스마트에디터. 드래그앤드롭을 사용한 다중 사진 파일업로드
-	@RequestMapping(value="/image/QnAMultiplePhotoUpload.univ", method={RequestMethod.POST}) // attach_photos.js 참조. /board/image/multiplePhotoUpload.action 에서 /image/multiplePhotoUpload.action만 쓰면 됨
-	public void QnAMultiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
-
-		/*
-		 * 1. 사용자가 보낸 파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다. >>>> 파일이 업로드 되어질 특정 경로(폴더)지정해주기 우리는
-		 * WAS 의 webapp/resources/photo_upload 라는 폴더로 지정해준다.
-		 */
-
-		// WAS 의 webapp 의 절대경로를 알아와야 한다.
-		HttpSession session = request.getSession();
-		String root = session.getServletContext().getRealPath("/");
-		String path = root + "resources" + File.separator + "photo_upload";
-		// path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다. //이제 files폴더 안쓰고 photo_upload라는 폴더에
-		// 이미지넣기위해 생성하기
-		// 스마트에디터 파일첨부이다. 스마트 에디터 파일첨부는 기존에 폼태그에 이미지를 담은것과 달리 글내용물에 담긴다
-
-		System.out.println(">>>> 확인용 path ==> " + path);
-		// >>>> 확인용 path ==>
-		// C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\FinalProject\resources\photo_upload
-
-		File dir = new File(path);
-		if (!dir.exists())
-			dir.mkdirs();
-		// 폴더가 없으면 만들라는 의미이다.
-
-		String strURL = "";
-
-		try {
-			String filename = request.getHeader("file-name"); // 파일명을 받는다 - 일반 원본파일명
-			// 네이버 스마트에디터를 사용한 파일업로드시 싱글파일업로드와는 다르게 멀티파일업로드는 파일명이 header 속에 담겨져 넘어오게 되어있다.
-
-			/*
-			 * [참고] HttpServletRequest의 getHeader() 메소드를 통해 클라이언트 사용자의 정보를 알아올 수 있다.
-			 * 
-			 * request.getHeader("referer"); // 접속 경로(이전 URL)
-			 * request.getHeader("user-agent"); // 클라이언트 사용자의 시스템 정보
-			 * request.getHeader("User-Agent"); // 클라이언트 브라우저 정보
-			 * request.getHeader("X-Forwarded-For"); // 클라이언트 ip 주소
-			 * request.getHeader("host"); // Host 네임 예: 로컬 환경일 경우 ==> localhost:9090
-			 * 
-			 */
-
-			InputStream is = request.getInputStream(); // is 는 네이버 스마트 에디터를 사용하여 사진첨부하기 된 이미지 파일임.
-			// java.io로 임포트하기
-			/*
-			 * 요청 헤더의 content-type이 application/json 이거나 multipart/form-data 형식일 때, name(이름)
-			 * 없이 값만 전달될 때 이 값은 요청 헤더가 아닌 바디를 통해 전달된다. //즉 본문속에 들어온다는 뜻 이러한 형태의 값을 'payload
-			 * body'라고 하는데 요청 바디에 직접 쓰여진다 하여 'request body post data'라고도 한다.
-			 * 
-			 * 서블릿에서 payload body 의 값을 읽어오려면 request.getParameter()를 사용하는 것이 아니라
-			 * request.getInputStream() 또는 request.getReader()를 사용하여 body를 직접 읽는 방식으로 가져온다.
-			 */
-
-			String newFilename = fileManager.doFileUpload(is, filename, path); // 이제 fileManager에서 doFileUpload 메소드를
-																				// 만들어야 함 // 메소드는 newFilename를 리턴한다
-
-			String ctxPath = request.getContextPath(); // board
-			// bNewLine 과 sFileName 그리고 sFileURL 는 attach_photo.js에 있다
-			// 올라가야 할 파일이름 경로에 넣어주고 다른것들도 넣어줘서 strURL를 만든다
-			strURL += "&bNewLine=true&sFileName=" + newFilename;
-			strURL += "&sWidth=";
-			strURL += "&sFileURL=" + ctxPath + "/resources/photo_upload/" + newFilename;
-
-			// === 웹브라우저상에 사진 이미지를 쓰기 === //
-			PrintWriter out = response.getWriter();
-			out.print(strURL); // 웹브라우저에 strURL 값을 넣어주면 이제 파일이 올라간다
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 // =============== ********  QnA(문의게시판) 끝  ******** =============== //
 // =========================================================================================================================
 
@@ -627,7 +555,7 @@ public class HyunController {
 	
 	
 	
-	
+	      
 	
 	
 // =========================================================================================================================
