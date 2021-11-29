@@ -3,6 +3,7 @@
 
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <% String ctxPath = request.getContextPath(); %>
 
@@ -30,6 +31,8 @@
 		}, function(){
 			$("ul#sideMenuList > li:nth-child(7)").addClass("hoverdEffect");
 		});
+	   
+	   
 	 
       
 	  /*  $("button.numbtn").click(function(){
@@ -42,7 +45,9 @@
 		   
 		   if($(this).next().val() == ""){
 			   $(this).next().val("hi");
+			   
 			   viewlesson(week);
+			   
 		   }
 		   else if($(this).next().val() == "hi"){
 			   $("div#accordionLesson" + week).empty();
@@ -69,7 +74,7 @@
 		   success:function(json){
 			 
 				   var html = "";
-				   
+				   //alert("성공")
 				   
 			//	   console.log(JSON.stringify(json));
 				 
@@ -94,11 +99,20 @@
 						html +=					"<div style='padding-left:2px; border-left:4px solid #008ae6;'>";
 						html +=						"<div  style='padding-left:5px; height:50px; padding-top:15px; border-bottom:0.5px solid #DDD;  font-size:11pt; font-weight:bold;'>";
 						html +=						"<img src='/univ/resources/images/재생버튼2.png' style='width:25px;' />&nbsp; <a href='/univ/classContentsView.univ?code="+item.code+"&week="+item.week+"&lesson="+item.lesson+"&lessonseq="+item.lessonseq+"' style='text-decoration:none; color:black;'>"+item.subject+" "+item.week+"주차 -"+item.lesson+"교시</a> <div style='display:inline-block;text-align:right; float:right;' >";
-						if(item.isCheck == 1){
+						if(item.isCheck == "1"){
 							html += 					"<button style='background-color:#1a75ff; color:white; border-radius: 10px; border:none;'>수강 완료</button>";
 						}
+						else if(item.isCheck == "2"){
+							html += 					"<button style='background-color:#ff9933; color:white; border-radius: 10px; border:none;'>지각</button>";
+						}
+						else if(item.isCheck == "3"){
+							html += 					"<button style='background-color:#ff9933; color:white; border-radius: 10px; border:none;'>지각 출석</button>";
+						}
+						else if(item.isCheck == "4"){
+							html += 					"<button style='background-color:#ff0000; color:white; border-radius: 10px; border:none;'>결석</button>";
+						}
 						else{
-							html += 					"<button style='background-color:#ff0000; color:white; border-radius: 10px; border:none;'>미수강</button>";
+							html += 					"<button style='background-color:#595959; color:white; border-radius: 10px; border:none;'>미수강</button>";
 						}
 						
 						html += 					"</div>";
@@ -225,12 +239,14 @@
 </script>
 
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
-<h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">강의콘텐츠</span></h3>
+<h3 style="float:left;">${requestScope.subjectMap.subject} 강의실(${requestScope.subjectMap.name}) > <span style="color: #0099ff; text-decoration: underline;">강의콘텐츠</span></h3>
 <hr style="clear: both;">
 
-<div class="container" style="margin-top: 200px; color:black; ">
+<div class="container" style="margin-top: 100px; color:black; ">
 
-	<div  style="margin-bottom:30px;">
+<h2>강의 콘텐츠 리스트</h2>
+
+<%-- 	<div  style="margin-bottom:30px;">
 		<button type="button" class="numbtn btn btn-sm" style="border:0.5px solid #DDD; background-color:white; width:30px;  border-radius: 1px;">1</button>
 		<button type="button" class="numbtn btn btn-sm " style="border:0.5px solid #DDD; background-color:white; width:30px; border-radius: 1px;">2</button>
 		<button type="button" class="numbtn btn btn-sm " style="border:0.5px solid #DDD; background-color:white; width:30px; border-radius: 1px;">3</button>
@@ -250,16 +266,17 @@
 		    <a class="dropdown-item  btn-sm" href="#">2주차</a>
 		    <a class="dropdown-item btn-sm" href="#">3주차</a>
 		  </div>
+		</div> --%>
+		<div  style="margin-bottom:20px; margin-top:20px;">
+			<div class="btn btn-secondary btn-sm" onclick="javascript:location.href='<%= request.getContextPath()%>/classWeekRegister.univ?code=${requestScope.code}'">수업  주차 등록하기</div>
+			<div class="btn btn-secondary btn-sm" onclick="javascript:location.href='<%= request.getContextPath()%>/classLessonRegister.univ?code=${requestScope.code}'">수업  차시 등록하기</div>
 		</div>
-		
-		
-		
 		<!-- 전체 아코디언 시작 -->
 		<%-- <c:forEach var="weekvo" items="${requestScope.getWeek}" varStatus="status"> --%>
 		<div class="accordion" id="accordion1" style="height:1000px;">
 		
 			<!-- 주차 반복 시작   1주차, 2주차, 3주차... -->
-			 <c:forEach var="weekvo" items="${requestScope.getWeek}" varStatus="status">
+			 <c:forEach var="weekvo" items="${requestScope.getWeek}" varStatus="statusWeek">
 			   <div class="card" id="card">
 			      <div class="card-header" id="heading1" style="height:60px;">
 			        
@@ -268,18 +285,20 @@
 			          </button>
 			          <input type="hidden" value="" />
 			          <input type="hidden" value="${weekvo.week}" />
+			          <c:forEach var="attendPct" items="${requestScope.attendPctList[statusWeek.index]}" varStatus="status" >
 			          <div style="float:right; margin-top: 3px; " >    	
 				          	<div class="progress" style="width:100px; height:15px;">
-							  <div class="progress-bar" role="progressbar" aria-valuenow="70"
-							  aria-valuemin="0" aria-valuemax="100" style="width:70%">
-							    70%
+							  <div class="progress-bar" role="progressbar" aria-valuenow="${attendPct}"
+							  aria-valuemin="0" aria-valuemax="100" style="width:${attendPct}%">
+							    <fmt:formatNumber value="${attendPct}" pattern="###" />%
 							  </div>
 							</div>	
 							<div style="font-size:8pt; margin-top: 3px; text-align:right; padding-right:10px;">
 							  시작일: ${weekvo.startday}
 						</div>  
 						</div>
-						<div style="display:inline-block; align:right; float:right; font-size:11pt;">6/6&nbsp;&nbsp;</div>		          		          	     		        
+						</c:forEach>
+						<div style="display:inline-block; align:right; float:right; font-size:11pt;"><c:forEach var="lessonAttendCnt" items="${requestScope.lessonAttendCntList[statusWeek.index]}" varStatus="status" >${lessonAttendCnt}</c:forEach>/<c:forEach var="lessonCnt" items="${requestScope.lessonCntList[statusWeek.index]}" varStatus="status" >${lessonCnt}</c:forEach>&nbsp;&nbsp;</div>		          		          	     		        
 			      </div>
 			      
 			      
@@ -288,7 +307,7 @@
 				      </div>
 			      </c:forEach> --%>
 						<!-- 여기에 차시 반복이 들어온다. -->
-					 <div id="accordionLesson${status.count}" style="background-color:#f7f7f7;" > 
+					 <div id="accordionLesson${weekvo.week}" style="background-color:#f7f7f7;" > 
 					
 					
 					<%-------------------------- 반복시작  -------------------------------------- --%>
@@ -342,49 +361,11 @@
 		
 		
 </div>
-		   <!-- 주차 반복 끝   1주차, 2주차, 3주차... -->
-			
-			
-			
-<%-- [원본 소스]
-		      <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordion1" style="background-color:#f7f7f7;">
-		         <!-- .collapse show 는 맨 처음에는  내용물을 보여주도록 하는 것임. -->
-		         <div class="card-body " style=" border:1px solid #DDD; margin-top:20px;  margin-bottom:10px; margin-right:20px; margin-left:20px; background-color:white;  font-size:9pt;">
-		          
-		          
-			          
-			          <!-- callapse 다시 시작 -->
-			          <div class="accordion" id="accordion1_1" style="margin:0px; padding:0px;">		          	
-			          		<div class="" id="heading1_1" style="background-color:white; border:none;">
-				          		<button class="btn btn-link btn-sm" type="button" data-toggle="collapse" data-target="#collapse1_1" aria-expanded="true" aria-controls="collapse1_1" style="height:30px;color:black; border:none; outline:none; box-shadow: none; text-decoration:none;">
-				            		${map.lesson}차시
-				          		</button>         		
-			          		</div>
-			      		
-			          		<div id="collapse1_1" class="collapse" aria-labelledby="heading1_1" data-parent="#accordion1_1" style=" background-color:white;  font-size:9pt;">
-				          		<div style="padding-left:2px; border-left:4px solid #008ae6;">			          					         
-							         <div class="" style="padding-left:5px; height:50px; padding-top:15px; border-bottom:0.5px solid #DDD;  font-size:11pt; font-weight:bold;">
-							           	<img src="<%= ctxPath%>/resources/images/재생버튼2.png" style="width:25px;">&nbsp; <a href="<%=ctxPath%>/classContentsView.univ" style="text-decoration:none; color:black;">빅데이터실무${weekvo.week}주차 - ${map.lesson}교시</a> <div style="display:inline-block;text-align:right; float:right;" > <button style="background-color:#1a75ff; color:white; border-radius: 10px; border:none;">출석</button></div>
-							         </div>
-							         
-							    </div>     				         
-					      	</div>
-					      	<div id="collapse1_1" class="collapse" aria-labelledby="heading1_1" data-parent="#accordion1_1" style=" background-color:white;  font-size:9pt;">
-					      		<div style="padding-left:2px; border-left:4px solid #008ae6;">			          					         
-							         <div class="" style="padding-left:5px; height:50px; padding-top:15px; border-bottom:0.5px solid #DDD; font-size:11pt; font-weight:bold;">
-							           	<img src="<%= ctxPath%>/resources/images/요약본3.png" style="width:25px;">&nbsp; 빅데이터실무${weekvo.week}주차 - 요약정리
-							         </div>		
-						         </div>		         
-					      	</div>		        	
-			          </div>	
-			          <!-- callapse 다시 끝 -->   
-			          
-			                 			      
-		         </div>
-		      	</div> --%>
 
-		   
-	  <!----  이건 차시 변경 경계선  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  -->
+			
+			
+			
+
 
 
    

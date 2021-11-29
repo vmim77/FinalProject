@@ -16,7 +16,6 @@
 		}, function(){
 			$("ul#sideMenuList > li:nth-child(7)").addClass("hoverdEffect");
 		});
-		
 
 		$("button#lessonRegister").click(function(){
 			
@@ -54,11 +53,9 @@
 	});// end of $(document).ready(function()----------------------------------
 
 </script>
-
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
 <h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">강의콘텐츠</span></h3>
 <hr style="clear: both;">
-
 <div style="display:flex;">
 <div style="margin:auto; margin-top:200px; padding-left:3px;">
 

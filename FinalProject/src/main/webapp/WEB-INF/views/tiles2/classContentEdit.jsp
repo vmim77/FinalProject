@@ -125,9 +125,8 @@
 </script>   
 
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
-<h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">강의콘텐츠</span></h3>
+<h3 style="float:left;">${requestScope.subjectMap.subject} 강의실(${requestScope.subjectMap.name}) > <span style="color: #0099ff; text-decoration: underline;">강의콘텐츠</span></h3>
 <hr style="clear: both;">
-
 <div style="display: flex;">
 <div style="margin: auto; padding-left: 3%;">
 

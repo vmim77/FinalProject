@@ -17,5 +17,5 @@
 	<c:if test="${sessionScope.loginuser.authority == 1 or sessionScope.loginuser.authority == 2}">
 		<li class="sideMenu" onclick="javascript:location.href='<%= ctxPath%>/sendList.univ'">쪽지함</li>
 	</c:if>
-	<li class="sideMenu">출결/학습 현황</li>
+	<li class="sideMenu" onclick="javascript:location.href='<%= ctxPath%>/attendView.univ'">출결/학습 현황</li>
 </ul>
