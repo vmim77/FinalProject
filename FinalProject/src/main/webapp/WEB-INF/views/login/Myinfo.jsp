@@ -261,13 +261,25 @@ body {
 		border:none;
 	}
 
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-.tg .tg-0lax{text-align:left;vertical-align:top}
+   .tg  {border-collapse:collapse;border-spacing:0;}
+   .tg td{border-color:#c0c0c0;border-style:solid 0.5px;border-width:0.5px;font-family:Arial, sans-serif;font-size:14px;
+     overflow:hidden;padding:10px 5px;word-break:normal;}
+   .tg th{border-color:#c0c0c0;border-style:solid;border-width:0.5px;font-family:Arial, sans-serif;font-size:14px;
+     font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+   .tg .tg-uofs{background-color:#efefef;border-color:##c0c0c0;color:#000000;font-weight:bold;text-align:center;vertical-align:top;}
+   .tg .tg-o40d{border-color:#c0c0c0;text-align:center;vertical-align:top}
+
+   a#evaluationbutton {
+      margin: auto;
+      padding-top: 3px;
+      border: 1px solid #cccccc;
+      text-align: center;
+      width: 80px;
+      height: 26px;
+      background-color: #cccccc;
+      color: #fff;
+   }
+
 
 
 
@@ -315,16 +327,12 @@ body {
                        </tbody>
                      </table>
                       <div class="">
-                        <div class="col-md-12" style="width:100%;text-align:center">
+                        <div class="col-md-12" style="width:100%;text-align:center;">
                            <button class="btn btn-primary" data-target="#layerpop" data-toggle="modal">개인정보수정</button>
                            <a type="button" href="<%=ctxPath %>/Schedule.univ" class="btn btn-danger">시간표</a>
-                           <a type="button" href="<%=ctxPath %>/graph.univ" onclick="" class="btn btn-success">설문관리</a>
                            <button class="btn btn-danger" data-target="#plan" data-toggle="modal">학습안내서/교수계획서</button>
                            <button id="seolmoon" class="btn btn-success" data-target="#servey" data-toggle="modal">설문관리</button>
                            <button id="evaluation" class="btn btn-success" data-target="#servey2" data-toggle="modal">강의평가</button>
-
-                           <a type="button" onclick="" class="btn btn-warning">1 : 1 문의</a>
-                           
                         </div>
                      </div>
                   </div>
@@ -395,7 +403,7 @@ body {
       <div class="modal-body">
       <form id="info" name="info">
 	 <input type="hidden" name="checknull" value="checknull" />
-            	<ul style="text-align: center; margin-top: 10%;">
+            	<ul style="text-align: center;  margin-top: 10%;">
 				<li>
 					<label class=title for="name">성명</label>
 					<input type="text" name="name" id="name" value="${requestScope.name}" size="40" class="requiredInfo" readonly/> 
@@ -500,7 +508,7 @@ body {
         
                 <!-- Modal Header -->
                 <div class="modal-header" style="background-color: #cce6ff;">
-                    <h2 class="modal-title" style="font-weight: bold; font-size: 18pt; margin: auto;">${sessionScope.loginuser.hakbun} 님의 설문조사 현황</h2>
+                    <h2 class="modal-title" style="font-weight: bold; font-size: 18pt; margin: auto;">${sessionScope.loginuser.name} 님의 설문조사 현황</h2>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
             

@@ -111,9 +111,10 @@ public class DongController {
 	@RequestMapping(value="/MemberLogin.univ",method= {RequestMethod.GET}) 
 	public ModelAndView MemberLogin(HttpServletRequest request,ModelAndView mav) {//
 		
+		HttpSession session = request.getSession(); // 비정상 종료시 로그아웃을 하지 않아서 세션의 값이 남아있어서 비운다.
+		session.invalidate(); // 비정상 종료시 로그아웃을 하지 않아서 세션의 값이 남아있어서 비운다.
 		
 		mav.setViewName("login/MemberLogin");
-		
 		
 		return mav;
 	}
@@ -178,7 +179,7 @@ public class DongController {
 //====================================================================================================================	
 	
 	   // ===  로그아웃 처리하기 === //
-	   @RequestMapping(value="/logout.action")
+	   @RequestMapping(value="/logout.univ")
 	   public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
 	      
 	      HttpSession session = request.getSession();
@@ -191,10 +192,10 @@ public class DongController {
 	      
 	      String loc = "";
 	      if(goBackURL != null) {
-	         loc = request.getContextPath()+"/dashboard.univ";
+	         loc = request.getContextPath()+"/MemberLogin.univ";
 	      }
 	      else {
-	         loc = request.getContextPath()+"/dashboard.univ";
+	         loc = request.getContextPath()+"/MemberLogin.univ";
 	      }
 	      
 	      mav.addObject("message", message); 
@@ -459,7 +460,6 @@ public class DongController {
 		   
 		   String hakbun = loginuser.getHakbun();
 		   
-		   System.out.println("확인용 =>"+hakbun);
 		   
 		   Map<String, String> paraMap = new HashMap<>();
 		         
@@ -482,8 +482,6 @@ public class DongController {
 		   
 		   mav.addObject("classDate",classDate);
 		   mav.addObject("subject",subject);
-		   System.out.println("subject" + subject);
-		   System.out.println("classDate" + classDate);
 		   
 		   mav.setViewName("login/Schedule");
 		   
@@ -519,7 +517,7 @@ public class DongController {
 	        	 if(serveyDate == null) {
 	 	             jsonobj.put("serveyTopic", svo.getServeyTopic());
 	 	             jsonobj.put("serveyDate", "미 참여");
-	 	             jsonobj.put("html", "<button id='goSeolmoon' value='"+svo.getServeyCode()+"'>설문참여</button>");    	             
+	 	             jsonobj.put("html", "<button id='goSeolmoon'  value='"+svo.getServeyCode()+"'>설문참여</button>");    	             
 	        	 }
 	        	 else {
 	 	             jsonobj.put("serveyTopic", svo.getServeyTopic());
@@ -559,7 +557,6 @@ public class DongController {
 	        	 
 	        	 paraMap.put("serveyCode", ServeyMap.get("serveyCode"));
 	        	 paraMap.put("hakbun", hakbun);
-	        	 System.out.println(ServeyMap.get("serveyCode"));
 	        	 // 강의평가 했는지 확인하기
 	        	 String serveyDate = service.getServeyMemberList(paraMap);
 	

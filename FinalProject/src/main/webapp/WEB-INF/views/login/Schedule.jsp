@@ -83,52 +83,55 @@
      text-align: center;
  }
  </style>
- 
- 
- <div style="margin-left: 250px;">
- <table  class="scheduleTable" style="width: 70%;">
- 	<tr>
-		<th>이름</th> 	
-		<th>학번</th>
-		<th rowspan="2" style="width: 500px;">2021년도 2학기 수강신청 현황</th>
-		
- 	</tr>
-	 <tr>
-	 	<td>${sessionScope.loginuser.name}</td>
- 		<td>${sessionScope.loginuser.hakbun}</td>
- 	</tr>
- </table>
- 
 
-<table class="scheduleTable" style="width: 70%;">
-    <tr>
-       <td class="scheduleWeek" style="background-color:#ff5c33;">월</td>
-       <td class="scheduleWeek" style="background-color:#ffc266;">화</td>
-       <td class="scheduleWeek" style="background-color:#ffff99;">수</td>
-       <td class="scheduleWeek" style="background-color:#b3ff99;">목</td>
-       <td class="scheduleWeek" style="background-color:#99ffdd;">금</td>
-    </tr>
-    <tr>
-       <td id="mon" class="scheduleTd"></td>
-       <td id="tue" class="scheduleTd"></td>
-       <td id="wed" class="scheduleTd"></td>
-       <td id="thu" class="scheduleTd"></td>
-       <td id="fri" class="scheduleTd"></td>
-    </tr>                          
-   </table>
-   
-   
-   <table class="scheduleTable" style="width: 70%;">
-  <tr>
-    <th>2021년 2학기 수강신청 관련된 사항을 아래와 같이 안내 드립니다.</th>
-  </tr>
-  <tr>
-  	<td>1.수강신청에 이상이 있거나, 원하는 수강신청이 아닌경우 교학1팀 (031-280-3410 ~ 3) 으로 문의주시면 자세하게  <br>안내 도와드리겠습니다.
-  	<br>
-  		2.수강신청 철회기간은 11월13일 수업기준 7일까지 철회가 가능하며, 학부사무실을 통해 진행해주시면 되겠습니다.</td>
-  </tr>
-</table>
- </div>
-   
-     		
-   
+<div style="display: flex;">
+
+	<div style="margin: auto;">
+		<table class="scheduleTable" style="width: 100%;">
+			<tr>
+				<th>이름</th>
+				<th>학번</th>
+				<th rowspan="2" style="width: 500px;">2021년도 2학기 수강신청 현황</th>
+
+			</tr>
+			<tr>
+				<td>${sessionScope.loginuser.name}</td>
+				<td>${sessionScope.loginuser.hakbun}</td>
+			</tr>
+		</table>
+
+
+		<table class="scheduleTable" style="width: 100%;">
+			<tr>
+				<td class="scheduleWeek" style="background-color: #ff5c33;">월</td>
+				<td class="scheduleWeek" style="background-color: #ffc266;">화</td>
+				<td class="scheduleWeek" style="background-color: #ffff99;">수</td>
+				<td class="scheduleWeek" style="background-color: #b3ff99;">목</td>
+				<td class="scheduleWeek" style="background-color: #99ffdd;">금</td>
+			</tr>
+			<tr>
+				<td id="mon" class="scheduleTd"></td>
+				<td id="tue" class="scheduleTd"></td>
+				<td id="wed" class="scheduleTd"></td>
+				<td id="thu" class="scheduleTd"></td>
+				<td id="fri" class="scheduleTd"></td>
+			</tr>
+		</table>
+
+
+		<table class="scheduleTable" style="width: 100%;">
+			<tr>
+				<th>2021년 2학기 수강신청 관련된 사항을 아래와 같이 안내 드립니다.</th>
+			</tr>
+			<tr>
+				<td>1.수강신청에 이상이 있거나, 원하는 수강신청이 아닌경우 교학1팀 (031-280-3410 ~ 3) 으로
+					문의주시면 자세하게 <br>안내 도와드리겠습니다. <br> 2.수강신청 철회기간은 11월13일 수업기준
+					7일까지 철회가 가능하며, 학부사무실을 통해 진행해주시면 되겠습니다.
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+
+

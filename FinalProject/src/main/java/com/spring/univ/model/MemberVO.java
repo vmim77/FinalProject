@@ -20,10 +20,10 @@ public class MemberVO {
 	private String phone;         // 전화번호
 	private int authority;        // ( 0학생, 1교수, 2총 관리자 ) 
 	
-	
-	 private MultipartFile attach; // 파일첨부에 필요한 VO
-	
 	/////////////////////////////////////////////////////////////////////
+	
+	
+	private MultipartFile attach;
 	
 	public MemberVO() {}
 	

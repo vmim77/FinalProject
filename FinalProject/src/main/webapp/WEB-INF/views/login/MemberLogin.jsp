@@ -22,6 +22,9 @@
 
 <style>
 
+body { background-color: #ffb84d;
+	   background-image: url("<%= request.getContextPath()%>/resources/images/background.jpg"); }
+
 * {
   margin: 0;
   padding: 0;
@@ -230,7 +233,7 @@ function goPasswdFind(){
  <%-- *** 로그인을 하기 위한 폼을 생성 *** --%>
  
 <p class="h5" style="margin: auto">
-   <marquee> [공지사항] 쌍용대학교 학사관리 시스템에 오신걸 환영합니다.</marquee>
+   <marquee style="color: #fff;"> [공지사항] 쌍용대학교 학사관리 시스템에 오신걸 환영합니다.</marquee>
 </p>
        <form name="loginFrm">
        <table id="loginTbl">

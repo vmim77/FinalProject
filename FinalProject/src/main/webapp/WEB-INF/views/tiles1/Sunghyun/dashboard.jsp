@@ -32,25 +32,50 @@
  
 </style>
 
-<script type="text/javascript">
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js' ></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
+<link href='/assets/demo-to-codepen.css' rel='stylesheet' />
 
-	$(document).ready(function(){
-		
-		
-		
+<script>
+
+
+	document.addEventListener('DOMContentLoaded', function() {
+	    var calendarEl = document.getElementById('calendar');
+	    var calendar = new FullCalendar.Calendar(calendarEl, {
+	      headerToolbar:{
+	    	  left: 'prev,next,today',
+	    	  center: 'title',
+	    	  right: 'dayGridMonth,listWeek'
+	      },
+	      initialView: 'dayGridMonth',
+	      navLinks: true,
+	      nowIndicator: true,
+	      locale: 'ko',
+	  	  eventSources: [{
+			events: function(info, successCallback, failureCallback) {
+				$.ajax({
+					url: "<%= request.getContextPath()%>/academicCalendar.univ",
+					type: "POST",
+					dataType: 'JSON',
+					success: function(json) {
+						successCallback(json);
+					}
+				});
+			}
+		}]
+	    });
+	    calendar.render();
 	});
-	
 </script>
 
- <c:if test="${not empty sessionScope.loginuser}">
-         <div style="float: right;">
-           <span style="color: navy; font-weight: bold;">${sessionScope.loginuser.name}</span> 님 로그인중
-         </div>
-      </c:if>
+
+
+
+
 
 <div id="maincontainer" style="display: flex;">
-	<section style="width: 70%; margin-right: auto;">
-	
+	<section style="width: 60%; margin-right: auto;">
 		<c:if test="${not empty sessionScope.sugangList}"> <%-- 학생이면 가장 상단에 얘를 보여줍니다. --%>
 			<h2>대시보드 - 수강과목(학생)</h2>
 		</c:if>
@@ -58,13 +83,12 @@
 			<h2>대시보드 - 담당과목(교수)</h2>
 		</c:if>
 		<hr>
-		
 		<div class="row mx-1">
 			
 			<%-- 학생이라면 수강한 과목을 반복문으로 카드로 만들어서 찍어줍니다. --%>
 			<c:if test="${not empty sessionScope.sugangList}">
 				<c:forEach var="sugangMap" items="${sessionScope.sugangList}">
-				     <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
+				     <div class="card col-3 p-0" style="width: 5%; box-shadow: 0px 1px 3px;">
 				 	   <div style="width: 100%; height: 200px;"><img style="width: 100%; height: 100%;" src='<%= request.getContextPath()%>/resources/images/${sugangMap.code}.jpg' /></div>
 				 	   <div class="card-body">
 				 	     <h5 class="card-title">${sugangMap.subject}</h5>
@@ -78,11 +102,11 @@
 			<%-- 교수이라면 담당 과목을 반복문으로 카드로 만들어서 찍어줍니다. --%>
 			<c:if test="${not empty sessionScope.suupList}">
 				<c:forEach var="suupMap" items="${suupList}">
-				     <div class="card col-3 p-0" style="width: 16rem; box-shadow: 0px 1px 3px;">
+				     <div class="card col-3 p-0" style="width: 5%; box-shadow: 0px 1px 3px;">
 				 	   <div style="width: 100%; height: 200px;"><img style="width: 100%; height: 100%;" src='<%= request.getContextPath()%>/resources/images/${suupMap.code}.jpg' /></div>
 				 	   <div class="card-body">
 				 	     <h5 class="card-title">${suupMap.subject}</h5>
-				 	     <p class="card-text" style="font-size: 8pt; color: gray;">수업요일: ${suupMap.classdate}<br>배정학점: ${suupMap.hakjum}</p>
+				 	     <p class="card-text" style="font-size: 12pt; color: gray;">수업요일: ${suupMap.classdate}<br>배정학점: ${suupMap.hakjum}점<br>수강인원: ${suupMap.cnt} 명</p>
 				 	     <a href='/univ/subject.univ?code=${suupMap.code}' class='stretched-link btn btn-primary btn-sm' role='button'>강의실 입장</a>
 				 	   </div>
 				     </div>
@@ -97,25 +121,9 @@
 		</div>
 	</section>
 	
-	
-	<%-- 캘린더를 이용하여 예정학과일정 등이 표시될 곳입니다. --%>
-	<section style="width: 30%; margin-top: 15px; margin-left: 15px;">
-		<h3>To do</h3>
+	<section style="width: 40%; margin: 0 10px;">
+		<h2>학사일정</h2>
 		<hr>
-		<ul class="list-group list-group-flush" style="width: 80%;">
-			  <li class="list-group-item icons"><i class="fas fa-bullhorn" ></i><span class="toDo">중간고사</span></li>
-			  <li class="list-group-item icons"><i class="fas fa-paste"></i><span class="toDo">하이테크 마케팅_001분반_과제제출</span></li>
-			  <li class="list-group-item icons"><i class="fas fa-paste"></i><span class="toDo">하이테크 마케팅_001분반_2주차 수업시청</span></li>
-			  <li class="list-group-item icons"><i class="fas fa-paste"></i><span class="toDo">재무관리실무_001분반_수업시청</span></li>
-		</ul>
-		
-		<h3 style="margin-top: 20px;">예정</h3>
-		<hr>
-		<ul class="list-group list-group-flush" style="width: 80%;">
-			  <li class="list-group-item icons"><i class="fas fa-bullhorn" ></i><span class="toDo">기말고사</span></li>
-			  <li class="list-group-item icons"><i class="fas fa-paste"></i><span class="toDo">하이테크 마케팅_001분반_3주차 수업시청</span></li>
-			  <li class="list-group-item icons"><i class="fas fa-paste"></i><span class="toDo">하이테크 마케팅_001분반_4주차 수업시청</span></li>
-			  <li class="list-group-item icons"><i class="fas fa-paste"></i><span class="toDo">재무관리실무_001분반_2주차 수업시청</span></li>
-		</ul>
+		<div id='calendar'></div>
 	</section>
 </div>

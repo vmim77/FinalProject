@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <% String ctxPath = request.getContextPath(); %>
+
+
 
 <style type="text/css">
 	.menu  { 
@@ -38,10 +42,14 @@
 
 </script>
 
-<a href="#">
+<a>
 	<img style="max-width:100%; margin: auto; padding: 30px 0;" src="<%= ctxPath%>/resources/images/logo.png" />
 </a>
-<a id="accountMenu" class="menu" href="#">
+
+<div id="loginTime" style="text-align: center; color:white; margin-bottom: 10px;">
+</div>
+
+<a id="accountMenu" class="menu">
 	<i class="hideicon fas fa-user-circle fa-2x"></i>
 	<div>계정</div>
 </a>
@@ -59,18 +67,12 @@
 	<i class="hideicon far fa-calendar fa-2x"></i>
 	<div>캘린더</div>
 </a>
-<a class="menu" href="#">
-	<i class="hideicon fas fa-envelope-open-text fa-2x"></i>
-	<div>메시지</div>
-</a>
 
-<a class="menu" href="#">
-	<i class="hideicon far fa-question-circle fa-2x"></i>
-	<div>도움말</div>
-</a>
 
 <div id="hideSideInfo">
 	<p style="text-align: center; "><i class="fas fa-backward fa-1x center"></i></p>
 </div>
+
+
 
 

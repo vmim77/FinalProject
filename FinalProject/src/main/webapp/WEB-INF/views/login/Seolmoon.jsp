@@ -7,7 +7,7 @@
 
 <style type="text/css">
 
-#contents {
+div#contents {
    /*  position: relative; */
     margin: auto;
     min-height: 1500px;
@@ -244,6 +244,7 @@ $(document).ready(function(){
 
 		<br><br><br>
  		<button id="btnok">제출</button>
+ 		<br><br><br><br><br><br>
 
 </div>
 </div>

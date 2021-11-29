@@ -125,7 +125,6 @@ public class MinController {
 		   String result = request.getParameter("result");
 		   String serveyCode = request.getParameter("serveyCode");
 		   
-		   System.out.println("확인용 => " + serveyCode);
 		   
 		   
 		   result = result.substring(0,result.lastIndexOf(","));
@@ -136,7 +135,6 @@ public class MinController {
 		   Map<String,String>paraMap = new HashMap<>();
 		   
 		   for(int i=0; i<resultArr.length; i++) {
-			   System.out.println(resultArr[i]);
 			   
 			   paraMap.put("serveyCode", serveyCode);
 			   paraMap.put("fk_serveynum", (i+1)+"");
@@ -169,8 +167,6 @@ public class MinController {
 			   m = MinService.attendance(paraMap);
 		   }
 
-		   System.out.println("dhdhdh"+n);
-		   System.out.println("확인용 코드"+serveyCode);
 
          JSONObject jsonObj = new JSONObject();
          jsonObj.put("m", m); // 여기를 int m 으로 바꿔서 보내야함 그래야 두 메소드가 성공했는지 알 수 있음

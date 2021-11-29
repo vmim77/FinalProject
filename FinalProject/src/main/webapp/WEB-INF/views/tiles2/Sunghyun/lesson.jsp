@@ -10,21 +10,56 @@
 		margin: auto;
 	}
 	
+	table#lessonboard th {
+		background-color: #ffb84d;
+	}
+	
 	.title {
 		text-align: center;
 	}
+	
+	.leesonboardRows {
+		cursor: pointer;
+	}
+	
+	
 
 </style>
 
 <script>
 	$(document).ready(function(){
 		
-		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
+		var searchWord = "${requestScope.searchWord}";
+		var searchType = "${requestScope.searchType}";
+		
+		if(searchWord != "") {
+			$("#searchWord").val(searchWord);
+			$("#searchType").val(searchType);
+		}
+		
+		
+		
+		$("ul#sideMenuList > li:nth-child(3)").addClass("hoverdEffect");
+		
+		$("ul#sideMenuList").hover(function(){
+			$("ul#sideMenuList > li:nth-child(3)").removeClass("hoverdEffect");
+		}, function(){
+			$("ul#sideMenuList > li:nth-child(3)").addClass("hoverdEffect");
+		});
 		
 		$(".leesonboardRows").click(function(){
 			var seq = $(this).find("td:first-child").text();
-			location.href="<%= request.getContextPath()%>/lessonnDetail.univ?code=${sessionScope.code}&seq="+seq;
+			location.href="<%= request.getContextPath()%>/lessonDetail.univ?code=${sessionScope.code}&seq="+seq;
 		});
+		
+		$("#btnSearch").click(function(){
+			
+			var frm = document.searchFrm;
+			frm.action = "<%= request.getContextPath()%>/lesson.univ";
+			frm.method = "GET";
+			frm.submit();
+		});
+		
 		
 		
 	});
@@ -33,7 +68,7 @@
 	function goLessonWrite() {
 		
 		if(${sessionScope.loginuser.authority==0}){
-			alert("교수만 접근이 가능합니다!!");
+			swal("warning", "교수만 접근이 가능합니다!", "warning");
 			return;
 		}
 		
@@ -54,7 +89,7 @@
 </c:if>
 
 <c:if test="${not empty requestScope.boardList}">
-	<table id="lessonboard" class="table table-striped table-bordered table-hover">
+	<table id="lessonboard" class="table table-bordered table-hover">
 		<tr>
 			<th class="title">글번호</th>
 			<th class="title">글쓴이</th>
@@ -63,19 +98,39 @@
 		</tr>
 		<c:forEach var="leesonboardvo" items="${requestScope.boardList}" varStatus="status">
 			<tr class="leesonboardRows">
-				<td style="display: none;">${leesonboardvo.seq}</td>
-				<td class="title">${status.index+1}</td>
-				<td class="title">${leesonboardvo.name}</td>
-				<td>${leesonboardvo.subject}</td>
-				<td class="title">${leesonboardvo.regDate}</td>
+				<td style="width: 5%;" class="title">${leesonboardvo.seq}</td>
+				<td style="width: 5%;" class="title">${leesonboardvo.name}</td>
+				<td style="width: 40%;">${leesonboardvo.subject}<c:if test="${not empty leesonboardvo.fileName}"><img src='<%= request.getContextPath()%>/resources/images/disk.gif' style="margin-left: 10px;" /></c:if><c:if test="${leesonboardvo.commentCount ne 0}"><span style="font-size: 8pt; color:gray; margin-left:10px;">[${leesonboardvo.commentCount}]</span></c:if></td>
+				<td style="width: 20%;" class="title">${leesonboardvo.regDate}</td>
 			</tr>
 		</c:forEach>
 	</table>
+	<br />
+	<div align="center" style="display: flex; width: 100%;">
+		${requestScope.pageBar}
+	</div>
 </c:if>
 <hr>
 <c:if test="${sessionScope.loginuser.authority == 1}">
 	<div class="text-right">
-		<button type="button" class="btn btn-dark btn-md" onclick="goLessonWrite()">글쓰기</button>
+		<button type="button" class="btn btn-md" onclick="goLessonWrite()" style="background-color: #ffb84d; color:#fff; border: none;">글쓰기</button>
 	</div>
-	
 </c:if>
+
+<br />
+<div style="width: 100%; text-align: center;">
+
+	<form name="searchFrm" style="width: 100%;">
+		<select id="searchType" name="searchType">
+			<option value="subject">제목</option>
+			<option value="content">내용</option>
+		</select>
+		
+		<input id="searchWord" type="text" name="searchWord" size="50" />
+		<input type="text" style="display: none;" />
+		
+		
+		<button type="button" class="btn btn-sm" id="btnSearch" style="background-color: #ffb84d; color:#fff;">검색</button>
+	</form>
+</div>
+
