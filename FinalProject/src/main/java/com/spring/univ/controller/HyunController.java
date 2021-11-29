@@ -864,6 +864,7 @@ public class HyunController {
 		////////////////////////////////////////////////////////////////////////////////////////
 		
 		try {
+			
 			Integer.parseInt(seq); // 글번호 형 변환하기
 			
 			// 현재 로그인 되어 있는 사용자의 정보 가져오기 - 조회수를 위해서
@@ -898,7 +899,6 @@ public class HyunController {
 			mav.addObject("noticevo", noticevo);
 			
 		} catch(NumberFormatException e) {
-			e.printStackTrace();
 		}
 		
 		mav.setViewName("notice/noticeView.tiles2");
