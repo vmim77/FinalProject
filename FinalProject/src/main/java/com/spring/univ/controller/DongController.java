@@ -159,14 +159,20 @@ public class DongController {
 		       if(authority==0) { // 학생
 		    	   List<Map<String, String>> sugangList = service2.getSugang(hakbun); // 학번을 이용하여 해당 학생의 수강목록을 가져온다.
 		    	   session.setAttribute("sugangList", sugangList); // 수강목록을 session에 저장시킨다.
+		    	   mav.addObject("session", session);
+		    	   mav.setViewName("redirect:/dashboard.univ"); // redirect로 이동을 시킨다.
 		       }
 		       else if (authority==1) {
 		    	   List<Map<String, String>> suupList = service2.getsuUp(hakbun); // 학번을 이용하여 해당 교수의 수업목록을 가져온다.
 		    	   session.setAttribute("suupList", suupList); // 수업목록을 세션에 저장시킨다.
+		    	   mav.addObject("session", session);
+		    	   mav.setViewName("redirect:/dashboard.univ"); // redirect로 이동을 시킨다.
+		       }
+		       else {
+		    	   mav.setViewName("admin/adminIndex");
+		    	   mav.addObject("session", session);
 		       }
 	    	   
-	    	   mav.addObject("session", session);
-	    	   mav.setViewName("redirect:/dashboard.univ"); // redirect로 이동을 시킨다.
 	      }
 	     
 	     

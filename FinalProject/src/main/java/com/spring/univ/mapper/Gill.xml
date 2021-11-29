@@ -6,7 +6,7 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="Gill">
 
-	<!-- 학생 리스트 가져오기 -->
+	<!-- 학생, 교수 리스트 가져오기 -->
 	<select id="getStudentList" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">
 	     select hakbun, name, birth, (select deptName
 	     							 from tbl_department
@@ -32,28 +32,37 @@
         </if>	    
         
         <!-- 검색어 입력시 -->
-		<if test='status != "no" and fk_deptCode == "no" and searchType !="no" and searchWord != "no"'>
+		<if test='status == "no" and fk_deptCode == "no" and searchType != "no" and searchWord != "no"'>
+    	     where authority = #{authority} and ${searchType} = #{searchWord}
+        </if>
+        <if test='status != "no" and fk_deptCode == "no" and searchType != "no" and searchWord != "no"'>
     	     where authority = #{authority} and status = #{status} and ${searchType} = #{searchWord}
         </if>
-        <if test='status == "no" and fk_deptCode != "no" and searchType !="no" and searchWord != "no"'>
+        <if test='status == "no" and fk_deptCode != "no" and searchType != "no" and searchWord != "no"'>
     	     where authority = #{authority} and fk_deptCode = #{fk_deptCode} and ${searchType} = #{searchWord}
         </if>
-        <if test='status != "no" and fk_deptCode != "no" and searchType !="no" and searchWord != "no"'>
+        <if test='status != "no" and fk_deptCode != "no" and searchType != "no" and searchWord != "no"'>
     	     where authority = #{authority} and status = #{status} and fk_deptCode = #{fk_deptCode} and ${searchType} = #{searchWord}
         </if>
 	</select>
 	
 	<!-- 과목 리스트 가져오기 -->
 	<select id="getSubjectList" parameterType="HashMap" resultType="com.spring.univ.model.SubjectVO">
-	     select subject, teacher, ban, (select deptName
-	     							 from tbl_department
-	     							 where deptCode = fk_deptCode) as fk_deptCode, hakjum, classDate     		
+	    select subject, (select name
+	     				  from tbl_member
+	     				  where hakbun = fk_hakbun) as fk_hakbun,
+ 				(select deptName
+                 from tbl_department
+                 where deptCode = fk_deptCode) as fk_deptCode, hakjum, classDate, code     		
 		 from
 		 (
-		    select subject, teacher, ban, fk_deptCode, hakjum, classDate
+		    select subject, fk_hakbun, fk_deptCode, hakjum, classDate, code
 		    from tbl_subject
 		 ) V
-        <!-- 검색어 미 입력시 -->
+		 <!-- 검색어 미 입력시 -->
+        <if test='classDate == "no" and fk_deptCode == "no" and searchType == "no" and searchWord == "no"'>
+    	     where 1=1
+        </if>
         <if test='classDate != "no" and fk_deptCode == "no" and searchType == "no" and searchWord == "no"'>
     	     where classDate = #{classDate}
         </if>
@@ -63,18 +72,34 @@
         <if test='classDate != "no" and fk_deptCode != "no" and searchType == "no" and searchWord == "no"'>
     	     where classDate = #{classDate} and fk_deptCode = #{fk_deptCode}
         </if>	    
-        
-        <!-- 검색어 입력시 -->
-		<if test='status != "no" and fk_deptCode == "no" and searchType !="no" and searchWord != "no"'>
+         
+        <!-- 과목명으로 입력시 -->
+		<if test='classDate == "no" and fk_deptCode == "no" and searchType == "subject" and searchWord != "no"'>
+    	     where ${searchType} = #{searchWord}
+        </if>
+        <if test='classDate != "no" and fk_deptCode == "no" and searchType == "subject" and searchWord != "no"'>
     	     where classDate = #{classDate} and ${searchType} = #{searchWord}
         </if>
-        <if test='status == "no" and fk_deptCode != "no" and searchType !="no" and searchWord != "no"'>
+        <if test='classDate == "no" and fk_deptCode != "no" and searchType == "subject" and searchWord != "no"'>
     	     where fk_deptCode = #{fk_deptCode} and ${searchType} = #{searchWord}
         </if>
-        <if test='status != "no" and fk_deptCode != "no" and searchType !="no" and searchWord != "no"'>
+        <if test='classDate != "no" and fk_deptCode != "no" and searchType == "subject" and searchWord != "no"'>
     	     where classDate = #{classDate} and fk_deptCode = #{fk_deptCode} and ${searchType} = #{searchWord}
         </if>
-        order by ban
+        
+        <!-- 담당교수로 입력시 -->
+		<if test='classDate == "no" and fk_deptCode == "no" and searchType == "fk_hakbun" and searchWord != "no"'>
+    	     where ${searchType} = (select hakbun from tbl_member where name = #{searchWord})
+        </if>
+        <if test='classDate != "no" and fk_deptCode == "no" and searchType == "fk_hakbun" and searchWord != "no"'>
+    	     where classDate = #{classDate} and ${searchType} = (select hakbun from tbl_member where name = #{searchWord})
+        </if>
+        <if test='classDate == "no" and fk_deptCode != "no" and searchType == "fk_hakbun" and searchWord != "no"'>
+    	     where fk_deptCode = #{fk_deptCode} and ${searchType} = (select hakbun from tbl_member where name = #{searchWord})
+        </if>
+        <if test='classDate != "no" and fk_deptCode != "no" and searchType == "fk_hakbun" and searchWord != "no"'>
+    	     where classDate = #{classDate} and fk_deptCode = #{fk_deptCode} and ${searchType} = (select hakbun from tbl_member where name = #{searchWord})
+        </if>
 	</select>
 	
 	<!-- 과목 및 과목번호 가져오기 -->
@@ -87,7 +112,7 @@
 	<!-- 새로운 회원 입력하기 -->
 	<insert id="UpdateMember" parameterType="HashMap">
 		insert into tbl_member(hakbun, name, birth, fk_deptCode, pwd, email, address, status, picture, phone, authority)
-		values(#{hakbun}, #{name}, #{non}, #{fk_deptCode}, 'qwer1234$', #{non}, #{non}, '0', #{non}, #{non}, #{authority})
+		values(#{hakbun}, #{name}, #{non}, #{fk_deptCode}, 'qwer1234$', #{email}, #{non}, '0', #{non}, #{non}, #{authority})
 	</insert>
 	
 	<!-- 학번 중복여부 가져오기 -->
@@ -98,15 +123,16 @@
 	</select>
 	
 	<!-- 담당교수 가져오기 -->
-	<select id="getTeacherList" resultType="com.spring.univ.model.SubjectVO">
-    	select teacher, fk_deptCode
-    	from tbl_subject
+	<select id="getTeacherList" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">
+    	select name, hakbun
+		from tbl_member
+		where fk_deptCode = #{deptCode} and authority = '1'
 	</select>
 	
 	<!-- 새로운 전공 입력하기 -->
 	<insert id="UpdateSubject" parameterType="HashMap">
-		insert into tbl_subject(code, subject, teacher, hakjum, classDate, fk_deptCode)
-		values(#{code}, #{subject}, #{teacher}, #{hakjum}, #{classDate}, #{fk_deptCode})
+		insert into tbl_subject(code, subject, fk_hakbun, hakjum, classDate, fk_deptCode)
+		values(#{code}, #{subject}, #{fk_hakbun}, #{hakjum}, #{classDate}, #{fk_deptCode})
 	</insert>
 	
 	<!-- 학과명 중복여부 가져오기 -->
@@ -122,5 +148,391 @@
 		from tbl_subject
 		where code = #{code}
 	</select>
+
+	<!-- 상태 수정하기 -->
+	<update id="UpdateStatus" parameterType="HashMap">
+		update tbl_member set status = #{status}
+		where hakbun = #{hakbun}
+	</update>
 	
+	<!-- 교수님 스케줄 조회해오기 -->
+	<select id="getTeacherScheduleList" parameterType="HashMap" resultType="com.spring.univ.model.SubjectVO">
+	    select classDate, subject 
+		from tbl_subject
+		where fk_hakbun = #{fk_hakbun}
+		order by classDate   
+	</select>
+
+	<!-- 과 선택시 수강 미신청 인원 알아오기 -->
+	<select id="getsugangNoMemberList" parameterType="HashMap" resultMap="noSugangMap">  
+		select A.hakbun, B.name
+		from
+		(
+			select hakbun
+			from tbl_member
+			where authority = '0' and status = '1' and fk_deptCode = #{fk_deptCode}
+			MINUS
+			select fk_hakbun
+			from tbl_sugang
+		) A
+		JOIN tbl_member B
+		on A.hakbun = B.hakbun
+	</select>
+	
+	<!-- 과 선택시 수강 미신청 인원 알아오기 -->
+	<select id="getsugangYesMemberList" parameterType="HashMap" resultMap="yesSugangMap">  
+		select distinct m.hakbun, m.name
+		from tbl_member m 
+		join tbl_sugang s
+		on m.hakbun = s.fk_hakbun
+        join tbl_subject t
+        on t.fk_deptCode = m.fk_deptCode
+		where m.authority = 0 and m.status = 1 and t.fk_deptCode = #{fk_deptCode}
+	</select>
+	
+	<resultMap type="HashMap" id="noSugangMap">
+		<result property="hakbun" column="hakbun" javaType="String" />
+	    <result property="name" column="name" javaType="String" />	
+	</resultMap>
+	
+	<resultMap type="HashMap" id="yesSugangMap">
+		<result property="hakbun" column="hakbun" javaType="String" />
+	    <result property="name" column="name" javaType="String" />	
+	</resultMap>
+	
+	<!-- 과 선택시 해당과 시간표 알아오기 -->
+	<select id="getsugangSubjectList" parameterType="HashMap" resultType="com.spring.univ.model.SubjectVO">  
+		select subject, code, classDate
+        from tbl_subject
+        where fk_deptCode = #{fk_deptCode}
+	</select>
+
+	<!-- 과 선택시 해당과 시간표 알아오기 -->
+	<select id="getsubjectClassDate" parameterType="HashMap" resultType="String">  
+		select classDate
+        from tbl_subject
+        where code = #{code}
+	</select>
+	
+	<!-- 전공신청 안한 학생한명 알아오기 -->
+	<select id="getsearchNoMemberList" parameterType="HashMap" resultType="com.spring.univ.model.MemberVO">  
+		select name, hakbun
+        from tbl_member
+        where hakbun = #{hakbun}
+	</select>
+	
+	<!-- 상태 수정하기 -->
+	<insert id="SaveSugang" parameterType="HashMap">
+		insert into tbl_sugang(fk_code, fk_hakbun)
+		values(#{code}, #{hakbun})
+	</insert>
+	
+	<!-- 전공신청 한 학생한명 알아오기 -->
+	<select id="getselectSugangMemberList" parameterType="HashMap" resultMap="SelectSugangMemberMap">  
+		select distinct m.hakbun, m.name, t.code, t.subject, t.classDate
+		from tbl_member m 
+		join tbl_sugang s
+		on m.hakbun = s.fk_hakbun
+        join tbl_subject t
+        on t.code = s.fk_code
+		where m.hakbun = #{hakbun}
+	</select>
+	
+	<resultMap type="HashMap" id="SelectSugangMemberMap">
+		<result property="hakbun" column="hakbun" javaType="String" />
+	    <result property="name" column="name" javaType="String" />
+	    <result property="code" column="code" javaType="String" />
+	    <result property="subject" column="subject" javaType="String" />
+	    <result property="classDate" column="classDate" javaType="String" />	
+	</resultMap>
+	
+	<!-- 수강하지 않는 과목 가져와서 값 넣어주기 -->
+	<select id="getsugangNoSubjectList" parameterType="HashMap" resultMap="sugangNoSubjectMap">  
+		select distinct b.code, b.subject, b.classDate
+        from tbl_sugang a
+        join tbl_subject b
+        on b.fk_deptCode = (select fk_deptCode from tbl_member where hakbun = #{hakbun})
+        MINUS
+        select a.fk_code, b.subject, b.classDate
+		from tbl_sugang a
+        join tbl_subject b
+        on a.fk_code = b.code
+		where a.fk_hakbun = #{hakbun}
+	</select>
+	
+	<resultMap type="HashMap" id="sugangNoSubjectMap">
+	    <result property="classDate" column="classDate" javaType="String" />
+	    <result property="code" column="code" javaType="String" />
+	    <result property="subject" column="subject" javaType="String" />	
+	</resultMap>
+
+	<!-- 과목 먼저 지우기 -->
+	<delete id="DeleteSugang" parameterType="String">
+        delete tbl_sugang
+        where fk_hakbun = #{hakbun}
+	</delete>
+	
+	
+	<!-- 전공 수정 전 먼저 지워주기 -->
+	<delete id="DeleteSubject" parameterType="HashMap">
+        delete tbl_subject
+        where subject = #{subject}
+	</delete>
+	
+	<!-- 각 문제 별 체크한 문항번호 가져오기 -->
+	<select id="getCheckNum" parameterType="HashMap" resultType="String">
+	    select count(*)
+		from tbl_serveyResult
+		where fk_serveyCode = #{fk_serveyCode} and fk_serveyNum = #{serveyNum} and serveyCheckNum = #{CheckNum}
+	</select>
+	
+	<!-- 교수 담당수업 가져오기 -->
+	<select id="getserveySubject" parameterType="HashMap" resultType="com.spring.univ.model.SubjectVO">
+	    select code, subject
+		from tbl_subject
+		where fk_hakbun = #{fk_hakbun}
+	</select>
+
+	<!-- 평가문항 가져오기 -->
+	<select id="getPyungga" parameterType="HashMap" resultMap="getPyunggaMap">  
+		select serveyContent, subject, name, serveyNum
+		,(select count(*) from tbl_serveyResult where fk_serveyCode = #{fk_serveyCode} and serveyCheckNum = '1' and fk_serveyNum = serveyNum) as checkone
+		,(select count(*) from tbl_serveyResult where fk_serveyCode = #{fk_serveyCode} and serveyCheckNum = '2' and fk_serveyNum = serveyNum) as checktwo
+		,(select count(*) from tbl_serveyResult where fk_serveyCode = #{fk_serveyCode} and serveyCheckNum = '3' and fk_serveyNum = serveyNum) as checkthree
+		,(select count(*) from tbl_serveyResult where fk_serveyCode = #{fk_serveyCode} and serveyCheckNum = '4' and fk_serveyNum = serveyNum) as checkfour
+		,(select count(*) from tbl_serveyResult where fk_serveyCode = #{fk_serveyCode} and serveyCheckNum = '5' and fk_serveyNum = serveyNum) as checkfive
+		from
+		(
+			select a.serveyContent, b.subject, (select name
+												from tbl_member
+												where hakbun = (select fk_hakbun
+																from tbl_subject
+																where code = #{fk_serveyCode})) as name, a.serveyNum as serveyNum
+			from tbl_serveyDetail a
+			join tbl_subject b
+			on a.fk_serveyCode = b.code
+			where fk_serveyCode = #{fk_serveyCode}
+		)
+	</select>
+	
+	<resultMap type="HashMap" id="getPyunggaMap">
+	    <result property="serveyContent" column="serveyContent" javaType="String" />
+	    <result property="subject" column="subject" javaType="String" />
+	    <result property="name" column="name" javaType="String" />
+	    <result property="serveyNum" column="serveyNum" javaType="String" />
+	    <result property="checkone" column="checkone" javaType="String" />
+	    <result property="checktwo" column="checktwo" javaType="String" />
+	    <result property="checkthree" column="checkthree" javaType="String" />
+	    <result property="checkfour" column="checkfour" javaType="String" />
+	    <result property="checkfive" column="checkfive" javaType="String" />	
+	</resultMap>
+
+	<!-- 설문 가져오기 -->
+	<select id="getServeyList" resultType="com.spring.univ.model.ServeyVO">
+	    select serveyCode, serveyTopic
+		from tbl_servey
+		where serveyCode = '0001'
+	</select>
+
+	<!-- 설문 문항 가져오기 -->
+	<select id="getSulmoonMoonhangList" parameterType="HashMap" resultType="com.spring.univ.model.ServeyDetailVO">
+		select fk_serveyCode, serveyNum, serveyContent
+		from tbl_serveyDetail
+		where fk_serveycode = #{fk_serveyCode} and serveyNum > 3
+	</select>
+
+	<!-- 설문 분석대상 문항가져오기 -->
+	<select id="getBoonsukList" parameterType="HashMap" resultType="com.spring.univ.model.ServeyResultVO">
+		select distinct substr(serveychecknum, 3, length(serveychecknum)) as serveyCheckNum
+		from tbl_serveyresult
+		where fk_serveynum = #{serveyNum} and fk_serveycode = #{fk_serveycode}
+	</select>
+	
+	<!-- 총 몇개인지 설문분석 결과값 가져오기 -->
+	<select id="getResult" parameterType="HashMap" resultType="String">
+		select count(*)
+		from
+		(
+    		select *
+    		from tbl_serveyResult
+    		where substr(serveychecknum,3,length(serveychecknum)) = #{gijoon}
+		) v1
+		join
+		(
+    		select *
+    		from tbl_serveyResult
+    		where substr(serveychecknum,3,length(serveychecknum)) = #{boonsuk}
+		) v2
+		on v1.seq1 = v2.seq1
+	</select>
+
+	<!-- 쪽지 발신함 가져오기 -->
+	<select id="getSenderList" parameterType="HashMap" resultMap="getSenderListMap">
+		select distinct jseq, receive_hakbun, jjokjitime, jjokjicontent, filename, orgfilename, filesize,
+      		  (select name
+       		   from tbl_member
+       		   where hakbun = receive_hakbun) as name, (select deptname
+                                                		from tbl_department
+                                                		where deptcode = (select distinct fk_deptcode
+                                                                  		  from tbl_subject
+                                                                  		  where fk_hakbun = receive_hakbun)) as deptname
+			 
+		from
+		(
+			select *
+			from tbl_jjokji
+			where sender_hakbun = #{hakbun}
+		)
+		<if test='receive_hakbun != "" '>
+			where receive_hakbun = #{receive_hakbun}
+		</if>
+	</select>
+	
+	<resultMap type="HashMap" id="getSenderListMap">
+	    <result property="jseq" column="jseq" javaType="String" />
+	    <result property="receive_hakbun" column="receive_hakbun" javaType="String" />
+	    <result property="jjokjitime" column="jjokjitime" javaType="String" />
+	    <result property="jjokjicontent" column="jjokjicontent" javaType="String" />	
+	    <result property="filename" column="filename" javaType="String" />	
+	    <result property="filesize" column="filesize" javaType="String" />
+	    <result property="orgfilename" column="orgfilename" javaType="String" />	
+	    <result property="name" column="name" javaType="String" />	
+	    <result property="deptname" column="deptname" javaType="String" />	
+	</resultMap>
+	
+	<!-- 쪽지 수신함 가져오기 -->
+	<select id="getReceiveList" parameterType="HashMap" resultMap="getReceiveListMap">
+		select distinct jseq, sender_hakbun, jjokjitime, jjokjicontent, filename, orgfilename, filesize,
+      		  (select name
+       		   from tbl_member
+       		   where hakbun = sender_hakbun) as name, (select deptname
+                                                	   from tbl_department
+                                                	   where deptcode = (select distinct fk_deptcode
+                                                                  		 from tbl_subject
+                                                                  		 where fk_hakbun = sender_hakbun)) as deptname
+			 
+		from
+		(
+			select *
+			from tbl_jjokji
+			where receive_hakbun = #{hakbun}
+		)
+		<if test='sender_hakbun != ""'>
+			where sender_hakbun = #{sender_hakbun}
+		</if>
+	</select>
+
+	<resultMap type="HashMap" id="getReceiveListMap">
+	    <result property="jseq" column="jseq" javaType="String" />
+	    <result property="sender_hakbun" column="sender_hakbun" javaType="String" />
+	    <result property="jjokjitime" column="jjokjitime" javaType="String" />
+	    <result property="jjokjicontent" column="jjokjicontent" javaType="String" />	
+	    <result property="filename" column="filename" javaType="String" />	
+	    <result property="filesize" column="filesize" javaType="String" />	
+	    <result property="name" column="name" javaType="String" />	
+	    <result property="deptname" column="deptname" javaType="String" />	
+	    <result property="orgfilename" column="orgfilename" javaType="String" />	
+	</resultMap>
+
+	<!-- 연락처 가져오기 -->
+	<select id="getContactList" parameterType="HashMap" resultMap="getContactListMap">
+		select m.name, m.hakbun as receive_hakbun, d.deptname
+        from tbl_member m
+        join tbl_department d
+        on m.fk_deptcode = d.deptcode
+        where m.authority = 1
+	</select>
+
+	<resultMap type="HashMap" id="getContactListMap">
+	    <result property="name" column="name" javaType="String" />
+	    <result property="receive_hakbun" column="receive_hakbun" javaType="String" />
+	    <result property="deptname" column="deptname" javaType="String" />
+	</resultMap>
+
+	<!-- 쪽지 삭제하기 -->
+	<delete id="jjokjiDel" parameterType="HashMap">
+		delete tbl_jjokji
+		where jseq in
+		<foreach collection="jseqArr1" index="i" open="(" separator="," close=")"> 
+        	${jseqArr1[i]}
+      	</foreach>
+	</delete>
+
+	<!-- 즐겨찾기 목록 가져오기 -->
+	<select id="getStarList" parameterType="HashMap" resultMap="getStarListMap">
+		select distinct jseq, sender_hakbun, receive_hakbun, jjokjitime, jjokjicontent, filename, orgfilename, filesize,
+      		  (select distinct name from tbl_member where hakbun = sender_hakbun) as name1, 
+      		  (select distinct name from tbl_member where hakbun = receive_hakbun) as name2,
+      		  (select distinct deptname from tbl_department where deptcode = (select distinct fk_deptcode from tbl_subject where fk_hakbun = sender_hakbun)) as deptname1,
+      		  (select distinct deptname from tbl_department where deptcode = (select distinct fk_deptcode from tbl_subject where fk_hakbun = receive_hakbun)) as deptname2
+		from
+		(
+			select *
+			from tbl_jjokji
+			where star = '0000001'
+		)
+		<if test='star_hakbun != ""'>
+			where sender_hakbun = #{star_hakbun} or receive_hakbun = #{star_hakbun}
+		</if>
+	</select>
+
+	<resultMap type="HashMap" id="getStarListMap">
+	    <result property="jseq" column="jseq" javaType="String" />
+	    <result property="sender_hakbun" column="sender_hakbun" javaType="String" />
+	    <result property="receive_hakbun" column="receive_hakbun" javaType="String" />
+	    <result property="jjokjitime" column="jjokjitime" javaType="String" />
+	    <result property="jjokjicontent" column="jjokjicontent" javaType="String" />	
+	    <result property="filename" column="filename" javaType="String" />	
+	    <result property="filesize" column="filesize" javaType="String" />	
+	    <result property="name1" column="name1" javaType="String" />	
+	    <result property="name2" column="name2" javaType="String" />	
+	    <result property="deptname1" column="deptname1" javaType="String" />
+	    <result property="deptname2" column="deptname2" javaType="String" />	
+	    <result property="orgfilename" column="orgfilename" javaType="String" />	
+	</resultMap>
+
+	<!-- 즐겨찾기 등록하기 -->
+	<update id="jjokjiStar" parameterType="HashMap">
+		update tbl_jjokji set star = '0000001'
+		where jseq in
+		<foreach collection="jseqArr2" index="i" open="(" separator="," close=")">
+        	${jseqArr2[i]}
+      	</foreach>
+	</update>
+
+	<!-- 즐겨찾기 등록해제 -->
+	<update id="jjokjiStarNo" parameterType="HashMap">
+		update tbl_jjokji set star = '0'
+		where jseq in
+		<foreach collection="jseqArr3" index="i" open="(" separator="," close=")">
+        	${jseqArr3[i]}
+      	</foreach>
+	</update>
+
+	<!-- 쪽지보내기 (첨부파일이 없는경우) -->
+   	<insert id="adminSendJjokji" parameterType="HashMap">
+    	insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent)
+      	values(jseq.nextval, #{receive_hakbun}, #{sender_hakbun}, default, #{jjokjiContent})
+   	</insert>
+
+	<!-- 쪽지보내기 (첨부파일이 있는 경우) -->
+   	<insert id="adminSendJjokji_withFile" parameterType="com.spring.univ.model.JjokjiVO">
+    	insert into tbl_jjokji(jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize)
+      	values(jseq.nextval, #{receive_hakbun}, '0000001', default, #{jjokjiContent}, #{fileName}, #{orgFilename}, #{fileSize})
+   	</insert>
+
+	<!-- 쪽지 첨부파일 다운로드 받기 -->
+	<select id="getAdminJjokjiList" parameterType="HashMap" resultType="com.spring.univ.model.JjokjiVO">
+    	select jseq, receive_hakbun, sender_hakbun, jjokjiTime, jjokjiContent, fileName, orgFilename, fileSize
+		from tbl_jjokji
+		where jseq = #{jseq}
+    </select>
+
+	<!-- 파일 삭제를 위해 파일있는지 확인해오기 -->
+	<select id="getDelFileSelect" parameterType="String" resultType="String">
+    	select fileName
+		from tbl_jjokji
+		where jseq = #{jseq}
+    </select>
+
 </mapper>
