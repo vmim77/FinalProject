@@ -35,7 +35,6 @@
 
 	$(document).ready(function(){
 		
-		
 		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
 		
 		$("ul#sideMenuList").hover(function(){
@@ -57,12 +56,9 @@
 	}); // end of $(document).ready(function(){})----------------------------
 
 </script>
-
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
 <h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">공지사항</span></h3>
 <hr style="clear: both;">
-
-
 <div style="display:flex;">
 	<div style="margin: auto; margin-left: 20%; padding-top: 9%;">
 		<h2 style="font-size:23px; margin-bottom: 45px;"><i class="far fa-trash-alt"></i>&nbsp;&nbsp;게시글 삭제</h2>

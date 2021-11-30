@@ -54,12 +54,6 @@ public interface InterHyunService {
 	// 글 삭제하기
 	int noticeDel(NoticeVO noticevo);
 
-	// 댓글쓰기(트랜잭션 처리하기)
-	int addNoticeComment(NoticeCommentVO noticecommentvo) throws Throwable;
-
-	// 원게시물에 있는 댓글들을 조회
-	List<NoticeCommentVO> getNoticeCommentList(String parentSeq);
-
 	// 검색어 입력시 자동글 완성하기3
 	List<String> noticeWordSearchShow(Map<String, String> paraMap);
 
@@ -68,15 +62,20 @@ public interface InterHyunService {
 
 	// 페이징 처리한 글 목록 가져오기(검색의 유무와 상관 없이 모두 호환 가능하다)
 	List<NoticeVO> noticeListSearchWithPaging(Map<String, String> paraMap);
-
-	// 원게시물에 있는 댓글들을페이징 처리해서 조회해오기
-	List<NoticeCommentVO> getNoticeCommentListPaging(Map<String, String> paraMap);
-
-	// 원글 글번호(parentSeq)에 해당하는 댓글의 총개수를 알아오기
-	int getNoticeCommentTotalCount(Map<String, String> paraMap);
 // ======================= *************** notice(공지사항) 끝  *************** =======================
 // ================================================================================================
-
+	
+	
+	
+// ================================================================================================
+// ======================= *************** Calendar(일정)  *************** ========================
+	// 로그인한 사용자의 일정 뽑아오기
+	List<CalendarVO> getCalendar(Map<String, String> paraMap);
+	
+	// 일정 추가
+	void calendarAdd(CalendarVO calendarvo);
+// ======================= *************** Calendar(일정) 끝 *************** =======================
+// ================================================================================================
 	
 	
 	

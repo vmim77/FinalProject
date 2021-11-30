@@ -166,34 +166,6 @@ public class HyunService implements InterHyunService {
 	}
 	
 	
-	// 댓글쓰기(트랜잭션 처리하기)
-	@Override
-	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
-	public int addNoticeComment(NoticeCommentVO noticecommentvo) throws Throwable{
-		
-		int n=0, m=0;
-		
-		// 댓글쓰기(tbl_comment 테이블에 insert)
-		n = dao.addNoticeComment(noticecommentvo);
-		
-		if(n==1) {
-			// tbl_board 테이블에 commentCount 컬럼이 1증가(update)
-			m = dao.updateNoticeCommentCount(noticecommentvo.getParentSeq());
-		}
-		
-		return m;
-		
-	}
-	
-	
-	// 원게시물에 있는 댓글들을 조회
-	@Override
-	public List<NoticeCommentVO> getNoticeCommentList(String parentSeq) {
-		List<NoticeCommentVO> noticecommentList = dao.getNoticeCommentList(parentSeq);
-		return noticecommentList;
-	}
-	
-	
 	// 검색어 입력시 자동글 완성하기3
 	@Override
 	public List<String> noticeWordSearchShow(Map<String, String> paraMap) {
@@ -216,25 +188,34 @@ public class HyunService implements InterHyunService {
 		List<NoticeVO> noticeList = dao.noticeListSearchWithPaging(paraMap);
 		return noticeList;
 	}
-	
-	
-	// 원게시물에 있는 댓글들을페이징 처리해서 조회해오기	
-	@Override
-	public List<NoticeCommentVO> getNoticeCommentListPaging(Map<String, String> paraMap) {
-		List<NoticeCommentVO> noticecommentList = dao.getNoticeCommentListPaging(paraMap);
-		return noticecommentList;
-	}
-	
-	
-	// 원글 글번호(parentSeq)에 해당하는 댓글의 총개수를 알아오기
-	@Override
-	public int getNoticeCommentTotalCount(Map<String, String> paraMap) {
-		int totalCount = dao.getNoticeCommentTotalCount(paraMap);
-		return totalCount;
-	}
 // ======================= *************** Notice(공지사항) 끝  *************** =======================
 // ================================================================================================
 
+	
+	
+	
+
+// ================================================================================================
+// ======================= *************** Calendar(일정)  *************** =======================
+	// 로그인한 사용자의 일정 뽑아오기
+	@Override
+	public List<CalendarVO> getCalendar(Map<String, String> paraMap) {
+		List<CalendarVO> calendarList = dao.getCalendar(paraMap);
+		return calendarList;
+	}
+
+	
+	
+	// 일정 추가
+	@Override
+	public void calendarAdd(CalendarVO calendarvo) {
+		dao.calendarAdd(calendarvo);
+	}
+// ======================= *************** Calendar(일정) 끝  *************** =======================
+// ================================================================================================
+	
+	
+	
 	
 	
 	

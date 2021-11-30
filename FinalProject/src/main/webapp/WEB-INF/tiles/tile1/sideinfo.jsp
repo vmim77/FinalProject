@@ -58,12 +58,12 @@
 	<div>대시보드</div>
 </a>
 
-<a id="subjectMenu" class="menu" href="#">
+<a id="subjectMenu" class="menu">
 	<i class="hideicon fas fa-book fa-2x"></i>
 	<div>과목</div>
 </a>
 
-<a class="menu" href="#">
+<a class="menu" href="<%= ctxPath%>/calendar.univ">
 	<i class="hideicon far fa-calendar fa-2x"></i>
 	<div>캘린더</div>
 </a>

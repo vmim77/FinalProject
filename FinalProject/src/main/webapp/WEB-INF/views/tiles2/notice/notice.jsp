@@ -50,7 +50,6 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		
 		$("ul#sideMenuList > li:nth-child(2)").addClass("hoverdEffect");
 		
 		$("ul#sideMenuList").hover(function(){
@@ -192,7 +191,6 @@
 <i class="hideSubjectMenu fas fa-bars fa-2x" style="float:left; margin-right: 20px; cursor: pointer;"></i>
 <h3 style="float:left;"><span style="color: #0099ff; text-decoration: underline;">공지사항</span></h3>
 <hr style="clear: both;">
-
 <div class="container p-5" >
 	<%-- === #101. 글검색 폼 추가하기 : 글제목, 글쓴이로 검색을 하도록 한다. === --%>
 	<div class="pt-5 pb-5">	
@@ -226,15 +224,7 @@
 			<c:forEach var="noticevo" items="${requestScope.noticeList}">
 				<tr>
 					<td align="center">${noticevo.seq}</td>
-					<td align="left">
-						<%-- 댓글쓰기가 있는 게시판 --%>
-						<c:if test="${noticevo.commentCount > 0}">
-						  <span class="subject" onclick="goView('${noticevo.seq}')">${noticevo.subject} [<span style="color: red; font-size: 9pt; font-style: italic; font-weight: bold;">${noticevo.commentCount}</span>] </span>    
-						</c:if>
-						<c:if test="${noticevo.commentCount == 0}">
-						  <span class="subject" onclick="goView('${noticevo.seq}')">${noticevo.subject}</span> 
-						</c:if>
-					</td>
+					<td align="left"><span class="subject" onclick="goView('${noticevo.seq}')">${noticevo.subject}</span></td>
 					<td align="center">${noticevo.name}</td>
 					<td align="center">${noticevo.regDate}</td>
 					<td align="center">${noticevo.readCount}</td>
