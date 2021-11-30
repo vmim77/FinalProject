@@ -4,16 +4,73 @@
 <% String ctxPath = request.getContextPath(); %>
 
 <style type="text/css">
-
+	table#subjectInfo, th, td {
+		border: solid 1px black;
+	}
 	
-	table#subjectInfo, th, td { border: solid 1px black; }
+	table#subjectInfo {
+		border: solid 2px black;
+	}
 	
-	table#subjectInfo { border: solid 2px black; }
+	th {
+		width: 30%;
+		padding-left: 5px;
+		background-color: #ddd;
+	}
 	
-	th { width: 30%; padding-left: 5px; background-color: #ddd; }
+	td {
+		width: 50%;
+		padding: 10px;
+	}
 	
-	td { width: 50%; padding: 10px; }
+	.tg {
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
 	
+	.tg td {
+		border-color: black;
+		border-style: solid;
+		border-width: 1px;
+		font-family: Arial, sans-serif;
+		font-size: 15px;
+		overflow: hidden;
+		padding: 10px 5px;
+		word-break: normal;
+	}
+	
+	.tg th {
+		border-color: black;
+		border-style: solid;
+		border-width: 1px;
+		font-family: Arial, sans-serif;
+		font-size: 15px;
+		font-weight: normal;
+		overflow: hidden;
+		padding: 10px 5px;
+		word-break: normal;
+	}
+	
+	.tg .tg-baqh {
+		text-align: center;
+		vertical-align: top
+	}
+	
+	.tg .tg-13pz {
+		font-size: 18px;
+		text-align: center;
+		vertical-align: top
+	}
+	
+	.tg .tg-amwm {
+		font-weight: bold;
+		text-align: center;
+		vertical-align: top
+	}
+	
+	.bg {
+		background-color: #ffb84d;
+	}
 </style>
 
 <script type="text/javascript">
@@ -40,37 +97,174 @@
 	
 	<table id="subjectInfo" class="table" style="width: 60%; float: right; text-align: center;">
 		<tr>
-			<th colspan="2"><h2>강좌소개</h2></th>
+			<th colspan="2" class="bg"><h2>강좌소개</h2></th>
 		</tr>
 		<tr>
-			<th >수강코드</th>
+			<th class="bg">수강코드</th>
 			<td>${requestScope.subjectMap.code}</td>
 		</tr>
 		<tr>
-			<th>과목명</th>
+			<th class="bg">과목명</th>
 			<td>${requestScope.subjectMap.subject}</td>
 		</tr>
 		<tr>
-			<th>교수명</th>
+			<th class="bg">교수명</th>
 			<td>${requestScope.subjectMap.name}</td>
 		</tr>
 		<tr>
-			<th>학점</th>
+			<th class="bg">학점</th>
 			<td>${requestScope.subjectMap.hakjum}점</td>
 		</tr>
 		<tr>
-			<th>수업요일</th>
+			<th class="bg">수업요일</th>
 			<td>${requestScope.subjectMap.classdate}요일</td>
 		</tr>
 		<tr>
-			<th>강의실</th>
+			<th class="bg">강의실</th>
 			<td>${requestScope.subjectMap.deptName}&nbsp;${requestScope.subjectMap.deptLocation}</td>
 		</tr>
 	</table>
 </div>
 
-
-
 <div style="clear: both;"></div>
+
+<div class="accordion" id="accordionExample" style="width: 80%; margin-top: 20px;">
+	<div class="card">
+		<div class="card-header" id="headingOne" style="background-color: #ffb84d;" >
+			<h2 class="mb-0">
+				<button class="btn btn-link btn-block text-left" type="button"
+					data-toggle="collapse" data-target="#collapseOne"
+					aria-expanded="true" aria-controls="collapseOne" style="color: black; font-size: 14pt; font-weight: bold;" >강의 계획서</button>
+			</h2>
+		</div>
+
+		<div id="collapseOne" class="collapse show"
+			aria-labelledby="headingOne" data-parent="#accordionExample">
+			<div class="card-body">
+				<table class="tg">
+					<thead>
+						<tr>
+							<th class="tg-13pz bg" colspan="15"><span
+								style="font-weight: bold">강의 계획서</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="tg-baqh bg" colspan="15"><span
+								style="font-weight: bold">성적평가</span></td>
+						</tr>
+						<tr>
+							<td class="tg-baqh" colspan="5"><span
+								style="font-weight: bold">평가문항</span></td>
+							<td class="tg-baqh" colspan="5"><span
+								style="font-weight: bold">기준만점</span></td>
+							<td class="tg-baqh" colspan="5"><span
+								style="font-weight: bold">반영비율</span></td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="1">중간고사</td>
+							<td class="tg-amwm" colspan="7">100점</td>
+							<td class="tg-amwm" colspan="7">25%</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="1">기말고사</td>
+							<td class="tg-amwm" colspan="7">100점</td>
+							<td class="tg-amwm" colspan="7">25%</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="1">과제물</td>
+							<td class="tg-amwm" colspan="7">100점</td>
+							<td class="tg-amwm" colspan="7">20%</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="1">출석</td>
+							<td class="tg-amwm" colspan="7">100점</td>
+							<td class="tg-amwm" colspan="7">30%</td>
+						</tr>
+						<tr>
+							<td class="tg-baqh bg" colspan="15"><span
+								style="font-weight: bold">차별 수업계획(Course Schedule)</span></td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">1주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								오리엔테이션</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">2주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								수업 & 과제</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">3주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								수업</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">4주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								수업</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">5주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								수업</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">6주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								수업</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">7주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								지정보강일</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">8주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								중간고사</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">9주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								수업</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">10주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								수업</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">11주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								수업</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">12주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								수업</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">13주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								수업</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">14주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								수업</td>
+						</tr>
+						<tr>
+							<td class="tg-amwm" colspan="4">15주차</td>
+							<td class="tg-baqh" colspan="11">${requestScope.subjectMap.subject}
+								기말고사</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
-	
+
+
