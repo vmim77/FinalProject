@@ -38,12 +38,12 @@
 <div style="width: 80%; margin-top: 10px; padding: 10px;">
 	<img style="position: relative;  width: 30%; float:left; margin-left: 5px;" src="<%= ctxPath%>/resources/images/${requestScope.subjectMap.code}.jpg" /> 
 	
-	<table id="subjectInfo" class="table" style="width: 60%; float: right;">
+	<table id="subjectInfo" class="table" style="width: 60%; float: right; text-align: center;">
 		<tr>
 			<th colspan="2"><h2>강좌소개</h2></th>
 		</tr>
 		<tr>
-			<th>수강코드</th>
+			<th >수강코드</th>
 			<td>${requestScope.subjectMap.code}</td>
 		</tr>
 		<tr>
