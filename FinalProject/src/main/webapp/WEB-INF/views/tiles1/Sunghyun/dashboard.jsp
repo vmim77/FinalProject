@@ -30,6 +30,8 @@
  	margin-left: 5px;
  }
  
+
+ 
 </style>
 
 <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
@@ -52,6 +54,8 @@
 	      navLinks: true,
 	      nowIndicator: true,
 	      locale: 'ko',
+	      eventBackgroundColor : '#ffb84d',
+	      eventBorderColor : '#fff',
 	  	  eventSources: [{
 			events: function(info, successCallback, failureCallback) {
 				$.ajax({
