@@ -522,10 +522,12 @@ public class HyunController {
 
 		String searchType = request.getParameter("searchType");
 		String searchWord = request.getParameter("searchWord");
+		String fk_code = request.getParameter("fk_code");
 
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("searchType", searchType);
 		paraMap.put("searchWord", searchWord);
+		paraMap.put("fk_code", fk_code);
 
 		List<String> wordList = service.QnAWordSearchShow(paraMap);
 
@@ -546,6 +548,7 @@ public class HyunController {
 		return jsonarr.toString();
 
 	}
+	
 	
 // =============== ********  QnA(문의게시판) 끝  ******** =============== //
 // =========================================================================================================================
@@ -791,7 +794,6 @@ public class HyunController {
 		////////////////////////////////////////////////////////////////////////////////////////
 		
 		try {
-			
 			Integer.parseInt(seq); // 글번호 형 변환하기
 			
 			// 현재 로그인 되어 있는 사용자의 정보 가져오기 - 조회수를 위해서
@@ -826,6 +828,7 @@ public class HyunController {
 			mav.addObject("noticevo", noticevo);
 			
 		} catch(NumberFormatException e) {
+			e.printStackTrace();
 		}
 		
 		mav.setViewName("notice/noticeView.tiles2");
@@ -987,57 +990,6 @@ public class HyunController {
 		
 	}
 	
-	// 댓글쓰기(Ajax)
-	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
-	@RequestMapping(value="/addNoticeComment.univ", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
-	public String addNoticeComment(NoticeCommentVO noticecommentvo){
-		
-		// 댓글쓰기에 첨부파일이 없는 경우
-		int n = 0;
-		
-		try {
-			n = service.addNoticeComment(noticecommentvo);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		
-		// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
-		JSONObject jsonobj = new JSONObject();
-		jsonobj.put("n", n);
-		jsonobj.put("name", noticecommentvo.getName());
-		
-		return jsonobj.toString();
-				
-	}
-	
-	// 원게시물에 있는 댓글들 조회(Ajax)
-	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
-	@RequestMapping(value="/readNoticeComment.univ", produces="text/plain;charset=UTF-8")
-	public String readNoticeComment(HttpServletRequest request){
-		
-		String parentSeq = request.getParameter("parentSeq");
-		
-		List<NoticeCommentVO> noticecommentList = service.getNoticeCommentList(parentSeq);
-		
-		JSONArray jsonarr = new JSONArray();
-		
-		if(noticecommentList != null) {
-			
-			for(NoticeCommentVO noticecommentvo : noticecommentList) {
-				
-				JSONObject jsonobj = new JSONObject();
-				
-				jsonobj.put("content", noticecommentvo.getContent());
-				jsonobj.put("name", noticecommentvo.getName());
-				jsonobj.put("regDate", noticecommentvo.getRegDate());
-				
-				jsonarr.put(jsonobj);
-			}
-		}
-		
-		return jsonarr.toString();
-				
-	}
 	
 	// 검색어 입력시 자동글 완성하기
 	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
@@ -1071,75 +1023,6 @@ public class HyunController {
 				
 	}
 	
-	// 원게시물에 있는 댓글들을 조회해오기(Ajax 로 처리) //
-	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
-	@RequestMapping(value="/noticeCommentList.univ", produces="text/plain;charset=UTF-8")
-	public String noticeCommentList(HttpServletRequest request){
-		
-		String parentSeq = request.getParameter("parentSeq");
-		String currentShowPageNo = request.getParameter("currentShowPageNo");
-		
-		if(currentShowPageNo == null) {
-			currentShowPageNo = "1";
-		}
-		
-		int sizePerPage = 5;
-		int startRno = (( Integer.parseInt(currentShowPageNo) - 1 ) * sizePerPage) + 1;
-	    int endRno = startRno + sizePerPage - 1; 
-		
-	    Map<String, String> paraMap = new HashMap<>();
-	    
-	    paraMap.put("parentSeq", parentSeq);
-	    paraMap.put("startRno", String.valueOf(startRno));
-	    paraMap.put("endRno", String.valueOf(endRno));
-	    
-		List<NoticeCommentVO> noticecommentList = service.getNoticeCommentListPaging(paraMap);
-		
-		JSONArray jsonarr = new JSONArray();
-		
-		if(noticecommentList != null) {
-			
-			for(NoticeCommentVO noticecommentvo : noticecommentList) {
-				
-				JSONObject jsonobj = new JSONObject();
-				
-				jsonobj.put("content", noticecommentvo.getContent());
-				jsonobj.put("name", noticecommentvo.getName());
-				jsonobj.put("regDate", noticecommentvo.getRegDate());
-				
-				jsonarr.put(jsonobj);
-			}
-		}
-		
-		return jsonarr.toString();
-				
-	}
-	
-	// 댓글내용 페이지바 Ajax로 만들기
-	@ResponseBody // 제이손 뷰페이지에서 그대로 보여주기 위해서 적어주는 것
-	@RequestMapping(value="/getNoticeCommentTotalPage.univ", produces="text/plain;charset=UTF-8")
-	public String getNoticeCommentTotalPage(HttpServletRequest request){
-		
-		String parentSeq = request.getParameter("parentSeq");
-		String sizePerPage = request.getParameter("sizePerPage");
-		
-		Map<String,String> paraMap = new HashMap<>();
-		paraMap.put("parentSeq", parentSeq);
-		
-		// 원글 글번호(parentSeq)에 해당하는 댓글의 총갯수를 알아오기
-		int totalCount = service.getNoticeCommentTotalCount(paraMap);
-		
-		// === 총페이지수(totalPage)구하기 ===
-		// 만약에 총 게시물 건수(totalCount)가 12개 이라면 
-		// 총페이지수(totalPage)는 3개가 되어야 한다.
-		int totalPage = (int) Math.ceil((double)totalCount / Integer.parseInt(sizePerPage)); 
-		// (double)12/5 ==> 2.4 ==> Math.ceil(2.4) ==> 3.0 ==> (int)3.0 ==> 3
-		
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("totalPage", totalPage); // {"totalPage":3}
-		
-		return jsonObj.toString();
-	}
 
 	// 스마트에디터. 드래그앤드롭을 사용한 다중 사진 파일업로드 //
 	@RequestMapping(value="/image/noticeMultiplePhotoUpload.univ", method= {RequestMethod.POST}) // attach_photos.js 참조. /board/image/multiplePhotoUpload.action 에서 /image/multiplePhotoUpload.action만 쓰면 됨
@@ -1219,6 +1102,126 @@ public class HyunController {
 	
 	
 	
+	
+	
+// =========================================================================================================================
+// =============== ********  Calendar  ******** =============== //
+	@RequestMapping(value="/calendar.univ")
+	public ModelAndView requiredLogin_calendar(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, CalendarVO calendarvo) {
+		
+		List<CalendarVO> calendarList = null;
+		
+		
+			
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+
+		String fk_hakbun = loginuser.getHakbun();
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("fk_hakbun", fk_hakbun);
+
+		calendarList = service.getCalendar(paraMap);
+		
+		
+		if(calendarList.size() > 0) {
+		
+			String title = "";
+			String startDate = "";
+			String endDate = "";
+			
+			for(CalendarVO cvo : calendarList) {
+				
+				title += cvo.getTitle() + ",";
+				startDate += cvo.getStartDate() + ",";
+				endDate += cvo.getEndDate() + ",";
+				
+			}
+			
+			title = title.substring(0, title.lastIndexOf(","));
+			startDate = startDate.substring(0, startDate.lastIndexOf(","));
+			endDate = endDate.substring(0, endDate.lastIndexOf(","));
+			mav.addObject("title", title);
+			mav.addObject("startDate", startDate);
+			mav.addObject("endDate", endDate);
+		}
+		
+		mav.setViewName("calendar/calendar.tiles1");
+		
+		return mav;
+		
+	}
+	
+	
+	// 일정 추가
+	@RequestMapping(value="/calendarAdd.univ")
+	public ModelAndView requiredLogin_calendarAdd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, CalendarVO calendarvo) {
+		
+		
+		mav.setViewName("calendar/calendarAdd.tiles1");
+		// WEB-INF/views/tiles2/QnA/QnAAdd.jsp 파일 생성
+
+		return mav;
+
+	}
+	
+	
+	// 일정 추가 완료
+	@RequestMapping(value="/calendarAddEnd.univ", method={RequestMethod.POST})
+	public ModelAndView calendarAddEnd(HttpServletRequest request, ModelAndView mav, CalendarVO calendarvo) {
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		String fk_hakbun = loginuser.getHakbun();
+		
+		String title = request.getParameter("title");		// 일정제목
+		String detail = request.getParameter("detail");		// 일정내용
+		
+		// 일정 시작일
+		String year = request.getParameter("year");
+		String month = request.getParameter("month");
+		String day = request.getParameter("day");
+		String time = request.getParameter("time");
+		String minute = request.getParameter("minute");
+		
+		// 일정 마감일
+		String year1 = request.getParameter("year1");
+		String month1 = request.getParameter("month1");
+		String day1 = request.getParameter("day1");
+		String time1 = request.getParameter("time1");
+		String minute1 = request.getParameter("minute1");
+		
+		String second = "00";
+		
+		
+		calendarvo.setFk_hakbun(fk_hakbun);
+		calendarvo.setTitle(title);
+		calendarvo.setDetail(detail);
+		calendarvo.setStartDate(year + "-" + month + "-" + day + " " + time + ":" + minute + ":" + second);
+		calendarvo.setEndDate(year1 + "-" + month1 + "-" + day1 + " " + time1 + ":" + minute1 + ":" + second);
+		
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("fk_hakbun", fk_hakbun);
+		paraMap.put("title", title);
+		paraMap.put("detail", detail);
+		paraMap.put("startDate", calendarvo.getStartDate());
+		paraMap.put("endDate", calendarvo.getEndDate());
+		
+		
+		
+		service.calendarAdd(calendarvo);
+		
+		mav.setViewName("redirect:/calendar.univ");
+		
+		return mav;
+		
+	}
+	
+	
+// =============== ********  Calendar 끝  ******** =============== //
+// =========================================================================================================================
+
 	
 	
 	

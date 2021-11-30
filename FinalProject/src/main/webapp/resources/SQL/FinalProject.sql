@@ -822,4 +822,10 @@ values('수업일수1/4(복학마감일)', '2022/03/29', default);
 commit;
 
 
+select *
+from tbl_subject
 
+select *
+from tab;
+
+PURGE RECYCLEBIN;

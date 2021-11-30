@@ -8,7 +8,7 @@
 	
 <!-- ================================================================================================ -->
 <!-- ========================= *************** QnA(문의게시판) *************** ========================= -->
-	<!-- 글쓰기(파일첨부가 없는 글쓰기) -->
+	<!-- 글쓰기 -->
 	<insert id="QnAAdd" parameterType="com.spring.univ.model.QnAVO">
 		<if test='fk_seq.equals("")'>
 			insert into tbl_QnA(seq, fk_hakbun, fk_code, name, subject, content, readCount, regDate, status, groupno, fk_seq, depthno)
@@ -28,7 +28,7 @@
 	</select>
 	
 	
-	<!-- 글 1개 조회하기 -->         
+	<!-- 글 1개 조회 -->         
 	<select id="getQnAView" parameterType="HashMap" resultType="com.spring.univ.model.QnAVO">
       select previousseq, previoussubject, 
              seq, fk_hakbun, fk_code, name, subject, content, readCount, regDate, 
@@ -46,7 +46,7 @@
                
                , groupno, fk_seq, depthno
           from tbl_QnA
-          where status = 1
+          where status = 1 and fk_code = #{fk_code}
 		  <if test='searchType != "" and searchWord != ""'>
           and lower( ${searchType} ) like '%' || lower( #{searchWord} ) || '%'
           </if>
@@ -55,26 +55,26 @@
    </select>
    
 	
-	<!-- 조회수 1 증가하기 -->
+	<!-- 조회수 1 증가 -->
 	<update id="setQnAAddReadCount" parameterType="String">
 		update tbl_QnA set readCount = readCount + 1 
-		where seq = #{seq}
+		where seq = #{seq} 
 	</update>
 	
-	<!-- 글 수정하기 -->
+	<!-- 글 수정 -->
 	<update id="QnAEdit" parameterType="com.spring.univ.model.QnAVO">
 		update tbl_QnA set subject = #{subject}, content = #{content}
-		where seq = #{seq}
+		where seq = #{seq} and fk_code = #{fk_code}
 	</update>
 
 
-    <!-- 글 삭제하기 -->
+    <!-- 글 삭제-->
     <delete id="QnADel" parameterType="HashMap">
     	delete from tbl_QnA 
-        where seq = #{seq}
+        where seq = #{seq} and fk_code = #{fk_code}
     </delete>
     
-    <!-- 검색어 입력시 자동글 완성하기  -->
+    <!-- 검색어 입력시 자동글 완성 -->
 	<select id="QnAWordSearchShow" parameterType="HashMap" resultType="String"> 
 	    <choose>
 	        <when test="searchType eq 'name'">
@@ -85,7 +85,7 @@
 	        </otherwise>
 	    </choose>
 	    from tbl_QnA
-	    where status = 1 
+	    where status = 1 and fk_code = #{fk_code}
 	    and lower( ${searchType} ) like '%'|| lower( #{searchWord} ) ||'%'
 	    <if test="searchType neq 'name'">
 	    	order by seq desc
@@ -144,53 +144,12 @@
 <!-- ======================= *************** Notice(공지사항) *************** ========================= -->
 	<!-- 글쓰기(파일첨부가 없는 글쓰기) -->
 	<insert id="noticeAdd" parameterType="com.spring.univ.model.NoticeVO">
-		insert into tbl_notice(seq, fk_hakbun, fk_code, name, subject, content, readCount, regDate, status, commentCount)
-		values(noticeSeq.nextval, #{fk_hakbun}, #{fk_code}, #{name}, #{subject}, #{content}, default, default, default, default)
+		insert into tbl_notice(seq, fk_hakbun, fk_code, name, subject, content, readCount, regDate, status)
+		values(noticeSeq.nextval, #{fk_hakbun}, #{fk_code}, #{name}, #{subject}, #{content}, default, default, default)
 	</insert>
 
-	<!-- 글1개 조회하기 수정위해 주석처리-->
-	<!-- 
-	<select id="getView" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO">
-		select previousseq, previoussubject, 
-		       seq, fk_hakbun, name, subject, content, readCount, regDate, nextseq, nextsubject
-		from 
-		(
-		    select   lag(seq, 1) over(order by seq desc) AS previousseq
-		           , lag(subject, 1) over(order by seq desc) AS previoussubject		           
-		           , seq, fk_hakbun, name, subject, content, readCount
-		           , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate		    
-		           , lead(seq, 1) over(order by seq desc) AS nextseq
-		           , lead(subject, 1) over(order by seq desc) AS nextsubject		        
-		    from tbl_FreeBoard
-		    where status = 1
-		) V 
-		where V.seq = #{seq}
-	</select>
-	 -->
 	
-	
-	<!-- 글1개 조회하기 추가-->
-	
-	<!-- <select id="getView" parameterType="HashMap" resultType="com.spring.univ.model.FreeBoardVO">
-		select previousseq, previoussubject, 
-		       seq, fk_hakbun, name, subject, content, readCount, regDate, nextseq, nextsubject
-		from 
-		(
-		    select   lag(seq, 1) over(order by seq desc) AS previousseq
-		           , lag(subject, 1) over(order by seq desc) AS previoussubject		           
-		           , seq, fk_hakbun, name, subject, content, readCount
-		           , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate		    
-		           , lead(seq, 1) over(order by seq desc) AS nextseq
-		           , lead(subject, 1) over(order by seq desc) AS nextsubject		        
-		    from tbl_FreeBoard
-		    where status = 1
-		    <if test='searchType != "" and searchWord != ""'>
-		    and lower(${searchType}) like '%'||lower(#{searchWord}) ||'%'
-		    </if>
-		) V 
-		where V.seq = #{seq}
-	</select> -->
-	<!-- 아래로 수정함  -->
+	<!-- 글1개 조회 -->
 	<select id="getNoticeView" parameterType="HashMap" resultType="com.spring.univ.model.NoticeVO">
 		select previousseq, previoussubject, 
 		       seq, fk_hakbun, name, subject, content, readCount, regDate, nextseq, nextsubject, fk_code 
@@ -214,14 +173,14 @@
 	</select>
 	
 	
-	
-	<!-- 글조회수 1증가 하기 -->
+	<!-- 글조회수 1증가 -->
 	<update id="setNoticeAddReadCount" parameterType="String">
 		update tbl_Notice set readCount = readCount + 1 
 		where seq = #{seq}
 	</update>
 	
-	<!-- 1개글 수정하기 -->
+	
+	<!-- 글 수정 -->
     <update id="noticeEdit" parameterType="com.spring.univ.model.NoticeVO">
         update tbl_Notice set subject = #{subject}
                                , content = #{content}
@@ -229,32 +188,12 @@
     </update>
 
 
-    <!-- 1개글 삭제하기 -->
+    <!-- 글 삭제 -->
     <delete id="noticeDel" parameterType="HashMap">
     	delete from tbl_Notice
         where seq = #{seq}
     </delete>
     
-    
-    <!-- 댓글쓰기(tbl_comment 테이블에 insert) -->
-    <insert id="addNoticeComment" parameterType="com.spring.univ.model.NoticeCommentVO">
-    	insert into tbl_NoticeComment(seq, fk_hakbun, name, content, regDate, parentSeq, status, fk_code)
-    	values(commentSeq.nextval, #{fk_hakbun}, #{name}, #{content}, default, #{parentSeq}, default, #{fk_code})
-    </insert>
-
-    <!-- tbl_board 테이블에 commentCount 컬럼의 값을 1증가(update) -->
-    <update id="updateNoticeCommentCount" parameterType="String">
-    	update tbl_Notice set commentCount = commentCount + 1 
-    	where seq = #{parentSeq}
-    </update>
-    
-    <!-- 원게시물에 딸린 댓글들을 조회해오는 것  -->
-	<select id="getNoticeCommentList" parameterType="String" resultType="com.spring.univ.model.NoticeCommentVO">
-		select name, content, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate
-		from tbl_NoticeComment
-		where status = 1 and parentSeq = #{parentSeq}
-		order by seq desc
-	</select>
     
     <!-- 검색어 입력시 자동글 완성하기  -->
 	<select id="noticeWordSearchShow" parameterType="HashMap" resultType="String"> 
@@ -288,13 +227,12 @@
 	
     <!-- 페이징 처리한 글목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함한것) 답글포함 -->
     <select id="noticeListSearchWithPaging" parameterType="HashMap" resultType="com.spring.univ.model.NoticeVO"> 
-    select seq, fk_hakbun, name, subject, readCount, regDate, commentCount, fk_code 
+    select seq, fk_hakbun, name, subject, readCount, regDate, fk_code 
 	from 
 	(
 	    select row_number() over(order by seq desc) AS rno
 	         , seq, fk_hakbun, name, subject
 	         , readCount, to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
-	         , commentCount
 	         , fk_code
 	    from tbl_Notice 
 	    where status = 1
@@ -304,36 +242,39 @@
 	    </if>
 	) V
 	where rno between #{startRno} and #{endRno}
-    </select>  
-    
-    
-    <!-- 원게시물에 딸린 댓글들을 페이징처리해서 조회해오기(Ajax 로 처리) -->
-    <select id="getNoticeCommentListPaging" parameterType="HashMap" resultType="com.spring.univ.model.NoticeCommentVO">
-	    select name, content, regDate
-		from 
-		(
-		    select row_number() over(order by seq desc) AS rno
-		         , name, content
-		         , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate 
-		    from tbl_NoticeComment
-		    where status = 1 and parentSeq = #{parentSeq}
-		) V 
-		where rno between #{startRno} and #{endRno}
-    </select>
-     
-     
-    <!-- 원글 글번호(parentSeq)에 해당하는 댓글의 총개수를 알아오기(Ajax 로 처리) -->
-    <select id="getNoticeCommentTotalCount" parameterType="HashMap" resultType="int">
-	   select count(*)
-	   from tbl_NoticeComment
-	   where status = 1 and parentSeq = #{parentSeq}
     </select>
 <!-- ======================= *************** Notice(공지사항) 끝 *************** ======================= -->
 <!-- ================================================================================================ -->
 
-
+	
+<!-- ================================================================================================ -->
+<!-- ======================= *************** Calendar(일정) *************** ========================= -->
+	<select id="getCalendar" parameterType="HashMap" resultType="com.spring.univ.model.CalendarVO">
+		select seq, title,
+			   to_char(startDate, 'yyyy-mm-dd hh24:mi:ss') as startDate,
+			   to_char(endDate, 'yyyy-mm-dd hh24:mi:ss') as endDate
+		from tbl_calendar
+		where fk_hakbun = #{fk_hakbun}
+	</select>
+	
+	<insert id="calendarAdd" parameterType="com.spring.univ.model.CalendarVO">
+		insert into tbl_calendar(seq, fk_hakbun, title, detail, startDate, endDate)
+		values(calendarSeq.nextval, #{fk_hakbun}, #{title}, #{detail}, to_date(#{startDate}, 'yyyy-mm-dd hh24:mi:ss'), to_date(#{endDate}, 'yyyy-mm-dd hh24:mi:ss'))
+	</insert>
+<!-- ======================= *************** Calendar(일정) 끝 *************** ========================= -->
+<!-- ================================================================================================ -->
+	
+	
 	
 	
 	
 	
 </mapper>
+
+
+
+
+
+
+
+
