@@ -52,6 +52,8 @@
 	      navLinks: true,
 	      nowIndicator: true,
 	      locale: 'ko',
+	      eventBackgroundColor : '#ffb84d',
+	      eventBorderColor : '#fff',
 	  	  eventSources: [{
 			events: function(info, successCallback, failureCallback) {
 				$.ajax({
