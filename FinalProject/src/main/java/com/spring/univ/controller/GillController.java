@@ -1450,37 +1450,33 @@ public class GillController {
 	public String adminSendJjokjiFile(JjokjiVO jjokjivo, MultipartHttpServletRequest mrequest, HttpServletResponse response) {
 
 		MultipartFile attach = jjokjivo.getAttach();
-	      
-		if( !attach.isEmpty() ) {
-	       
-			HttpSession session = mrequest.getSession();
+	 
+		HttpSession session = mrequest.getSession();
+       
+		String root = session.getServletContext().getRealPath("/");
+		String path = root + "resources" + File.separator + "files"; 
+		String newFileName = ""; 
+       
+		byte[] bytes = null; 
+       
+		long fileSize = 0; 
            
-			String root = session.getServletContext().getRealPath("/");
-			String path = root + "resources" + File.separator + "files"; 
-			String newFileName = ""; 
-           
-			byte[] bytes = null; 
-           
-			long fileSize = 0; 
-	           
-        	try { 
-             
-        		bytes = attach.getBytes(); 
-           
-        		newFileName = fileManager.doFileUpload(bytes, attach.getOriginalFilename(), path);
-           
-        		jjokjivo.setFileName(newFileName); 
-        		jjokjivo.setOrgFilename(attach.getOriginalFilename()); 
-        		
-        		fileSize = attach.getSize(); 
-        		
-        		jjokjivo.setFileSize(String.valueOf(fileSize));
-           
-        	} catch (Exception e) { 
-        		e.printStackTrace(); 
-        	}//end of try { } catch (Exception e) { ---------------------------------------------
-           
-		}//end of if( !attach.isEmpty() ) {------------------------------------------------------
+    	try { 
+         
+    		bytes = attach.getBytes(); 
+       
+    		newFileName = fileManager.doFileUpload(bytes, attach.getOriginalFilename(), path);
+       
+    		jjokjivo.setFileName(newFileName); 
+    		jjokjivo.setOrgFilename(attach.getOriginalFilename()); 
+    		
+    		fileSize = attach.getSize(); 
+    		
+    		jjokjivo.setFileSize(String.valueOf(fileSize));
+       
+    	} catch (Exception e) { 
+    		e.printStackTrace(); 
+    	}//end of try { } catch (Exception e) { ---------------------------------------------
 
         // 쪽지보내기 (첨부파일이 있는경우)
 		int n = service.adminSendJjokji_withFile(jjokjivo); 
