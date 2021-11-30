@@ -823,4 +823,9 @@ commit;
 
 
 select *
-from tbl_subject;
+from tbl_subject
+
+select *
+from tab;
+
+PURGE RECYCLEBIN;

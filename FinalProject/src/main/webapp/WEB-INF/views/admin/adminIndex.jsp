@@ -2285,6 +2285,7 @@
         				<%-- 과 가져오기 --%>
 		  					<select style="width:280px;" id="student_fk_deptCode">	
 		  						<c:forEach var="deptvo" items="${requestScope.deptList}">
+		  							<option>학과(전체)</option>
 		  							<option value="${deptvo.deptCode}">${deptvo.deptName}</option>
 		  						</c:forEach>
 		  					</select>	
