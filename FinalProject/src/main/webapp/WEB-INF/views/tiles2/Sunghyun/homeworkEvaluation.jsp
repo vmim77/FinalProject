@@ -182,8 +182,10 @@
 								<c:if test="${not empty homeworkCommentList}">
 									<c:forEach var="hwcvo" items="${homeworkCommentList}">
 										<c:if test="${hwcvo.fk_hakbun eq evalMap.hakbun}">
+										<tr>
 											<td>제출일자: ${hwcvo.regDate}</td>
 											<td><a href='<%= request.getContextPath()%>/homeworkCommentFileDownload.univ?seq=${hwcvo.seq}'>${hwcvo.orgFilename}</a></td>
+										</tr>
 										</c:if>
 									</c:forEach>
 								</c:if>
